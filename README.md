@@ -1,2 +1,2 @@
-# Unofficial_Petrophysics_Code_Ramblings
+# Petrophysics_Code
 Unofficial Python implementations of articles in the journal Petrophysics. 
