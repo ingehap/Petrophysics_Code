@@ -19,6 +19,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2025_02/   Vol. 66 No. 1 (Feb 2025)  — 12 modules + test suite
 ├── src2025_04/   Vol. 66 No. 2 (Apr 2025)  —  9 modules + test suite
 ├── src2025_06/   Vol. 66 No. 3 (Jun 2025)  —  8 modules + test suite
 ├── src2025_08/   Vol. 66 No. 4 (Aug 2025)  — 11 modules + test suite
@@ -27,6 +28,29 @@ Petrophysics_Code/
 ├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 11 modules + test suite
 └── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules + test suite
 ```
+
+---
+
+## src2025_02 — Vol. 66, No. 1 (February 2025)
+
+Best Papers of the 2023 SCA International Symposium. Underground Carbon Capture, Storage, and EOR; Pore-Scale Imaging and Modeling; New SCAL Techniques and Interpretation.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `scal_model_ccs` | LET relative-permeability and capillary-pressure correlations, Leverett J-scaling, Land trapping, CO₂ storage capacity, base / optimistic / pessimistic SCAL model for CCS | Ebeltoft et al., pp. 10–25 |
+| `co2_brine_relperm` | Corey model, Buckley-Leverett fractional flow, SS analytical kr, capillary end-effect correction, JBN USS interpretation, SS + USS reconciliation | Mascle et al., pp. 26–43 |
+| `ss_co2_brine_relperm` | Steady-state scCO₂-brine kr at two pore pressures, pressure-effect comparison, drainage / imbibition hysteresis, material balance, wettability indicator | Richardson et al., pp. 44–53 |
+| `enhanced_gas_recovery` | Land trapping for CH₄ vs CO₂ (partial-wetting detection), Burdine Pc, LET kr, EGR displacement efficiency, ISSM saturation, gravity-stable flood criterion | Jones et al., pp. 54–66 |
+| `rev_two_phase_flow` | Energy-dissipation-based relative permeability (Eqs. 7–11), temporal REV convergence analysis, ergodicity test, fluctuation analysis, SCAL duration guide | McClure et al., pp. 68–79 |
+| `digital_rock_physics` | Pore-network generation, mixed-wet contact-angle anchoring, invasion-percolation drainage kr, ESRGAN resolution metrics, DRP vs SCAL comparison | Regaieg et al., pp. 80–92 |
+| `hybrid_drainage` | Hybrid Drainage Technique (viscous flood + capillary steps) vs viscous oilflood on bimodal limestone, NMR T₂ bimodal distribution, profile homogeneity | Fernandes et al., pp. 94–109 |
+| `pore_scale_drainage` | Porous-plate vs oilflood invasion, micro / meso / macro pore classification, pore-occupancy analysis, effective permeability, wettability artifacts | Nono et al., pp. 110–122 |
+| `dopant_impact_scal` | X-ray attenuation contrast with NaI (≈7× improvement), Amott wettability index, doped vs undoped oil recovery, spontaneous imbibition rate, Sor impact | Pairoys et al., pp. 123–133 |
+| `dual_porosity_sandstone` | Dual Brooks-Corey Pc, imbibition Pc from drainage Pc (contact-angle correction), Land trapped-oil, NMR Gaussian deconvolution, dual-porosity Corey kr | Wang & Galley, pp. 134–154 |
+| `mr_bulk_saturation` | CPMG multi-exponential decay, ¹³C oil volume, ¹H + ¹³C water volume, ²³Na water volume, saturation workflow, Dean-Stark validation | Ansaribaranghar et al., pp. 155–168 |
+| `mr_saturation_imaging` | ¹³C 1-D SE-SPI oil profiling, ¹H total-fluid profiling, water-by-subtraction, capillary end-effect detection, oil-wet CEE profiles, Dean-Stark validation (< 1 s.u.) | Ansaribaranghar et al., pp. 169–182 |
+
+DOI pattern: `10.30632/PJV66N1-2025aNN` (NN = 1 … 12)
 
 ---
 
@@ -185,6 +209,7 @@ DOI pattern: `10.30632/PJV67N2-2026aNN` (NN = 1 … 12)
 Every module can be run as a standalone script:
 
 ```
+python -m src2025_02.scal_model_ccs
 python -m src2025_04.udar_look_ahead
 python -m src2025_06.core_scanner
 python -m src2025_08.pa_genai_extraction
@@ -197,6 +222,7 @@ python -m src2026_04.a01_sponge_core_saturation_uncertainty
 Each package includes a master test runner:
 
 ```
+python -m src2025_02.test_all
 python -m src2025_04.test_all
 python -m src2025_06.run_all_tests
 python -m src2025_08.test_all
