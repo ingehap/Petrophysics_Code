@@ -22,9 +22,9 @@ Petrophysics_Code/
 ├── src2025_06/   Vol. 66 No. 3 (Jun 2025)  —  8 modules + test suite
 ├── src2025_08/   Vol. 66 No. 4 (Aug 2025)  — 11 modules + test suite
 ├── src2025_10/   Vol. 66 No. 5 (Oct 2025)  — 11 modules + test suite
-├── src2025_12/   Vol. 66 No. 6 (Dec 2025)  — 13 modules
-├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 12 modules + test suite
-└── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules
+├── src2025_12/   Vol. 66 No. 6 (Dec 2025)  — 13 modules + test suite
+├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 11 modules + test suite
+└── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules + test suite
 ```
 
 ---
@@ -133,7 +133,6 @@ Best Papers from the SPWLA 66th Annual Symposium, Dubai, May 17–21, 2025.
 | `tortuosity_permeability` | Tortuosity assessment for reliable permeability quantification | Arrieta et al. |
 | `pgs_type_curve` | Novel type curve for sandstone rock typing | Musu et al. |
 | `udar_methods` | UDAR joint inversion, multidimensional inversion, and look-ahead mapping | Wu et al.; Saputra et al.; Ma et al. |
-| `test_all` | Test suite covering all modules in this package | — |
 
 DOI pattern: `10.30632/PJV67N1-2026a{1..15}`
 
@@ -173,13 +172,15 @@ python -m src2026_02.depth_alignment
 python -m src2026_04.a01_sponge_core_saturation_uncertainty
 ```
 
-Several packages include master test runners:
+Each package includes a master test runner:
 
 ```
 python -m src2025_06.run_all_tests
 python -m src2025_08.test_all
 python -m src2025_10.test_all
+python -m src2025_12.test_all
 python -m src2026_02.test_all
+python -m src2026_04.test_all
 ```
 
 The `src2026_04` modules each export an `example_workflow()` function that
