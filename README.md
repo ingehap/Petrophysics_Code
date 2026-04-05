@@ -19,6 +19,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2025_04/   Vol. 66 No. 2 (Apr 2025)  —  9 modules + test suite
 ├── src2025_06/   Vol. 66 No. 3 (Jun 2025)  —  8 modules + test suite
 ├── src2025_08/   Vol. 66 No. 4 (Aug 2025)  — 11 modules + test suite
 ├── src2025_10/   Vol. 66 No. 5 (Oct 2025)  — 11 modules + test suite
@@ -26,6 +27,26 @@ Petrophysics_Code/
 ├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 11 modules + test suite
 └── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules + test suite
 ```
+
+---
+
+## src2025_04 — Vol. 66, No. 2 (April 2025)
+
+UDAR / LWD Technologies, Reservoir Porosity and Pore Characterization, Overpressure Analysis, Neutron Porosity Logging, and Well Integrity / Cementing.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `udar_look_ahead` | UDAR look-ahead-while-drilling: antenna tilt calibration, SNR estimation, model distribution analysis, multi-frequency signal combination for depth-of-detection | Cuadros et al., pp. 190–211 |
+| `stochastic_inversion` | High-performance stochastic inversion for UDAR data: reversible-jump MCMC (RJMCMC), MALA proposals, parallel tempering, 1-D layer-cake Bayesian uncertainty | Sviridov et al., pp. 212–236 |
+| `gip_porosity` | Improved GIP method for shale effective porosity: pressure-decay model, curve fitting for equilibrium pressure, rapid porosity without full equilibrium | Jiang et al., pp. 237–249 |
+| `unconventional_porosity` | Total porosity and fluid saturations for tight rocks: CRA/GRI, retort, NMR T₂ distribution, comparison framework and volumetric modelling | Cheng et al., pp. 250–266 |
+| `ultrasonic_pore_characterization` | Ultrasonic microscopy imaging of carbonate pore structure: acoustic impedance, Otsu thresholding, shape descriptors, Fourier descriptors, 3-D pore reconstruction | Chen et al., pp. 267–282 |
+| `overpressure_isotope` | Overpressure genetic analysis via isotope logging: Eaton/Bowers pore pressure, NCT estimation, loading/unloading classification, δ¹³C methane diagnosis | Hu et al., pp. 283–293 |
+| `neutron_porosity_sensitivity` | Neutron porosity sensitivity functions in casedhole: FSF (weight window), ISF (particle tracking), FSF↔ISF relationship, fast-forward modelling for porosity | Varignier et al., pp. 294–317 |
+| `filter_cake_isolation` | Drilling fluid filter cake effect on cement zonal isolation: DFFC layer classification, second-interface shear strength & channelling pressure, curing time effects | Yang et al., pp. 318–330 |
+| `microannuli_leak_rate` | Ultrasonic log analysis and microannuli leak rate quantification: impedance-to-thickness mapping, Hagen-Poiseuille flow (liquid & gas), bond index, sensitivity analysis | Machicote et al., pp. 331–347 |
+
+DOI pattern: `10.30632/PJV66N2-2025aNN` (NN = 2 … 10)
 
 ---
 
@@ -164,6 +185,7 @@ DOI pattern: `10.30632/PJV67N2-2026aNN` (NN = 1 … 12)
 Every module can be run as a standalone script:
 
 ```
+python -m src2025_04.udar_look_ahead
 python -m src2025_06.core_scanner
 python -m src2025_08.pa_genai_extraction
 python -m src2025_10.a1_log_interpretation
@@ -175,6 +197,7 @@ python -m src2026_04.a01_sponge_core_saturation_uncertainty
 Each package includes a master test runner:
 
 ```
+python -m src2025_04.test_all
 python -m src2025_06.run_all_tests
 python -m src2025_08.test_all
 python -m src2025_10.test_all
