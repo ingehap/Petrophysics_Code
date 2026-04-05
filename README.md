@@ -11,18 +11,52 @@ replacement for the original papers.
 
 ## Requirements
 
-- Python 3.9+
-- NumPy ≥ 1.24
-- SciPy ≥ 1.10
+* Python 3.9+
+* NumPy ≥ 1.24
+* SciPy ≥ 1.10
 
 ## Repository layout
 
 ```
 Petrophysics_Code/
+├── src2025_06/   Vol. 66 No. 3 (Jun 2025)  —  8 modules + test suite
+├── src2025_08/   Vol. 66 No. 4 (Aug 2025)
+├── src2025_10/   Vol. 66 No. 5 (Oct 2025)
 ├── src2025_12/   Vol. 66 No. 6 (Dec 2025)  — 13 modules
 ├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 12 modules + test suite
 └── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules
 ```
+
+---
+
+## src2025_06 — Vol. 66, No. 3 (June 2025)
+
+New Technology, Thomas-Stieber-Based Shaly-Sand Petrophysics, Basic Petrophysics Studies, and Rock Mechanics / Geomechanics.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `core_scanner` | EM core scanner: CRIM-based resistivity / dielectric permittivity inversion and water-filled porosity at 3.8 GHz | Mirza et al., pp. 352–363 |
+| `thomas_stieber_tyurin` | Thomas-Stieber-Tyurin (T-S-T) clay-volume-based thin-bed model with dispersed / structural clay and uncertainty analysis | Tyurin & Davenport, pp. 365–391 |
+| `thomas_stieber_welllog` | Fit-for-purpose T-S diagram in the well-log domain (nuclear-log forward models, multi-class rock typing) | Eghbali & Torres-Verdín, pp. 392–423 |
+| `toc_prediction` | TOC prediction: ΔlogR, dual-shale-content, stacking ensemble ML, sliding-window core homing, Cook's distance outlier removal | Dong et al., pp. 425–448 |
+| `cross_calibrated_permeability` | Coates / Timur cross-calibrated permeability, SwXCal correlation, pore-throat classification (nano–mega) | Sifontes et al., pp. 449–466 |
+| `shale_microparams` | PFC2D shale micro-parameter calibration via stacking ensemble (PBM + SJM), orthogonal design, sensitivity analysis | Jiang et al., pp. 468–488 |
+| `fracturing_fluid_damage` | Fracturing-fluid damage assessment: NMR T₂ analysis, hydrolock damage, fracture conductivity, production comparison | Li et al., pp. 489–520 |
+| `injection_fluid_optimization` | Injection-fluid optimization for tight-oil energy storage: imbibition modelling, shut-in time optimization, fluid ranking | Xiao et al., pp. 521–535 |
+
+DOI pattern: `10.30632/PJV66N3-2025aNN` (NN = 1 … 8)
+
+---
+
+## src2025_08 — Vol. 66, No. 4 (August 2025)
+
+*(Documentation pending)*
+
+---
+
+## src2025_10 — Vol. 66, No. 5 (October 2025)
+
+*(Documentation pending)*
 
 ---
 
@@ -31,7 +65,7 @@ Petrophysics_Code/
 Best Papers of the 2024 SCA International Symposium.
 
 | Module | Topic | Reference |
-|--------|-------|-----------|
+| --- | --- | --- |
 | `pgs_rock_typing` | PGS rock typing and Corey-parameter relative permeability trend modelling | Akbar et al., pp. 924–938 |
 | `dl_permeability` | Deep-learning permeability inference from 3-D greyscale images | Youssef et al., pp. 939–955 |
 | `primary_drainage` | Review and modelling of primary drainage techniques (centrifuge, porous-plate, viscous oil flood) | Fernandes et al., pp. 957–968 |
@@ -55,7 +89,7 @@ DOI pattern: `10.30632/PJV66N6-2025aNN` (NN = 1 … 13)
 Best Papers from the SPWLA 66th Annual Symposium, Dubai, May 17–21, 2025.
 
 | Module | Topic | Reference |
-|--------|-------|-----------|
+| --- | --- | --- |
 | `drill_cuttings_ai` | AI-enhanced reservoir characterization from drill-cuttings images and elemental analysis | Kriscautzky et al. |
 | `dts_co2_monitoring` | Real-time CO₂ injection monitoring via fiber-optic DTS modelling | Pirrone & Mantegazza |
 | `nmr_discrete_inversion` | Discrete inversion method for NMR data processing and fluid typing | Gao et al. |
@@ -76,7 +110,7 @@ DOI pattern: `10.30632/PJV67N1-2026a{1..15}`
 ## src2026_04 — Vol. 67, No. 2 (April 2026)
 
 | Module | Topic | Reference |
-|--------|-------|-----------|
+| --- | --- | --- |
 | `a01_sponge_core_saturation_uncertainty` | Monte Carlo uncertainty quantification of sponge-core saturation data | Alghazal & Krinis |
 | `a02_nmr_wettability_pore_partitioning` | NMR T₂-based wettability pore partitioning and oil recovery effects | Aljishi, Chitrala, Dang & Rai |
 | `a03_water_rock_mechanical_ae` | Water-rock interactions, mechanical degradation, and acoustic emission in sandstones | Zhao |
@@ -98,16 +132,23 @@ DOI pattern: `10.30632/PJV67N2-2026aNN` (NN = 1 … 12)
 
 Every module can be run as a standalone script:
 
-```bash
+```
+python -m src2025_06.core_scanner
 python -m src2025_12.pgs_rock_typing
 python -m src2026_02.depth_alignment
 python -m src2026_04.a01_sponge_core_saturation_uncertainty
 ```
 
+The `src2025_06` package includes a master test runner:
+
+```
+python -m src2025_06.run_all_tests
+```
+
 The `src2026_04` modules each export an `example_workflow()` function that
 demonstrates the key algorithms with synthetic data:
 
-```python
+```
 from src2026_04 import a12_depth_shifting_ml
 
 a12_depth_shifting_ml.example_workflow()
@@ -115,7 +156,7 @@ a12_depth_shifting_ml.example_workflow()
 
 The `src2026_02` package includes a test suite:
 
-```bash
+```
 python -m src2026_02.test_all
 ```
 
