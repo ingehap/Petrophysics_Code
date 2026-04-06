@@ -19,6 +19,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2024_10/   Vol. 65 No. 5 (Oct 2024)  — 10 modules + test suite
 ├── src2024_12/   Vol. 65 No. 6 (Dec 2024)  — 13 modules + test suite
 ├── src2025_02/   Vol. 66 No. 1 (Feb 2025)  — 12 modules + test suite
 ├── src2025_04/   Vol. 66 No. 2 (Apr 2025)  —  9 modules + test suite
@@ -29,6 +30,27 @@ Petrophysics_Code/
 ├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 11 modules + test suite
 └── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules + test suite
 ```
+
+---
+
+## src2024_10 — Vol. 65, No. 5 (October 2024)
+
+Probe Permeameter Calibration and Application, Core-Analysis Saturation Correction, MRI-Based Relative Permeability, Digital Rock Permeability Anisotropy, Shaly-Sand Water Saturation Equations, NMR Thin-Bed and Lateral Permeability Characterisation, Machine-Learning Permeability and Lithofacies Prediction, and Core-Log Depth Matching.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `probe_permeameter` | Probe permeameter testing: geometric factor, depth of investigation, o-ring / silicone-rubber tip calibration, surface impairment correction, grain-size–permeability relationship, CO₂ injectivity and trapping assessment | Jensen & Uroza, pp. 665–681 |
+| `dean_stark_saturation` | Reconstructing in-situ saturation from Dean-Stark lab measurements: pore-volume expansion (PVE) correction, clay dehydration correction, degasification correction (logarithmic water / linear oil models), kw–bw linear constraint, coefficient estimation, normalisation to 100 % | Zhang, Xu, Lu, Qi & Lia, pp. 682–698 |
+| `relative_permeability_mri` | Model-free unsteady-state relative permeability from MRI saturation profiles: capillary dispersion coefficient, fractional mobility, Corey-type Kr comparison, capillary pressure model (Eq. 13), synthetic saturation-profile generation | Zamiri, Afrough, Marica, Romero-Zerón, Nicot & Balcom, pp. 699–710 |
+| `permeability_anisotropy` | Permeability anisotropy in presalt carbonates via digital rock petrophysics: reservoir quality index (RQI), flow zone indicator (FZI), hydraulic flow unit (HFU) classification, arithmetic / harmonic / geometric upscaling, Kv/Kh ratio at multiple vertical windows, facies-based statistics | Silva Junior, Victor, Surmas, Barroso & Perosi, pp. 711–738 |
+| `water_saturation_equations` | Water saturation equations for unconsolidated reservoirs: Archie, Indonesian, Modified Indonesian (Woodhouse), Simandoux, Waxman-Smits, Dual Water, Suriname Clay (Eq. 8), Suriname Clay-and-Silt (Eq. 9), Suriname Laminar Clay-and-Silt (Eq. 10), BPPI heterogeneity index (Eq. 7), Swirr from NMR correlation (Eq. 11) | Acosta, Mijland & Nandlal, pp. 739–764 |
+| `thin_bed_nmr` | Thin-bed NMR response in horizontal wells: LWD NMR sensitivity kernel, apparent porosity via convolution, shoulder-bed averaging, thin-bed correction factor, tool stand-off correction, bed-boundary detection | Ramadan, Allen & Allam, pp. 765–771 |
+| `lateral_permeability_nmr` | Lateral permeability variations in heterogeneous carbonates: Timur-Coates NMR permeability, SDR NMR permeability, azimuthal permeability from oriented formation tests, micro-resistivity heterogeneity index, lateral (azimuthal) permeability profile construction | Fouda, Taher, Fateh & Kumar, pp. 772–788 |
+| `ml_permeability` | ML vs conventional permeability estimation: Timur-Coates model (Eqs. 15–16), feature engineering (moving-window statistics), PCA / SVD / DWT / autoencoder dimensionality reduction (Eqs. 2–8), Random Forest, SVR, kNN, Ridge, Lasso, ANN, Archie Sw (Eqs. 17–20), MAE / RSE metrics (Eqs. 14, 21), group k-fold cross-validation | Raheem, Pan, Morales & Torres-Verdín, pp. 789–812 |
+| `lithofacies_prediction` | High-resolution lithofacies prediction: petrophysical cutoff-based facies definition (gas sand / wet sand / shale), feature engineering from GR, LLD, RHOB, Extra Trees (ET) classifier, XGBoost (XGB) classifier, confusion matrix, F1-score evaluation, k-fold and random-subsampling cross-validation | Satti, Khan, Mahmood, Manzoor, Hussain & Malik, pp. 813–834 |
+| `rddtw_depth_matching` | Core-log depth adaptive matching using RDDTW: standard DTW, constrained DTW (Sakoe-Chiba band), derivative DTW, Regularised Derivative DTW with Excessive Warping Regularised Function (EWRF), PCC baseline, Particle Swarm Optimisation (PSO) for depth-shift estimation, R² / RMSE evaluation | Fang, Zhou, Xiao & Liao, pp. 835–851 |
+
+DOI pattern: `10.30632/PJV65N5-2024aNN` (NN = 1 … 10)
 
 ---
 
@@ -234,6 +256,7 @@ DOI pattern: `10.30632/PJV67N2-2026aNN` (NN = 1 … 12)
 Every module can be run as a standalone script:
 
 ```
+python -m src2024_10.probe_permeameter
 python -m src2024_12.m01_image_rock_properties
 python -m src2025_02.scal_model_ccs
 python -m src2025_04.udar_look_ahead
@@ -248,6 +271,7 @@ python -m src2026_04.a01_sponge_core_saturation_uncertainty
 Each package includes a master test runner:
 
 ```
+python -m src2024_10.test_all
 python -m src2024_12.test_all_modules
 python -m src2025_02.test_all
 python -m src2025_04.test_all
