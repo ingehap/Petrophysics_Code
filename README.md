@@ -14,11 +14,13 @@ replacement for the original papers.
 * Python 3.9+
 * NumPy ≥ 1.24
 * SciPy ≥ 1.10
+* scikit-learn ≥ 1.2 (required by `src2024_08`)
 
 ## Repository layout
 
 ```
 Petrophysics_Code/
+├── src2024_08/   Vol. 65 No. 4 (Aug 2024)  — 14 modules + test suite
 ├── src2024_10/   Vol. 65 No. 5 (Oct 2024)  — 10 modules + test suite
 ├── src2024_12/   Vol. 65 No. 6 (Dec 2024)  — 13 modules + test suite
 ├── src2025_02/   Vol. 66 No. 1 (Feb 2025)  — 12 modules + test suite
@@ -30,6 +32,31 @@ Petrophysics_Code/
 ├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 11 modules + test suite
 └── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules + test suite
 ```
+
+---
+
+## src2024_08 — Vol. 65, No. 4 (August 2024)
+
+Special Issue on Advancements in Mud Logging. ML-Based GOR and Fluid-Property Prediction from Advanced and Standard Mud Gas, Real-Time Fluid Identification, Heavy-Oil Viscosity Mapping, PVT Comparison and GOR Prediction, New Gas Logging Instrumentation, Mud Gas Quantification, Drill-Bit Metamorphism Detection, GPC-UV Cuttings Analysis, Magnetic-Susceptibility Permeability, and Automated Lithology from Cuttings Images.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `gor_prediction_ml` | ML GOR prediction from advanced mud gas (AMG) C1–C5 compositions: Random Forest, MLP, Gaussian Process Regression trained on PVT database, QC metrics (Wetness Wh, Balance Bh, Character Ch), log10(GOR) modelling, 5-fold cross-validation, MAPE evaluation (≈35 %) | Arief & Yang, pp. 433–454 |
+| `shale_fluid_prediction` | AMG-based fluid property prediction in shale (unconventional) reservoirs: extraction efficiency correction (EEC) for C1–C5, moving-average smoothing, continuous GOR log generation, minimum total-gas QC threshold, horizontal-well fluid heterogeneity for hydraulic-fracturing optimization | Yang, Arief, Niemann & Houbiers, pp. 455–469 |
+| `realtime_fluid_id` | Real-time fluid identification integrating AMG with LWD petrophysical logs: radar (star) plot similarity matching against PVT database, Random Forest for GOR, AdaBoost for fluid density, density-neutron gas flagging, six-class fluid-type classification (black oil → dry gas) | Kopal, Yerkinkyzy, Nygård, Cely, Ungar, Donnadieu & Yang, pp. 470–483 |
+| `standard_mudgas_typing` | Standard mud gas fluid typing using C1/C2, C1/C3, and Bernard ratio thresholds: Type I / Type II field classification via Fisher discriminant, pseudo-EEC correction for OBM wells (background subtraction + scale factors), threshold calibration from PVT database | Yang, Uleberg, Cely, Yerkinkyzy, Donnadieu & Kristiansen, pp. 484–495 |
+| `ml_fluid_typing` | ML-based oil/gas classification from standard mud gas: Random Forest classifier, 8-feature engineering (C1/C2, C1/C3, C2/C3, Bernard, wetness, normalized C1–C3), three-approach feature selection (forward / backward / manual), AUC and accuracy metrics, hyperparameter tuning | Cely, Siedlecki, Ng, Liashenko, Donnadieu & Yang, pp. 496–506 |
+| `heavy_oil_viscosity` | Heavy-oil viscosity mapping from standard mud gas (Peregrino Field): C1/C2 ratio-based viscosity calibration palette from reference wells, log-linear interpolation, 5 % tolerance QC band, three-class viscosity classification, pressure-gradient density estimation | Bravo, Cely, Yerkinkyzy, Xavier, Masuti, de Souza, Donnadieu & Yang, pp. 507–518 |
+| `prospect_fluid_estimation` | Prospect evaluation fluid estimation from standard mud gas: triangle and diamond composition plots for C1–C3, C2/C3–GOR linear correlation (R² ≈ 0.79), continuous GOR log prediction, compositional gradient detection across reservoir zones | Ungar, Yerkinkyzy, Bravo & Yang, pp. 519–531 |
+| `pvt_gor_snorre` | PVT comparison and GOR prediction in Snorre Field: dynamic extraction efficiency correction (EEC) from ROP / mud weight / total gas, dual ML dataset approach (NCS-wide + field-specific RF), star diagram ratio comparison, injection-gas identification (GOR > 10 000), production GOR validation (< 30 % error) | Caldas, Kirkman, Ungar & Yang, pp. 532–547 |
+| `membrane_gas_logging` | Semipermeable-membrane degasser with NDIR infrared spectroscopy: Beer-Lambert law, multi-component least-squares spectral inversion, Fick's-law membrane permeability model for C1–C5, extraction efficiency correction, Gaussian absorption profiles at alkane central wavelengths (3.31–3.42 µm) | Cheng, Ye, Wang, Yin, Chen, Huang, Yang & Wang, pp. 548–564 |
+| `mudgas_response` | Mud gas response variation causes and two quantification techniques: gas-marker method (SCF/ton from ROP, bit area, flow rate, trap efficiency), normalization technique to reference drilling conditions, ROP / flow-rate / mud-weight sensitivity analysis, production correlation in coal-gas reservoirs | Donovan, pp. 565–584 |
+| `alkene_hydrogen_dbm` | Drill-bit metamorphism (DBM) detection from real-time alkene and hydrogen: C2=/C2 (ethylene/ethane) ratio alarm, H2 co-indicator, four-level severity classification (none / mild / moderate / severe), WOB correlation (R ≈ 0.91), POOH decision-support recommendations | Qubaisi, Kharaba, Hewitt & Sanclemente, pp. 585–592 |
+| `gpc_uv_cuttings` | GPC-UV method for reservoir fluid analysis from drill cuttings: gel permeation chromatography simulation, 3-D isoabsorbance envelope (retention time × wavelength × intensity), feature extraction (peak RT, signal strength, area, wavelength span), API gravity / GOR estimation, OBM contamination assessment | Yang, Cely, Moore & Michael, pp. 593–603 |
+| `magnetic_permeability` | Magnetic-susceptibility-derived permeability from drill cuttings (Culzean Triassic): high-field paramagnetic clay volume estimation (Eqs. 3–4, illite k = 41 × 10⁻⁵ SI, quartz k = −1.5 × 10⁻⁵ SI), ferromagnetic contaminant removal, overburden correction, Gaussian averaging for core-scale reconciliation (R² = 0.949), XRD validation (R² = 0.909) | Banks, Tugwell & Potter, pp. 604–623 |
+| `lithobia_cuttings` | LiOBIA: object-based cuttings image analysis for automated lithology: instance segmentation, color (RGB mean/std) and texture (contrast, homogeneity, entropy) feature extraction, k-NN classification in feature space, PCA manifold analysis, five-lithology library (sandstone / limestone / shale / siltstone / dolomite), depth-log generation via majority vote (> 90 % accuracy) | Yamada, Di Santo, Bondabou, Prashant, Di Daniel, Su, Francois, Ouaaba, Lockyer & Prioul, pp. 624–648 |
+
+DOI pattern: `10.30632/PJV65N4-2024aNN` (NN = 1 … 14)
 
 ---
 
@@ -256,6 +283,7 @@ DOI pattern: `10.30632/PJV67N2-2026aNN` (NN = 1 … 12)
 Every module can be run as a standalone script:
 
 ```
+python -m src2024_08.gor_prediction_ml
 python -m src2024_10.probe_permeameter
 python -m src2024_12.m01_image_rock_properties
 python -m src2025_02.scal_model_ccs
@@ -271,6 +299,7 @@ python -m src2026_04.a01_sponge_core_saturation_uncertainty
 Each package includes a master test runner:
 
 ```
+python -m src2024_08.test_all
 python -m src2024_10.test_all
 python -m src2024_12.test_all_modules
 python -m src2025_02.test_all
