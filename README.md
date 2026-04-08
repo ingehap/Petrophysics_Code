@@ -20,6 +20,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2024_06/   Vol. 65 No. 3 (Jun 2024)  —  8 modules + test suite
 ├── src2024_08/   Vol. 65 No. 4 (Aug 2024)  — 14 modules + test suite
 ├── src2024_10/   Vol. 65 No. 5 (Oct 2024)  — 10 modules + test suite
 ├── src2024_12/   Vol. 65 No. 6 (Dec 2024)  — 13 modules + test suite
@@ -32,6 +33,25 @@ Petrophysics_Code/
 ├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 11 modules + test suite
 └── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules + test suite
 ```
+
+---
+
+## src2024_06 — Vol. 65, No. 3 (June 2024)
+
+Special Issue on Petrophysics for the Energy Transition and Fundamental Rock Physics. Nuclear Logging for CCS and Low-Carbon Applications, Claystone Nuclear Repository Characterisation, Underground Hydrogen Storage, Automatic Facies Analysis in the Crust-Mantle Transition Zone, Deep-Learning LWD Image Interpretation, 2D T1–T2 NMR Source-Rock Saturation, Shale Hole-Fracture Damage Mechanics, and Joint R35 / Fractal MICP Rock Typing.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_nuclear_logging_ccs` | Nuclear logging for CCS, nuclear repositories, and geothermal systems: pulsed-neutron capture (PNC) Sigma from thermal-neutron time decay N(t) = N₀·exp(−Σvt) (Eq. 1), gas-phase diffusion correction Σ_D (Appendix 1), carbon/oxygen (C/O) ratio CO₂ vs hydrocarbon discrimination, capture-unit (c.u.) conversion, plume tracking | Badruzzaman, pp. 274–301 |
+| `article2_claystone_repository` | Petrophysical analyses for claystone-hosted nuclear waste repository search (BGE, Germany) from legacy oilfield logs: vertical variogram analysis of gamma-ray for layer-thickness detection (Fig. 4), Lag1 enhanced variance with P10 threshold, short/long median-filter residual GR curve, Archie-type effective-diffusivity model for clay porosity and tortuosity | Strobel, pp. 302–316 |
+| `article3_hydrogen_storage` | Underground hydrogen storage (UHS) in porous media: Newman (1973) rock-compressibility correlation for consolidated sandstone, gas inflow performance relationship (IPR) for H₂ withdrawal, average cycle productivity index, Mohr-Coulomb / Griffith failure envelope for induced-seismicity risk on critically stressed faults (Fig. 3), six-cycle injection-withdrawal scheduler (Fig. 1) | Okoroafor, Sekar & Galvis, pp. 317–341 |
+| `article4_facies_classification` | Automatic facies analysis in the crust-mantle transition zone (Oman Drilling Project CM2A / CM2B, dunite / gabbro / harzburgite): FaciesSpect (PCA + hierarchical agglomerative clustering), CBML (PCA + Gaussian mixture model + HMM depth regulariser), HRA (K-means on log attributes), borehole-image per-depth statistics (mean, contrast) as features | Morelli, Yang, Maehara, Cai, Moe, Yamada & Matter, pp. 342–363 |
+| `article5_lwd_image_deeplearning` | Deep-learning LWD azimuthal density image interpretation: U-Net "PickNet" edge segmentation on 20×16 images, fully-connected "FitNet" sinusoid fitter for amplitude / phase / mean depth, synthetic image generator per Appendix 1 (random sinusoidal density contrasts + Gaussian noise), deterministic gradient-based edge picker and least-squares sinusoid fit as CPU analogues | Molossi, Roncoroni & Pipan, pp. 365–387 |
+| `article6_nmr_t1t2_saturation` | 2D T1–T2 NMR oil and water saturation in preserved source rocks: inversion-recovery CPMG forward model S(t1,t2) = Σ Mᵢ(1−2e^(−t1/T1ᵢ))e^(−t2/T2ᵢ), Tikhonov-regularised non-negative least-squares 2D inversion on log-spaced (T1,T2) grid (MUPen2D analogue), user-defined oil/water region integration, fluid-filled porosity conversion (Eq. 2) | Althaus, Chen, Sun & Broyles, pp. 388–396 |
+| `article7_shale_fracture_damage` | Damage and failure of prefabricated hole-fracture defects in shale under uniaxial compression with DIC: Inglis (1913) elliptical fracture-tip stress σ_tip = σ_applied·(1 + 2a/b) with angle projection, Kirsch (1898) circular-pore 3σ concentration factor, empirical relative peak-strength reduction vs. fracture-bedding angle, combined hole-plus-fracture interaction | Jiang, Qu & Liu, pp. 397–410 |
+| `article8_r35_fractal_rock_typing` | Joint R35 / fractal MICP rock typing (Middle East Iraq carbonates): Washburn equation r = 2σ·|cosθ|/P with σ = 480 dyn/cm, θ = 140° (Eq. 1), Winland/Pittman R35 pore-throat radius at 35 % mercury saturation with 1.6 / 2.5 µm thresholds, whole-curve fractal dimension Dₙ from log-log N_r vs r slope (Eq. 7, N_r ~ r^(−Dₙ)), three-class rock typing | Duan, Zhong, Fu, Xu, Deng, Ling & Li, pp. 411–424 |
+
+DOI pattern: `10.30632/PJV65N3-2024aNN` (NN = 1 … 8)
 
 ---
 
@@ -283,6 +303,7 @@ DOI pattern: `10.30632/PJV67N2-2026aNN` (NN = 1 … 12)
 Every module can be run as a standalone script:
 
 ```
+python -m src2024_06.article1_nuclear_logging_ccs
 python -m src2024_08.gor_prediction_ml
 python -m src2024_10.probe_permeameter
 python -m src2024_12.m01_image_rock_properties
@@ -299,6 +320,7 @@ python -m src2026_04.a01_sponge_core_saturation_uncertainty
 Each package includes a master test runner:
 
 ```
+python -m src2024_06.test_all
 python -m src2024_08.test_all
 python -m src2024_10.test_all
 python -m src2024_12.test_all_modules
