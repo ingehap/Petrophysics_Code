@@ -20,6 +20,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2024_02/   Vol. 65 No. 1 (Feb 2024)  —  7 modules + test suite
 ├── src2024_04/   Vol. 65 No. 2 (Apr 2024)  —  6 modules + test suite
 ├── src2024_06/   Vol. 65 No. 3 (Jun 2024)  —  8 modules + test suite
 ├── src2024_08/   Vol. 65 No. 4 (Aug 2024)  — 14 modules + test suite
@@ -34,6 +35,27 @@ Petrophysics_Code/
 ├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 11 modules + test suite
 └── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules + test suite
 ```
+
+---
+
+## src2024_02 — Vol. 65, No. 1 (February 2024)
+
+Mixed-topic issue covering shaly-sand conductivity theory, formation-tester
+fluid sampling, CO₂ storage, regression methodology, thermally-cycled granite
+permeability, and two machine-learning contributions (a contest summary and
+a DTW-based analog approach for rock mechanics).
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_waxman_smits_dual_water` | Shaly-sand conductivity: Waxman-Smits Co = φ^m*·Sw^n*·(Cw + B·Qv/Sw) with Waxman-Thomas temperature/salinity-dependent counter-ion conductance B(Cw,T), and Dual Water Co = φ^m·Sw^n·[(1−Swb/Sw)·Cw + (Swb/Sw)·Cwb]; Archie reduction at Qv = 0 as a built-in cross-check | Rasmus, Kennedy & Homan, pp. 5–31 |
+| `article2_contamination_transient` | Formation-tester cleanup transient analysis: power-law contamination decay η(V) = η∞ + A·V^(−b) fitted with non-linear least squares to (volume, contamination) pairs, and analytical inversion to predict the pumped volume required to reach a target contamination threshold (e.g., 5 % OBM filtrate) | Gelvez & Torres-Verdín, pp. 32–50 |
+| `article3_co2_storage` | Volumetric CO₂ storage capacity for saline aquifers: M = A·h·φ·(1−Sw,irr)·ρ_CO2·E (DOE/USGS method), plus a four-way trapping partition (structural, residual, dissolution, mineral) with user-supplied fractions and a sensitivity check that capacity scales linearly with storage efficiency | Kumar & Lauderdale-Smith, pp. 51–69 |
+| `article4_least_squares` | OLS vs. reverse OLS vs. reduced major axis (RMA / geometric-mean) regression for petrophysical crossplots: synthetic-error demonstration of OLS slope attenuation toward zero when the predictor is noisy, and the bracketing property OLS ≤ RMA ≤ reverse-OLS | Etnyre, pp. 70–94 |
+| `article5_granite_thermal` | Permeability of granite under thermal cycling: empirical model k(T,N) = k₀·exp(α·(T−T₀))·(1 + β·ln(1+N)) capturing microcrack-driven permeability growth with both peak temperature T and cycle count N, plus a linearized least-squares fit recovering (k₀, α) from laboratory data | Yu, Li, Wu, Wang, Zhang & Zhao, pp. 95–107 |
+| `article6_ml_contest` | SPWLA PDDA 2023 contest baseline: gradient-boosted regression (with closed-form ridge fallback if scikit-learn is absent) trained on standard well logs (GR, RHOB, NPHI, DT, log RT) to predict porosity and water saturation, scored with the contest's RMSE metric on a held-out tail of a synthetic well | Fu, Yu, Xu, Ashby, McDonald, Pan, Deng, Szabó, Hanzelik, Kalmár, Alatwah & Lee, pp. 108–127 |
+| `article7_dtw_rockmech` | Analog-well rock mechanics prediction: dynamic time warping (DTW) distance between target and library log curves, k-nearest-analog selection, and inverse-distance-weighted regression of a target property (e.g., UCS, Young's modulus) from the matched analogs | Cai, Ding, Li, Yin & Feng, pp. 128+ |
+
+DOI pattern: `10.30632/PJV65N1-2024aNN` (NN = 1 … 7)
 
 ---
 
@@ -321,6 +343,7 @@ DOI pattern: `10.30632/PJV67N2-2026aNN` (NN = 1 … 12)
 Every module can be run as a standalone script:
 
 ```
+python -m src2024_02.article1_waxman_smits_dual_water
 python -m src2024_04.grader_digital_rock
 python -m src2024_06.article1_nuclear_logging_ccs
 python -m src2024_08.gor_prediction_ml
@@ -339,6 +362,7 @@ python -m src2026_04.a01_sponge_core_saturation_uncertainty
 Each package includes a master test runner:
 
 ```
+python -m src2024_02.run_all_tests
 python -m src2024_04.test_all
 python -m src2024_06.test_all
 python -m src2024_08.test_all
