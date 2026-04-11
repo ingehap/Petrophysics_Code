@@ -20,6 +20,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2024_04/   Vol. 65 No. 2 (Apr 2024)  —  6 modules + test suite
 ├── src2024_06/   Vol. 65 No. 3 (Jun 2024)  —  8 modules + test suite
 ├── src2024_08/   Vol. 65 No. 4 (Aug 2024)  — 14 modules + test suite
 ├── src2024_10/   Vol. 65 No. 5 (Oct 2024)  — 10 modules + test suite
@@ -33,6 +34,23 @@ Petrophysics_Code/
 ├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 11 modules + test suite
 └── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules + test suite
 ```
+
+---
+
+## src2024_04 — Vol. 65, No. 2 (April 2024)
+
+Mixed-topic issue covering machine learning, core analysis, formation evaluation, reservoir characterization, and integration. Digital-rock relative permeability for chalk, microscopic ionic capacitor models, NMR core analysis procedures, quantitative productivity-controlling factor evaluation for ultradeep gas wells, ML prediction of triple-combo logs from drilling dynamics with physics-based joint inversion, and deep-learning semantic segmentation of shale SEM pore images.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `grader_digital_rock` | Digital-rock relative permeability for high-porosity / low-permeability Valhall chalk: Brooks-Corey two-phase relperms (krw, kro) with Corey exponents, endpoint saturations (Swi, Sor) derived from a digital pore-size distribution (smallest pores → irreducible water, largest pores → residual oil), wettability switching (water-wet vs oil-wet), Buckley-Leverett fractional flow fw(Sw) | Grader et al., pp. 149–157 |
+| `liu_ionic_capacitor` | Three microscopic ionic capacitor models for petrophysics: (I) intergranular pore parallel-plate capacitor C = ε·A/d, (II) particle-with-isolated-pore spherical capacitor C = 4πε·rR/(R−r), (III) pyrite/graphite/organic conductive-particle capacitor with charge-multiplication factor; time-varying double-layer charge q(t) = CV₀(1−e^(−t/τ)), salinity-dependent effective capacitance | Liu et al., pp. 158–172 |
+| `zhang_nmr_core` | NMR core analysis procedures: synthetic CPMG echo-train forward model S(t) = ΣAᵢ·exp(−t/T2ᵢ), Tikhonov-regularised non-negative least-squares (NNLS) T2 inversion on a log-spaced grid, bound/free-fluid partitioning by T2 cutoff (default 33 ms sandstone), surface-relaxivity pore-radius conversion r = G·ρ₂·T2, simple D-T2 (diffusion-relaxation) correlation map for fluid identification | Zhang, Song, Luo, Lin & Liu, pp. 173–193, DOI 10.30632/PJV65N2-2024a3 |
+| `xiong_productivity_factors` | Quantitative evaluation of high-productivity controlling factors for ultradeep gas wells (Qixia Formation): min-max normalization of geological/petrophysical indicators (degree of dolomitization, high-energy shoal-mound complex distribution, fracture development, porosity, permeability), grey relational analysis (GRA) grades against productivity reference series, AHP eigenvector-method weights from a pairwise comparison matrix, composite weighted productivity score per well, factor ranking | Xiong et al., pp. 194–214 |
+| `lee_mwd_triple_combo` | Two-stage MWD workflow: (1) Random Forest regression mapping drilling dynamics (WOB, RPM, ROP, torque, mechanical specific energy MSE) to triple-combo logs (gamma ray, bulk density, neutron porosity, deep resistivity); (2) physics-based joint inversion for density porosity φd = (ρma−ρb)/(ρma−ρf), Vsh from linear gamma-ray, shale-corrected average porosity, and Archie water saturation Sw = (Rw/(φᵐ·Rt))^(1/n) | Lee et al., pp. 215–232 |
+| `chen_sem_pore_segmentation` | Deep-learning "pore-net" semantic segmentation of shale SEM images: synthetic SEM image generator with random circular pores and Gaussian noise, lightweight thresholding-plus-morphological-opening/closing baseline segmenter, optional small U-Net architecture (PyTorch, two encoder/decoder stages with skip connections), porosity from pixel fraction, pore-size distribution via connected-component labelling, IoU evaluation against ground truth | Chen et al., pp. 233–245 |
+
+DOI pattern: `10.30632/PJV65N2-2024aNN` (NN = 1 … 6)
 
 ---
 
@@ -303,6 +321,7 @@ DOI pattern: `10.30632/PJV67N2-2026aNN` (NN = 1 … 12)
 Every module can be run as a standalone script:
 
 ```
+python -m src2024_04.grader_digital_rock
 python -m src2024_06.article1_nuclear_logging_ccs
 python -m src2024_08.gor_prediction_ml
 python -m src2024_10.probe_permeameter
@@ -320,6 +339,7 @@ python -m src2026_04.a01_sponge_core_saturation_uncertainty
 Each package includes a master test runner:
 
 ```
+python -m src2024_04.test_all
 python -m src2024_06.test_all
 python -m src2024_08.test_all
 python -m src2024_10.test_all
