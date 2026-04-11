@@ -20,6 +20,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2023_12/   Vol. 64 No. 6 (Dec 2023)  —  8 modules + test suite
 ├── src2024_02/   Vol. 65 No. 1 (Feb 2024)  —  7 modules + test suite
 ├── src2024_04/   Vol. 65 No. 2 (Apr 2024)  —  6 modules + test suite
 ├── src2024_06/   Vol. 65 No. 3 (Jun 2024)  —  8 modules + test suite
@@ -35,6 +36,29 @@ Petrophysics_Code/
 ├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 11 modules + test suite
 └── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules + test suite
 ```
+
+---
+
+## src2023_12 — Vol. 64, No. 6 (December 2023)
+
+"Best Papers of the 2023 Symposium" issue covering deeply-invaded saturation
+inversion, a proposed universal wellbore data format, mud-gas viscosity
+estimation, 2D NMR fluid component decomposition, salt-cavern creep damage for
+underground storage, a new pulsed-neutron C/O instrument, GAN super-resolution
+of borehole image logs, and CO₂ solubility in saline brine.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `bennis_invasion_sw` | Radial water-saturation inversion in deeply-invaded tight-gas sandstone: tanh-transition Sw(r) profile between invaded and virgin zones, Archie forward model, multi-DOI apparent-resistivity volume averaging, and least-squares recovery of (r_invaded, Sw_invaded, Sw_virgin) | Bennis et al., pp. 931–953 |
+| `bradley_wellbore_format` | Proposed universal wellbore data format: JSON-backed hierarchical container with metadata, units, named axes, and arbitrary-dimensional channels supporting both simple 1D logs (GR) and complex multidimensional measurements such as ultradeep azimuthal resistivity (depth × azimuth × DOI) | Bradley et al., pp. 823–836 |
+| `cely_mudgas_viscosity` | Reservoir-oil viscosity estimation in the Breidablikk Field from advanced mud-gas data: Pixler/Haworth gas ratios (wetness, balance, character) from C1–nC5 fractions, plus a multivariate linear regressor for log10(viscosity) calibrated against PVT measurements | Cely et al., pp. 919–930 |
+| `garcia_nmr_gaussian` | 2D NMR fluid-component tracking via Gaussian decomposition: synthetic 2D map generator, multi-component 2D Gaussian least-squares fit on a (T1, T2)-style grid, and analytic per-component pore volume from the Gaussian integral 2π·A·σx·σy | Garcia et al., pp. 879–889 |
+| `khan_salt_creep` | Nonlinear creep-damage model for solution-mined salt caverns used for H₂/CO₂ storage: Norton power-law steady-state creep ε̇ = A·σⁿ coupled to a Kachanov damage variable D with effective stress σ/(1−D), time-marched to predict cavern strain, damage, and fractional volumetric closure | Khan et al., pp. 954–969 |
+| `mcglynn_pulsed_neutron` | Pulsed-neutron spectroscopy forward + inverse model: simultaneous inelastic C/O ratio, capture sigma (c.u.), and gas ratio response for three-phase saturation, with a constrained least-squares solver recovering (S_oil, S_gas, S_water) under the Σ S = 1 closure | McGlynn et al., pp. 900–918 |
+| `trevizan_gan_image_log` | Generative adversarial network super-resolution for real-time borehole image logs: tiny PyTorch generator (Conv-ReLU-Upsample) and discriminator with a BCE + L1 training step, plus a NumPy bilinear-upsampling fallback when torch is unavailable | Trevizan & Menezes de Jesus, pp. 890–899 |
+| `wang_co2_solubility` | CO₂ solubility in saline brine for CCS trapping: Henry's-law constant H(T), Setschenow salting-out activity coefficient γ(m_NaCl, T), CH₄-competition correction, and a reservoir-scale dissolved-CO₂ trapping capacity (kg CO₂ per m³ rock) from porosity, water saturation, and brine density | Wang & Ehlig-Economides, pp. 970–977 |
+
+DOI pattern: `10.30632/PJV64N6-2023aNN`
 
 ---
 
@@ -343,6 +367,7 @@ DOI pattern: `10.30632/PJV67N2-2026aNN` (NN = 1 … 12)
 Every module can be run as a standalone script:
 
 ```
+python -m src2023_12.bennis_invasion_sw
 python -m src2024_02.article1_waxman_smits_dual_water
 python -m src2024_04.grader_digital_rock
 python -m src2024_06.article1_nuclear_logging_ccs
@@ -362,6 +387,7 @@ python -m src2026_04.a01_sponge_core_saturation_uncertainty
 Each package includes a master test runner:
 
 ```
+python -m src2023_12.run_all
 python -m src2024_02.run_all_tests
 python -m src2024_04.test_all
 python -m src2024_06.test_all
