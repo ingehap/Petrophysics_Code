@@ -20,6 +20,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2023_08/   Vol. 64 No. 4 (Aug 2023)  —  6 modules + test suite
 ├── src2023_10/   Vol. 64 No. 5 (Oct 2023)  — 11 modules + test suite
 ├── src2023_12/   Vol. 64 No. 6 (Dec 2023)  —  8 modules + test suite
 ├── src2024_02/   Vol. 65 No. 1 (Feb 2024)  —  7 modules + test suite
@@ -37,6 +38,30 @@ Petrophysics_Code/
 ├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 11 modules + test suite
 └── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules + test suite
 ```
+
+---
+
+## src2023_08 — Vol. 64, No. 4 (August 2023)
+
+Mixed-topic issue covering a historical review of casedhole nuclear
+surveillance logging, two companion papers on water-based-mud filtrate
+invasion in the tight-gas Barik sandstone (a forward compositional
+fluid-flow simulation and an iterative MCMC resistivity-inversion
+workflow), mineralogical modelling of the Brazilian presalt Barra Velha
+Formation, fracture imaging with the new high-definition oil-based-mud
+borehole imagers, and a Python Dash application for well-log data quality
+control.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_nuclear_logging` | Casedhole nuclear surveillance logging review and quantitative core: Pulsed-Neutron-Capture (PNC) volumetric mixing law Σt = (1−φ)·Σma + φ·(1−Sw)·Σhc + φ·Sw·Σw (Eq. 4) and its inversion for Sw, time-lapse PNC monitoring removing the matrix term (Eq. 5), salinity-to-Σw conversion, and Larionov tertiary / older-rocks shale-volume estimators | Fitz, pp. 473–501 |
+| `article2_invasion_simulation` | Mud-filtrate invasion + Archie resistivity workflow for tight-gas sandstones: Sw_in = a·φ^b regression (Eq. 1), Land/Jerauld trapped-gas model (Eq. 2), Brooks-Corey gas and water relative permeabilities (Eqs. 3–4), Brooks-Corey capillary pressure Pc = Pd·Se^(−1/λ) (Eq. 5), Dewan & Chenevert mudcake permeability and porosity time evolution (Eqs. 6–7), Chin mudcake-thickness ODE (Eq. 8), Archie's law (Eq. 9), and a radial Sw / salinity / Rt(r) profile generator | Merletti, Al Hajri, Rabinovich, Farmer, Bennis & Torres-Verdín, pp. 502–517 |
+| `article3_mineralogical_inversion` | Multicomponent mineralogical inversion of the Barra Velha Formation (presalt Santos Basin): volumetric photoelectric factor U = PEF·ρb (Eq. 1), Larionov GR clay volumes for younger and older rocks (Eqs. 2–3), NMR clay volume V_NR = (NMRtt − NMReff)/NMRtt (Eq. 4), hybrid GR + NMR clay (Eqs. 6–7), the linear log-response system ML_j = Σi α_ij·V_i (Eq. 8) solved with non-negative least squares under a unit-sum constraint, and the weighted RMS error metric (Eq. 9), with a built-in calcite/dolomite/quartz/clay/stevensite end-member catalogue | Jácomo, Hartmann, Rebelo, Mattos, Batezelli & Leite, pp. 518–543 |
+| `article4_obm_imager_inversion` | High-definition oil-based-mud borehole-imager forward + inverse model: series-circuit two-frequency button impedance Z(ω) = Z_mud + Z_fmt with each layer as thickness/(jω·ε₀·ε_r − σ), damped Gauss-Newton inversion for (R_fmt, ε_fmt at F2, sensor standoff), the mud-angle helper arctan(σ/(ωε)) − 90°, and the fracture-equivalent-standoff trend that explains why open mud-filled fractures appear conductive in resistive formations and resistive in conductive formations | Chen, Zhang, Bloemenkamp & Liang, pp. 544–554 |
+| `article5_iterative_resistivity` | Iterative resistivity-modelling workflow for deeply-invaded reservoirs: sliding-window first-derivative + variance bed-boundary detector, P5/P50/P95 OBM-equivalent Sw–φ envelope (Sw = a·φ^b for three quantiles, Eq. 1) converted to an Rt envelope through Archie, simplified array-laterolog forward model with depth-of-investigation weights, single-layer Bayesian / Markov-Chain Monte Carlo inversion of (Rt, Rxo) with the Rt envelope as a soft prior, and an outer iterative loop that refines the invasion radius L_xo by grid search | Merletti, Rabinovich, Al Hajri, Dawson, Farmer, Ambia & Torres-Verdín, pp. 555–567 |
+| `article6_well_log_qc` | Well-log data validation, visualisation-helper, and repeatability checks for the Plotly-Dash QC application: `ValidationConfig` dataclass + the four-rule integrity check (missing / redundant / units / value-validity), summary-table builder for a Dash DataTable, log-difference (Eq. 1), Pearson correlation r between repeat and main passes (Eq. 2), and depth-shift cross-correlation that finds the optimal shift powering the Fig. 5 repeatability panel | Jin, Xu, Lin, Li & Zeghlache, pp. 568–573 |
+
+DOI pattern: `10.30632/PJV64N4-2023aNN` (NN = 1 … 6)
 
 ---
 
@@ -398,6 +423,7 @@ DOI pattern: `10.30632/PJV67N2-2026aNN` (NN = 1 … 12)
 Every module can be run as a standalone script:
 
 ```
+python -m src2023_08.article1_nuclear_logging
 python -m src2023_10.article_01_laronga_ccs_evaluation
 python -m src2023_12.bennis_invasion_sw
 python -m src2024_02.article1_waxman_smits_dual_water
@@ -419,6 +445,7 @@ python -m src2026_04.a01_sponge_core_saturation_uncertainty
 Each package includes a master test runner:
 
 ```
+python -m src2023_08.run_all_tests
 python -m src2023_10.run_all_tests
 python -m src2023_12.run_all
 python -m src2024_02.run_all_tests
