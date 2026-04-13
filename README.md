@@ -20,6 +20,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2023_10/   Vol. 64 No. 5 (Oct 2023)  — 11 modules + test suite
 ├── src2023_12/   Vol. 64 No. 6 (Dec 2023)  —  8 modules + test suite
 ├── src2024_02/   Vol. 65 No. 1 (Feb 2024)  —  7 modules + test suite
 ├── src2024_04/   Vol. 65 No. 2 (Apr 2024)  —  6 modules + test suite
@@ -36,6 +37,36 @@ Petrophysics_Code/
 ├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 11 modules + test suite
 └── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules + test suite
 ```
+
+---
+
+## src2023_10 — Vol. 64, No. 5 (October 2023)
+
+Energy Transition Special Issue covering integrated formation evaluation for
+carbon capture and sequestration (site capacity / containment / injectivity,
+time-lapse pulsed-neutron CO₂ monitoring), wireline-conveyed deep-borehole
+stress measurement, high-resolution probe-based core analysis, flow-rate-
+dependent relative permeability scaling, the Potash Identification crossplot,
+X-ray radiography of mud invasion, joint SP/resistivity inversion in shaly
+sands, numerical core-to-log forward modelling for QC, reservoir-fluid
+geodynamics in the deepwater Gulf of Mexico, and chelating-agent acidising of
+tight sandstones.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article_01_laronga_ccs_evaluation` | Integrated CCS site evaluation across the three "pillars" of capacity, containment, and injectivity: simple supercritical-CO₂ density correlation, Batzle-Wang brine density, DOE/USGS volumetric storage-capacity equation M = A·h·NTG·φ·E·ρ_CO2, Young-Laplace caprock entry pressure Pc = 2σ·cosθ/r and the corresponding maximum buoyant CO₂ column h = Pc/((ρ_b−ρ_CO2)·g), and steady-state radial Darcy injectivity index II = 2π·k·h/(μ·(ln(re/rw)+S)) | Laronga, Borchardt, Hill, Velez, Klemin, S. Haddad, E. Haddad, Chadwick, Mahmoodaghdam & Hamichi, pp. 580–620 |
+| `article_02_desroches_stress_measurement` | Wireline micro-fracturing stress-measurement interpretation: synthetic pump-up / shut-in / decline pressure-time generator, fracture closure pressure (FCP) picked by both the √t tangent-intersection method and the Nolte G-function derivative method, instantaneous shut-in pressure (ISIP) extraction, and the Hubbert-Willis breakdown relation Pb = 3·Sh,min − SH,max − Pp + T applied to a multi-test stress profile vs depth | Desroches, Peyret, Gisolf, Wilcox, Di Giovanni, Schram de Jong, Sepehri, Garrard & Giger, pp. 621–639 |
+| `article_03_okwoli_probe_screening` | Probe-based high-resolution core screening for energy-transition reservoirs: synthetic mm-scale generator for probe luminance, magnetic susceptibility, P-wave velocity, and mini-permeameter permeability with embedded thin cemented features; boxcar upscaling to plug- and log-scale to demonstrate feature attenuation; multivariate log-linear permeability predictor log10(k) = a·lum + b·log10(MS) + c·Vp + d; and a cross-correlation depth-shift function for probe-to-log alignment | Okwoli & Potter, pp. 640–655 |
+| `article_04_karadimitriou_relperm_scaling` | Flow-rate-dependent relative permeability for steady-state two-phase flow on a microfluidic network: Brooks-Corey baseline krw = krw,max·Sw_e^nw, krnw = krnw,max·(1−Sw_e)^nnw with Sw_e = (Sw−Swir)/(1−Swir−Snwr); capillary number Ca = μw·vw/σ and Valavanides-style log-Ca scaling kr(Ca) = kr,BC·(1 + α·log10(Ca/Ca_ref)); plus a tiny pore-network steady-state simulator with throat-radius-weighted Hagen-Poiseuille conductances | Karadimitriou, Valavanides, Mouravas & Steeb, pp. 656–679 |
+| `article_05_laronga_pulsed_neutron_ccs` | Time-lapse pulsed-neutron monitoring of CO₂ storage with three independent measurements: forward and inverse models for thermal porosity (TPHI), thermal-neutron capture cross-section (SIGMA, c.u.), and fast-neutron cross-section (FNXS); per-channel ΔSco2 = −Δm/(φ·(m_brine − m_CO2)) inversion; and a three-channel consistency cross-check that flags depths where the independent estimates disagree, indicating endpoint or environmental issues | Laronga, Swager & Bustos, pp. 680–699 |
+| `article_06_hill_potash_pid_plot` | The Potash Identification (PID) crossplot for rapid screening of commercial potash from cased-hole gamma-ray and neutron logs alone: mineral library with %K2O, GR (API), and neutron porosity (pu) for sylvite / langbeinite / carnallite / kainite / leonite / polyhalite / halite / anhydrite / gypsum / kieserite / shale; rule-based GR-NPHI quadrant classifier separating commercial (anhydrous) from non-commercial (hydrated) potash; RMA GR→%K2O transform; and grade-thickness aggregation against the BLM ≥ 4 ft / ≥ 4 % K2O standards | Hill, Crain & Teufel, pp. 700–713 |
+| `article_07_aerens_xray_mud_invasion` | High-resolution time-lapse X-ray radiography of mud-filtrate invasion: Beer-Lambert attenuation I = I0·exp(−μ_eff·x), pixel-grayscale-to-water-saturation linear conversion between dry and fully-saturated reference frames, Outmans/Dewan-Chenevert √t external mudcake growth h(t) = √(2·k_mc·ΔP·t/(μ·(fc/fs−1))), and 1-D Buckley-Leverett radial-invasion saturation profiles via Welge tangent construction on a Brooks-Corey fractional-flow curve | Aérens, Espinoza & Torres-Verdín, pp. 715–740 |
+| `article_08_zhao_sp_resistivity_inversion` | Joint inversion of water saturation and Qv from spontaneous-potential and resistivity logs in low-permeability shaly sandstones: Waxman-Smits oil-bearing resistivity 1/Rt = (φ^m*/(a·Rw))·Sw^n*·(1+B·Qv·Rw/Sw); Smits-style analytical SP membrane potential ΔSP = K_SP·log10(Cw/Cmf)·f_clay(Qv,Cw)·f_sat(Sw); and a derivative-free Particle Swarm Optimisation solver minimising a normalised joint (Rt, ΔSP) residual | Zhao, Wang, Li, Hu, Xie, Duan & Mao, pp. 741–752 |
+| `article_09_bennis_corelogs_simulation` | Numerical well-log simulation from core measurements for QC: depth-resolved volumetric mineral + porosity + saturation model; forward operators for GR (linear mixing), bulk density (linear mixing of solids and pore fluids), neutron porosity (mineral and HI-weighted fluid), and Vp (time-average / Wyllie); Gaussian vertical-response convolution to wireline aperture; and chi-square misfit + linear regression bias detection that recovers (slope, intercept) corrections for badly environmentally-corrected logs | Bennis & Torres-Verdín, pp. 753–772 |
+| `article_10_mohamed_rfg_connectivity` | Reservoir-fluid geodynamics workflow for hydraulic-connectivity assessment in heavily-faulted reservoirs: iteratively-solved Flory-Huggins-Zuo asphaltene gradient combining a gravitational term V_a·g·(ρ_a−ρ_o)·Δh/(R·T) with a solubility-parameter term ((δ_a−δ_o)²·V_a/(R·T))·((1−φ_a)²−(1−φ_a,ref)²); exponential viscosity-from-asphaltene correlation μ = μ0·exp(k·φ_a); and a greedy piecewise-linear pressure-gradient segmentation that detects fluid contacts and fault-bounded compartments from RFT/MDT pressure surveys | Mohamed, Torres-Verdín & Mullins, pp. 773–795 |
+| `article_11_shafiq_chelating_acidizing` | Chelating-agent acidising of tight sandstones (HEDTA / EDTA / GLDA): per-mineral first-order Arrhenius-modulated dissolution X = 1 − exp(−k_eff·t) with k_eff = k0·(C/0.6)·exp(−Ea/R·(1/T−1/Tref)) for calcite, kaolinite, illite, feldspar (quartz inert); porosity update φ' = φ + ΣXᵢ·fᵢ·(1−φ); Kozeny-Carman permeability uplift k'/k = (φ'/φ)³·((1−φ)/(1−φ'))²; and pore-size-distribution shift toward smaller-radius widening | Shafiq, Ben Mahmud, Khan, Gishkori, Wang & Jamil, pp. 796–817 |
+
+DOI pattern: `10.30632/PJV64N5-2023aNN` (NN = 1 … 11)
 
 ---
 
@@ -367,6 +398,7 @@ DOI pattern: `10.30632/PJV67N2-2026aNN` (NN = 1 … 12)
 Every module can be run as a standalone script:
 
 ```
+python -m src2023_10.article_01_laronga_ccs_evaluation
 python -m src2023_12.bennis_invasion_sw
 python -m src2024_02.article1_waxman_smits_dual_water
 python -m src2024_04.grader_digital_rock
@@ -387,6 +419,7 @@ python -m src2026_04.a01_sponge_core_saturation_uncertainty
 Each package includes a master test runner:
 
 ```
+python -m src2023_10.run_all_tests
 python -m src2023_12.run_all
 python -m src2024_02.run_all_tests
 python -m src2024_04.test_all
