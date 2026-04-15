@@ -15,11 +15,14 @@ replacement for the original papers.
 * NumPy ≥ 1.24
 * SciPy ≥ 1.10
 * scikit-learn ≥ 1.2 (required by `src2024_08`)
+* scikit-image ≥ 0.21 (required by `src2023_04`)
+* xgboost ≥ 1.7 (required by `src2023_04`)
 
 ## Repository layout
 
 ```
 Petrophysics_Code/
+├── src2023_04/   Vol. 64 No. 2 (Apr 2023)  — 11 modules + test suite
 ├── src2023_06/   Vol. 64 No. 3 (Jun 2023)  —  9 modules + test suite
 ├── src2023_08/   Vol. 64 No. 4 (Aug 2023)  —  6 modules + test suite
 ├── src2023_10/   Vol. 64 No. 5 (Oct 2023)  — 11 modules + test suite
@@ -39,6 +42,30 @@ Petrophysics_Code/
 ├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 11 modules + test suite
 └── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules + test suite
 ```
+
+---
+
+---
+
+## src2023_04 — Vol. 64, No. 2 (April 2023)
+
+Artificial Intelligence and Machine-Learning Special Issue. Four sub-themes: (i) data-driven petrophysical interpretation (DP-based electrofacies clustering, image-based rock classification, symbolic regression for interpretation models), (ii) ML-assisted petrophysical data preprocessing (comparative log prediction methods, unsupervised outlier detection and log editing, removal of borehole-image artefacts), (iii) ML and data analytics for uncertainty modeling (sonic-log imputation with goodness metric, exemplar-guided sedimentary facies modeling, spatial data analytics-assisted subsurface modeling), and (iv) ML-based surrogate modeling (fast deconvolution and convolution methods for induction-log inversion and forward modeling).
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article01_electrofacies_dp` | Unsupervised electrofacies clustering with dynamic programming: generic objective L_f(X,Y,W) = Σ_t f(x_t, w_{y_t}) (Eq. 1) minimised under constraints on number of clusters C, max transitions N, and minimal block size MinPhi via the recurrence ω_t(n,c) (Eq. 3); Waxman-Smits resistivity 1/Rt = (φ^m*·S_w^n*/a)·(C_w + B·Q_v/S_w) as the per-cluster physical model (Eq. 13) with Dacy-Martin temperature-dependent B (Eq. 14); random-init + dp_path_finder iteration to convergence; ARI-based selection of the most-common assignment across initialisations (Eq. 12) | Sinnathamby, Hou, Gkortsas, Venkataramanan, Datir, Kollien & Fleuret, pp. 137–153 |
+| `article02_image_rock_classification` | Image-based rock classification from CT scans and slabbed core photos: per-depth grayscale descriptive statistics — mean, variance, skewness, kurtosis (Eqs. 1–4); HSV channel means from RGB photos (Eq. 5); GLCM-based contrast / energy / correlation textural features (Eqs. 6–8) on Haar-wavelet horizontal-detail coefficients in a sliding window; supervised Random Forest and SVM classifiers with 5-fold CV; unsupervised k-means baseline; class-based permeability-porosity model log10(k) = a + b·φ per facies showing the ~35 % MRE reduction over a single formation-wide model | Gonzalez, Heidari & Lopez, pp. 154–173 |
+| `article03_symbolic_regression` | Genetic-programming symbolic regression for petrophysical interpretation models: Pearson and Spearman correlation heatmaps for input-variable selection (top-k by absolute correlation); minimalist GP engine with crossover, point mutation, tournament selection, and elitism over a primitive-function pool (+, −, ×, ÷, log, sqrt, square); Archie-style F = φ^(−m) and SDR-style permeability targets; complexity-penalised fitness (MSE + λ·tree_size) implementing the model-discrimination criterion; ensemble averaging across multiple GP seeds | Chen, Shao, Sheng & Kwak, pp. 174–190 |
+| `article04_log_prediction_ml` | Comparative ML methods for missing-log prediction: PAE pointwise fully-connected autoencoder, WAE window-based 1-D convolutional autoencoder (sliding-window stacked-feature MLP), and XGBoost regressor; random input-masking augmentation that lets all three handle missing inputs at inference; standardised target/feature scaling; full metric suite RMSE / MAE / Pearson r / PSNR mirroring Tables 4–8; demonstration of robust prediction when one input curve is fully zeroed out | Simoes, Maniar, Abubakar & Zhao, pp. 192–212 |
+| `article05_outlier_detection` | Five-step automated workflow for outlier detection and log editing with uncertainty: (1) standardisation; (2) one-class SVM footprint with RBF kernel; (3) inflection-point algorithm — kneedle criterion on the (outlier-fraction, SVM-score) curve to auto-pick ν; (4) per-well 2-D footprint binning + Jaccard / Overlap inter-well similarity matrices feeding multidimensional scaling (MDS) for unsupervised well clustering; (5) k-NN ensemble regression that returns mean + predictive standard deviation for log reconstruction QC | Akkurt, Conroy, Psaila, Paxton, Low & Spaans, pp. 213–238 |
+| `article06_borehole_image_artifacts` | Supervised ML removal of artefacts in oil-based-mud resistivity-imager (OBMRI) borehole images: depth-window × azimuth-window pixel-neighbourhood feature extraction; XGBoost regressor trained on (raw, traditional-processed) image pairs to mimic the moving-window column-baseline subtraction that handles the geometric-factor effect; per-pad operation; demonstration on a synthetic image with a U-shaped per-button standoff offset that produces the depth-invariant artefact of Fig. 4 | Guner, Fouda & Barrett, pp. 239–251 |
+| `article07_sonic_log_imputation` | Sonic well-log (DTC, DTS) imputation with ensemble-based uncertainty: mutual-information feature ranking against the response curve; ensemble of gradient-boosted regressors with row-subsampled bagging producing a non-parametric predictive CDF F_y(u_i); accuracy plot indicator ξ(u_i;p) (Eq. 2) and a(p) = 1 − 2·|ξ(p) − p| accuracy term over symmetric probability intervals; combined goodness-aware loss (Eq. 4) blending normalised MAE with the goodness metric; hyperparameter grid search that picks (learning_rate, n_estimators) maximising goodness rather than just MSE | Maldonado-Cruz, Foster & Pyrcz, pp. 253–270 |
+| `article08_egfm_facies` | Exemplar-Guided Facies Modeling, simplified non-GAN demonstration of the content/pattern decoupling concept: distance-transform "content field" interpolating positive / negative well-point evidence; Gabor-filter-bank "pattern field" capturing exemplar orientation and energy; Adaptive Feature Fusion Block (AFB) — sigmoid attention weights times learnable γ_c, γ_p factors (Eq. 17) that aggregate the two streams; threshold + hard well-honouring decoder; pattern controllability check showing how swapping a horizontal exemplar for a vertical one shifts ~30 % of the generated facies map | Wu, Hu, Sun, Zhang, Wang & Zhang, pp. 271–286 |
+| `article09_spatial_analytics` | End-to-end 2-D geostatistical workflow assisting Duvernay-style mature-data subsurface modelling: Mahalanobis-distance + isolation-forest spatial-outlier identification; Gaussian-kernel moving-window trend modelling; experimental semivariogram γ(h) (Eq. 1) with spherical-model fitting (Nelder-Mead) for nugget / sill / range; simple kriging with kd-tree neighbour search; sequential Gaussian simulation (SGS) drawing from the kriging-mean / kriging-variance distribution along a random path to produce stochastic realisations; collocated cokriging under the Markov-Bayes assumption with a variance-reduction factor for cosimulating a primary feature against a secondary | Salazar, Ochoa, Garland, Lake & Pyrcz, pp. 287–302 |
+| `article10_induction_deconvolution` | ML-based deconvolution for fast, high-resolution induction-log inversion: linear deconvolution baseline log(R) = Σ a_k·log(R_app(z_{i+k})) (Eq. 5) with weights from a fixed-window least-squares fit; XGBoost (LightGBM-style) regressor mapping a 21-point, 10-ft sliding window of log(R_app) to log(R_model) at the centre depth; layered earth-model generator with log-uniform thickness (0.1–50 ft) and resistivity (0.1–100 Ω·m); RMSLE evaluation on a training set plus three independent test earth models showing the ML model beats both raw R_app and the linear deconvolution baseline | Hagiwara, pp. 304–311 |
+| `article11_induction_convolution` | Companion to Article 10 — ML-based forward "convolution" model that calculates the induction-log apparent resistivity from a layered earth model: 101-point, 50-ft sliding window of log(R_model) input to an XGBoost regressor predicting log(R_app) at the centre depth (the larger window required by the 60° deviated-borehole geometry of the paper); linear-convolution baseline for comparison; window-size scan demonstrating that 50 ft is the elbow beyond which RMSLE no longer improves; orders-of-magnitude speed-up over analytic 1-D forward modelling | Hagiwara, pp. 312–322 |
+
+DOI pattern: `10.30632/PJV64N2-2023aNN` (NN = 1 … 11)
 
 ---
 
@@ -444,6 +471,7 @@ DOI pattern: `10.30632/PJV67N2-2026aNN` (NN = 1 … 12)
 Every module can be run as a standalone script:
 
 ```
+python -m src2023_04.article01_electrofacies_dp
 python -m src2023_06.article1_hdt
 python -m src2023_08.article1_nuclear_logging
 python -m src2023_10.article_01_laronga_ccs_evaluation
@@ -467,6 +495,7 @@ python -m src2026_04.a01_sponge_core_saturation_uncertainty
 Each package includes a master test runner:
 
 ```
+python -m src2023_04.test_all
 python -m src2023_06.test_all
 python -m src2023_08.run_all_tests
 python -m src2023_10.run_all_tests
