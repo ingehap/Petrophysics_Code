@@ -20,6 +20,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2023_06/   Vol. 64 No. 3 (Jun 2023)  —  9 modules + test suite
 ├── src2023_08/   Vol. 64 No. 4 (Aug 2023)  —  6 modules + test suite
 ├── src2023_10/   Vol. 64 No. 5 (Oct 2023)  — 11 modules + test suite
 ├── src2023_12/   Vol. 64 No. 6 (Dec 2023)  —  8 modules + test suite
@@ -38,6 +39,26 @@ Petrophysics_Code/
 ├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 11 modules + test suite
 └── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules + test suite
 ```
+
+---
+
+## src2023_06 — Vol. 64, No. 3 (June 2023)
+
+Special Issue containing the *Best Papers of the 2022 SCA International Symposium*. Three sub-themes: (i) continuous improvement of core analysis techniques for data quality and turnaround time (initial-water-saturation setting on core, wireless centrifuge resistivity index, overburden FRF/RI models), (ii) new methodologies to address petrophysical challenges (digital-SCAL gas trapping, T1-T2\* shale magnetic resonance, angle-dependent ultrasonic reflectivity), and (iii) emerging technologies for detailed rock imaging and behaviour studies (NMR-mapped dielectric dispersion, terahertz microporosity imaging, time-lapse X-ray radiography of mud-filtrate invasion).
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_hdt` | Hybrid Drainage Technique (HDT) for setting initial water saturation on core samples: Hassler-Brunner centrifuge capillary pressure Pc(r) = ½·Δρ·ω²·(R²−r²) (Eq. 1), Phase-1 viscous-flooding profile generator with capillary end-effect "foot", Phase-2 porous-plate iterative homogenisation that imposes a uniform Pc through a semipermeable plate at the outlet, and the std-dev / max-min profile-quality metrics used in Figs. 10, 12 and 16 to demonstrate CEE removal | Fernandes, Nicot, Pairoys, Bertin, Lachaud & Caubit, pp. 325–339 |
+| `article2_wiri` | Wireless Resistivity Index in centrifuge (WiRI) and comparison with porous plate (PP) and ultra-fast Pc-RI (UFPCRI) for Archie's saturation exponent: forward Archie law RI = Sw^(−n), three n-estimators (log-log linear regression for PP/UFPCRI, global least-squares through-origin inversion for WiRI), and a Monte Carlo sensitivity study reproducing Figs. 3 and 5 (random absolute error on produced volumes, random relative error on resistivity) showing the downward bias of PP and the near-unbiased behaviour of WiRI | Danielczick, Nepesov, Rochereau, Lescoulie, De Oliveira Fernandes & Nicot, pp. 340–352 |
+| `article3_overburden_frf_ri` | Analytical models for the formation resistivity factor and resistivity index at overburden conditions: Rock Resistivity Modulus RRM = (1/Ro)·dRo/dP and True Resistivity Modulus TRM = (1/Rt)·dRt/dP definitions (Eqs. 5–7), Multi-FRF model FRF(P₂) = FRF₁·exp(−RRM·ΔP) (Eq. 15) fitted from a slope of ln(FRF₂/FRF₁) vs ΔP (Eq. 18), Single-FRF compressibility-based RRM ≈ −m·(Cp − Cb) (Eq. 16), and the analogous RI(P₂) = RI₁·exp(−TRM·ΔP) prediction with a first-order saturation-exponent correction | Nourani, Pruno, Ghasemi, Fazlija, Gonzalez & Rodvelt, pp. 353–366 |
+| `article4_gas_trapping` | Advanced digital-SCAL measurements of gas trapped in sandstone: Land trapping model Sgr = Sgi/(1 + C·Sgi) with C = 1/Sgr_max − 1/Sgi_max, exponential ripening / dissolution kinetics Sgr(t) = Sgr_∞ + (Sgr₀ − Sgr_∞)·exp(−t/τ) capturing the continued shrinkage of disconnected gas clusters in pre-equilibrated brine, and a 3-class quantile-threshold segmentation of synthetic micro-CT volumes returning gas / brine / grain volume fractions and the resulting pore-scale gas saturation | Gao, Sorop, Brussee, van der Linde, Coorn, Appel & Berg, pp. 368–383 |
+| `article5_shale_t1t2star` | Shale characterization with T1-T2\* magnetic resonance relaxation correlation at low and high field: effective transverse relaxation 1/T2\* = 1/T2 + γ·ΔB₀ + γ·Δχ·B₀ (Eq. 1), Look-Locker effective T1\* with 1/T1\* = 1/T1 − ln(cos α)/τ (Eq. 2a), forward 2-D saturation-recovery + FID signal generator S(τr,t) = Σ Aₖ·(1 − exp(−τr/T1ₖ))·exp(−t/T2\*ₖ) for kerogen / oil / water populations, and a non-negative-projected linear inversion that recovers their amplitudes when the relaxation times are known | Zamiri, Guo, Marica, Romero-Zerón & Balcom, pp. 384–401 |
+| `article6_ultrasonic_reflection` | Angle-dependent ultrasonic-wave reflection for high-resolution elastic-property estimation on complex rock samples: closed-form fluid-solid Brekhovskikh / reduced Zoeppritz reflection coefficient \|R(θ)\| with Snell's law and complex sqrt for post-critical angles, P- and S-wave critical-angle calculator θc = arcsin(Vf/Vp,s), and a SciPy least-squares inversion that recovers (Vp, Vs, ρs) from a noisy measured reflection-coefficient curve, reproducing the Berea and Texas Cream Limestone behaviour of Figs. 6–7 | Olszowska, Gallardo-Giozza, Crisafulli & Torres-Verdín, pp. 402–419 |
+| `article7_dielectric_nmr` | NMR-mapped distributions of dielectric dispersion in carbonates: Bloembergen-Purcell-Pound (BPP) NMR T1 and T2 from autocorrelation time τc (Eqs. 1–2), complex Debye permittivity ε\* = ε∞ + (εs − ε∞)/(1 + iωτ) (Eq. 5), Havriliak-Negami extension ε\* = ε∞ + (εs − ε∞)/(1 + (iωτ)^α)^β (Eq. 6), linear additive Pore Combination Model εr = ε∞ + φm·εr,matrix + φv·εr,vug (Eq. 7), and the τPCM rule that splits a measured NMR T2 distribution into a fastest-relaxing matrix part and a slow-relaxing vug part to honour an externally measured matrix porosity | Funk, Myers & Hathon, pp. 421–437 |
+| `article8_thz_porosity` | Terahertz time-domain spectroscopy (THz-TDS) for lateral microporosity mapping in carbonate rocks: mass-balance bulk porosities φ_total = (m_sat − m_dry)/(ρw·Vb) and φ_micro = (m_cent − m_dry,f)/(ρw·Vb) with φ_macro = φ_total − φ_micro, Beer-Lambert THz attenuation A = −ln(I/I_dry), and a calibration step that scales the per-pixel attenuation map to the measured bulk porosity to deliver lateral φ_total / φ_micro / φ_macro maps from three intensity scans (saturated / centrifuged / dry) | Eichmann, Bouchard, Ow, Petkie & Poitzsch, pp. 438–447 |
+| `article9_xray_invasion` | Time-lapse X-ray radiography of mud-filtrate invasion and mudcake deposition: Beer-Lambert per-pixel attenuation, baseline-subtraction map A = −ln(I_now/I_dry), pure-NumPy 3×3 median filter (the noise filter applied throughout the paper), Darcy front-advance solution x_front(t) = √(2·k·ΔP/(μ·φ)·t), a synthetic 2-D radiograph time-series generator with explicit mudcake and invaded zones, and a column-profile threshold detector that returns mudcake-end and invasion-front pixel positions for each frame | Aérens, Torres-Verdín & Espinoza, pp. 448–461 |
+
+DOI pattern: `10.30632/PJV64N3-2023aN` (N = 1 … 9)
 
 ---
 
@@ -423,6 +444,7 @@ DOI pattern: `10.30632/PJV67N2-2026aNN` (NN = 1 … 12)
 Every module can be run as a standalone script:
 
 ```
+python -m src2023_06.article1_hdt
 python -m src2023_08.article1_nuclear_logging
 python -m src2023_10.article_01_laronga_ccs_evaluation
 python -m src2023_12.bennis_invasion_sw
@@ -445,6 +467,7 @@ python -m src2026_04.a01_sponge_core_saturation_uncertainty
 Each package includes a master test runner:
 
 ```
+python -m src2023_06.test_all
 python -m src2023_08.run_all_tests
 python -m src2023_10.run_all_tests
 python -m src2023_12.run_all
