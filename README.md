@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2020_06/   Vol. 61 No. 3 (Jun 2020)  —  5 modules + test suite
 ├── src2020_08/   Vol. 61 No. 4 (Aug 2020)  —  4 modules + test suite
 ├── src2020_10/   Vol. 61 No. 5 (Oct 2020)  —  7 modules + test suite
 ├── src2020_12/   Vol. 61 No. 6 (Dec 2020)  —  7 modules + test suite
@@ -60,6 +61,22 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2020_06 — Vol. 61, No. 3 (June 2020)
+
+A regular issue of five papers spanning casedhole formation evaluation along unconventional horizontal wells, the impact of cement quality on carbon/oxygen and elemental pulsed-neutron analysis, reliable relative-permeability measurement in tight gas sands, an analytical relative-permeability-from-resistivity model for fractal porous media, and neural-network estimation of reservoir porosity from drilling parameters. This issue's source PDF (`Petrophysics_2020_06.pdf`) has a text layer, so titles, authors, page ranges, DOIs, equation numbers, variable definitions, and many numeric constants were read directly from the paper bodies; the conversion dropped most typeset formula glyphs (only Article 1's Eq. 1 survived verbatim), so the numbered formulas are faithful standard-form reconstructions from the preserved variables and the standard textbook expressions each paper cites. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_casedhole_horizontal_fe` | *Case study:* casedhole FE in laterals — spectral gamma ray γAPI = 4·Th + 8·U + 16·K (Eq. 1, verbatim), M-ANNIE VTI stiffness→engineering moduli E_v/E_h/ν_v/ν_h (Eqs. 2–5), sigma water saturation, acoustic-impedance Z = ρ·Vp gas indicator, and the +2 Ca / −3 Fe / −2 Al wt% elemental corrections | Sullivan, Wang, Bolshakov, Song, Lazorek, Tohidi & Seth, pp. 253–272 |
+| `article2_cement_quality_co_pulsed_neutron` | *MCNP modeling + case study (no equations):* the carbon/oxygen ratio and salinity-independent oil saturation, the cement calcium-yield contribution (> 40%) and formation-calcium correction, the OBM-vs-WBM channel C/O bias, and sigma water saturation | Wang, Sullivan, Seth, Barnes, Wilson & Lazorek, pp. 273–285 |
+| `article3_relperm_tight_gas_sand` | Relative permeability in tight gas sand: centrifuge capillary pressure Pc = ½·Δρ·ω²·(LR²−(LR−L)²) (Eq. 1), modified Corey-Brooks gas rel-perm (Eq. 2, ng in 0.5–3.75), SDR (NMR T2) brine rel-perm (Eqs. 3–4), and the Klinkenberg gas-slippage correction | Gonzalez, Tandon, Heidari, Gramin & Merle, pp. 286–302 |
+| `article4_relperm_resistivity_fractal` | Relative permeability from resistivity for fractal media: pore-size fractal PDF (Eq. 1), pore fractal dimension Df = De − ln φ/ln(rmin/rmax) (Eq. 2 → 2.767 base case), Archie resistivity index (Eq. 11), fractal/Brooks-Corey wetting & nonwetting rel-perm (Eqs. 22, 24, λ = De − Df), and the kr-from-resistivity-index relationship (Eq. 23) | Shi, Meng, Liu, Zhang & Wang, pp. 303–317 |
+| `article5_porosity_drilling_ann` | *No equations:* a feed-forward tanh ANN predicting porosity from six drilling parameters (ROP, WOB, RPM, torque, GPM, SPP), scored by the correlation coefficient R and RMSE — reaches R ≈ 0.98 / RMSE ≈ 0.01 (paper: R ≈ 0.94–0.96, RMSE ≈ 0.018–0.035) | Al-AbdulJabbar, Al-Azani & Elkatatny, pp. 318–334 |
+
+DOI pattern: `10.30632/PJV61N3-2020aN` (N = 1 … 5). The source PDF has a text layer, so titles/authors/DOIs/constants are from the paper bodies; most equations are standard-form reconstructions (the typeset glyphs were dropped in extraction). See `src2020_06/README.md`.
 
 ---
 
