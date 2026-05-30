@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2021_04/   Vol. 62 No. 2 (Apr 2021)  —  5 modules + test suite
 ├── src2021_06/   Vol. 62 No. 3 (Jun 2021)  —  6 modules + test suite
 ├── src2021_08/   Vol. 62 No. 4 (Aug 2021)  —  8 modules + test suite
 ├── src2021_10/   Vol. 62 No. 5 (Oct 2021)  —  9 modules + test suite
@@ -55,6 +56,22 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2021_04 — Vol. 62, No. 2 (April 2021)
+
+A regular issue of five papers spanning NMR pore-structure characterization of a complex carbonate, a deepwater-turbidite rock-typing case study, Thomeer/NMR free-vs-bound porosity partitioning, nonlinear-acoustics noncollinear wave mixing for near-wellbore evaluation, and an integrated NMR continuous/stationary fluid-and-contacts workflow. This issue's source PDF has no usable text layer, so the modules were built by rendering the PDF pages to images and reading them visually — the equations are transcribed from the genuinely rendered math (Article 1's NMR relaxation equations, Article 3's Thomeer/Swanson equations, and Article 4's nonlinear-acoustics wave-mixing equations are verbatim). Articles 2 and 5 are a case study and a workflow paper. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_nmr_carbonate_porestructure` | NMR pore-structure of a complex carbonate: multi-exponential relaxation 1/T2 = 1/T2bulk + 1/T2surf + 1/T2diff (Eq. 1), diffusion relaxation rate 1/T2diff = D·γ²·g²·TE²/12 (Eq. 2), porosity correction φ_corr = φ + 0.3·Vol_largepore (Eq. 3); single-pore forward model (sphere S/V = 3/r), large-pore T2-cutoff (847 ms) partition, Timur-Coates / SDR permeability — reproduces the (900/200)² = 20.25 inter-tool diffusion ratio | Saidian, Jain & Milad, pp. 138–155 |
+| `article2_turbidite_rock_typing` | *Case study:* deepwater-turbidite rock typing — Winland-R35 regressions from core CT (Eq. 1) and from logs (Eq. 2), R35 pore-throat rock-type classifier (RT-1..RT-4), per-rock-type irreducible-saturation lookup, and the Waxman-Smits Co = (1/F*)(Cw + B·Qv) conductivity line | Angel Restrepo, Gómez-Moncada, Mora Sánchez & Bueno Silva, pp. 156–174 |
+| `article3_thomeer_nmr_partitioning` | Thomeer & NMR free-vs-bound partitioning: Thomeer hyperbola Shg = Bv·exp(−G/(logPc−logPd)) (Eq. 1), normalized porosity (Eq. 2), RQI/FZI (Eq. 3), Swanson permeability Ka = 3.8068·G^(−1.3334)·(Bv/Pd)² (Eq. 4) and its inversion for G (Eq. 5), Washburn pore-throat radius, and the NMR↔MICP calibration C = T2·Pc tying the 0.3-µm / 14-ms cutoffs | Gianotten, Rameil, Foyn, Kollien, Marre, Looyestijn, Zhang & Hebing, pp. 175–194 |
+| `article4_nonlinear_acoustics_mixing` | Noncollinear acoustic wave mixing: cubic nonlinear stress-strain (Eq. 1), nonlinearity parameter β (Eq. 2), convergence angle (Eq. 3) and scattering angle (Eq. 4), exact (Eqs. 5–8) and approximate (Eq. 9) scattering coefficients, and the frequency-ratio validity rule (Eq. 10) — reproduces Table 1's φ = γ = 47.5° at ω₂/ω₁ = 0.74 | Skelt, TenCate, Guyer, Johnson, Larmat, Le Bas, Nihei & Vu, pp. 195–209 |
+| `article5_nmr_fluid_contacts` | *Workflow paper:* canonical NMR relations the workflow relies on — full T2 relaxation (bulk + surface + diffusion), T1 relaxation, hydrogen-index porosity correction (~11% uplift), clay-bound/capillary/free T2-cutoff partition (3 ms, 60 ms), D-T2 fluid typing (gas/water/oil), and the √(stacks) station-stacking SNR gain | Kozlowski, Chakraborty, Jambunathan, Lowrey, Balliet, Engelman, Ånensen, Kotwicki & Johansen, pp. 210–226 |
+
+DOI pattern: `10.30632/PJV62N2-2021aN` (N = 1 … 5). The source PDF had no text layer, so equations were read from rendered pages; descriptive articles (2, 5) implement the quantitative relations the papers rely on. See `src2021_04/README.md`.
 
 ---
 
