@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2019_08/   Vol. 60 No. 4 (Aug 2019)  —  6 modules + test suite
 ├── src2019_10/   Vol. 60 No. 5 (Oct 2019)  — 10 modules + test suite
 ├── src2019_12/   Vol. 60 No. 6 (Dec 2019)  — 10 modules + test suite
 ├── src2020_02/   Vol. 61 No. 1 (Feb 2020)  —  6 modules + test suite
@@ -65,6 +66,23 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2019_08 — Vol. 60, No. 4 (August 2019)
+
+A regular issue of six papers spanning machine-learning well-log correlation, neural-network TOC from XRF data, the shale-gas compressibility factor at the core scale, an NMR wettability index, the effect of the aging protocol on relative-permeability measurements, and coupled smart-water-CO₂ flooding. This issue's source PDF (`Petrophysics_2019_08.pdf`, ~110 MB) is a scanned issue with no usable text layer (reading it returns empty text), so the article titles, authors, page ranges, and DOIs were obtained from the journal metadata (Crossref / table of contents) and the numbered formulas are faithful standard-form reconstructions of the well-established methods each paper's topic uses. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_ml_well_log_correlation` | ML assistive well-log correlation: cross-correlation and dynamic-time-warping alignment of offset wells, a DTW warping path mapping marker depths, and a logistic tie-confidence score — recovers a planted inter-well depth offset | Brazell, Bayeh, Ashby & Burton, pp. 469–479 |
+| `article2_toc_xrf_neural_network` | TOC from XRF via a neural network (redox-sensitive Mo/S/V vs detrital Si/Al/Ca), with Schmoker-density and Passey ΔlogR baselines — NN R ≈ 0.99 on synthetic data | Lawal, Mahmoud, Alade & Abdulraheem, pp. 480–493 |
+| `article3_shale_gas_z_factor` | Shale-gas compressibility factor Z: pseudo-reduced P/T, the Beggs-Brill explicit Z correlation, real-gas density ρ = PM/(ZRT), and a confinement shift of the critical properties (core-scale Z) — Z → 1 at low pressure | Tran & Sakhaee-Pour, pp. 494–506 |
+| `article4_nmr_wettability_index` | NMR wettability index WI = (Rw − Ro)/(Rw + Ro) from each phase's surface-relaxation rate 1/T2_surf = 1/T2_obs − 1/T2_bulk (+1 water-wet, −1 oil-wet, ~0 mixed) | Looyestijn, pp. 507–513 |
+| `article5_relperm_aging_highthroughput` | Aging effect on relative permeability: the Corey water/oil model with its crossover saturation, and an aging transform (water-wet → mixed-wet) that shifts the crossover to lower Sw and raises the water endpoint | Mascle, Youssef, Deschamps & Vizika, pp. 514–524 |
+| `article6_smart_water_co2_flooding` | Coupled smart-water-CO₂ flooding: Buckley-Leverett fractional flow, mobility ratio and displacement efficiency, a smart-water residual-oil reduction and a CO₂ viscosity reduction — the coupled recovery exceeds either method alone | Al-Saedi & Flori, pp. 525–535 |
+
+DOI pattern: `10.30632/PJV60N4-2019aN` (N = 1 … 6). The source PDF has no text layer (scanned), so titles/authors/DOIs are from the journal metadata and equations are standard-form reconstructions of each paper's method. See `src2019_08/README.md`.
 
 ---
 
