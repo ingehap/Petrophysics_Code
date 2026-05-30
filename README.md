@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2020_04/   Vol. 61 No. 2 (Apr 2020)  —  9 modules + test suite
 ├── src2020_06/   Vol. 61 No. 3 (Jun 2020)  —  5 modules + test suite
 ├── src2020_08/   Vol. 61 No. 4 (Aug 2020)  —  4 modules + test suite
 ├── src2020_10/   Vol. 61 No. 5 (Oct 2020)  —  7 modules + test suite
@@ -61,6 +62,26 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2020_04 — Vol. 61, No. 2 (April 2020)
+
+A hybrid issue — a **"Best of the SCA 2019 International Symposium"** special section (articles 1–6) plus regular submissions (articles 7–9) — spanning critical gas saturation by micro-CT, coupled NMR/ultrasonic core measurement, crushed-rock Klinkenberg permeability, a dielectric CEC proxy, multiscale wettability upscaling, Lattice-Boltzmann gas-condensate relative permeability, shale imbibition rel-perm/capillary pressure, spontaneous mixed-wet imbibition, and chemically induced formation damage. This issue's source PDF (`Petrophysics_2020_04.pdf`) has a text layer, so titles/authors/DOIs were read from the contents page and bodies; the machine extract captured the full bodies of articles 1–5 (plus article 6's first page) but truncated at page 206, so articles 7–9 (present only as TOC entries) are methodology proxies implementing the standard relations their titles describe, and the typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_critical_gas_saturation_microct` | Critical gas saturation as the 3D percolation threshold (random field thresholded by gas fraction → spanning-cluster onset) with a connectivity-based kr proxy — reproduces Sgc ≈ 0.2 | Berg, Gao, Georgiadis et al., pp. 133–150 |
+| `article2_coupled_nmr_ultrasonic` | Coupled NMR + ultrasonic: T1 recovery / T2 decay (Eqs. 1–2), Brownstein-Tarr surface relaxation 1/T2 = 1/T2bulk + ρs(S/V) + diffusion (Eq. 3), multiexponential T2 (Eq. 4), and Vp = √[(K+4µ/3)/ρ], Vs = √(µ/ρ) (Eqs. 5–6) | Connolly, Sarout, Dautriat, May & Johns, pp. 151–161 |
+| `article3_crushed_rock_klinkenberg` | Crushed-rock permeability: Klinkenberg k_app = k_l(1 + b/Pm) (Eq. 3) with 1/Pm extrapolation to liquid permeability, mean pressure (Eq. 4), and the He/N₂ slip-factor ratio (Eqs. 1–2) — reproduces the 2.9 ratio | Profice & Lenormand, pp. 162–178 |
+| `article4_cec_dielectric_proxy` | CEC from dielectric permittivity: RH-dependent piecewise-linear calibration CEC = S_RH·(ε′−2.5) + C (Eqs. 2–5) anchored at the pure-quartz point (ε′=2.5, CEC=0), three RH regimes, correction C ≈ 4 — fit R² > 0.98 | Stokes, Yang, Ezebuiro & Fischer, pp. 179–188 |
+| `article5_wettability_upscaling` | *No closed-form equations:* Young-Laplace drainage threshold radius, Wenzel roughness-corrected contact angle, and volume-weighted contact-angle upscaling from nanoscale to core | Rücker, Bartels, Bultreys et al., pp. 189–205 |
+| `article6_gas_condensate_lbm_relperm` | *Only first page in extract:* capillary number N_c = µv/σ (Eq. 1) plus the capillary-desaturation (rate-effect) gas rel-perm vs N_c and base Corey krg/kro curves the LBM study parameterizes | Schembre-McCabe, Kamath, Fager & Crouse, pp. 206–216 |
+| `article7_shale_imbibition_relperm_pc` | *Methodology proxy:* Brooks-Corey capillary pressure and wetting/gas relative permeability, with the injection-pressure effect modeled as rising imbibed-water saturation suppressing gas kr | Al-Ameri & Mazeel, pp. 218–229 |
+| `article8_spontaneous_imbibition_mixedwet` | *Methodology proxy:* Lucas-Washburn √t imbibition length, Young-Laplace driving pressure (positive water-wet, negative oil-wet), and net mixed-wet capillary force from pore-wettability fractions | Wang, He, Xiao, Wang & Ma, pp. 230–238 |
+| `article9_chemical_formation_damage_shale` | *Methodology proxy:* retained-permeability (damage) ratio, clay-swelling reduction k = k0(1−ε)ⁿ, Kozeny-Carman porosity-permeability sensitivity, and the fracture cubic law | Wick, Taneja, Gupta, Sondergeld & Rai, pp. 239–248 |
+
+DOI pattern: `10.30632/PJV61N2-2020aN` (N = 1 … 9). The source PDF has a text layer (titles/authors/DOIs are from the paper); equations are standard-form reconstructions and articles 7–9 are methodology proxies (their bodies were beyond the text-extract truncation). See `src2020_04/README.md`.
 
 ---
 
