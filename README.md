@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2022_10/   Vol. 63 No. 5 (Oct 2022)  —  5 modules + test suite
 ├── src2022_12/   Vol. 63 No. 6 (Dec 2022)  —  7 modules + test suite
 ├── src2023_02/   Vol. 64 No. 1 (Feb 2023)  —  9 modules + test suite
 ├── src2023_04/   Vol. 64 No. 2 (Apr 2023)  — 11 modules + test suite
@@ -46,6 +47,22 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2022_10 — Vol. 63, No. 5 (October 2022)
+
+Regular (non-themed) issue spanning rock mechanics, capillary pressure modelling, tight-rock permeability methodology, in-situ CT visualisation of mud-filtrate invasion, and acid-gas cement degradation. Five papers implemented; a sixth (Gao et al., "Coring Method for Dolomite Rocks With Well-Developed Joint Fissures Based on Permeability Reinforcement", DOI suffix presumed `a6`) is listed in the issue TOC but its body was not present in the source-PDF extract, so no module is included for it.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_nanoindentation` | Tutorial / review of nanoindentation for shale mechanics: Oliver-Pharr framework with hardness H = P_max / A (Eq. 1); unloading stiffness S = dP/dh (Eq. 2); ideal Berkovich tip-area function A = 24.5·h_c² (Eq. 3); reduced-to-Young's-modulus composite compliance 1/E_r = (1−ν_s²)/E_s + (1−ν_i²)/E_i with diamond E_i = 1141 GPa, ν_i = 0.07 (Eq. 4); Gupta et al. (2018) shear-modulus estimator G = 95.3·slope − 0.35 GPa (Eq. 5); log-creep fit h(t) − h₀ = b·log10(t/t₀) (Eqs. 9–10); mixed-mode fracture toughness K_c = α·√(E/H)·P_max / c^(3/2) (Eq. 11); 100-indent synthetic array reproduces the paper's Woodford-shale statistic E_s ≈ 31 ± 3.4 GPa | Sondergeld & Rai, pp. 576–590 |
+| `article2_shale_capillary_pressure` | Three-parameter Pc(Sw) model for shale that admits a non-zero entry pressure (unlike van Genuchten) and a non-plateau trend (unlike Brooks-Corey): Young-Laplace Pc = 4·γ·cos θ / d (Eq. 1); normalised saturation Sw* = (Sw − Swirr) / (1 − Swirr) (Eq. 4); Brooks-Corey Pc = pe·(Sw*)^(−1/λ) (Eq. 3); van Genuchten Pc = (1/α)·(Sw*^(−1/m) − 1)^(1/n) (Eq. 5); proposed form Pc = pe + α₁·((1 − Sw*) / Sw*)^α₂ (Eq. 6); MSE = Σ(Y_pred − Y_obs)² / N (Eq. 7); fits all three to a synthetic MICP dataset via SciPy nonlinear least squares with R² and MSE comparison | Alipour K., Kasha, Sakhaee-Pour, Sadooni & Al-Kuwari, pp. 591–603 |
+| `article3_stress_dependent_permeability` | Closed-form three-measurement steady-state inversion for tight-rock (k0, α, β): Darcy mass-flow integral (Eqs. 1–3); exponential closure k = k0·exp(−α·(σ_c − β·p_p)) (Eqs. 4–6); spatially varying k(x) along the plug (Eqs. 7–8); steady-state mass-flow / pressure relation (Eq. 9); Pair 1 (same pu, pd; two confining pressures) yields α from Q₁/Q₂ (Eqs. 10–15); Pair 2 (same σ_c, two different pp_mean values) yields αβ after correcting for the integrated (pu² − pd²) ratio (Eqs. 16–18); k0 follows from any single run. Reproduces the paper's carbonate-source-rock plug exactly: α ≈ 4.7e-4 /psi, β ≈ 0.83, k0 ≈ 100 nD | Zhang, Liu & Duncan, pp. 604–613 |
+| `article4_mud_filtrate_invasion_ct` | Pure-analytical analogue of the time-lapse micro-CT analysis pipeline the paper applies to four cores (Leopard sandstone, Nugget sandstone, Texas Cream Limestone, Vuggy Dolomite): capillary number N_ca = v·μ/σ and Bond number N_B = Δρ·g·R_pore²/σ; Brooks-Corey two-phase relative permeabilities; Leverett J(Sw) = Pc·√(k/φ) / (σ·cos θ); fractional flow f_w = (k_rw/μ_w) / (k_rw/μ_w + k_ro/μ_o); Welge-tangent Buckley-Leverett front saturation; Dewan-Chenevert mudcake-controlled invasion-front position x_front(t) = √(2·k_eff·ΔP / (μ_w·φ) · t); default parameters reproduce the paper's Leopard-sandstone N_ca ≈ 2e-5 / 7e-7 spurt-vs-late transition | Schroeder & Torres-Verdín, pp. 614–641 |
+| `article5_cement_acid_gas_corrosion` | Class-G oilwell-cement autoclave exposure to 12 % CO₂ + 5 ppm H₂S at 150 °C / 75 MPa for 7 / 14 / 30 days: labelled steady-state gas-Darcy permeability formula k = (2·Q·P₀·μ·L) / (A·(P₁² − P₂²)) (Eq. 1); diffusion-limited reaction-front depth x_f(t) = K·√t with a cylindrical-rim corrosion-fraction geometry; empirical exponential-in-time permeability growth k(t) = k_init · exp(B·t) fitted to the paper's three measurements (~200× rise from day 7 to day 30, matching the reported 3e-4 → 6.46e-2 mD trend); tensile-strength loss as a linear function of corrosion fraction reaching ~ 9.5 MPa at day 30 (paper reports ~ 9.8 MPa) | Zhou, Zeng, Sun, Zhou, Lei, Wan, Luo, Wu, Zhang & Xiao, pp. 642–651 |
+
+DOI pattern: `10.30632/PJV63N5-2022aN` (N = 1 … 5; a presumed a6 — Gao et al. coring method — is listed in the TOC but its body is not implemented)
 
 ---
 
