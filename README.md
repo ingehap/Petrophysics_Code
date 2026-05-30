@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2019_04/   Vol. 60 No. 2 (Apr 2019)  — 12 modules + test suite
 ├── src2019_06/   Vol. 60 No. 3 (Jun 2019)  —  9 modules + test suite
 ├── src2019_08/   Vol. 60 No. 4 (Aug 2019)  —  6 modules + test suite
 ├── src2019_10/   Vol. 60 No. 5 (Oct 2019)  — 10 modules + test suite
@@ -67,6 +68,29 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2019_04 — Vol. 60, No. 2 (April 2019)
+
+The "Best Papers of the 2018 SCA International Symposium" issue — two tutorials, seven Society-of-Core-Analysts papers, and three regular submissions — spanning organic-mudstone storage capacity, a resistivity-principles primer, trapped-oil capillary desaturation, image-segmentation uncertainty, NMR wettability, waterflood initialization, in-situ saturation monitoring, the intercept method for relative permeability, temperature-array core monitoring, invasion-zone log inversion, loading effects on gas relative permeability, and borehole acoustic reflection imaging. This issue's source PDF has a text layer, so titles/authors/DOIs were read from the contents page and bodies; the machine extract captured the two tutorials and articles a1–a5 fully but truncated after a5, so articles a6–a10 (present only as TOC entries) are methodology proxies of the standard methods their titles describe, and the typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_organic_mudstone_storage_part2_tutorial` | *Tutorial:* organic-mudstone storage capacity (Part 2) — kerogen volume from TOC, porosity partition (clay-bound/capillary/free), bulk volume hydrocarbon, and gas/oil-in-place | Newsham, Comisky & Chemali, pp. 181–207 |
+| `article2_resistivity_principles_tutorial` | *Tutorial:* resistivity primer — Archie formation factor, R0, resistivity index, and Sw equation, with empirical fitting of m (F-φ) and n (I-Sw) | Kennedy & Garcia, pp. 208–228 |
+| `article3_trapped_oil_capillary_desaturation` | Trapped oil during waterflooding: capillary number, the capillary desaturation curve Sor(Nc), the wettability-state shift of residual oil / critical Nc, and trapping efficiency | Berthet, Hebert, Barbouteau, Andriamananjaona & Rivenq, pp. 229–239 |
+| `article4_image_segmentation_uncertainty` | Image-segmentation uncertainty: porosity from a grayscale threshold, an Otsu threshold, the propagated porosity uncertainty from threshold uncertainty, and three-phase pore/clay/grain fractions | Howard, Lin & Zhang, pp. 240–254 |
+| `article5_nmr_wettability_review` | NMR wettability: surface relaxation 1/T2 = 1/T2bulk + ρ(S/V), effective relaxivity vs contact angle, and an Amott-style NMR wettability index between water-wet and oil-wet end states | Valori & Nicot, pp. 255–263 |
+| `article6_waterflood_init_wettability` | Waterflood initialization: Young-Laplace capillary pressure, primary-drainage Swi from a threshold Pc, and aging that alters the contact angle / Amott wettability toward oil-wet | Lin, Bijeljic, Krevor, Blunt, Rücker, Berg et al., pp. 264–272 |
+| `article7_issm_saturation_monitoring` | In-situ saturation monitoring: Beer-Lambert attenuation, water saturation from attenuation between dry/saturated calibrations, and a dual-energy two-fluid solve | Reed & Cense, pp. 273–282 |
+| `article8_intercept_method_relperm` | *Methodology proxy:* Darcy apparent kr, the rate-dependent capillary end effect, and the intercept extrapolation to 1/Q = 0 that recovers the end-effect-free relative permeability | Reed & Maas, pp. 283–296 |
+| `article9_temperature_array_monitoring` | *Methodology proxy:* 1D transient heat conduction, thermal diffusivity, the CFL stability number, and thermal front / hot-spot localization from a temperature array | Howard & Hester, pp. 297–305 |
+| `article10_invasion_zone_log_inversion` | *Methodology proxy:* Archie in flushed/virgin zones, a radial two-zone resistivity model vs depth of investigation, and a grid-search inversion recovering (Rt, Rxo, invasion radius) | Vandamme, Caroli & Gratton, pp. 306–325 |
+| `article11_loading_gas_relperm` | *Methodology proxy:* Biot effective stress, stress-dependent permeability k = k0·exp(−c·σ_eff), Klinkenberg gas slippage, and Corey gas relative permeability | Agostini, Egermann, Jeannin, Portier, Skoczylas & Wang, pp. 326–334 |
+| `article12_borehole_acoustic_stc_raytracing` | *Methodology proxy:* slowness-time-coherence picking, reflector azimuth from the azimuthal amplitude lobe, ray-traced reflector distance, and reflector dip from the depth moveout | Bennett, Donald, Ghadiry, Nassar, Kumar & Biswas, pp. 335–345 |
+
+DOI pattern: `10.30632/PJV60N2-2019aN` (N = 1 … 10) plus tutorials `…t1`, `…t2`. The text extract truncated after a5, so a6–a10 are methodology proxies; equations are standard-form reconstructions (glyphs dropped in extraction). See `src2019_04/README.md`.
 
 ---
 
