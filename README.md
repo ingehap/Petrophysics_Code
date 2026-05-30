@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2020_12/   Vol. 61 No. 6 (Dec 2020)  —  7 modules + test suite
 ├── src2021_02/   Vol. 62 No. 1 (Feb 2021)  —  9 modules + test suite
 ├── src2021_04/   Vol. 62 No. 2 (Apr 2021)  —  5 modules + test suite
 ├── src2021_06/   Vol. 62 No. 3 (Jun 2021)  —  6 modules + test suite
@@ -57,6 +58,24 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2020_12 — Vol. 61, No. 6 (December 2020)
+
+The **"Pulsed-Neutron Logging in the 2020s: Smarter, Faster, and Much More Powerful"** special issue on nuclear spectroscopy — a historical review followed by six papers spanning formation chlorine / water-salinity measurement, self-compensated pulsed-neutron spectroscopy, two multidetector saturation case studies (Malaysia, Indonesia), through-casing TOC and oil saturation from excess carbon (South Kuwait), and gas-pressure assessment through casing. Unlike the scanned issues, this issue's source PDF (`Petrophysics_2020_12.pdf`) has a text layer, so titles, authors, page ranges, DOIs, equation numbers, variable definitions, and many numeric constants were read directly from the paper bodies; the conversion dropped most typeset formula glyphs (keeping the equation numbers and prose), so the numbered formulas are faithful standard-form reconstructions from the preserved variables and constants — except Article 5's Eq. 3, whose text survived verbatim. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_nuclear_spectroscopy_history` | *Historical review (no equations):* the canonical nuclear-logging relations it surveys — macroscopic capture cross section Σ = ΣᵢNᵢσᵢ (capture units), thermal-neutron die-away Σ = 4550/τ, number density from bulk density, the carbon/oxygen ratio, and a K/U/Th spectral-gamma sum — reproduces the ~22 c.u. fresh-water sigma from H/O number densities | Pemper, pp. 523–548 |
+| `article2_formation_chlorine_salinity` | Formation chlorine → water salinity: yields-to-weights W = FY2W·S·Y (Eq. 6), chlorine yield split Y_Cl = Y_form + Y_bh (Eq. 1) with the CYDCL / Φ(env)=1/f borehole subtraction (Eqs. 4–9), DWCL → NaCl-salinity / BVW / Sw (Eqs. 11–14) via the 1.649 molar-mass ratio, and macroscopic sigma mixing / Σmax (Eqs. 19–20) — uses the paper's 567 c.u. per (g/cc) Cl, 22 c.u. fluid, 29.4 c.u. shale | Miles, Mossé & Grau, pp. 549–569 |
+| `article3_self_compensated_spectroscopy` | Self-compensated spectroscopy: yields-to-weights (Eq. 1), a FY2W predictor from raw measurements (rising with hole size, smaller far-detector inelastic FY2W), and the differential near-over-far dry-weight element that cancels a common borehole contribution (recovers formation Ca independent of cement Ca) | Zhou, Rose, Miles, Gendur, Wang & Sullivan, pp. 570–584 |
+| `article4_co_sigma_saturation_casestudy` | *Case study (no equations):* standard pulsed-neutron saturation — salinity-independent C/O-ratio oil saturation by water/oil-endpoint interpolation, sigma water saturation from the volumetric porosity balance, and a near/far multidetector gas indicator | Johare, Mohd Amin, Prasodjo, Afandi & Din, pp. 585–599 |
+| `article5_through_casing_toc_saturation` | Through-casing TOC & saturation: linear multimineral response (Eq. 1) solved by closure-constrained weighted least squares (Eq. 2), excess carbon XCarbon = CTot − (CMin + CMat) (Eq. 3, verbatim), and the calibration-free oil saturation So = ρb·Xc/(ρo·Fc·φe) (Eq. 4) | Bouchou, Abughneej, Ghioca, Alarcon & Mendez, pp. 600–609 |
+| `article6_pulsed_neutron_gas_pressure` | Gas pressure through casing: bulk gas sigma Σ = ρ_bulk·Σₑ(wₑσₑ) (Eq. 1, proportional to gas density) inverted through a real-gas density law ρ = PM/(zRT) — reproduces the case study's ~2,785 psi from the measured sigma | Cavalleri, Brouwer, Kodri, Rose & Brinks, pp. 610–622 |
+| `article7_sigma_gas_saturation_lowporosity` | Sigma gas saturation in low-porosity shaly rock: the clean (Eq. 1) and shaly (Eq. 2) sigma porosity-balance saturations using the paper's endpoints (Σ_ma 7.5, Σ_sh 27, Σ_w 24, Σ_g 3 c.u.; φ ≈ 12 p.u.), plus the low-porosity sensitivity caveat |dΣ/dSg| = φ(Σ_w − Σ_g) | Wijaya, Aulianagara, Guo, Naibaho, Asriwan & Amirudin, pp. 623–632 |
+
+DOI pattern: `10.30632/PJV61N6-2020aN` (N = 1 … 7). The source PDF has a text layer, so titles/authors/DOIs/constants are from the paper bodies; most equations are standard-form reconstructions (the typeset glyphs were dropped in extraction), with Article 5's Eq. 3 verbatim. See `src2020_12/README.md`.
 
 ---
 
