@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2021_12/   Vol. 62 No. 6 (Dec 2021)  — 10 modules + test suite
 ├── src2022_02/   Vol. 63 No. 1 (Feb 2022)  —  6 modules + test suite
 ├── src2022_04/   Vol. 63 No. 2 (Apr 2022)  —  7 modules + test suite
 ├── src2022_06/   Vol. 63 No. 3 (Jun 2022)  — 11 modules + test suite
@@ -51,6 +52,27 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2021_12 — Vol. 62, No. 6 (December 2021)
+
+The **"Best Papers of the 2021 Symposium"** issue — ten papers spanning data quality for petrophysical machine learning, variational-autoencoder mineral quantification from spectroscopy, the SEAT eigenvector dip-analysis technique, deep-learning sedimentary-geometry interpretation from borehole images, density-tool breakout detection behind slotted liner, NanoTag cuttings depth correlation, acoustic multistring isolation evaluation for P&A, overbalanced-drilling core damage and correction, integrated tight-gas characterization, and resistivity-based rock physics for mudrock saturation. Articles 9–10 were available only as table-of-contents entries plus the editor's narrative in the source PDF (the extract truncated partway through Article 8), so their modules are methodology proxies; and throughout the issue the typeset equations were image-rendered and did not survive text extraction, so the numbered formulas are faithful standard-form reconstructions of the methods the prose describes. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article01_data_quality_ml` | Data-quality considerations for petrophysical ML: z-score (Eq. 1) and IQR/box-plot (Eq. 2) outlier detection; simple (Eq. 3) and reference-percentile (Eq. 4, Shier 2004) normalization; precision/recall (Eqs. 5–6); MAE/RMSE (Eqs. 7–8); Gaussian-noise injection (Eqs. 9–10); Pearson r (Eq. 11); sentinel→NaN cleaning — reproduces the Table 3 confusion matrix (precision 0.704, recall 0.909) | McDonald, pp. 585–613 |
+| `article02_vae_mineral_spectroscopy` | Variational-autoencoder mineral quantification from spectroscopy elements: forward model e = A·m with a stoichiometric element→mineral sensitivity matrix; heteroscedastic Gaussian negative-log-likelihood cost (y−ŷ)²/(2σ²) + ln σ summed over outputs and samples (Eqs. 1–2); non-negative, closure-constrained simplex inversion as the encoder analogue; element reconstruction as decoder QC; matrix grain density | Craddock, Srivastava, Datir, Rose, Zhou, Mosse & Venkataramanan, pp. 614–629 |
+| `article03_seat_dip_eigenvectors` | Statistical Eigenvector Analysis Technique (SEAT) for borehole-image dips: dip→pole-to-bedding unit vectors (R1); orientation/scatter matrix T = (1/N)Σ n·nᵀ (R3); eigen-decomposition with the minimum-eigenvalue eigenvector as the slump-fold symmetry axis (R4); Woodcock K/C (R5) and Vollmer P/G/R (R6) fabric indices; eigenvector→trend/plunge (R8); the paper's tilt-invariance claim (axis trend stable under <40° structural tilt) | Ruehlicke, Uhrin, Veselovsky & Schlaich, pp. 630–635 |
+| `article04_borehole_image_cnn_sedimentary` | Deep-learning sedimentary-geometry classification from borehole images: sinusoid model of a planar bed on an unrolled image z(φ) = z0 − r·tan(δ)·cos(φ−φ0) (R9) with a least-squares fit recovering apparent dip and dip azimuth; softmax (R5), categorical cross-entropy (R6), accuracy (R7); the four-level Rubin (1987) bedform hierarchy — CNN represented by its analytic geometric core | Lefranc, Bayraktar, Kristensen, Driss, Le Nir, Marza & Kherroubi, pp. 636–650 |
+| `article05_density_breakout_behind_casing` | Openhole-equivalent caliper behind slotted liner from the density tool: radial response J = (ρ_app−ρ_fm)/(ρ_ann−ρ_fm) (Eq. 1); tanh radial-response model J(h) = tanh(λh) (Eq. 2); casing-corrected ρ_cc (Eq. 3) and casing+nominal-cement-corrected ρ_CH (Eq. 4); annulus-thickness inversion exact + Taylor (Eq. 5) using the quoted C_SS3 = 0.52, C_LS3 = 1.78; completion/fluid classification by annulus density | Mosse, Pell & Neville, pp. 651–669 |
+| `article06_nanotags_cuttings_depth` | NanoTag cuttings depth correlation: volumetric lag-time algebra — upward t_l = v_a/f (Eq. 1) and downward t_d = v_d/f (Eq. 3) lag; conventional t_g = t_c−t_l (Eq. 2) and NanoTag t_g = t+t_d (Eq. 4) generation times; annular capacity from hole/pipe diameters; depth error = ROP·Δt — reproduces t_d ≈ 17 min and a ~2-ft error per 2-min slip at 60 ft/hr | Poitzsch, Zhu, Antoniv, Aljabri & Marsala, pp. 670–680 |
+| `article07_multistring_isolation_acoustic` | Acoustic multistring isolation evaluation for P&A (proprietary inversion → physics demonstrator): impedance Z = ρ·v (R1); reflection coefficient R = (Z₂−Z₁)/(Z₂+Z₁) (R2); transmitted energy 1−R² (R3) reproducing the ~95% energy loss through one tubing layer; casing thickness resonance f_n = n·v/(2d) (R4); cement/liquid/gas impedance classification; operational isolation-qualification logic (continuous + cumulative footage) | Zhang, Mueller, Bryce, Brockway & Iskander, pp. 681–693 |
+| `article08_overbalanced_drilling_correction` | Overbalanced-drilling core/log damage and correction (case study → standard relations): overbalance ΔP = P_mud−P_pore (INF-1); mud hydrostatic P = 0.0981·ρ_sg·TVD (INF-2); additive porosity correction (INF-4) reproducing the 33% NMR undercall; k–φ semilog transform/fit (INF-7); Klinkenberg correction (INF-8); fraction-of-original overburden correction (INF-6); damage flag φ > 12 p.u. AND k > 100 md | Mohammadlou, Reppert, Del Negro & Jones, pp. 694–710 |
+| `article09_tight_gas_neuquen_integrated` | *Methodology proxy* for the integrated tight-gas characterization paper (body not in available PDF extract): clay volume (linear + Larionov older-rocks); density porosity; Archie and Simandoux saturation; Winland r35 dominant pore-throat radius; RQI / normalized porosity / flow-zone-indicator hydraulic units; overpressure pore-pressure gradient (up to ~50% above hydrostatic) | Carrizo, Santiago & Saldungaray, pp. 711–736 |
+| `article10_resistivity_rockphysics_wolfcamp` | *Methodology proxy* for the resistivity rock-physics paper (body not in available PDF extract): Archie baseline; Waxman-Smits dual-conductivity saturation for organic-rich mudrock; core-free inversion for the cementation exponent m from a 100%-water zone; hydrocarbon-pore-volume per acre showing the Archie-vs-new reserve improvement (~33% / +70,000 bbl/acre reported) | Dash & Heidari, pp. 737–751 |
+
+DOI pattern: `10.30632/PJV62N6-2021aN` (N = 1 … 10). Equations are standard-form reconstructions (typeset glyphs were image-rendered in the source PDF); Articles 9–10 are methodology proxies guided by the editor's narrative. See `src2021_12/README.md`.
 
 ---
 
