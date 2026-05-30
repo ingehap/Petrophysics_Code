@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2018_06/   Vol. 59 No. 3 (Jun 2018)  —  9 modules + test suite
 ├── src2018_10/   Vol. 59 No. 5 (Oct 2018)  — 11 modules + test suite
 ├── src2018_12/   Vol. 59 No. 6 (Dec 2018)  — 12 modules + test suite
 ├── src2019_02/   Vol. 60 No. 1 (Feb 2019)  — 11 modules + test suite
@@ -71,6 +72,26 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2018_06 — Vol. 59, No. 3 (June 2018)
+
+The third **Shaly Sand** tutorial followed by five formation-evaluation articles and three regular submissions, spanning the Waxman-Smits shaly-sand model in conductivity space, kerogen-inclusive matrix-adjusted shale porosity, an NMR spontaneous-imbibition wettability index for shales, an image-based clay-network resistivity/saturation model, a wideband (mHz–GHz) differential-effective-medium permittivity model, a physics-based dielectric model for continuous CEC logging, carbonate permeability heterogeneity, saturation-height capillary-pressure stress corrections, and NMR relaxation of magnetic nanoparticles. This issue's source PDF (~40 MB) has a text layer, so titles/authors/DOIs were read from the contents page and bodies; the machine extract captured the tutorial and articles a1–a5 fully but truncated after a5 (journal p372), so articles a6–a8 (present only as TOC entries) are methodology proxies with inferred DOI suffixes, and the typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_shaly_sand_tutorial_part3` | *Tutorial:* shaly sands (No. 3 of 3) — the Waxman-Smits model in conductivity space (C0 = (Cw + B·Qv)/F\*), F\* = φ^−m\*, the saturation conductivity, and a Thomas-Stieber laminated-shale porosity | Thomas, pp. 276–287 |
+| `article2_matrix_adjusted_shale_porosity` | Organic-shale total porosity: density porosity, a kerogen-inclusive matrix density by reciprocal mass mixing, the electron→bulk density conversion (verbatim), and kerogen from TOC | Craddock et al., pp. 288–307 |
+| `article3_nmr_wettability_index_shales` | Shale wettability: the NMR spontaneous-imbibition wettability index, its two-sequence average, the TOC (5 wt%) and clay (10/65 wt%) percolation thresholds, and a spectral-GR synthesis | Gupta, Jernigen, Curtis, Rai & Sondergeld, pp. 308–317 |
+| `article4_clay_network_resistivity_saturation` | Image-based clay-network resistivity: directional tortuosity, the percolating clay-network conductivity, a Maxwell-Garnett inclusion mixing, the summed total conductivity, and Archie Sw | Garcia, Jagadisan, Rostami & Heidari, pp. 318–333 |
+| `article5_wideband_em_dem_permittivity` | Wideband (mHz–GHz) EM: complex permittivity with the low-frequency conductivity term, spheroid depolarization factors, a Bruggeman effective-medium mixing, and the Archie F = φ^−m limit | Seleznev et al., pp. 334–353 |
+| `article6_dielectric_cec_shaly_sand` | Continuous CEC logging: the CEC↔surface-conductivity relation (Stern-layer fraction, Nernst-Einstein mobility), whole-rock CEC, and the complex permittivity; reduces to the uncharged case at CEC = 0 | Freed et al., pp. 354–372 |
+| `article7_carbonate_permeability_heterogeneity` | *Methodology proxy:* carbonate permeability heterogeneity — arithmetic (Kh) vs harmonic (Kv) averaging, the Kv/Kh ratio, and the Dykstra-Parsons and Lorenz coefficients | Dernaika et al., pp. 373–396 |
+| `article8_saturation_height_stress_correction` | *Methodology proxy:* the Leverett J-function, the saturation-height function, a net-stress permeability/porosity correction that rescales Pc, and a Brooks-Corey curve | Hulea, pp. 397–406 |
+| `article9_nmr_fe3o4_nanoparticle_relaxation` | *Methodology proxy:* the surface (fast-diffusion) relaxation from S/V, the concentration-linear relaxivity 1/T = 1/T0 + r·C, the fitted relaxivity, and the r2/r1 ratio | Zhu, Ko, Daigle & Zhang, pp. 407–414 |
+
+DOI pattern: `10.30632/PJV59N3-2018aN` (N = 1 … 8) plus the tutorial `…t1` (prefix `PJV59N3`, capital N, hyphen separator). The extract truncated after a5, so a6–a8 are methodology proxies with inferred DOI suffixes; equations are standard-form reconstructions. See `src2018_06/README.md`.
 
 ---
 
