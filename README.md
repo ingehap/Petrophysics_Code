@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2019_02/   Vol. 60 No. 1 (Feb 2019)  — 11 modules + test suite
 ├── src2019_04/   Vol. 60 No. 2 (Apr 2019)  — 12 modules + test suite
 ├── src2019_06/   Vol. 60 No. 3 (Jun 2019)  —  9 modules + test suite
 ├── src2019_08/   Vol. 60 No. 4 (Aug 2019)  —  6 modules + test suite
@@ -68,6 +69,28 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2019_02 — Vol. 60, No. 1 (February 2019)
+
+The volume-opening issue: an organic-mudstone storage-capacity tutorial, four "Best of the 2018 Symposium, Part 2" papers, a three-piece Depth Control section, and three regular submissions, spanning storage capacity, carbonate net-pay cutoffs, 2D NMR T1-T2 shale maps, in-situ saturation from core types, composite-cement well integrity, depth-measurement fundamentals, depth control in the Groningen discovery, driller's-depth correction, azimuthal-GR geosteering, hydraulic-fracturing stress tests, and neutron-generator vs Am-Be sources. This issue's source PDF has a text layer (DOI suffix printed as `PJV60N1Y2019…`, with `Y` for the year), so titles/authors/DOIs were read from the contents page and bodies; the machine extract captured the tutorial and articles a1–a8 fully but truncated after a8, so articles a9–a10 (present only as TOC entries) are methodology proxies, and the typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_organic_mudstone_storage_part1_tutorial` | *Tutorial:* organic-mudstone storage capacity (Part 1) — BVW / movable-fluid index, free + Langmuir adsorbed gas, and Buckley-Leverett fractional flow / water cut linking storage to producibility | Newsham, Comisky & Chemali, pp. 4–16 |
+| `article2_carbonate_netpay_cutoffs` | Carbonate net-pay cutoffs: Winland R35 and a Lucia rock-fabric permeability transform, a permeability→porosity cutoff inversion, and net-to-gross from integrated φ/Vsh/Sw cutoffs | Skalinski, Mallan, Edwards, Sun, Toumelin, Kelly, Wushur & Sullivan, pp. 17–36 |
+| `article3_2d_nmr_t1t2_shale` | 2D NMR T1-T2 maps of shale: the T1/T2 ratio and fluid typing, the temperature dependence of T2 (~T/viscosity), and the frequency (field) dependence of the T1/T2 ratio | Kausik, Freed, Fellah, Feng, Ling & Simpson, pp. 37–49 |
+| `article4_insitu_saturation_core_comparison` | In-situ saturation by core type: Dean-Stark Sw/So, fluid-loss factors (pressurized > whole > sidewall), mass-balance reconstruction, and a saturation-closure check | Blount, McMullen, Durand & Driskill, pp. 50–60 |
+| `article5_composite_cement_well_integrity` | Composite cement / well integrity: acoustic impedance Z = ρ·v, the reflection coefficient, annulus classification (gas/liquid/cement) by impedance, and a cement bond index | Elshahawi, Huang, Pollock & Veedu, pp. 61–69 |
+| `article6_depth_love_hate_essay` | *Essay:* wireline cable stretch — elastic dL = T·L/(E·A) and thermal dL = α·L·ΔT — the true-depth correction, and depth uncertainty | Theys, pp. 71–72 |
+| `article7_groningen_depth_control` | *Technical note:* a marker depth-tie shift, the net-pay-thickness error from a depth mismatch, the resulting gas-in-place error, and the datum correction | Fokkema & Visser, pp. 73–75 |
+| `article8_drillers_depth_correction` | Driller's-depth correction: drillstring stretch under buoyed own-weight (∝ L²) and hook load, thermal elongation, and way-point interpolation of the correction | Bolt, pp. 76–91 |
+| `article9_azimuthal_gr_geosteering` | Azimuthal-GR geosteering: sector averaging, the up-down GR contrast as a boundary-proximity indicator, the distance-to-boundary from the contrast decay, and apparent dip from the sinusoidal image | Wang, Stockhausen, Wyatt & Gulick, pp. 93–112 |
+| `article10_hydraulic_fracturing_stress_test` | *Methodology proxy:* a mini-frac G-function pressure decline, the closure-pressure pick, the minimum-stress gradient, and a quantitative-risk probability of a successful test | Bérard, Chugunov, Desroches & Prioul, pp. 113–135 |
+| `article11_neutron_generator_vs_ambe` | *Methodology proxy:* the Am-Be vs D-T source comparison, the energy/porosity-dependent neutron slowing-down length, porosity sensitivity, and counting-statistics precision | Badruzzaman, Schmidt & Antolak, pp. 136–170 |
+
+DOI pattern: `10.30632/PJV60N1Y2019aN` (N = 1 … 10) plus the tutorial `…t1` (the `Y` replaces the usual hyphen that year). The extract truncated after a8, so a9–a10 are methodology proxies; equations are standard-form reconstructions (glyphs dropped in extraction). See `src2019_02/README.md`.
 
 ---
 
