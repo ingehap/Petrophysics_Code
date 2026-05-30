@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2020_08/   Vol. 61 No. 4 (Aug 2020)  —  4 modules + test suite
 ├── src2020_10/   Vol. 61 No. 5 (Oct 2020)  —  7 modules + test suite
 ├── src2020_12/   Vol. 61 No. 6 (Dec 2020)  —  7 modules + test suite
 ├── src2021_02/   Vol. 62 No. 1 (Feb 2021)  —  9 modules + test suite
@@ -59,6 +60,21 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2020_08 — Vol. 61, No. 4 (August 2020)
+
+A compact regular issue of four papers spanning the flexural attenuation technique for cased-hole annulus evaluation, the effect of clay minerals and pore-water conductivity on the saturation exponent of clay-bearing sandstones (digital rock), petrophysical-property improvement of tight reservoirs using thermochemical fluids, and knowledge-driven hierarchical clustering for specific-facies detection. This issue's source PDF (`Petrophysics_2020_08.pdf`) has a text layer, so titles, authors, page ranges, DOIs, equation numbers, variable definitions, and many numeric constants were read directly from the paper bodies; the conversion dropped most typeset formula glyphs (only Article 3's Eq. 5 and reaction survived verbatim), so the numbered formulas are faithful standard-form reconstructions from the preserved variables and the standard textbook expressions each paper cites. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_flexural_attenuation_casing` | Flexural attenuation for cased-hole annulus evaluation: plane-wave phase shift / phase velocity (Eqs. 1–2), Snell optimal incidence sin θ = vf/vφ (Eq. 3, reproduces 30° from 1325 / 2650 m/s), amplitude-ratio attenuation 20·log₁₀(A₁/A₂) and coefficient α (Eq. 4), TIE annulus thickness x_a = s_a·cos θ (Eqs. 5–7), and a cosine eccentricity fit (Eq. 8) | Sirevaag, Johansen, Larsen & Holt, pp. 334–351 |
+| `article2_saturation_exponent_clay_digitalrock` | Saturation exponent of clay-bearing sandstone: Archie F = a·φ⁻ᵐ and I = Sw⁻ⁿ (Eqs. 1–2), Waxman-Smits C₀ = (Cw + B·Qv)/F* (Eqs. 3–4), cation mobility B(Cw) (Eq. 5), Qv from CEC (Eq. 6), and a partial-saturation conductivity whose log I–log Sw slope gives the apparent n — shows clay lowers n (clean 2 → ~1.0 for high-CEC clay) and high Cw dilutes the effect | Fan, Pan, Guo & Lei, pp. 352–362 |
+| `article3_thermochemical_stimulation` | Thermochemical stimulation of tight rocks: the exothermic NaNO₂ + NH₄Cl reaction and its heat (ΔH = 369 kJ/mol), improvement ratios, dynamic moduli E/ν/K/µ from Vp,Vs,ρ (Eqs. 1–2, 6–7), Young-Laplace (Eq. 3) and centrifuge (Eq. 4) capillary pressures, and the scratch energy Ft = E·A (Eq. 5) — reproduces porosity +80% / perm +1359.9% (limestone) and UCS 38.2 → 17.1 MPa | Mustafa, Mahmoud, Abdulraheem, Tariq & Al-Nakhli, pp. 363–382 |
+| `article4_kdhc_facies_clustering` | Knowledge-driven hierarchical clustering for facies: neutron-density separation ND (Eq. 1), the expert baffle rule (ZDN > 2.55 and MLR > 15), cluster-area / indicator / purity (P = A_E4/A_C) / decision (D = K/N, stop at 1) metrics (Eqs. 2–6) and the F1 score (Eq. 7), with a k-means + silhouette splitter proxy — reproduces the ~0.98 reservoir F1 | Emelyanova, Peyaud, Dance & Pervukhina, pp. 383–400 |
+
+DOI pattern: `10.30632/PJV61N4-2020aN` (N = 1 … 4). The source PDF has a text layer, so titles/authors/DOIs/constants are from the paper bodies; most equations are standard-form reconstructions (the typeset glyphs were dropped in extraction). See `src2020_08/README.md`.
 
 ---
 
