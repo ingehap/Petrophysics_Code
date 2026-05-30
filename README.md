@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2021_06/   Vol. 62 No. 3 (Jun 2021)  —  6 modules + test suite
 ├── src2021_08/   Vol. 62 No. 4 (Aug 2021)  —  8 modules + test suite
 ├── src2021_10/   Vol. 62 No. 5 (Oct 2021)  —  9 modules + test suite
 ├── src2021_12/   Vol. 62 No. 6 (Dec 2021)  — 10 modules + test suite
@@ -54,6 +55,23 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2021_06 — Vol. 62, No. 3 (June 2021)
+
+A regular issue opening with an invited tutorial on sidewall coring, followed by five papers spanning NMR restricted-diffusion pore characterization, AI prediction of acoustic velocities while drilling, machine-learning sonic-shear processing, the first LWD co-located-antenna anisotropy/dip tool, and proactive geosteering with 2D structural analysis. This issue's source PDF uses broken embedded-font encodings (machine text extraction yields multi-font cipher garbage), so the modules were built by rendering the PDF pages to images and reading them visually — meaning the equations are transcribed from the genuinely rendered math (Article 2's NMR Padé equations and Article 4's VTI/ANNIE stiffness relations are verbatim). Articles 1, 5, 6 are descriptive (tutorial / instrument-introduction / case study). See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_sidewall_coring_tutorial` | *Tutorial (descriptive)* on a century of sidewall coring: the Fig. 14 rotary-coring tool table as structured data; cylindrical core-plug volume V = π(d/2)²L; per-run recovered volume; tool selection by pressure/temperature rating — reproduces worked plug volumes (MaxCOR 4.42 in³, XL-Rock 6.19 in³) | Jackson, pp. 230–243 |
+| `article2_nmr_restricted_diffusion` | Pore size / tortuosity / permeability from NMR restricted diffusion: diffusion length L_D = √(D0·t) (Eq. 9), cylindrical S/V = 4/d (Eq. 10), Padé interpolation bridging short-time Mitra and long-time tortuosity limits (Eq. 11), modified Carman-Kozeny k = (φ/32)d²/(BTR²τ) (Eq. 3), Timur-Coates & SDR permeability (Eqs. 1–2), electrical/diffusive tortuosity (Eqs. 4–7) — grid-search round-trips pore size and tortuosity | Wang, Singer, Liu, Chen, Hirasaki & Vinegar, pp. 244–264 |
+| `article3_ai_acoustic_velocity` | Real-time Vp/Vs prediction from surface drilling parameters: Spearman rank correlation (Eq. 1), AAPE (Eq. 2), correlation coefficient R (Eq. 3), min-max normalization, the nine Appendix-1 empirical Vs-from-Vp correlations (Pickett/Carroll/Castagna/Brocher), and a numpy linear-regression surrogate for the ANN/RF predictor | Alsaihati & Elkatatny, pp. 265–281 |
+| `article4_ml_sonic_shear` | Machine-learning-enabled dipole-flexural shear processing: ANNIE VTI stiffness relations (Eqs. 1–7) incl. Poisson ratio (Eq. 6) and Thomsen γ (Eq. 7), RMAD validation metric (Eq. 9) and inversion misfit (Eq. 10), plus a surrogate flexural-dispersion forward model and DTS inversion standing in for the NN proxy / mode-search solver | Liang & Lei, pp. 282–295 |
+| `article5_lwd_colocated_antenna` | *Instrument introduction:* tilted-antenna magnetic-moment projection onto tool axes; 3×3 magnetic-tensor coupling V = m_R·H·m_T; standard propagation-resistivity attenuation / phase-shift relations (skin depth) with apparent-resistivity inversion (the EM forward response itself is from the cited LWD-resistivity literature) | Bittar, Wu, Ma, Pan, Fan, Griffing & Lozinsky, pp. 296–310 |
+| `article6_geosteering_2d_structural` | *Case study:* borehole-geometry relations the workflow relies on — MD→TVD, boundary TVD from a distance-to-boundary pick, apparent↔true dip, structural dip from two picks, least-squares fault-plane fit to dip/azimuth (recovers the Table 1 OBc 44°/23° fault), and net-pay (reservoir-contact) accounting along a lateral | Antonov, Kushnir, Martakov, Pazos, Small, Tropin, Maraj, Itter, Nelson & Rabinovich, pp. 311–330 |
+
+DOI pattern: `10.30632/PJV62N3-2021aN` (N = 1 … 5), plus the tutorial `10.30632/PJV62N3-2021t1`. Equations were read from rendered PDF pages (the source PDF's font encoding is broken); descriptive articles (1, 5, 6) implement the quantitative relations the papers rely on. See `src2021_06/README.md`.
 
 ---
 
