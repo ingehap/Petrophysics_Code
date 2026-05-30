@@ -23,6 +23,7 @@ replacement for the original papers.
 ```
 Petrophysics_Code/
 ├── src2018_06/   Vol. 59 No. 3 (Jun 2018)  —  9 modules + test suite
+├── src2018_08/   Vol. 59 No. 4 (Aug 2018)  —  9 modules + test suite
 ├── src2018_10/   Vol. 59 No. 5 (Oct 2018)  — 11 modules + test suite
 ├── src2018_12/   Vol. 59 No. 6 (Dec 2018)  — 12 modules + test suite
 ├── src2019_02/   Vol. 60 No. 1 (Feb 2019)  — 11 modules + test suite
@@ -92,6 +93,23 @@ The third **Shaly Sand** tutorial followed by five formation-evaluation articles
 | `article9_nmr_fe3o4_nanoparticle_relaxation` | *Methodology proxy:* the surface (fast-diffusion) relaxation from S/V, the concentration-linear relaxivity 1/T = 1/T0 + r·C, the fitted relaxivity, and the r2/r1 ratio | Zhu, Ko, Daigle & Zhang, pp. 407–414 |
 
 DOI pattern: `10.30632/PJV59N3-2018aN` (N = 1 … 8) plus the tutorial `…t1` (prefix `PJV59N3`, capital N, hyphen separator). The extract truncated after a5, so a6–a8 are methodology proxies with inferred DOI suffixes; equations are standard-form reconstructions. See `src2018_06/README.md`.
+## src2018_08 — Vol. 59, No. 4 (August 2018)
+
+The **"Special Issue on Flow Diagnostics"**: a capillary-pressure tutorial, six flow-diagnostics articles, and two regular submissions, spanning capillary pressure from first principles, an acoustic leak-rate model, a nonlinear multiphase production-logging holdup correction, an ultracompact ultrasonic flow-array tool, downhole sand-production rate from piezoelectric grain counting, distributed fiber (DTS/DAS) flow monitoring, two decades of ACG field surveillance, flow-regime-corrected crushed-rock shale permeability (the "λ plot"), and induced-polarization chargeability of rocks with metallic particles. This issue's source PDF (~45 MB) has a text layer, so titles/authors/DOIs were read from the contents page and bodies; the bodies of all nine items were captured, but the typeset display-equation glyphs were dropped in extraction (only bare equation numbers survived for most articles), so equations are faithful standard-form reconstructions — except Revil et al., whose equations largely survived inline. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_capillary_pressure_tutorial_part1` | *Tutorial:* capillary pressure (Part 1) — the Young-Laplace pressure jump, the capillary-rise force balance (h = 2σcosθ/(ρgr)), Pc as the difference of the two hydrostatic columns, and Pc from the pore-throat radius | Thomas, pp. 421–427 |
+| `article2_acoustic_flowrate_model` | Acoustic leak-rate model: the Bernoulli liquid-leak rate, the choked-gas critical ratio and mass rate, the leak Mach number, the monopole-dipole-quadrupole amplitude scaling, and a calibrated amplitude→rate inversion | Seshadri, Freund, Jha, Venna, Walters & Jagannathan, pp. 429–438 |
+| `article3_multiphase_pl_holdup_correction` | Array-PL holdup: the linear water holdup from array resistance, the paper's nonlinear velocity-dependent correction (Eq. 7 verbatim), and cross-section integration into per-phase flow rates | Manzar, Sun & Chace, pp. 439–456 |
+| `article4_ultracompact_flow_array_doppler` | *Methodology proxy:* the ultrasonic Doppler flow-speed relation, the digital Doppler speed from the spectral-peak position, conductivity-probe holdup, and the area-weighted array profile mean | Abbassi, Tavernier, Donzier, Gysen, Gysen, Chen, Zeid & Cedillo, pp. 457–488 |
+| `article5_downhole_sand_production_rate` | Piezoelectric sand counting: single-grain volume, the 0.4572 m vertical-resolution correction, the volumetric sand rate (VSPR), and the mass sand rate (SPR) | Swarnanto et al., pp. 489–495 |
+| `article6_distributed_sensing_flow_monitoring` | DTS/DAS flow allocation: the thermal-mixing energy balance and two-zone flow split, the Joule-Thomson dT = JTC·dP, the gauge-length max detectable frequency (c/2GL), and sound-speed fluid typing | Naldrett, Cerrahoglu & Mahue, pp. 496–510 |
+| `article7_acg_downhole_surveillance` | *Methodology proxy:* a field-history paper with no equations — a productivity index, a moving-average transient-event detector, and the distributed-sensing data-rate budget its PDHG/DFO workflow uses | Sheydayev, Atakishiyev, Zett, Schoepf & Thiruvenkatanathan, pp. 511–527 |
+| `article8_crushedrock_flowregime_permeability` | Flow-regime crushed-rock permeability: Darcy flow, the gas mean free path, the Knudsen number and regime, the Klinkenberg correction, and the "λ plot" extrapolated to a 1-nm mean free path (k1λ) with an effective pore diameter | Royer, Hobbs & Bonar, pp. 529–543 |
+| `article9_chargeability_metallic_particles` | Induced-polarization chargeability: Seigel's chargeability from the conductivity dispersion, the Stern-layer surface conductivity, the background chargeability and the universal R = λ/B, and a mixture chargeability with a metallic-particle term | Revil, Tartrat, Abdulsamad, Ghorbani & Coperey, pp. 544–553 |
+
+DOI pattern: `10.30632/PJV59V4-2018aN` (N = 1 … 8) plus the tutorial `…t1` — note the prefix is `PJV59V4` (letter **V**), not `N4`, as printed in the source. Equations are standard-form reconstructions (Revil et al. survived inline). See `src2018_08/README.md`.
 
 ---
 
