@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2020_10/   Vol. 61 No. 5 (Oct 2020)  —  7 modules + test suite
 ├── src2020_12/   Vol. 61 No. 6 (Dec 2020)  —  7 modules + test suite
 ├── src2021_02/   Vol. 62 No. 1 (Feb 2021)  —  9 modules + test suite
 ├── src2021_04/   Vol. 62 No. 2 (Apr 2021)  —  5 modules + test suite
@@ -58,6 +59,24 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2020_10 — Vol. 61, No. 5 (October 2020)
+
+A regular issue of seven papers spanning nanoindentation of shale cuttings and its upscaling to core, classification of shale N₂-adsorption-isotherm curves by pore structure, automatic wellbore cave-in detection by unsupervised clustering, a petrophysically consistent Archie's equation for heterogeneous (vuggy) carbonates, wettability and water-blockage in organic-rich tight rocks, neural-network prediction of sonic transit times from drilling parameters, and an integrated multiphysics rock-classification workflow. This issue's source PDF (`Petrophysics_2020_10.pdf`) has a text layer, so titles, authors, page ranges, DOIs, equation numbers, variable definitions, and many numeric constants were read directly from the paper bodies; the conversion dropped most typeset formula glyphs (keeping the equation numbers and prose), so the numbered formulas are faithful standard-form reconstructions from the preserved variables and the standard textbook expressions each paper cites. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_nanoindentation_shale` | Nanoindentation of shale cuttings: Oliver-Pharr hardness H = Pmax/Ac and indentation modulus M = (√π/2)·S/(α·√Ac) (Eqs. 1a–1b, Berkovich α = 1.03), Young's modulus Es = M·(1−ν²) (Eq. 2), ideal Berkovich area Ac = 24.5·hc², and the Johnson plastic-zone radius (Eq. 4) bounding indent spacing — reproduces the ~20 GPa basis and < 6% Poisson sensitivity | Esatyana, Sakhaee-Pour, Sadooni & Al-Kuwari, pp. 404–416 |
+| `article2_adsorption_isotherm_classification` | *Classification (no equations):* BET linearization for monolayer volume / surface area, the IUPAC five-type classifier, micro/meso/macro pore-size classes, a sorting class from the PSD spread, and the paper's new three-parameter (shape × size × sorting) scheme giving 27 curve types | Tian, Chen, Yan, Deng & He, pp. 417–433 |
+| `article3_cavein_clustering_detection` | Wellbore cave-in detection: rolling coefficient of variation of bulk density (Eq. 5) and caliper rugosity (Eq. 1) as features, with the TICC good/bad-hole clustering (Eqs. 2–4) represented by a Gaussian k-means proxy + temporal smoothing — recovers a planted cave-in zone with > 80% recall, < 10% false flags | Sen, Ong, Kainkaryam & Sharma, pp. 434–449 |
+| `article4_archie_carbonate_consistent` | Consistent Archie for vuggy carbonates: Archie / R0 / resistivity index (Eqs. 1a–1c), effective cementation exponent from F (Eq. 6), and a symmetric-Bruggeman homogenization (Eqs. 4–5) — shows m varies with vug fraction (separate vugs elevate m above 2) and the vuggy resistivity index rises with an effective n well below 2 (near unity) | Ramamoorthy, Ramakrishnan, Dasgupta & Raina, pp. 450–472 |
+| `article5_wettability_water_blockage` | Wettability & water blockage: Young-Laplace capillary pressure and Washburn pore-throat radius, the water-wet / oil-wet / mixed pore-type fractions from spontaneous-imbibition volumes (Eqs. 1–3), and the trapped-water saturation with the ~1,500 psi threshold to restore oil continuity within a 7,000 psi step-pressurization | Mukherjee, Dang, Rai & Sondergeld, pp. 473–481 |
+| `article6_sonic_transit_drilling_nn` | Sonic transit time from drilling parameters: a compact single-hidden-layer tanh ANN predicting Δt from six surface parameters (WOB, RPM, ROP, torque, SPP, GPM) scored by R and AAPE, then dynamic Poisson's ratio and Young's modulus from Vp, Vs, ρ (Eqs. 1–2) — reaches R ≈ 0.99 / AAPE ≈ 1.3% (paper: R ≈ 0.94 / AAPE ≈ 1–1.9%) | Gowida & Elkatatny, pp. 482–494 |
+| `article7_multiphysics_rock_classification` | Multiphysics rock classification: mean gray level (Eq. 1), GLCM contrast & energy (Eqs. 2–3), the experimental variogram for window selection (Eq. 5), the silhouette coefficient (Eq. 6), and k-means classification with the permeability cost function (Eq. 7) whose convergence picks the optimum class count (matching the three formations) | Gonzalez, Kanyan, Heidari & Lopez, pp. 495–518 |
+
+DOI pattern: `10.30632/PJV61N5-2020aN` (N = 1 … 7). The source PDF has a text layer, so titles/authors/DOIs/constants are from the paper bodies; most equations are standard-form reconstructions (the typeset glyphs were dropped in extraction). See `src2020_10/README.md`.
 
 ---
 
