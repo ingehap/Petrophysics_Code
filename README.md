@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2021_08/   Vol. 62 No. 4 (Aug 2021)  —  8 modules + test suite
 ├── src2021_10/   Vol. 62 No. 5 (Oct 2021)  —  9 modules + test suite
 ├── src2021_12/   Vol. 62 No. 6 (Dec 2021)  — 10 modules + test suite
 ├── src2022_02/   Vol. 63 No. 1 (Feb 2022)  —  6 modules + test suite
@@ -53,6 +54,25 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2021_08 — Vol. 62, No. 4 (August 2021)
+
+A regular issue opening with an invited tutorial on thinly bedded formations, followed by seven papers spanning deep-Q-learning depth matching, NMR fluid substitution, borehole-sonic dispersion analysis, a machine-learning synthetic-sonic contest, an oil-based-mud resistivity imager, an acoustic volcanic-rock saturation model, and the capillary-pressure / resistivity-index relationship in tight sandstones. Throughout the issue the typeset equations were image-rendered and did not survive text extraction, so the numbered formulas are faithful standard-form reconstructions of the methods the prose describes; the deep-learning / proprietary methods (articles 2, 4, 5) are represented by compact numpy implementations of the same underlying method. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_thinly_bedded_petrophysics` | Tutorial on laminated reservoirs: parallel (horizontal) conductivity 1/Rh = Σ(v_i/R_i) (Eq. 2) and series (vertical) resistivity Rv = Σ(v_i·R_i) (Eq. 3); anisotropy λ = √(Rv/Rh); Moran-Gianzero apparent resistivity vs relative dip (Eq. 1); sand-resistivity inversion from Rh vs Rv (series route robust to shale-volume error); Thomeer capillary-pressure curve (Eq. 4) — reproduces the worked Rh→1.82 / Rv=5.5 / Rss=10 ohm-m | Aldred, pp. 335–352 |
+| `article2_depth_matching_deep_q` | Well-log depth matching as an MDP solved with Q-learning: Bellman update Q(s,a) ← Q + α(r + γ·maxQ′ − Q); ε-greedy policy; shift-action space with a stop action; reward driving the agent to the match point — the paper's CNN Rainbow-DQN is replaced by a compact tabular Q-learner (γ=0.99) | Bittar, Wang, Wu & Chen, pp. 353–361 |
+| `article3_nmr_fluid_substitution` | Reconstructing Sw=1 NMR T2 distributions from partially-saturated ones: surface relaxation 1/T2 = 1/T2bulk + ρ·(S/V); T2→pore-radius r = Fs·ρ·T2; BVI/BVM split at the 33-ms cutoff; porosity-conserving fluid substitution that re-amplifies the movable-water peak by 1/Sw_eff | Li, Kesserwan, Jin & Ma, pp. 362–378 |
+| `article4_sonic_dispersion_dpsm` | Multimode borehole-sonic dispersion via a modified differential-phase semblance: frequency-slowness phase-coherence semblance over a receiver array (phase back-propagation exp(i·2πf·s·z)); group delay T(f) = −(1/2π)dφ/df; slowness extraction — recovers a known slowness from a synthetic array | Wang, Coates & Zhao, pp. 379–392 |
+| `article5_synthetic_sonic_ml_contest` | SPWLA 2020 synthetic-sonic ML contest: pooled DTC+DTS RMSE scoring metric (Eq. 1, benchmark 17.93), per-log RMSE and R²; z-score / min-max normalization; log-resistivity transform; numpy linear-regression baseline (five contest models summarized in the README) | Yu, Xu, Misra, Li, Ashby et al., pp. 393–406 |
+| `article6_obm_resistivity_imager` | High-fidelity oil-based-mud resistivity imager: parallel-RC element values R = kb·ρ, C = ε·ε₀/kb (Eq. 1); complex button impedance Z = R/(1+jωRC) (Eq. 2); apparent impedivity ξ = Z/kb with low-ρ limit Re(ξ)≈ρ (Eqs. 3–4); capacitive oil-mud term; DC-conductivity / dielectric-loss decoupling σ = σ_DC + ω·ε″·ε₀ (Eq. 6) — reproduces dielectric rollover and ~−90° mud phase | Guner, Fouda, Ewe, Torres & Barrett, pp. 407–421 |
+| `article7_volcanic_saturation_gassmann` | Acoustic (not electrical) volcanic-rock saturation model: Gassmann equation (Eq. 1); Wood-Lindsay (Reuss) / Domenico (Voigt) / Brie fluid moduli (Eqs. 2–4); White patchy modulus (Eq. 5); Gassmann-Brie-Patchy blend (Eq. 6); Vp from (K, μ, ρ) — confirms patchy is the upper velocity bound, uniform the lower, converging at Sw = 0 and 1 | Pan, Zhou, Guo, Si & Lin, pp. 422–433 |
+| `article8_capillary_resistivity_index` | Capillary pressure vs resistivity index in tight sandstone: Archie index I = Sw^(−n) and formation factor F = φ^(−m) (Eqs. 1–2); Waxman-Smits clay-corrected index (Eq. 5); Li & Williams power-law Pc = Pe·I^β (Eq. 9) and Szabo linear (Eq. 6) models; Toledo fractal Pc = Pew·Sw*^(−1/λ), λ=3−D (Eq. 18); Washburn throat radius; β(k) and b(k) regressions | Xiao, Yang, Li, Yang, Bernabé, Zhao, Li & Ren, pp. 434–446 |
+
+DOI pattern: `10.30632/PJV62N4-2021aN` (N = 1 … 7), plus the tutorial `10.30632/PJV62N4-2021t1`. Equations are standard-form reconstructions (typeset glyphs were image-rendered in the source PDF). See `src2021_08/README.md`.
 
 ---
 
