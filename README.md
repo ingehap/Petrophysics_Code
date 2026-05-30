@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2021_10/   Vol. 62 No. 5 (Oct 2021)  —  9 modules + test suite
 ├── src2021_12/   Vol. 62 No. 6 (Dec 2021)  — 10 modules + test suite
 ├── src2022_02/   Vol. 63 No. 1 (Feb 2022)  —  6 modules + test suite
 ├── src2022_04/   Vol. 63 No. 2 (Apr 2022)  —  7 modules + test suite
@@ -52,6 +53,26 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2021_10 — Vol. 62, No. 5 (October 2021)
+
+The special issue on **"Applications of 3D Printing and Synthetic Rocks in Petrophysics, Rock Physics, and Rock Mechanics"** — nine papers spanning binder-saturation control of 3D-printed sandstone porosity, image-processing petrophysics education, original-size carbonate pore replication, 3D-printed mudrock micromodels, fractal characterization of digital rocks, pore-volume compressibility of unconsolidated sands, fluid effects on the elastic properties of printed anisotropic rock, joint-roughness shear behavior, and near-wellbore perforation fracturing. Article 9 was only partly present in the source PDF (truncated mid-results; an experimental study with no equations), so its module is a methodology proxy; and throughout the issue the typeset equations were image-rendered and did not survive text extraction, so the numbered formulas are faithful standard-form reconstructions of the methods the prose describes. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_binder_saturation_porosity` | Binder-saturation control of 3D-printed sandstone porosity: printed cylinder volume V = π(d/2)²h (Eq. 2); binder volume from burnout; binder volume fraction f_b = V_binder/V_total (Eq. 4); binder saturation level S = f_b/void (Eq. 5); theoretical porosity trend φ = φ₀(1−S) — reproduces 36/34/32% porosity at 10/15/20% saturation | Hodder, Craplewe, Ishutov & Chalaturnyk, pp. 450–462 |
+| `article2_image_processing_petrophysics` | Image-processing petrophysics education: porosity as pore-pixel fraction; phase saturation; irreducible/residual saturation; displacement efficiency E_D = (S_oi−S_or)/S_oi (Eq. 1); equivalent grain radius r = √(A/π); contact-angle wettability rule — reproduces φ = 27.01%, S_wir = 0.332, S_or = 0.226, E_D ≈ 66% | Alyafei, Al Musleh, Bautista, Idris & Seers, pp. 463–476 |
+| `article3_carbonate_pore_replication` | Original-size carbonate pore replication: pore-size scaling d_model = S·d_original (1:1 vs prior 5×); equivalent spherical pore diameter d_eq = (6V/π)^(1/3); cylinder bulk volume; scaffolding print-time speedup (technical note — no published equations) | Ishutov, Hodder, Chalaturnyk & Zambrano-Narvaez, pp. 477–485 |
+| `article4_3dprint_mudrock_micromodel` | 3D-printed mudrock micromodels: Washburn pore-throat diameter D = −4γcos(θ)/P (Eq. 1) matching the paper's anchors (a few psi → tens of µm; 33,000 psi → single-digit nm); Boyle's-law grain volume; porosity φ = (V_bulk−V_grain)/V_bulk; firing dimensional/mass loss | Hasiuk & Harding, pp. 486–499 |
+| `article5_fractal_digital_rock` | Fractal characterization of digital rocks: box-counting fractal dimension log N(r) = D·log(1/r)+c (Eq. 3, validated on a Sierpinski carpet → log8/log3 = 1.893); permeability power laws K(φ)/K(D)/K(Su) (Eqs. 10–12); Archie formation factor F = φ^(−m) and m inversion (Eq. 13); gliding-box lacunarity (Eq. 5) | Zhao, Luo, Li, Wu, Mao & Ostadhassan, pp. 500–515 |
+| `article6_pore_volume_compressibility` | Pore-volume compressibility of unconsolidated sands: uniaxial compaction coefficient Cm = (1/L)(dL/dσ_a) (Eq. 1); pore-volume compressibility Cp = Cm/φ (Eq. 2); Trask sorting coefficient So = √(GS25/GS75) (Eq. 3); a peaked Cm-vs-effective-stress demonstrator (Regions A/B/C) | Hathon, Myers & Arya, pp. 516–536 |
+| `article7_3dprint_anisotropic_elastic` | Fluid effects on 3D-printed anisotropic rock elasticity: saturated density ρ = ρ_m(1−φ)+ρ_f·φ (Eq. 1); velocity from traveltime; isotropic moduli K/G/E/ν; Thomsen ε/γ anisotropy; Gassmann fluid substitution; Vp/Vs and impedance — reproduces G = 0.39 / K = 2.65 GPa / ν = 0.43 and air ε ≈ 0.26 | Dande, Stewart & Dyaur, pp. 537–552 |
+| `article8_joint_roughness_shear` | Joint-roughness shear behavior of 3D-printed samples: Z2 RMS profile slope; Tse & Cruden (1979) JRC = 32.2+32.47·log10(Z2); Barton-Bandis peak shear strength τ = σ_n·tan(φ_b + JRC·log10(JCS/σ_n)); Mohr-Coulomb; secant shear stiffness — reproduces the τ-vs-JRC and τ-vs-normal-stress trends | Fereshtenejad, Kim & Song, pp. 553–563 |
+| `article9_perforation_fracture_morphology` | *Methodology proxy* for the near-wellbore perforation-fracturing paper (body truncated in available PDF extract; experimental study with no equations): perforation-mode classification (spiral/directional/fixed-plane/interlaced); three-microfracture-type taxonomy; standard near-wellbore Kirsch hoop stress and tensile breakdown pressure P_b = 3σ_h−σ_H−P0+T | Wang, Li, Xu, Jia & Zhang, pp. 564–580 |
+
+DOI pattern: `10.30632/PJV62N5-2021aN` (N = 1 … 9). Equations are standard-form reconstructions (typeset glyphs were image-rendered in the source PDF); Article 9 is a methodology proxy. See `src2021_10/README.md`.
 
 ---
 
