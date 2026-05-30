@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2018_04/   Vol. 59 No. 2 (Apr 2018)  — 10 modules + test suite
 ├── src2018_06/   Vol. 59 No. 3 (Jun 2018)  —  9 modules + test suite
 ├── src2018_08/   Vol. 59 No. 4 (Aug 2018)  —  9 modules + test suite
 ├── src2018_10/   Vol. 59 No. 5 (Oct 2018)  — 11 modules + test suite
@@ -76,6 +77,24 @@ Petrophysics_Code/
 
 ---
 
+## src2018_04 — Vol. 59, No. 2 (April 2018)
+
+The second **Shaly Sand** tutorial followed by six formation-evaluation articles and three regular submissions, spanning why clay perturbs the porosity logs, silt in low-resistivity low-contrast (LRLC) pay and Thomas-Stieber thin-bed analysis, NMR pore coupling in clay-coated sandstones, simultaneous neutron + X-ray 3D imaging of organic matter and fractures, shale total porosity that eliminates gas saturation by combining conventional and elemental logs, dielectric matrix-permittivity calibration (CRIM/Complex-Domain Analysis), Bakken dielectric-dispersion inversion, 2D directional-resistivity reservoir imaging, downhole relative permeability, and probabilistic-neural-network lithofacies identification. This issue's source PDF (~36 MB) has a text layer, so titles/authors/DOIs were read from the contents page and bodies; the machine extract captured the tutorial and articles a1–a6 fully but truncated after a6 (the a7 DOI header was captured without its body, and a8–a9 were absent), so articles a7–a9 are methodology proxies (a8–a9 DOI suffixes inferred), and the typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_shaly_sand_tutorial_part2` | *Tutorial:* shaly sands (No. 2 of 3) — the neutron-porosity overstatement in shale (φ_N = φ_w + Vclay·HI_clay), 1:1-vs-2:1 clay hydrogen indices, the spectral GR, and the Vsh ≠ Vclay caution | Thomas, pp. 113–117 |
+| `article2_silt_lrlc_thomas_stieber` | Silt in LRLC pay: the dispersed/laminated/structural shale-distribution porosities, total porosity, the Thomas-Stieber sand-lamina porosity, and the Rv/Rh anisotropy discriminator | Belevich & Bal, pp. 118–135 |
+| `article3_nmr_pore_coupling` | NMR pore coupling: the fast-diffusion surface relaxation (1/T2 = ρ2·S/V), the multiexponential decay, the field-gradient diffusion relaxation, and pore S/V from T2 | Jácomo et al., pp. 136–152 |
+| `article4_neutron_xray_imaging` | Simultaneous neutron + X-ray imaging: Lambert-Beer attenuation, the cross-section-weighted attenuation coefficient, optical density, and orthogonal-contrast voxel segmentation | Chiang et al., pp. 153–161 |
+| `article5_shale_total_porosity_elemental` | Shale total porosity: organic-matter volume from TOC and a 5-component density+neutron response solved as a 2×2 system that eliminates Sh, recovering φ and Sh | Zhu et al., pp. 162–184 |
+| `article6_dielectric_matrix_crim_cda` | Dielectric matrix calibration: the CRIM matrix permittivity from mineralogy (kerogen included), the CRIM mixing law, the simplified-CRIM inversion, and the matrix sensitivity motivating CDA | Wang et al., pp. 185–200 |
+| `article7_bakken_dielectric_dispersion` | Bakken dielectric dispersion: the Lichtenecker-Rother power-law mixing with the homogeneity index α (CRI at α=0.5), the complex water permittivity, and the Sw inversion | Han & Misra, pp. 201–217 |
+| `article8_2d_directional_resistivity_imaging` | *Methodology proxy:* deep directional resistivity — a DOI-weighted two-bed apparent resistivity, the distance-to-boundary inversion, the azimuthal geosignal, and 2D image assembly | Thiel, Bower & Omeragic, pp. 218–233 |
+| `article9_downhole_relative_permeability` | *Methodology proxy:* downhole relative permeability — the Corey water/oil relative permeabilities, the water fractional flow, and the end-point mobility ratio | Hadibeik et al., pp. 234–244 |
+| `article10_pnn_lithofacies` | *Methodology proxy:* lithofacies identification — a Specht probabilistic neural network (Gaussian Parzen densities, Bayes decision) with leave-one-out smoothing selection | Gu, Bao & Rui, pp. 245–267 |
+
+DOI pattern: `10.30632/PJV59N2-2018aN` (N = 1 … 9) plus the tutorial `…t1` (prefix `PJV59N2`, capital N, hyphen separator). The extract truncated after a6, so a7–a9 are methodology proxies (a8–a9 DOI suffixes inferred); equations are standard-form reconstructions. See `src2018_04/README.md`.
 ## src2018_06 — Vol. 59, No. 3 (June 2018)
 
 The third **Shaly Sand** tutorial followed by five formation-evaluation articles and three regular submissions, spanning the Waxman-Smits shaly-sand model in conductivity space, kerogen-inclusive matrix-adjusted shale porosity, an NMR spontaneous-imbibition wettability index for shales, an image-based clay-network resistivity/saturation model, a wideband (mHz–GHz) differential-effective-medium permittivity model, a physics-based dielectric model for continuous CEC logging, carbonate permeability heterogeneity, saturation-height capillary-pressure stress corrections, and NMR relaxation of magnetic nanoparticles. This issue's source PDF (~40 MB) has a text layer, so titles/authors/DOIs were read from the contents page and bodies; the machine extract captured the tutorial and articles a1–a5 fully but truncated after a5 (journal p372), so articles a6–a8 (present only as TOC entries) are methodology proxies with inferred DOI suffixes, and the typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). See the per-folder README for details.
