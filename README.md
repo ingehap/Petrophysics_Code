@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2021_02/   Vol. 62 No. 1 (Feb 2021)  —  9 modules + test suite
 ├── src2021_04/   Vol. 62 No. 2 (Apr 2021)  —  5 modules + test suite
 ├── src2021_06/   Vol. 62 No. 3 (Jun 2021)  —  6 modules + test suite
 ├── src2021_08/   Vol. 62 No. 4 (Aug 2021)  —  8 modules + test suite
@@ -56,6 +57,26 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2021_02 — Vol. 62, No. 1 (February 2021)
+
+A regular issue opening with an invited tutorial on extracting net pay from mudlogs, followed by eight papers spanning downhole-fluid-analysis lateral gradients and reservoir mixing over geologic time, weak bedding planes in the Marcellus Shale, fracture-fill identification with dielectric imaging in oil-based mud, formation-tester sampling of CO₂ and other reactive components, an integrated NMR/resistivity/pressure carbonate case study, high-resolution dual-ultrasonic LWD slowness and imaging, multiwell electromagnetic 3D inversion of sand injectites, and a dual neural network for permeability with uncertainty. This issue's source PDF (`Petrophysics_2021_02.pdf`) has no usable text layer (reading it returns empty text), so the article titles, authors, page ranges, and DOIs are taken verbatim from the official SPWLA issue table of contents and the numbered formulas are faithful standard-form reconstructions of the well-established methods each paper applies. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_mudlog_net_pay_tutorial` | *Tutorial:* net pay from mudlogs — gas normalization to rock volume GN = G·Q/(ROP·A), the Haworth wetness/balance/character ratios with their productivity bands, the Pixler light-component ratios, and an integrated gas/porosity/Vsh/Sw cutoff scheme summing net pay and net-to-gross | Malik, Hanson & Clinch, pp. 4–15 |
+| `article2_dfa_lateral_gradients_mixing` | DFA fluid gradients & geologic-time mixing: the Flory-Huggins-Zuo gravity term OD(z₂)/OD(z₁) = exp[v_a·g·(ρ_a−ρ_f)·Δz/RT] giving the equilibrium asphaltene gradient, a 1D diffusion model (erfc step front and the H²/(π²D) homogenization time), and an equilibrium-vs-disequilibrium connectivity diagnosis | Chen, Kristensen, Johansen, Achourov, Betancourt & Mullins, pp. 16–30 |
+| `article3_marcellus_weak_bedding_planes` | Weak bedding planes: Jaeger's single-plane-of-weakness slip strength, intact Mohr-Coulomb strength, their combination into the U-shaped strength-vs-bedding-angle curve with the minimum at β = 45° + φ_w/2, and a mud-weight floor that suppresses bedding-parallel shear (the mitigation strategy) | Kowan, Schanken & Jacobi, pp. 31–44 |
+| `article4_obm_dielectric_fracture_fill` | Fracture fill from dielectric imaging in OBM: the CRIM permittivity mixing law √ε = Σφ_i√ε_i, complex permittivity with the σ/(ωε₀) conduction term, the loss tangent flagging conductive fill, a thin-gap button admittance, and a classifier separating open (oil/mud), calcite-cemented, and conductive (clay/brine) fills | Schlicht, Zhang, Lüling, Graham, Cournot & Sadownyk, pp. 45–64 |
+| `article5_formation_tester_co2_sampling` | *Short operational paper:* CO₂/reactive-component sampling proxies — the power-law (V^−5/12) cleanup of OBM contamination, CO₂ phase identification against the critical point (31 °C / 73.8 bar), Henry's-law CO₂ solubility in brine with a Sechenov salting-out factor, and a mass-balance correction recovering the in-situ CO₂ fraction | Piazza, Vieira, Sacorague, Jones, Dai, Pearl & Aguiar, pp. 65–72 |
+| `article6_nmr_resistivity_pressure_carbonate` | *Case study:* Archie Sw and formation factor, Timur-Coates and SDR NMR permeability, the Buckles bulk volume water, fluid density from a pressure gradient ρ = (dP/dz)/g, and a fluid contact recovered from two intersecting pressure-gradient lines (round-trips a planted OWC to < 1 m) | Li, Drinkwater, Whittlesey & Condon, pp. 73–88 |
+| `article7_lwd_dual_ultrasonic_slowness` | Dual-ultrasonic LWD: slowness-time-coherence (semblance) processing over a receiver array with slowness picking (recovers a planted 80 µs/ft headwave), and acoustic impedance Z = ρv with the normal-incidence reflection coefficient R = (Z₂−Z₁)/(Z₂+Z₁) for pulse-echo imaging | Blyth, Sakiyama, Hori, Yamamoto, Nakajima, Fahim Ud Din, Haecker & Kittridge, pp. 89–108 |
+| `article8_injectite_em_3d_inversion` | Multiwell EM 3D inversion of injectites: the EM skin depth δ = 503·√(ρ/f), a straight-path cross-well sensitivity operator, and a Tikhonov (smoothness-regularized) least-squares inversion m = (GᵀG + λLᵀL)⁻¹Gᵀd recovering a resistive injectite from a crossing horizontal+vertical fan survey | Clegg, Eriksen, Best, Tollefsen, Kowicki & Marchant, pp. 109–121 |
+| `article9_dual_nn_permeability_uncertainty` | Dual neural network for permeability + uncertainty: a compact two-head MLP (shared tanh hidden layer; mean + log-variance heads) trained with the heteroscedastic Gaussian NLL L = ½·mean[(y−μ)²e^−s + s], predicting log-permeability and a calibrated uncertainty that grows in less-informative low-porosity rock | Kausik, Prado, Gkortsas, Venkataramanan, Datir & Johansen, pp. 122–134 |
+
+DOI pattern: `10.30632/PJV62N1-2021aN` (N = 1 … 8), plus the tutorial `10.30632/PJV62N1-2021t1`. The source PDF has no text layer, so titles/authors/DOIs are from the official SPWLA table of contents and equations are standard-form reconstructions. See `src2021_02/README.md`.
 
 ---
 
