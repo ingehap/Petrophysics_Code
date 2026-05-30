@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2019_10/   Vol. 60 No. 5 (Oct 2019)  — 10 modules + test suite
 ├── src2019_12/   Vol. 60 No. 6 (Dec 2019)  — 10 modules + test suite
 ├── src2020_02/   Vol. 61 No. 1 (Feb 2020)  —  6 modules + test suite
 ├── src2020_04/   Vol. 61 No. 2 (Apr 2020)  —  9 modules + test suite
@@ -64,6 +65,27 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2019_10 — Vol. 60, No. 5 (October 2019)
+
+The "Best of the 2019 SPWLA Symposium" issue (articles 1–7) plus regular submissions (articles 8–10), spanning thermal-maturity-adjusted log interpretation, free/adsorbed gas quantification, machine-learning depth matching, net-sand estimation from borehole images, an in-situ "log-soak-log" imbibition experiment, time-lapse micro-CT of mud invasion, a through-casing dual-source acoustic tool, unconventional rock typing, ANN bulk-density prediction, and a through-casing transient-EM conductivity measurement. This issue's source PDF (`Petrophysics_2019_10.pdf`, 15 MB) has a text layer, so titles/authors/DOIs were read from the contents page and bodies; the machine extract captured articles 1–7 fully, truncated inside Article 8 (mid-references), and had articles 9–10 as TOC entries only, so articles 9–10 are methodology proxies (Article 8 uses the standard Amaefule HFU/Winland forms it cites), and the typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_tmali_organic_shales` | Thermal-maturity-adjusted log interpretation: molar fractions (Eq. 1), electron density ρ_e = 2ρ·ΣZ/ΣA (Eq. 3) and apparent density ρ_a = 1.0704ρ_e − 0.1883 (Eq. 4), kerogen H-index (Eq. 6), TOC→kerogen volume (Eq. 10), bulk-density/density-porosity (Eqs. 11–12), and maturity-adjusted kerogen density vs Ro | Craddock, Miles, Lewis & Pomerantz, pp. 540–559 |
+| `article2_free_adsorbed_gas_shale` | Free & adsorbed gas: free gas G_free = φ(1−Sw)/Bg, Langmuir Gc = ρ_b·VL·P/(PL+P), Gibbs adsorbed-phase-density correction, adsorbed-monolayer porosity correction, and total gas-in-place | Ansari, Merletti, Gramin & Armitage, pp. 560–584 |
+| `article3_ml_depth_matching` | *No equations:* the cross-correlation alignment lag, dynamic time warping, and Pearson correlation the ML depth-matcher is built on — recovers a planted depth shift | Le, Liang, Zimmermann, Zeroug & Heliot, pp. 585–595 |
+| `article4_netsand_borehole_image_nn` | *No equations:* a neural network regressing sand fraction from borehole-image brightness-histogram features, beating a fixed cutoff that the OBM nonlinearity defeats (RMSE < cutoff, R > 0.9) | Gong, Keele, Toumelin & Clinch, pp. 596–604 |
+| `article5_log_soak_log_imbibition` | *Field experiment:* Sigma water saturation, time-lapse saturation change, Sigma sensitivity per unit Sw, and detectability of a 5% change in a 2-p.u. rock with a 220-c.u. brine | Seth, Villegas, Iskakov, Playton, Lindsell, Cordova, Turmanbekova & Wang, pp. 605–619 |
+| `article6_microct_invasion_mudcake` | *Imaging method:* the Beer-Lambert attenuation law, CT porosity/saturation from voxel attenuation, and √t mudcake growth with an advancing invasion front | Schroeder & Torres-Verdín, pp. 620–630 |
+| `article7_through_casing_acoustic_dualsource` | Dual-source through-casing acoustic: the casing-cancellation delay τ = L/v_casing, destructive-interference removal of the casing wave, and STC semblance picking — recovers a ~3700 m/s formation slowness masked by the casing wave | Tang, Su & Zhuang, pp. 631–640 |
+| `article8_unconventional_rock_typing` | *Extract truncated mid-references:* the Amaefule RQI = 0.0314√(k/φ), normalized porosity, FZI = RQI/φ_z, and Winland R35, plus HFU assignment by clustering log(FZI) | Perry & Hayes, pp. 641–659 |
+| `article9_ann_bulk_density_drilling` | *Methodology proxy:* a feed-forward tanh ANN predicting formation bulk density from six drilling parameters, scored by R / RMSE / AAPE | Gowida, Elkatatny & Abdulraheem, pp. 660–674 |
+| `article10_through_casing_tem_conductivity` | *Methodology proxy:* late-time TEM decay V(t) ~ σ^{3/2}·t^{−5/2}, the EM diffusion depth, and recovery of formation conductivity from the late-time response | Sheng, Shen, Shen, Zhu & Zang, pp. 675–691 |
+
+DOI pattern: `10.30632/PJV60N5-2019aN` (N = 1 … 10). The source PDF has a text layer (titles/authors/DOIs are from the paper); equations are standard-form reconstructions, articles 9–10 are methodology proxies, and Article 8 uses the standard HFU/Winland forms it cites. See `src2019_10/README.md`.
 
 ---
 
