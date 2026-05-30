@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2022_02/   Vol. 63 No. 1 (Feb 2022)  —  6 modules + test suite
 ├── src2022_04/   Vol. 63 No. 2 (Apr 2022)  —  7 modules + test suite
 ├── src2022_06/   Vol. 63 No. 3 (Jun 2022)  — 11 modules + test suite
 ├── src2022_08/   Vol. 63 No. 4 (Aug 2022)  —  5 modules + test suite
@@ -50,6 +51,23 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2022_02 — Vol. 63, No. 1 (February 2022)
+
+Regular issue of six papers spanning a new in-situ Raman composition-logging tool for EOR / CO₂ / hydrogen-storage monitoring, automated well-log depth matching (1D CNN vs. classic cross correlation), an automated log-data-analytics workflow with cross-correlation and dynamic-time-warping depth matching, ultrasonic (pulse-echo + pitch-catch) logging of creeping shale, sand-injectite reservoir evaluation via a modified Thomas-Stieber method, and core-based closed-retort quantification in the Delaware Basin Bone Spring / Wolfcamp. In the source-PDF extract the typeset equations were image-rendered and did not survive text extraction, so the numbered formulas in these modules are faithful standard-form reconstructions of the methods described in the paper bodies (Article 6 publishes no equations and is implemented with standard petrophysical proxies); see the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_raman_logging_eor_gas_storage` | Downhole in-situ Raman composition-logging tool: linear Raman forward model X = G·M·ρ (Eq. 3); ideal-gas number density ρ_m = f_m·P/(k_B·T) (Eq. 4); Lorentz-Lorenz molar-refractivity excitation-volume correction 1 + 3·r_m·ρ; Σf = 1-constrained composition-plus-gain inversion (Eqs. 5–6); Beer-Lambert cross-absorption response X = X₀·exp(−Σα·ρ·L) (Eqs. 7–8); ideal-gas per-zone / per-component flow allocation with P/T/z corrections (Eqs. 1–2) — synthetic five-gas case recovers planted mole fractions and optical gain to machine precision | Andrews & Speck, pp. 4–11 |
+| `article2_cnn_xcorr_depth_matching` | LWD-vs-EWL depth matching, 1D CNN vs. cross correlation: normalized cross-correlation alignment lag = argmax_L c(L) (Eq. 1); compact pure-numpy 1D CNN (2-channel conv → ReLU → average-pooled positional bins → flatten → linear, Eqs. 2–5) regressing the shift, trained with MSE on synthetic bulk-shifted 256-sample windows (±20-sample label range); Pearson r (Eq. 6); Euclidean distance (Eq. 7); Ind1% / Ind4% improvement indicators (Eqs. 8–9) — TensorFlow replaced by a small numpy net | Torres Caceres, Duffaut, Yazidi, Westad & Johansen, pp. 13–34 |
+| `article3_log_analytics_dtw_xcorr` | Automated log-data-analytics depth-matching engines + QC: cross correlation with optional stretch/squeeze factor α (Eq. 1); constrained dynamic time warping with a Sakoe-Chiba band, local cost d(i,j) = (x_i−y_j)² and normalized accumulated-distance minimisation (Eqs. 2–4); QC metrics — Pearson (A1.1), trace energy TE = Σx² (A1.2), residual energy RE = Σ(x−y)² (A1.3), predictability P = 1 − RE/TE (A1.4) and Euclidean distance (A1.5); scipy / dtaidistance replaced by direct numpy implementations | Torres Caceres, Duffaut, Westad, Stovas, Johansen & Jenssen, pp. 36–61 |
+| `article4_ultrasonic_creeping_shale` | Ultrasonic monitoring of shale creeping onto steel casing: pulse-echo group delay τ(ω) = −dφ/dω with φ = arg(S_P/S_N) (Eq. 1); thickness-resonance frequency f_min = 0.95·v_p/(2d) with S1-mode negative-group-velocity correction (Eq. 2); PE and PC empirical impedance calibrations Z(|τ_min|) and Z(α) (Eqs. 3–4) fit to the paper's quoted anchor pairs; Lamb-wave attenuation rate α = (E_T−E)/L; normal-incidence reflection coefficient R = (Z₂−Z₁)/(Z₂+Z₁) reproducing R ≈ −0.95 (kerosene gap) → −0.82 (bonded shale) | Diez, Johansen & Larsen, pp. 61–82 |
+| `article5_sand_injectite_thomas_stieber` | Sand-injectite reservoir evaluation (Froskelår Main, Norwegian North Sea): shale-corrected effective porosity PHIE = PHIT − Vsh·PHITsh (Eq. 1); Herron permeability K = Af·exp(ΣBi·Mi) (Eq. 2); CT-scan porosity and grain-density volumetric mixing (Eqs. 3, 5); constant-BVW saturation Sw = BVW/PHIT (Eq. 4); sand counting with Fsd ≥ 0.30 cutoff (Eq. 6); net thickness for bulk and Thomas-Stieber fractional-FNTG methods (Eqs. 7–8); HVOLH for both (Eqs. 9–10); Thomas-Stieber FNTG helper and Poupon-inversion → Archie sand-phase saturation — synthetic three-facies log confirms Thomas-Stieber recovers more HVOLH than bulk analysis in the breccia | Kotwicki, Baig, Johansen, Leirdal, Aftret, Sandstad, Anthonsen, Gianotten, Hansen & Firinu, pp. 83–104 |
+| `article6_closed_retort_core_quant` | Core-based closed-retort quantification (Delaware Basin Bone Spring / Wolfcamp): standard petrophysical proxies for the case study's uncalibrated crossplots — Boyle's-law density porosity φ = 1 − ρ_b/ρ_g; fluid-summation porosity; crushing fluid loss (intact − crushed NMR); mass-balance water/oil saturations; NMR-T2 free/bound-water partition at the 10 ms cutoff; Schmoker TOC-from-density (tunable coefficients); open → closed retort collection-efficiency correction (~80% → ~95%) | Perry, Zumberge & Cheng, pp. 105–121 |
+
+DOI pattern: `10.30632/PJV63N1-2022aN` (N = 1 … 6). Equations are standard-form reconstructions (typeset glyphs were image-rendered in the source PDF); Article 6 uses standard petrophysical proxies. See `src2022_02/README.md`.
 
 ---
 
