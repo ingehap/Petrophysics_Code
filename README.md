@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2022_08/   Vol. 63 No. 4 (Aug 2022)  —  5 modules + test suite
 ├── src2022_10/   Vol. 63 No. 5 (Oct 2022)  —  5 modules + test suite
 ├── src2022_12/   Vol. 63 No. 6 (Dec 2022)  —  7 modules + test suite
 ├── src2023_02/   Vol. 64 No. 1 (Feb 2023)  —  9 modules + test suite
@@ -47,6 +48,22 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2022_08 — Vol. 63, No. 4 (August 2022)
+
+Regular (non-themed) issue with four editorial themes: integration of rock-typing characteristics, resistivity-tool modelling and applications, fluid properties and behaviour, and well-log prediction / interpretation methodology. Five technical articles spanning gas-condensate PVT prediction from fluid pressure gradients, deep-learning inversion of LWD resistivity in faulted formations, sensitivity analysis of electric-dipole geosteering tools, a database-driven Bayesian log-interpretation framework, and change-point + fuzzy-c-means log-facies analysis of basement granitic reservoirs.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_gas_condensate_fpg` | Hybrid EOS/PVT models that derive in-situ gas-condensate properties from the measured fluid pressure gradient (FPG): adiabatic fluid modulus K_ad = ρ·V_p² (Eq. 1); quadratic-in-density CGR predictor with linear P and T centred-residual corrections log10(CGR) = a0 + a1·ρ + a2·ρ² + a3·(P − 15000) + a4·(T − 360) (Eq. 3); viscosity correlations against in-situ density (Eq. 4) and methane mole fraction X_CH4 (Eqs. 5–6); acoustic velocity-MW regression (Eq. 7); multivariate density and velocity predictors (Eqs. 8–9); Gassmann fluid-modulus expression (Eq. 10); coefficients tuned so the Shearwater Field test case (15,400 psi, 360 °F, ρ = 0.464 g/cm³) recovers the paper's 144.7 STB/MMscf CGR within 1 % | Bryndzia & Kittridge, pp. 488–505 |
+| `article2_lwd_dl_inversion` | Four-network deep-learning workflow for 2.5-D inversion of triaxial 2-MHz LWD resistivity: one classifier picks among three earth-model classes (3-layer in host, with bed-boundary crossing, or with vertical-fault crossing); three per-class encoder-decoder regressors invert the layer parameters; 40-dim feature vector (5 Tx-Rx pairs × 4 channels × phase+attenuation); class-specific signatures on the cross-component geosignal and azimuthal channels reproduce the paper's finding that coaxial-only inversion is insufficient and that cross-component data is required to resolve bed boundaries; standard inverse loss augmented with a physics-guided forward-consistency term yields a joint objective L = ‖m_pred − m_true‖² + λ·‖F(m_pred) − d_obs‖² (Eq. 2); ~100 % held-out classification accuracy on clean synthetic data (paper reports 97–99 %) | Noh, Torres-Verdín & Pardo, pp. 506–518 |
+| `article3_electric_dipole_sensitivity` | Closed-form electric and magnetic-field responses for arbitrarily-oriented electric current dipoles in 1-D transversely-isotropic media: bed-detection sensitivity definitions δ_E (Eqs. 31, 33) and δ_H (Eqs. 32, 34) as normalised perturbation when a 10,000 Ω·m bed is inserted into a 1 Ω·m host at distance D from the tool (10 m T-R spacing, 100 Hz); key analytical result that *electric-field* sensitivity decays as (L/D)³ while *transverse-magnetic-field* sensitivity decays as (L/D)², extending the H-channel detection range by ~ 2× at a 1 % signal threshold; per-interface reflection coefficient R = (σ_i − σ_{i+1})/(σ_i + σ_{i+1}) for the Appendix-7 multilayer recursion | Bautista-Anguiano & Hagiwara, pp. 519–533 |
+| `article4_bayesian_log_db` | Database-driven Bayesian log interpretation: pre-builds a 20,000-realisation database of synthetic formations (mineral volumes via Dirichlet, φ and Sw via uniform draws) with forward-modelled tool responses; Appendix-3 forward operators include volume-weighted GR (Eq. A3.1), bulk density (Eq. A3.2), photoelectric factor (Eq. A3.3), neutron with excavation correction (Eq. A3.4), Wyllie compressional travel-time (Eqs. A3.5–A3.13), and merged Waxman-Smits / Dual-Water resistivity using the Juhasz B-factor (Eqs. A3.14–A3.16); Bayes' theorem (Eq. 1) with Gaussian likelihood weighting (Eq. A1.1) yields posterior mean and uncertainty for (φ, Sw, Vsh, mineral fractions) from a noisy seven-channel observation - test case recovers φ within 0.02 and Sw within 0.05 of truth | Spalburg, pp. 534–548 |
+| `article5_cpa_fcm_logfacies` | Two-stage log-facies analysis on synthetic five-curve (GR, RD, DEN, AT, NP) suites: (1) change-point analysis on the GR series using the mean-change-point model x_i = a_i + e_i (Eq. 1), SSE-minimisation breakpoint search (Eq. 2), Q = H/R initial guesses (Eq. 3), greedy add-and-refine via the W functional (Eq. 4), and a jump-magnitude θ statistic with minimum-spacing filter (Eq. 5); (2) Bezdek fuzzy c-means on segment-averaged 5-log features minimising the FCM objective Σ U_ij^m·D_ij² (Eq. 6) with membership updates (Eq. 7) and centroid updates (Eq. 8), fuzzifier m = 2; synthetic test recovers all embedded breakpoints within ±5 samples and the FCM objective drops by > 90 % in ~ 10 iterations | Hua, Yang, Xu, Lei & Zhong, pp. 549–565 |
+
+DOI pattern: `10.30632/PJV63N4-2022aN` (N = 1 … 5)
 
 ---
 
