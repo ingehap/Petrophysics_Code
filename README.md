@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2019_12/   Vol. 60 No. 6 (Dec 2019)  — 10 modules + test suite
 ├── src2020_02/   Vol. 61 No. 1 (Feb 2020)  —  6 modules + test suite
 ├── src2020_04/   Vol. 61 No. 2 (Apr 2020)  —  9 modules + test suite
 ├── src2020_06/   Vol. 61 No. 3 (Jun 2020)  —  5 modules + test suite
@@ -63,6 +64,27 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2019_12 — Vol. 60, No. 6 (December 2019)
+
+A "Best of the 2019 Symposium, Part 2" section (articles 1–4) plus regular submissions (articles 5–10), spanning sonic-slowness deconvolution, ultrasonic LWD caliper/imaging, deducing permittivity from LWD resistivity, an improved crushed-rock (GRI+) workflow, NMR light-hydrocarbon/pore-size/tortuosity evaluation, magnetic-susceptibility effects on NMR, ANN formation-top picking, supervised classifiers for vuggy facies, gas-hydrate joint elastic-electrical inversion, and a micro/nanofluidic transport review. This issue's source PDF (`Petrophysics_2019_12.pdf`, 20 MB) has a text layer, so titles/authors/DOIs were read from the contents page and bodies; the machine extract captured articles 1–6 fully but truncated at journal page 823, so articles 7–10 (present only as TOC entries) are methodology proxies of the standard methods their titles describe, and the typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_sonic_inversion_deconvolution` | Sonic slowness deconvolution: aperture-response convolution d_N = conv(F_N, s) (Eqs. 1, 8), the stacked multiaperture system D = G·S (Eqs. 10–12), Moore-Penrose deconvolution S = G⁺·D (Eq. 13) to a high-resolution log, and the QC mismatch (Eq. 14) | Lei, Zeroug, Bose, Prioul & Donald, pp. 697–711 |
+| `article2_ultrasonic_lwd_imaging` | *Hardware/field paper:* pulse-echo standoff = c_mud·t/2, borehole radius/caliper, acoustic impedance Z = ρ·c and the reflection coefficient, and a cosine fit recovering tool eccentering from the four azimuthal standoffs | Li, Lee, Coates, Jin & Wong, pp. 712–732 |
+| `article3_lwd_permittivity` | Permittivity from LWD resistivity: lossy-medium complex wavenumber (Eqs. 1–3, 7–8), σ = 2k_r·k_i/(ωμμ₀) (Eq. 4) and ε_r = (k_r²−k_i²)/(ω²μ₀ε₀) (Eq. 5), wavelength λ = 2π/k_r (Eq. 13), and CRIM mixing / water saturation (Eqs. 14, 20) | Stalheim, pp. 733–754 |
+| `article4_crushed_rock_gri_plus` | Crushed-rock GRI+: fluid-summation and bulk/grain porosities (Eqs. 1–2), conventional crushed-rock Sw (Eq. 3), and GRI+ Sw (Eq. 4) with the NMR crushing-loss factor β_crush — shows the legacy method understates Sw (paper ~30%) | Nikitin, Durand, McMullen, Blount, Driskill & Hows, pp. 755–769 |
+| `article5_nmr_lighthc_chalk` | NMR light-HC / pore size / tortuosity: HI rescaling (Eq. 1), apparent T2 with diffusion term (γGTE)²D/12 (Eqs. 2–3), diffusion length (Eq. 5), short-time Padé restricted-diffusion ratio and spherical-pore radius (Eq. 6), and tortuosity τ = D₀/D(∞) (Eq. 7) | Chen, Singer, Wang, Vinegar, Nguyen & Hirasaki, pp. 771–797 |
+| `article6_nmr_magnetic_susceptibility` | Magnetic susceptibility on NMR: three-mechanism 1/T2 = 1/T2B + ρ(S/V) + (γGTE)²D/12 (Eqs. 1–2) and the internal gradient recovered from the slope of 1/T2 vs TE² (Eq. 3, reproduces a planted gradient in the 72–510 Gauss/cm range) | Sarkar, Chatterjee, Lal, Kumar & Deo, pp. 798–824 |
+| `article7_ann_formation_tops` | *Methodology proxy:* a feed-forward tanh ANN estimating a formation-top depth marker from six drilling parameters, scored by R / RMSE / AAPE (R ≈ 0.98, AAPE < 1%) | Elkatatny, Al-AbdulJabbar & Mahmoud, pp. 825–837 |
+| `article8_ml_vuggy_facies_classifiers` | *Methodology proxy:* three supervised classifiers — logistic regression, k-nearest-neighbor, and a bagged decision-stump ensemble (random-forest analogue) — with a confusion matrix and accuracy / precision / recall / F1 | Deng, Xu, Jobe & Xu, pp. 838–853 |
+| `article9_gashydrate_inverse_rockphysics` | *Methodology proxy:* inverse rock-physics modeling jointly inverting a velocity-vs-hydrate-saturation stiffening model and an Archie resistivity model for hydrate saturation — more robust than the noisier single measurement | Pan, Li, Zhang, Chen, Cai & Geng, pp. 854–871 |
+| `article10_micronanofluidic_transport_review` | *Review, methodology proxy:* gas mean free path and Knudsen number, flow-regime classification (continuum/slip/transition/free-molecular), Klinkenberg slip-corrected apparent permeability, a Beskok-Karniadakis enhancement, and the capillary number | Mehmani, Kelly & Torres-Verdín, pp. 872–890 |
+
+DOI pattern: `10.30632/PJV60N6-2019aN` (N = 1 … 10). The source PDF has a text layer (titles/authors/DOIs are from the paper); equations are standard-form reconstructions and articles 7–10 are methodology proxies (their bodies were beyond the text-extract truncation). See `src2019_12/README.md`.
 
 ---
 
