@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2018_12/   Vol. 59 No. 6 (Dec 2018)  — 12 modules + test suite
 ├── src2019_02/   Vol. 60 No. 1 (Feb 2019)  — 11 modules + test suite
 ├── src2019_04/   Vol. 60 No. 2 (Apr 2019)  — 12 modules + test suite
 ├── src2019_06/   Vol. 60 No. 3 (Jun 2019)  —  9 modules + test suite
@@ -69,6 +70,28 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2018_12 — Vol. 59, No. 6 (December 2018)
+
+The **"Special Issue: Data-Driven Analytics in Logging and Petrophysics"** (PDDA): the third capillary-pressure tutorial followed by a suite of machine-learning / data-driven papers — image-based geological-feature prediction, a functional network for Poisson's ratio, ML borehole-resistivity modeling, transdimensional stochastic inversion of ultradeep resistivity, a lithology CNN, data-analytics hydraulic-fracture optimization, shallow-learning sonic logs, SVM leak-flow classification, fluid-optical-database reconstruction, ML depth matching, and data preconditioning. This issue's source PDF has a text layer (DOI suffix printed `PJV59N6Y2018…`, with `Y` for the year); the machine extract captured the tutorial and articles a1–a8 fully but truncated after a8, so articles a9–a11 (present only as TOC entries) are methodology proxies, and the typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions; deep models are compact numpy stand-ins). See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_capillary_pressure_tutorial_part3` | *Tutorial:* capillary pressure (Part 3) — Young-Laplace Pc, the Leverett J-function, saturation-height, and a Brooks-Corey curve | Murphy, pp. 739–747 |
+| `article2_geological_feature_image_ml` | Image-based ML: texture features (mean, gradient energy, orientation contrast) and a logistic classifier separating bedded from chaotic fabric | Jobe, Vital-Brazil & Khait, pp. 750–760 |
+| `article3_poisson_ratio_functional_network` | A functional network (basis expansion + least squares) predicting the dynamic Poisson's ratio of carbonates (R ≈ 0.99) | Tariq, Abdulraheem, Mahmoud & Ahmed, pp. 761–777 |
+| `article4_borehole_resistivity_ml` | A physics-based apparent-resistivity forward model (shoulder-bed averaging) and an NN surrogate that reproduces it quickly | Xu, Sun, Xie, Zhong, Mirto, Feng & Hong, pp. 778–785 |
+| `article5_ultradeep_resistivity_transdim_inversion` | A transdimensional (reversible-jump) MCMC inverting a layered-resistivity profile of unknown layer count, with per-depth uncertainty | Shen, Chen & Wang, pp. 786–798 |
+| `article6_lithology_cnn` | A CNN-style lithology classifier: 1D convolutional (global-average-pooled) features + window statistics + a softmax head | Zhu, Li, Yang, Li & Ao, pp. 799–810 |
+| `article7_hydraulic_fracture_optimization` | Rickman brittleness index, poroelastic minimum-stress profile, a completion-quality score, and a min-spacing stage-placement optimizer | Gupta, Rai, Devegowda & Sondergeld, pp. 811–825 |
+| `article8_shallow_learning_sonic_logs` | Shallow models (OLS and k-nearest-neighbor) predicting the DTC sonic log from conventional logs, scored by R and RMSE | He, Misra & Li, pp. 826–840 |
+| `article9_fluid_optical_database_reconstruction` | *Methodology proxy:* Beer-Lambert optical density, a composition→OD-spectrum forward mapping, and a validated least-squares inversion | Chen, Jones, Dai & van Zuilekom, pp. 849–862 |
+| `article10_ml_depth_matching` | *Methodology proxy:* cross-correlation and DTW depth matching with a non-wrapping windowed local-shift estimator | Zimmermann, Liang & Zeroug, pp. 863–872 |
+| `article11_data_preconditioning` | *Methodology proxy:* z-score / min-max scaling, z-score & IQR outlier detection, gap imputation, and a downstream RMSE improvement | Frost & Quinn, pp. 873–890 |
+
+DOI pattern: `10.30632/PJV59N6Y2018aN` (N = 1 … 10) plus the tutorial `…t1` (the `Y` replaces the usual hyphen). The extract truncated after a8, so a9–a11 are methodology proxies; equations are standard-form reconstructions. See `src2018_12/README.md`.
 
 ---
 
