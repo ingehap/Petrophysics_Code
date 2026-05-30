@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2020_02/   Vol. 61 No. 1 (Feb 2020)  —  6 modules + test suite
 ├── src2020_04/   Vol. 61 No. 2 (Apr 2020)  —  9 modules + test suite
 ├── src2020_06/   Vol. 61 No. 3 (Jun 2020)  —  5 modules + test suite
 ├── src2020_08/   Vol. 61 No. 4 (Aug 2020)  —  4 modules + test suite
@@ -62,6 +63,23 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2020_02 — Vol. 61, No. 1 (February 2020)
+
+A regular issue opening with an invited tutorial on borehole-nuclear Monte Carlo modeling, followed by five articles spanning a numerical comparison of Russian and Western resistivity logs, the response of an array-induction tool in anisotropic formations, a physics-driven deep-learning network for nonlinear inverse problems, Bayesian geosteering with Sequential Monte Carlo, and a "boomerang" workflow for porosity and net/gross in shaly gas reservoirs. This issue's source PDF (`Petrophysics_2020_02.pdf`) has a text layer, so titles/authors/DOIs were read from the contents page and bodies; the machine extract captured the Tutorial and Article 1 fully, was partial for Article 2 (through page 78), and contained Articles 3–5 only as TOC entries, so Articles 4–6 are methodology proxies of the standard methods their titles describe and the typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_montecarlo_nuclear_fsf_tutorial` | *Tutorial:* borehole-nuclear Monte Carlo + flux sensitivity functions — F4 track-length flux φ = Σ(W·T)/V (Eqs. 3, 18–19, with a Monte-Carlo demo), reaction rate N = c∫φσ dE (Eq. 4), importance/adjoint Imp = Score/Weight (Eq. 17), the normalized FSF (Eqs. 20–22), and the first-order perturbed response N = N_b + ∫FSF·Δσ (Eqs. 23–24) | Luycx, Bennis, Torres-Verdín & Preeg, pp. 4–36 |
+| `article2_russian_western_resistivity` | *Numerical study:* galvanic apparent resistivity ρ_a = k·U/I, laminated parallel/series Rh/Rv with anisotropy coefficient λ = √(ρv/ρh), and the EM skin depth δ = 503·√(ρ/f) governing induction DOI vs frequency (VEMKZ 0.875–14 MHz vs IK 50–100 kHz) | Epov, Sukhorukova, Nechaev et al., pp. 38–71 |
+| `article3_hdil_array_induction_anisotropic` | *Extract ended at p.78:* anisotropy coefficient λ = √(Rh/Rv), constrained least-squares focusing weights (Σw = 1 via KKT), focused apparent resistivity ρ_a = 1/Re(Σw·σ_a), and anisotropic apparent resistivity vs relative dip (negligible at 0°, significant at ≥60°) | Liu, Zhang, Zhang, Xu, Kang & Xiao, pp. 72–85 |
+| `article4_physics_deeplearning_inversion` | *Methodology proxy:* regularized nonlinear inversion — forward d = G·m, Tikhonov objective, closed-form ridge inversion and an equivalent gradient-descent "training" solver, showing regularization stabilizes the ill-posed noisy problem | Jin, Shen, Wu, Chen & Huang, pp. 86–98 |
+| `article5_bayesian_geosteering_smc` | *Methodology proxy:* a Sequential Monte Carlo / particle filter for distance-to-boundary — propagation, Gaussian-likelihood Bayesian reweighting, effective sample size, systematic resampling, and a posterior-mean estimate tracking a moving boundary within the noise | Akkam Veettil & Clark, pp. 99–111 |
+| `article6_boomerang_porosity_netgross` | *Methodology proxy:* density porosity, gas-corrected total porosity √((φN²+φD²)/2), shale-corrected effective porosity, Vsh from gamma ray, and net/gross from porosity & shale-volume cutoffs — the shale/gas "boomerang" crossplot untangling | Xu & Sharif, pp. 112–128 |
+
+DOI pattern: `10.30632/PJV61N1-2020aN` (N = 1 … 5), plus the tutorial `10.30632/PJV61N1-2020T1`. The source PDF has a text layer (titles/authors/DOIs are from the paper); equations are standard-form reconstructions and Articles 4–6 are methodology proxies (their bodies were beyond the text-extract truncation). See `src2020_02/README.md`.
 
 ---
 
