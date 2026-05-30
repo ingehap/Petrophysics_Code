@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2022_04/   Vol. 63 No. 2 (Apr 2022)  —  7 modules + test suite
 ├── src2022_06/   Vol. 63 No. 3 (Jun 2022)  — 11 modules + test suite
 ├── src2022_08/   Vol. 63 No. 4 (Aug 2022)  —  5 modules + test suite
 ├── src2022_10/   Vol. 63 No. 5 (Oct 2022)  —  5 modules + test suite
@@ -49,6 +50,24 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2022_04 — Vol. 63, No. 2 (April 2022)
+
+Regular issue containing one *Best of the 2021 Symposium* paper plus six regular submissions, spanning through-tubing casing-deformation imaging with Bayesian GPR inversion, chalk permeability modelling, pyrite-aware water-saturation with Hashin-Shtrikman mineral mixing, time-lapse micro-CT of filter cakes, methane solubility in oil-based mud, gas-hydrate rock physics, and digital-core wellbore stability. Articles 4–7 were only available as table-of-contents entries in the source PDF, so their modules are methodology proxies guided by the editor's letter; see the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_dec_tool_bayesian_gpr` | Through-tubing deformation-and-eccentricity (DEC) electromagnetic tool: linearised magnetostatic transfer function ΔBr = f(Δμ, Δr, Δt) (Eq. 1); casing/tubing flux-density ratio r_flux = ΦC/ΦT (Eqs. 2–3); eccentricity ratio Ecc = Δe / (IR_casing − OR_tubing) (Eq. 4); deformation factor Def = R_A / R_B (Eq. 5); forward model d_obs = T(P) (Eq. 6); Bayesian inversion via Gaussian Process Regression with a Matérn-5/2 covariance kernel (Eqs. 7–9); cyclic-angle handling via (Ecc·cos θ, Ecc·sin θ, (Def−1)·cos 2γ, (Def−1)·sin 2γ) Cartesian decomposition with polar recovery — recovers (Ecc, θ, Def, γ) within 0.005 / 0.5° / 0.005 / 5° on a 24-Hall-probe synthetic | Yang, Qin, Olson & Rourke, pp. 125–146 |
+| `article2_kozeny_permeability_chalk` | Four Kozeny-equation routes for permeability in Lower-Cretaceous Sola/Tuxen marly chalks (Well Boje-2C): base Kozeny k = c·φ³ / S_φ² (Eq. 1) with Mortensen et al. (1998) shielding factor c(φ) = (4·cos(φπ/3))² / 8 (Eq. 2); ternary calcite/silicate/pyrite porosity from density log (Eqs. 3–4); pore-space SSA from mineralogy (Eq. 5); four alternative SSA estimators — spectral GR Sb = x·ρ_b·(Th+K) + y (Eq. 6); Sw and pseudo-water-film thickness pwft (Eqs. 7–8); NMR T2 of the water peak S_φ = 1/(ρ·T2) (Eqs. 9–10); flow-zone-indicator FZI with void-ratio coupling and FZI–Vp regression (Eqs. 11–13) | Storebø, Meireles & Fabricius, pp. 148–171 |
+| `article3_pyrite_saturation_hs_bounds` | Pyrite-aware extension of Archie's law combining Clavier dual-water with weighted Hashin-Shtrikman bounds: Archie σ_t = σ_w·φ^m·Sw^n (Eq. 1); Wiener arithmetic and harmonic two-phase bounds (Eqs. 2–3); Hashin-Shtrikman lower / upper bounds for an isotropic two-component medium (Eqs. 4–5); Archie with extra conductivity σ_o = (σ_w + σ_extra)·φ^m·Sw^n (Eq. 6); Waxman-Smits excess conductivity σ_x = β·Qv (Eqs. 7–9); Clavier dual-water mixing (Eqs. 10–13); CEC-based silicate excess conductance (Eq. 32); weighted HS pyrite mixing (Eqs. 48–52) — default constants reproduce the paper's Boje-2C numbers (σ_wb = 82.9 S/m at 91 °C, σ_pyrite = 1500 S/m, w = 0.03) | Storebø, Hjuler, Meireles & Fabricius, pp. 172–198 |
+| `article4_microct_filtercake` | *Methodology proxy* for the time-lapse micro-CT filter-cake paper (full body not in available PDF extract): Dewan-Chenevert / Outmans √t mudcake-growth law h_mc(t) = √(2·k_mc·ΔP·t / (μ·(1 − φ_mc))); mudcake-porosity evolution under compaction stress φ_mc(t) = φ_0·(1 + t/τ)^(−c); Kozeny-Carman permeability evolution k(t) = k_0·(φ/φ_0)³·((1−φ_0)/(1−φ))²; synthetic 2-D CT slice with annular mudcake band and threshold-based thickness detector | Schroeder & Torres-Verdín, pp. 199–217 |
+| `article5_methane_solubility_obm` | *Methodology proxy* for the OBM methane-solubility paper (full body not in available PDF extract): Henry's-law / Krichevsky-Kasarnovsky form ln(x_CH4) = a + b·ln(P) − ΔH/(R·T); multivariate linear regression for ln(x_CH4) against (P, T, base-oil mass fraction, mud viscosity) — the four design variables identified in the paper; synthetic dataset recovers planted regression coefficients within 2 % | Song, Sukari, Wang, Jiang, Cai, Xu & Huang, pp. 218–236 |
+| `article6_gas_hydrate_rock_physics` | *Methodology proxy* for the NGHP-02 gas-hydrate rock-physics paper (full body not in available PDF extract): Voigt-Reuss-Hill mineral mixing; two end-member hydrate models (cementing and Jason grain-supported); Gassmann fluid substitution K_sat / (K_min − K_sat) = K_dry / (K_min − K_dry) + K_fl / (φ·(K_min − K_fl)); Vp and Vs from (K_sat, G, ρ_b); Vp/Vs cross-plot classifier discriminating hydrate-bearing shaly sand from sand, calcite and shale | Kumar, Mishra, Chatterjee, Tiwari & Avadhani, pp. 237–255 |
+| `article7_digital_core_wellbore_stability` | *Methodology proxy* for the digital-core wellbore-stability paper (full body not in available PDF extract): 3-D voxel sand-pack as the digital-core analogue; VRH solid moduli; Krief porosity softening; Young's modulus E = 9·K·G / (3·K + G); Plumb-Allen UCS predictor UCS = a·E − b·φ; exponential water-immersion weakening UCS(t) = UCS_dry·(floor + (1−floor)·exp(−t/τ)); Kirsch-stress + Mohr-Coulomb critical-mud-weight check for vertical-well stability | Zhou, Ye, Zhu, Cheng, Song, Wang & Cai, pp. 256–284 |
+
+DOI pattern: `10.30632/PJV63N2-2022aN` (N = 1 … 7). Articles 4–7 implemented as methodology proxies; see `src2022_04/README.md`.
 
 ---
 
