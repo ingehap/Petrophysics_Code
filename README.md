@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2019_06/   Vol. 60 No. 3 (Jun 2019)  —  9 modules + test suite
 ├── src2019_08/   Vol. 60 No. 4 (Aug 2019)  —  6 modules + test suite
 ├── src2019_10/   Vol. 60 No. 5 (Oct 2019)  — 10 modules + test suite
 ├── src2019_12/   Vol. 60 No. 6 (Dec 2019)  — 10 modules + test suite
@@ -66,6 +67,26 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2019_06 — Vol. 60, No. 3 (June 2019)
+
+A regular issue opening with an organic-mudstone storage-capacity tutorial, followed by eight articles spanning shale composition and gas adsorption, wellsite-tomography Bayesian inversion, finite-volume shale tortuosity/permeability, a fast NMR T1 measurement, a reconsideration of Klinkenberg's permeability data, the appropriate cementation exponent for vuggy/fractured carbonates, perched water contacts, and LWD wellbore positioning. This issue's source PDF (`Petrophysics_2019_06.pdf`, ~228 MB) is a scanned issue with no usable text layer (reading it returns empty text), so the article titles, authors, page ranges, and DOIs were obtained from the journal metadata (Crossref / table of contents) and the numbered formulas are faithful standard-form reconstructions of the well-established methods each paper's topic uses. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_organic_mudstone_storage_tutorial` | *Tutorial:* organic-mudstone storage capacity — kerogen volume from TOC, effective porosity, free gas G_free = φ_e(1−Sw)/Bg, Langmuir adsorbed gas, and the free/adsorbed storage partition | Newsham, Comisky & Chemali, pp. 351–371 |
+| `article2_niutitang_shale_pore_adsorption` | Shale composition → pore structure & adsorption: BET surface area, FHH fractal dimension from the N₂ isotherm, the Langmuir methane isotherm, and a composition (TOC+clay) control on the Langmuir volume | Fu, Xu, Tian, Qin & Yang, pp. 373–383 |
+| `article3_wellsite_tomography_bayesian` | Accelerated whole-core CT: a Bayesian (MAP) linear inversion with a Gaussian smoothness prior that beats unregularized least squares on few noisy projections, with a posterior covariance | Mendoza, Roininen, Girolami, Heikkinen & Haario, pp. 384–396 |
+| `article4_shale_tortuosity_permeability_fvm` | Finite-volume shale tortuosity/permeability: an FVM Laplace solver on a pore grid, effective conductivity from the flux, tortuosity τ = φ·σ_fluid/σ_eff (1 open, >1 tortuous), and Kozeny-Carman k | Almasoodi & Reza, pp. 397–408 |
+| `article5_fast_nmr_t1` | Fast NMR T1: inversion-/saturation-recovery models, a full nonlinear T1 fit, and a fast two-point T1 estimate that matches the full fit at a fraction of the acquisition time | Mitchell & Valori, pp. 409–420 |
+| `article6_reconsidering_klinkenberg` | Reconsidering Klinkenberg: first-order k_app = k_l(1+b/Pm) and second-order (…+c/Pm²) slip models fit vs 1/Pm — the second-order term captures the low-pressure curvature | Ruth & Arabjamaloei, pp. 421–428 |
+| `article7_carbonate_m_vugs_fractures` | Appropriate m for vuggy/fractured carbonates: Archie F and effective m, with separate vugs raising m above 2 and conductive fractures lowering it, and the resulting Sw bias from assuming m = 2 | Wang & Peng, pp. 429–437 |
+| `article8_perched_water_contacts` | Perched water contacts: buoyancy capillary pressure vs height, a Brooks-Corey saturation-height function, the entry height, and the condition for a high-entry-pressure barrier to perch water above the free-water level | Hulea, pp. 438–449 |
+| `article9_wellbore_positioning_lwd` | LWD wellbore positioning: the minimum-curvature survey method — dogleg and ratio factor, TVD/north/east station increments, the cumulative 3D well path, and along-hole position-uncertainty growth | Poedjono, Nwosu & Martin, pp. 450–465 |
+
+DOI pattern: `10.30632/PJV60N3-2019aN` (N = 1 … 8) plus the tutorial `10.30632/PJV60N3-2019t1`. The source PDF has no text layer (scanned), so titles/authors/DOIs are from the journal metadata and equations are standard-form reconstructions of each paper's method. See `src2019_06/README.md`.
 
 ---
 
