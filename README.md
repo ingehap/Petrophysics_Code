@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2018_10/   Vol. 59 No. 5 (Oct 2018)  — 11 modules + test suite
 ├── src2018_12/   Vol. 59 No. 6 (Dec 2018)  — 12 modules + test suite
 ├── src2019_02/   Vol. 60 No. 1 (Feb 2019)  — 11 modules + test suite
 ├── src2019_04/   Vol. 60 No. 2 (Apr 2019)  — 12 modules + test suite
@@ -70,6 +71,28 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2018_10 — Vol. 59, No. 5 (October 2018)
+
+The "Best of 2018 SPWLA Symposium" issue: a capillary-pressure tutorial, nine symposium papers, and one regular submission, spanning capillary-pressure data use, X-ray sourceless density logging, kerogen-integrated petrophysics/geomechanics, fast pressure-decay permeability, unsupervised NMR T1-T2 fluid volumes, proxy-enabled stochastic fluid sampling, DFA + gas chromatography, joint NMR+electric permeability, digital-rock porosity upscaling, mixed-wet resistivity, and hierarchical rock classification. This issue's source PDF (~49 MB) has a text layer, so titles/authors/DOIs were read from the contents page and bodies; the machine extract captured the tutorial and articles a1–a6 fully but truncated after a6, so articles a7–a10 (present only as TOC entries) are methodology proxies, and the typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_capillary_pressure_tutorial_part2` | *Tutorial:* capillary pressure (Part 2) — lab→reservoir conversion via the \|σ·cosθ\| ratio, saturation-height, the Leverett J-function, and drainage/imbibition hysteresis | Thomas, pp. 557–564 |
+| `article2_xray_sourceless_density` | X-ray sourceless density: the Compton density response, density from the count ratio, a spine-and-ribs mudcake/standoff correction (DRHO), and a photoelectric-factor proxy | Simon et al., pp. 565–587 |
+| `article3_kerogen_log_geomechanics` | Kerogen-integrated petrophysics/geomechanics: TOC→kerogen volume, three-component bulk density, Voigt-Reuss-Hill modulus mixing with soft kerogen, and dynamic E/ν | Craddock et al., pp. 588–605 |
+| `article4_fast_pressure_decay_permeability` | Fast pressure-decay permeability: pulse-decay relaxation, the decay time constant, permeability from the fitted decay rate (recovers a microdarcy value), and Klinkenberg | Gan, Griffin, Dacy, Xie & Lee, pp. 606–616 |
+| `article5_unsupervised_nmr_t1t2_fluid_volumes` | Unsupervised NMR T1-T2 fluid volumes: weighted k-means clustering of the T1-T2 map into fluid populations and their volumes (recovers planted volumes) | Venkataramanan et al., pp. 617–632 |
+| `article6_proxy_stochastic_fluid_sampling` | Proxy-enabled stochastic fluid sampling: the power-law cleanup proxy and a Monte-Carlo (Bayesian) posterior on cleanup parameters and pumpout volume with uncertainty | Kristensen, Chugunov, Cig & Jackson, pp. 633–648 |
+| `article7_dfa_gas_chromatography` | DFA + gas chromatography: GOR from a C1-C7+ composition, the FHZ asphaltene optical-density gradient with depth, and an equilibrium/connectivity check | Mullins, Forsythe, Pomerantz et al., pp. 649–671 |
+| `article8_permeability_nmr_electric_rockfabric` | *Methodology proxy:* Timur-Coates NMR permeability, the cementation exponent from the formation factor, and a joint NMR+electrical permeability scaled by connectivity | Garcia, Han & Heidari, pp. 672–693 |
+| `article9_digital_rock_porosity_upscaling` | *Methodology proxy:* CT porosity from attenuation, running-average REV convergence, histogram porosity, and a linear digital-rock→whole-core upscaling correlation | Hertel, Rydzy, Anger, Berg, Appel & de Jong, pp. 694–702 |
+| `article10_resistivity_mixedwet_rocks` | *Methodology proxy:* the Archie resistivity index, a wettability-dependent saturation exponent n(oil-wet fraction), and the Sw bias from assuming a fixed water-wet n | Newgord, Garcia, Rostami & Heidari, pp. 703–719 |
+| `article11_hierarchical_rock_classification` | *Methodology proxy:* average-linkage agglomerative hierarchical clustering of rock-fabric features, with silhouette validation and a dendrogram cut into rock classes | Purba, Garcia & Heidari, pp. 720–734 |
+
+DOI pattern: `10.30632/PJV59N5-2018aN` (N = 1 … 10) plus the tutorial `…t1`. The extract truncated after a6, so a7–a10 are methodology proxies; equations are standard-form reconstructions. See `src2018_10/README.md`.
 
 ---
 
