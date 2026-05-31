@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2017_12/   Vol. 58 No. 6 (Dec 2017)  —  6 modules + test suite
 ├── src2018_02/   Vol. 59 No. 1 (Feb 2018)  — 10 modules + test suite
 ├── src2018_04/   Vol. 59 No. 2 (Apr 2018)  — 10 modules + test suite
 ├── src2018_06/   Vol. 59 No. 3 (Jun 2018)  —  9 modules + test suite
@@ -78,6 +79,20 @@ Petrophysics_Code/
 
 ---
 
+## src2017_12 — Vol. 58, No. 6 (December 2017)
+
+A digital-log-preparation tutorial and five articles, spanning log preprocessing for automated interpretation, driller's-depth correction by a way-point (thermal + elastic-stretch) methodology, carbonate pore-structure and permeability heterogeneity from MICP and sonic-log frame-flexibility factors, 3D printing of Berea sandstone as a petrophysical tool, the impact of thermal maturity on kerogen density, and the impact of core-cleaning methods on petrophysical measurements. This issue's source PDF (~17 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; all six items have full bodies (the conference abstracts after p.622 are not implemented), and the typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). This issue **predates SPWLA DOI assignment** (the President's column says DOIs are about to begin; the PDF and CrossRef carry none for Vol. 58), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_digital_log_preparation` | *Tutorial:* digital-log preprocessing — the density-porosity transform (and the gas effect), the flushed-zone Archie saturation, bed "squaring", inflection-point alignment, and the deep-tool minimum bed thickness | Thomas, pp. 559–563 |
+| `article2_drillers_depth_waypoint` | Driller's-depth way-point correction: the per-station thermal elongation, the drillpipe cross-section and stretch coefficient, the elastic stretch under load, the summed correction, and quadrature uncertainty | Bolt, pp. 564–575 |
+| `article3_carbonate_pore_structure_sonic` | Carbonate pore structure from sonic: elastic moduli from Vp/Vs/ρ, the Sun (2000) frame flexibility factors inverted from the (1−φ)^γ law, pore-type classification from γμ, MICP tortuosity, and the Leverett J-function | Huang, Dou & Sun, pp. 576–591 |
+| `article4_3d_printing_berea` | 3D-printed sandstone: porosity from segmented voxels, model magnification, the gap-test printed-size calibration (160 µm design → ~132 µm printed), the printability check, and proxy-vs-natural offsets | Ishutov & Hasiuk, pp. 592–602 |
+| `article5_kerogen_density_maturity` | Kerogen density vs maturity: the pyrite/iron-corrected kerogen density, the multimineral matrix density, total porosity, Archie (m=2, n=1.5), and the porosity sensitivity to kerogen density | Jagadisan, Yang & Heidari, pp. 603–612 |
+| `article6_cleaning_methods_porosity` | Core-cleaning effects: bulk/grain volumes from weights and densities, the crushed-sample helium porosity, the porosity gain after cleaning, and a solvent-efficiency ranking | Gupta, Rai, Tinni & Sondergeld, pp. 613–622 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 58, No. 6 page ranges instead. Equations are standard-form reconstructions (typeset glyphs dropped in extraction). See `src2017_12/README.md`.
 ## src2018_02 — Vol. 59, No. 1 (February 2018)
 
 The **"Best Papers of the 2017 SCA International Symposium"** issue: the first **Shaly Sand** tutorial, seven SCA best papers, and two regular submissions, spanning the Archie baseline for shaly sands, a digital-rock-physics vendor blind study, stress-sensitive mercury-injection capillary pressure, stress-dependent permeability in tight-oil rocks, relative-permeability QC via pore-network simulation, inline-densitometer produced-fluid volumetrics, salt-bearing-sediment digital rock, Box-Behnken core-restoration optimization, geostress effects on tight-sandstone resistivity, and shale gas adsorption. This issue's source PDF (~16 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; the extract captured the tutorial and articles a1–a6 fully plus a truncated a7, while the two regular submissions a8–a9 (contents-only) are methodology proxies. The PDF carries no article DOIs, so the DOIs were taken from CrossRef — this issue uses the older `10.30632/petro_059_1_*` scheme (not `PJVxxNx`). Typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). See the per-folder README for details.
