@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2018_02/   Vol. 59 No. 1 (Feb 2018)  — 10 modules + test suite
 ├── src2018_10/   Vol. 59 No. 5 (Oct 2018)  — 11 modules + test suite
 ├── src2018_12/   Vol. 59 No. 6 (Dec 2018)  — 12 modules + test suite
 ├── src2019_02/   Vol. 60 No. 1 (Feb 2019)  — 11 modules + test suite
@@ -71,6 +72,27 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2018_02 — Vol. 59, No. 1 (February 2018)
+
+The **"Best Papers of the 2017 SCA International Symposium"** issue: the first **Shaly Sand** tutorial, seven SCA best papers, and two regular submissions, spanning the Archie baseline for shaly sands, a digital-rock-physics vendor blind study, stress-sensitive mercury-injection capillary pressure, stress-dependent permeability in tight-oil rocks, relative-permeability QC via pore-network simulation, inline-densitometer produced-fluid volumetrics, salt-bearing-sediment digital rock, Box-Behnken core-restoration optimization, geostress effects on tight-sandstone resistivity, and shale gas adsorption. This issue's source PDF (~16 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; the extract captured the tutorial and articles a1–a6 fully plus a truncated a7, while the two regular submissions a8–a9 (contents-only) are methodology proxies. The PDF carries no article DOIs, so the DOIs were taken from CrossRef — this issue uses the older `10.30632/petro_059_1_*` scheme (not `PJVxxNx`). Typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_shaly_sand_tutorial_part1` | *Tutorial:* shaly sands (1 of 3) — the Archie baseline (Sw, formation factor), the 5–50% shaly-sand classification, and the clay specific-surface ratio | Thomas, pp. 7–14 |
+| `article2_drp_blind_study_pc` | Digital-rock blind study: the Young-Laplace pore-throat radius, normalized water saturation, a power-law drainage Pc curve, and IFT rescaling | Chhatre et al., pp. 15–24 |
+| `article3_stress_sensitivity_micp` | Stress-sensitive MICP: the Washburn pore diameter, the Swanson permeability from the MICP apex, and threshold-pressure detection | Guise et al., pp. 25–34 |
+| `article4_stress_dependent_permeability` | Stress-dependent permeability: net confining stress, the exponential k decline with stress, the matrix gas permeability (k = D·μ/B), and Klinkenberg | King et al., pp. 35–43 |
+| `article5_drt_relperm_qc` | Relative-permeability QC: Corey water/oil curves with wettability-dependent endpoints, the water-wet/oil-wet bounding envelope, an outlier flag, and fractional flow | Schembre-McCabe & Kamath, pp. 44–53 |
+| `article6_densitometer_fluid_volume` | Densitometer fluid volumetrics: the water fraction from mixture density, cumulative produced water by integration, and produced oil by volume closure | Olsen, pp. 54–61 |
+| `article7_salt_bearing_digital_rock` | Salt-bearing digital rock: resolved porosity, paleoporosity, salt saturation and classes, the exponential k vs salt-saturation decline, and size percentiles | Rydzy et al., pp. 62–71 |
+| `article8_core_restoration_rsm` | Core-restoration optimization: the USBM wettability index, a Box-Behnken design, a second-order response-surface least-squares fit, and its optimization | Sripal & James, pp. 72–81 |
+| `article9_geostress_resistivity_correction` | *Methodology proxy:* a stress-dependent resistivity, the inverse correction, the Archie saturation, and the saturation bias from skipping the correction | Liu et al., pp. 82–98 |
+| `article10_shale_gas_adsorption` | *Methodology proxy:* the Langmuir isotherm, free + adsorbed gas in place, the adsorbed fraction, and gas desorbed by a pressure drawdown | Tinni, Sondergeld & Rai, pp. 99–104 |
+
+DOI scheme: `10.30632/petro_059_1_aN` (N = 1 … 9) plus the tutorial `…t1` (the older SPWLA format, taken from CrossRef; the PDF carries no DOIs). The extract truncated after a7, so a8–a9 are methodology proxies; equations are standard-form reconstructions. See `src2018_02/README.md`.
 
 ---
 
