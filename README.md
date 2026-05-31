@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2017_06/   Vol. 58 No. 3 (Jun 2017)  —  6 modules + test suite
 ├── src2017_08/   Vol. 58 No. 4 (Aug 2017)  —  6 modules + test suite
 ├── src2017_10/   Vol. 58 No. 5 (Oct 2017)  —  5 modules + test suite
 ├── src2017_12/   Vol. 58 No. 6 (Dec 2017)  —  6 modules + test suite
@@ -81,6 +82,20 @@ Petrophysics_Code/
 
 ---
 
+## src2017_06 — Vol. 58, No. 3 (June 2017)
+
+Six articles (no tutorial), spanning laboratory and field NMR characterization of the Tuscaloosa Marine Shale, a novel total-gas-in-place determination for gas shale from magnetic-resonance logs, forward mineral modeling by regularized least-squares with singular-value decomposition, recovering elastic properties from irregular rock fragments, a borehole complex-resistivity dispersion logging method for low-resistivity reservoirs, and an integrated carbonate pore-system case study from offshore Vietnam. This issue's source PDF (~21 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; articles 1–5 have full bodies while article 6 was truncated at its "Methodology of Study" heading and is implemented as a methodology proxy. The typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 58), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_tms_nmr_characterization` | Tuscaloosa Marine Shale NMR: matrix vs microfracture porosity from a 10-ms T2 cutoff, the irreducible-water fraction, the Washburn pore-throat radius, and a volumetric recoverable-oil estimate | Besov et al., pp. 221–231 |
+| `article2_tgip_nmr_gas_shale` | TGIP from magnetic resonance: the hydrogen index, mean protons per molecule and mixture MW, the gas gravity, the moles-to-scf conversion (Vscf=0.8305e6·ν), and TGIP per m³ | Kausik et al., pp. 232–241 |
+| `article3_forward_mineral_svd` | Forward mineral modeling: the organic-free elemental correction, the forward fit M = E·x, the truncated-SVD pseudoinverse, the ridge (L2) solution, and the condition number | Xu et al., pp. 242–269 |
+| `article4_elastic_from_fragments` | Elastic properties from fragments: the bulk modulus from MICP compressibility at 5000 psi, Young's modulus from the nanoindentation reduced modulus, the hardness, and dynamic K = ρ(Vp²−4/3·Vs²) | Dang et al., pp. 270–280 |
+| `article5_complex_resistivity_dispersion` | Complex-resistivity dispersion: the Cole-Cole model, the characteristic frequency (Fb = 1/τ), the power-law water-filled porosity from Fb, and the water saturation | Jiang et al., pp. 281–288 |
+| `article6_carbonate_pore_system` | *Methodology proxy:* carbonate pore system — density porosity, PEF rock typing, the vuggy/interparticle partition, the Lucia rock-fabric permeability, and a dual-porosity fracture porosity | Giao & Chung, pp. 289–301 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 58, No. 3 page ranges instead. Article 6 is a methodology proxy (body truncated in extraction); equations are standard-form reconstructions. See `src2017_06/README.md`.
 ## src2017_08 — Vol. 58, No. 4 (August 2017)
 
 Six articles (no tutorial), spanning high- and low-field NMR relaxometry/diffusometry of the Bakken petroleum system, laboratory and downhole wettability from the NMR T1/T2 ratio, an analytical model for centrifuge capillary-pressure measurements, the impact of depth and pressure measurement errors on pressure-gradient estimation, quantification of miscible OBM/WBM contamination in fluid samples, and a fast-neutron gamma density method. This issue's source PDF (~15 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; articles 1–4 have full bodies and article 5 its full method (appendix tail truncated), while article 6 was beyond the extraction (after p408) and is implemented as a methodology proxy. The typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 58), so articles are cited by volume/issue/page. See the per-folder README for details.
