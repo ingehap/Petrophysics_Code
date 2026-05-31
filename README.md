@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2015_10/   Vol. 56 No. 5 (Oct 2015)  —  6 modules + test suite
 ├── src2015_12/   Vol. 56 No. 6 (Dec 2015)  —  4 modules + test suite
 ├── src2016_02/   Vol. 57 No. 1 (Feb 2016)  —  5 modules + test suite
 ├── src2016_04/   Vol. 57 No. 2 (Apr 2016)  —  5 modules + test suite
@@ -91,6 +92,20 @@ Petrophysics_Code/
 
 ---
 
+## src2015_10 — Vol. 56, No. 5 (October 2015)
+
+Six articles (no tutorial), spanning the untangling of acoustic anisotropy (intrinsic/stress/fracture/geometric, via Alford rotation and azimuthal sonic); reservoir fluid geodynamics — why GOR, asphaltenes and biomarkers equilibrate at different rates (Flory-Huggins-Zuo asphaltene gravity gradient and diffusion); a robust Bakken petrophysical model from advanced logs (multimineral, NMR SDR permeability, bimodal Rh-Rv thin-bed analysis); downhole cement evaluation with electromagnetic acoustic transducers (SH/Lamb guided waves); integrated petrophysical rock classification in the McElroy carbonate field; and a consistent thin-bedded-sand evaluation in a Gulf of Mexico deepwater field. This issue's source PDF (~7 MB) has a text layer; Articles 1–4 have full bodies (numbered relations survived as inline text), while Articles 5–6 were beyond the text extraction (the source truncates within Article 4) and are implemented as methodology proxies from the standard methods their titles/abstracts describe. The typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 56), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_acoustic_anisotropy` | Acoustic anisotropy: fast/slow shear anisotropy magnitude, Alford rotation, fast-azimuth by cross-energy minimization, Thomsen gamma | Market, Mejia, Mutlu, Shahri & Tudge, pp. 420–439 |
+| `article2_reservoir_fluid_geodynamics` | Reservoir fluid geodynamics: FHZ asphaltene gravity gradient (Yen-Mullins sizes), diffusion length √(Dt) and equilibration time L²/D | Wang, Kauerauf, Zuo, Chen, Dong, Elshahawi & Mullins, pp. 440–456 |
+| `article3_bakken_petrophysical_model` | Bakken model: linear log-response multimineral inversion, carbonate SDR NMR permeability, NMR S/V, bimodal Rh/Rv thin-bed solver | Simpson, Hohman, Pirie & Horkowitz, pp. 457–478 |
+| `article4_emat_cement_evaluation` | EMAT cement: SH plate-mode cutoff & group velocity, shear modulus, SH attenuation vs cement modulus, Rayleigh-Lamb dispersion | Patterson, Bolshakov & Matuszyk, pp. 479–492 |
+| `article5_mcelroy_rock_classification` | *Methodology proxy (body beyond extraction):* Winland r35, RQI/FZI, and k-means electrofacies rock classes | Saneifar, Skalinski, Theologou, Kenter, Cuffey & Salazar-Tio, pp. 493–510 |
+| `article6_thinbedded_sands_gom` | *Methodology proxy (body beyond extraction):* Thomas-Stieber laminated/dispersed shale, Rh/Rv sand resistivity, and Archie sand Sw | Salunke & Hamman, pp. 511–520 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 56, No. 5 page ranges instead. Equations are standard-form reconstructions. See `src2015_10/README.md`.
 ## src2015_12 — Vol. 56, No. 6 (December 2015)
 
 A carbonate-characterization special issue of four case-study articles (no tutorial): the multiscale spatial heterogeneity and core/NMR petrophysics of the presalt Sag carbonates (North Campos Basin, Brazil); presalt carbonate evaluation for Santos Basin (lithology/porosity, pore typing/permeability, saturation with variable m/n and dielectric textural exponent); petrophysical characterization of the bitumen-saturated karsted Grosmont Formation (Alberta); and rock typing of the giant Tengiz carbonate field (Kazakhstan). This issue's source PDF (~19 MB) has a text layer, so titles/authors/pages and the article bodies were read directly; all four articles have full bodies. As carbonate case studies with few display equations, each module implements the standard petrophysics the paper applies; the typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 56), so articles are cited by volume/issue/page. See the per-folder README for details.
