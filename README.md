@@ -23,6 +23,10 @@ replacement for the original papers.
 ```
 Petrophysics_Code/
 ├── src2017_12/   Vol. 58 No. 6 (Dec 2017)  —  6 modules + test suite
+├── src2018_02/   Vol. 59 No. 1 (Feb 2018)  — 10 modules + test suite
+├── src2018_04/   Vol. 59 No. 2 (Apr 2018)  — 10 modules + test suite
+├── src2018_06/   Vol. 59 No. 3 (Jun 2018)  —  9 modules + test suite
+├── src2018_08/   Vol. 59 No. 4 (Aug 2018)  —  9 modules + test suite
 ├── src2018_10/   Vol. 59 No. 5 (Oct 2018)  — 11 modules + test suite
 ├── src2018_12/   Vol. 59 No. 6 (Dec 2018)  — 12 modules + test suite
 ├── src2019_02/   Vol. 60 No. 1 (Feb 2019)  — 11 modules + test suite
@@ -89,6 +93,76 @@ A digital-log-preparation tutorial and five articles, spanning log preprocessing
 | `article6_cleaning_methods_porosity` | Core-cleaning effects: bulk/grain volumes from weights and densities, the crushed-sample helium porosity, the porosity gain after cleaning, and a solvent-efficiency ranking | Gupta, Rai, Tinni & Sondergeld, pp. 613–622 |
 
 No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 58, No. 6 page ranges instead. Equations are standard-form reconstructions (typeset glyphs dropped in extraction). See `src2017_12/README.md`.
+## src2018_02 — Vol. 59, No. 1 (February 2018)
+
+The **"Best Papers of the 2017 SCA International Symposium"** issue: the first **Shaly Sand** tutorial, seven SCA best papers, and two regular submissions, spanning the Archie baseline for shaly sands, a digital-rock-physics vendor blind study, stress-sensitive mercury-injection capillary pressure, stress-dependent permeability in tight-oil rocks, relative-permeability QC via pore-network simulation, inline-densitometer produced-fluid volumetrics, salt-bearing-sediment digital rock, Box-Behnken core-restoration optimization, geostress effects on tight-sandstone resistivity, and shale gas adsorption. This issue's source PDF (~16 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; the extract captured the tutorial and articles a1–a6 fully plus a truncated a7, while the two regular submissions a8–a9 (contents-only) are methodology proxies. The PDF carries no article DOIs, so the DOIs were taken from CrossRef — this issue uses the older `10.30632/petro_059_1_*` scheme (not `PJVxxNx`). Typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_shaly_sand_tutorial_part1` | *Tutorial:* shaly sands (1 of 3) — the Archie baseline (Sw, formation factor), the 5–50% shaly-sand classification, and the clay specific-surface ratio | Thomas, pp. 7–14 |
+| `article2_drp_blind_study_pc` | Digital-rock blind study: the Young-Laplace pore-throat radius, normalized water saturation, a power-law drainage Pc curve, and IFT rescaling | Chhatre et al., pp. 15–24 |
+| `article3_stress_sensitivity_micp` | Stress-sensitive MICP: the Washburn pore diameter, the Swanson permeability from the MICP apex, and threshold-pressure detection | Guise et al., pp. 25–34 |
+| `article4_stress_dependent_permeability` | Stress-dependent permeability: net confining stress, the exponential k decline with stress, the matrix gas permeability (k = D·μ/B), and Klinkenberg | King et al., pp. 35–43 |
+| `article5_drt_relperm_qc` | Relative-permeability QC: Corey water/oil curves with wettability-dependent endpoints, the water-wet/oil-wet bounding envelope, an outlier flag, and fractional flow | Schembre-McCabe & Kamath, pp. 44–53 |
+| `article6_densitometer_fluid_volume` | Densitometer fluid volumetrics: the water fraction from mixture density, cumulative produced water by integration, and produced oil by volume closure | Olsen, pp. 54–61 |
+| `article7_salt_bearing_digital_rock` | Salt-bearing digital rock: resolved porosity, paleoporosity, salt saturation and classes, the exponential k vs salt-saturation decline, and size percentiles | Rydzy et al., pp. 62–71 |
+| `article8_core_restoration_rsm` | Core-restoration optimization: the USBM wettability index, a Box-Behnken design, a second-order response-surface least-squares fit, and its optimization | Sripal & James, pp. 72–81 |
+| `article9_geostress_resistivity_correction` | *Methodology proxy:* a stress-dependent resistivity, the inverse correction, the Archie saturation, and the saturation bias from skipping the correction | Liu et al., pp. 82–98 |
+| `article10_shale_gas_adsorption` | *Methodology proxy:* the Langmuir isotherm, free + adsorbed gas in place, the adsorbed fraction, and gas desorbed by a pressure drawdown | Tinni, Sondergeld & Rai, pp. 99–104 |
+
+DOI scheme: `10.30632/petro_059_1_aN` (N = 1 … 9) plus the tutorial `…t1` (the older SPWLA format, taken from CrossRef; the PDF carries no DOIs). The extract truncated after a7, so a8–a9 are methodology proxies; equations are standard-form reconstructions. See `src2018_02/README.md`.
+## src2018_04 — Vol. 59, No. 2 (April 2018)
+
+The second **Shaly Sand** tutorial followed by six formation-evaluation articles and three regular submissions, spanning why clay perturbs the porosity logs, silt in low-resistivity low-contrast (LRLC) pay and Thomas-Stieber thin-bed analysis, NMR pore coupling in clay-coated sandstones, simultaneous neutron + X-ray 3D imaging of organic matter and fractures, shale total porosity that eliminates gas saturation by combining conventional and elemental logs, dielectric matrix-permittivity calibration (CRIM/Complex-Domain Analysis), Bakken dielectric-dispersion inversion, 2D directional-resistivity reservoir imaging, downhole relative permeability, and probabilistic-neural-network lithofacies identification. This issue's source PDF (~36 MB) has a text layer, so titles/authors/DOIs were read from the contents page and bodies; the machine extract captured the tutorial and articles a1–a6 fully but truncated after a6 (the a7 DOI header was captured without its body, and a8–a9 were absent), so articles a7–a9 are methodology proxies (a8–a9 DOI suffixes inferred), and the typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_shaly_sand_tutorial_part2` | *Tutorial:* shaly sands (No. 2 of 3) — the neutron-porosity overstatement in shale (φ_N = φ_w + Vclay·HI_clay), 1:1-vs-2:1 clay hydrogen indices, the spectral GR, and the Vsh ≠ Vclay caution | Thomas, pp. 113–117 |
+| `article2_silt_lrlc_thomas_stieber` | Silt in LRLC pay: the dispersed/laminated/structural shale-distribution porosities, total porosity, the Thomas-Stieber sand-lamina porosity, and the Rv/Rh anisotropy discriminator | Belevich & Bal, pp. 118–135 |
+| `article3_nmr_pore_coupling` | NMR pore coupling: the fast-diffusion surface relaxation (1/T2 = ρ2·S/V), the multiexponential decay, the field-gradient diffusion relaxation, and pore S/V from T2 | Jácomo et al., pp. 136–152 |
+| `article4_neutron_xray_imaging` | Simultaneous neutron + X-ray imaging: Lambert-Beer attenuation, the cross-section-weighted attenuation coefficient, optical density, and orthogonal-contrast voxel segmentation | Chiang et al., pp. 153–161 |
+| `article5_shale_total_porosity_elemental` | Shale total porosity: organic-matter volume from TOC and a 5-component density+neutron response solved as a 2×2 system that eliminates Sh, recovering φ and Sh | Zhu et al., pp. 162–184 |
+| `article6_dielectric_matrix_crim_cda` | Dielectric matrix calibration: the CRIM matrix permittivity from mineralogy (kerogen included), the CRIM mixing law, the simplified-CRIM inversion, and the matrix sensitivity motivating CDA | Wang et al., pp. 185–200 |
+| `article7_bakken_dielectric_dispersion` | Bakken dielectric dispersion: the Lichtenecker-Rother power-law mixing with the homogeneity index α (CRI at α=0.5), the complex water permittivity, and the Sw inversion | Han & Misra, pp. 201–217 |
+| `article8_2d_directional_resistivity_imaging` | *Methodology proxy:* deep directional resistivity — a DOI-weighted two-bed apparent resistivity, the distance-to-boundary inversion, the azimuthal geosignal, and 2D image assembly | Thiel, Bower & Omeragic, pp. 218–233 |
+| `article9_downhole_relative_permeability` | *Methodology proxy:* downhole relative permeability — the Corey water/oil relative permeabilities, the water fractional flow, and the end-point mobility ratio | Hadibeik et al., pp. 234–244 |
+| `article10_pnn_lithofacies` | *Methodology proxy:* lithofacies identification — a Specht probabilistic neural network (Gaussian Parzen densities, Bayes decision) with leave-one-out smoothing selection | Gu, Bao & Rui, pp. 245–267 |
+
+DOI pattern: `10.30632/PJV59N2-2018aN` (N = 1 … 9) plus the tutorial `…t1` (prefix `PJV59N2`, capital N, hyphen separator). The extract truncated after a6, so a7–a9 are methodology proxies (a8–a9 DOI suffixes inferred); equations are standard-form reconstructions. See `src2018_04/README.md`.
+## src2018_06 — Vol. 59, No. 3 (June 2018)
+
+The third **Shaly Sand** tutorial followed by five formation-evaluation articles and three regular submissions, spanning the Waxman-Smits shaly-sand model in conductivity space, kerogen-inclusive matrix-adjusted shale porosity, an NMR spontaneous-imbibition wettability index for shales, an image-based clay-network resistivity/saturation model, a wideband (mHz–GHz) differential-effective-medium permittivity model, a physics-based dielectric model for continuous CEC logging, carbonate permeability heterogeneity, saturation-height capillary-pressure stress corrections, and NMR relaxation of magnetic nanoparticles. This issue's source PDF (~40 MB) has a text layer, so titles/authors/DOIs were read from the contents page and bodies; the machine extract captured the tutorial and articles a1–a5 fully but truncated after a5 (journal p372), so articles a6–a8 (present only as TOC entries) are methodology proxies with inferred DOI suffixes, and the typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_shaly_sand_tutorial_part3` | *Tutorial:* shaly sands (No. 3 of 3) — the Waxman-Smits model in conductivity space (C0 = (Cw + B·Qv)/F\*), F\* = φ^−m\*, the saturation conductivity, and a Thomas-Stieber laminated-shale porosity | Thomas, pp. 276–287 |
+| `article2_matrix_adjusted_shale_porosity` | Organic-shale total porosity: density porosity, a kerogen-inclusive matrix density by reciprocal mass mixing, the electron→bulk density conversion (verbatim), and kerogen from TOC | Craddock et al., pp. 288–307 |
+| `article3_nmr_wettability_index_shales` | Shale wettability: the NMR spontaneous-imbibition wettability index, its two-sequence average, the TOC (5 wt%) and clay (10/65 wt%) percolation thresholds, and a spectral-GR synthesis | Gupta, Jernigen, Curtis, Rai & Sondergeld, pp. 308–317 |
+| `article4_clay_network_resistivity_saturation` | Image-based clay-network resistivity: directional tortuosity, the percolating clay-network conductivity, a Maxwell-Garnett inclusion mixing, the summed total conductivity, and Archie Sw | Garcia, Jagadisan, Rostami & Heidari, pp. 318–333 |
+| `article5_wideband_em_dem_permittivity` | Wideband (mHz–GHz) EM: complex permittivity with the low-frequency conductivity term, spheroid depolarization factors, a Bruggeman effective-medium mixing, and the Archie F = φ^−m limit | Seleznev et al., pp. 334–353 |
+| `article6_dielectric_cec_shaly_sand` | Continuous CEC logging: the CEC↔surface-conductivity relation (Stern-layer fraction, Nernst-Einstein mobility), whole-rock CEC, and the complex permittivity; reduces to the uncharged case at CEC = 0 | Freed et al., pp. 354–372 |
+| `article7_carbonate_permeability_heterogeneity` | *Methodology proxy:* carbonate permeability heterogeneity — arithmetic (Kh) vs harmonic (Kv) averaging, the Kv/Kh ratio, and the Dykstra-Parsons and Lorenz coefficients | Dernaika et al., pp. 373–396 |
+| `article8_saturation_height_stress_correction` | *Methodology proxy:* the Leverett J-function, the saturation-height function, a net-stress permeability/porosity correction that rescales Pc, and a Brooks-Corey curve | Hulea, pp. 397–406 |
+| `article9_nmr_fe3o4_nanoparticle_relaxation` | *Methodology proxy:* the surface (fast-diffusion) relaxation from S/V, the concentration-linear relaxivity 1/T = 1/T0 + r·C, the fitted relaxivity, and the r2/r1 ratio | Zhu, Ko, Daigle & Zhang, pp. 407–414 |
+
+DOI pattern: `10.30632/PJV59N3-2018aN` (N = 1 … 8) plus the tutorial `…t1` (prefix `PJV59N3`, capital N, hyphen separator). The extract truncated after a5, so a6–a8 are methodology proxies with inferred DOI suffixes; equations are standard-form reconstructions. See `src2018_06/README.md`.
+## src2018_08 — Vol. 59, No. 4 (August 2018)
+
+The **"Special Issue on Flow Diagnostics"**: a capillary-pressure tutorial, six flow-diagnostics articles, and two regular submissions, spanning capillary pressure from first principles, an acoustic leak-rate model, a nonlinear multiphase production-logging holdup correction, an ultracompact ultrasonic flow-array tool, downhole sand-production rate from piezoelectric grain counting, distributed fiber (DTS/DAS) flow monitoring, two decades of ACG field surveillance, flow-regime-corrected crushed-rock shale permeability (the "λ plot"), and induced-polarization chargeability of rocks with metallic particles. This issue's source PDF (~45 MB) has a text layer, so titles/authors/DOIs were read from the contents page and bodies; the bodies of all nine items were captured, but the typeset display-equation glyphs were dropped in extraction (only bare equation numbers survived for most articles), so equations are faithful standard-form reconstructions — except Revil et al., whose equations largely survived inline. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_capillary_pressure_tutorial_part1` | *Tutorial:* capillary pressure (Part 1) — the Young-Laplace pressure jump, the capillary-rise force balance (h = 2σcosθ/(ρgr)), Pc as the difference of the two hydrostatic columns, and Pc from the pore-throat radius | Thomas, pp. 421–427 |
+| `article2_acoustic_flowrate_model` | Acoustic leak-rate model: the Bernoulli liquid-leak rate, the choked-gas critical ratio and mass rate, the leak Mach number, the monopole-dipole-quadrupole amplitude scaling, and a calibrated amplitude→rate inversion | Seshadri, Freund, Jha, Venna, Walters & Jagannathan, pp. 429–438 |
+| `article3_multiphase_pl_holdup_correction` | Array-PL holdup: the linear water holdup from array resistance, the paper's nonlinear velocity-dependent correction (Eq. 7 verbatim), and cross-section integration into per-phase flow rates | Manzar, Sun & Chace, pp. 439–456 |
+| `article4_ultracompact_flow_array_doppler` | *Methodology proxy:* the ultrasonic Doppler flow-speed relation, the digital Doppler speed from the spectral-peak position, conductivity-probe holdup, and the area-weighted array profile mean | Abbassi, Tavernier, Donzier, Gysen, Gysen, Chen, Zeid & Cedillo, pp. 457–488 |
+| `article5_downhole_sand_production_rate` | Piezoelectric sand counting: single-grain volume, the 0.4572 m vertical-resolution correction, the volumetric sand rate (VSPR), and the mass sand rate (SPR) | Swarnanto et al., pp. 489–495 |
+| `article6_distributed_sensing_flow_monitoring` | DTS/DAS flow allocation: the thermal-mixing energy balance and two-zone flow split, the Joule-Thomson dT = JTC·dP, the gauge-length max detectable frequency (c/2GL), and sound-speed fluid typing | Naldrett, Cerrahoglu & Mahue, pp. 496–510 |
+| `article7_acg_downhole_surveillance` | *Methodology proxy:* a field-history paper with no equations — a productivity index, a moving-average transient-event detector, and the distributed-sensing data-rate budget its PDHG/DFO workflow uses | Sheydayev, Atakishiyev, Zett, Schoepf & Thiruvenkatanathan, pp. 511–527 |
+| `article8_crushedrock_flowregime_permeability` | Flow-regime crushed-rock permeability: Darcy flow, the gas mean free path, the Knudsen number and regime, the Klinkenberg correction, and the "λ plot" extrapolated to a 1-nm mean free path (k1λ) with an effective pore diameter | Royer, Hobbs & Bonar, pp. 529–543 |
+| `article9_chargeability_metallic_particles` | Induced-polarization chargeability: Seigel's chargeability from the conductivity dispersion, the Stern-layer surface conductivity, the background chargeability and the universal R = λ/B, and a mixture chargeability with a metallic-particle term | Revil, Tartrat, Abdulsamad, Ghorbani & Coperey, pp. 544–553 |
+
+DOI pattern: `10.30632/PJV59V4-2018aN` (N = 1 … 8) plus the tutorial `…t1` — note the prefix is `PJV59V4` (letter **V**), not `N4`, as printed in the source. Equations are standard-form reconstructions (Revil et al. survived inline). See `src2018_08/README.md`.
 
 ---
 
