@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2017_10/   Vol. 58 No. 5 (Oct 2017)  —  5 modules + test suite
 ├── src2017_12/   Vol. 58 No. 6 (Dec 2017)  —  6 modules + test suite
 ├── src2018_02/   Vol. 59 No. 1 (Feb 2018)  — 10 modules + test suite
 ├── src2018_04/   Vol. 59 No. 2 (Apr 2018)  — 10 modules + test suite
@@ -79,6 +80,19 @@ Petrophysics_Code/
 
 ---
 
+## src2017_10 — Vol. 58, No. 5 (October 2017)
+
+The **"Best of 2017 SPWLA Symposium"** issue: five articles (no tutorial), spanning hydrocarbon-saturation assessment in mixed-wet rocks by pore-combination modeling, the effect of bitumen extraction on 2D NMR of kerogen isolates, characterizing natural gamma-ray tools without the physical API calibration formation (Monte Carlo + a single calibration point), imaging near-wellbore properties by joint inversion of sonic/resistivity/density logs, and lessons from Permian core analysis (retort vs GRI vs routine). This issue's source PDF (~16 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; articles 1–4 have full bodies while article 5 was truncated after ~1.5 pages (only abstract/intro) and is implemented as a methodology proxy. The typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 58), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_mixedwet_saturation_pcm` | Mixed-wet saturation by pore-combination modeling: the Archie and Montaron conductivity models, the percolation-threshold generalization (reduces to Archie), CRIM mixing of water-wet/oil-wet blocks by the oil-wet fraction, and the Sw inversion | Garcia, Heidari & Rostami, pp. 454–469 |
+| `article2_kerogen_2d_nmr_bitumen` | Kerogen 2D NMR: pellet bulk volume and swelling, the bulk/surface/diffusion relaxation decomposition, surface relaxation and pore diameter (d = 6·ρ·T), the fast-diffusion validity ratio, and the Archie formation factor | Chen, Singer, Kuang, Vargas & Hirasaki, pp. 470–484 |
+| `article3_gamma_ray_api_characterization` | Gamma-ray tool characterization: the representative (centroid) bin energy, the linear source rate and isotope fractions, the U-235→U-238 weighting (0.04604), and the count rate / tool sensitivity (cps per 200 API) | Moake, pp. 485–500 |
+| `article4_joint_inversion_nearwellbore` | Near-wellbore joint inversion: the Archie pixel resistivity, the relative gas fraction, velocities from moduli, Wood's and Brie's fluid-modulus laws, volumetric density mixing, and the relative-misfit cost function | Shetty et al., pp. 501–516 |
+| `article5_permian_core_analysis` | *Methodology proxy:* Permian core analysis — porosity from grain/bulk volume, retort and Dean-Stark saturations, the hydrocarbon pore volume, and the relative method discrepancy | Blount, Croft, Driskill & Tepper, pp. 517–527 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 58, No. 5 page ranges instead. Article 5 is a methodology proxy (body truncated in extraction); equations are standard-form reconstructions. See `src2017_10/README.md`.
 ## src2017_12 — Vol. 58, No. 6 (December 2017)
 
 A digital-log-preparation tutorial and five articles, spanning log preprocessing for automated interpretation, driller's-depth correction by a way-point (thermal + elastic-stretch) methodology, carbonate pore-structure and permeability heterogeneity from MICP and sonic-log frame-flexibility factors, 3D printing of Berea sandstone as a petrophysical tool, the impact of thermal maturity on kerogen density, and the impact of core-cleaning methods on petrophysical measurements. This issue's source PDF (~17 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; all six items have full bodies (the conference abstracts after p.622 are not implemented), and the typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). This issue **predates SPWLA DOI assignment** (the President's column says DOIs are about to begin; the PDF and CrossRef carry none for Vol. 58), so articles are cited by volume/issue/page. See the per-folder README for details.
