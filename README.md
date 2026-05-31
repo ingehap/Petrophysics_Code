@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2016_06/   Vol. 57 No. 3 (Jun 2016)  —  5 modules + test suite
 ├── src2016_08/   Vol. 57 No. 4 (Aug 2016)  —  5 modules + test suite
 ├── src2016_10/   Vol. 57 No. 5 (Oct 2016)  —  5 modules + test suite
 ├── src2016_12/   Vol. 57 No. 6 (Dec 2016)  —  6 modules + test suite
@@ -87,6 +88,19 @@ Petrophysics_Code/
 
 ---
 
+## src2016_06 — Vol. 57, No. 3 (June 2016)
+
+Five articles (no tutorial), spanning heterogeneous-carbonate subsurface consistency via saturation-height models calibrated to dynamic data; a modified capillary-channel model combining hydraulic and electrical conductivity to characterize carbonate pore space (eliminating tortuosity); permeability interpretation from wireline-formation-tester pressure transients with consideration of effective thickness; an improved multiscale (dual-tree complex wavelet) and leaky-P-removal analysis for shear-wave anisotropy inversion from crossed-dipole logs; and a review of wireline depth quality with an elastic-stretch correction. This issue's source PDF (~13 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies. Articles 1–4 have full bodies and their numbered relations survived as inline text; the typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. Article 5 (Bolt) was beyond the text extraction (the source truncates within Article 4) and is implemented as a methodology proxy from the standard Hooke's-law cable-stretch correction its title describes. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 57), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_carbonate_saturation_height` | Carbonate SHM: Brooks-Corey saturation-height model, buoyancy Pc, per-rock-type permeability averaging (arithmetic/geometric/harmonic), Lucia transform, and WFT mobility-to-permeability | Hulea, Frese & Ramaswami, pp. 223–232 |
+| `article2_hydraulic_electrical_pore_space` | Hydraulic + electrical pore space: Hagen-Poiseuille flow, capillary permeability k = φr²/8τ², Archie F = τ²/φ, the tortuosity-free k = r²/8F, and the variable pore-radius/shape factor | Müller-Huber, Schön & Börner, pp. 233–250 |
+| `article3_wft_permeability_effective_thickness` | WFT permeability: Brooks-Corey kr/Pc, single-probe spherical drawdown permeability, spherical k = (kh²kv)^(1/3), and pressure-derivative flow-regime slope | Yang & Yang, pp. 251–269 |
+| `article4_shearwave_anisotropy_leakyP` | Shear-wave anisotropy: analytic-wavelet Hilbert pair, Alford rotation to fast/slow principal waves, leaky-P contamination model, fast-azimuth by cross-energy minimization, and the inversion objective | Li, Tao, Wang, Zhang & Vega, pp. 270–293 |
+| `article5_wireline_depth_elastic_stretch` | *Methodology proxy (body beyond extraction):* wireline depth — cable tension vs depth, stretch coefficient 1/(EA), total elastic stretch, and stretch-corrected depth | Bolt, pp. 294–310 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 57, No. 3 page ranges instead. Equations are standard-form reconstructions. See `src2016_06/README.md`.
 ## src2016_08 — Vol. 57, No. 4 (August 2016)
 
 Five articles (no tutorial), spanning NMR relaxometry in shale and the relaxation mechanisms (dipolar vs spin-rotation) that set the T1/T2 ratios of each constituent; predicting carbonate rock properties from NMR with radial-basis-function generalized interpolation (and PCA of the T2 distribution); drainage capillary pressure and resistivity index from short-wait porous-plate experiments via exponential-decay equilibrium prediction; low-cost spectral gamma-ray measurement while drilling (sourceless gain regulation and K/U/Th window analysis); and a pure-matrix-GR indicator that removes porosity and bulk-density effects from the GR log. This issue's source PDF (~13 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; all five articles have full bodies. Many numbered relations survived as inline text (the BPP and spin-rotation relations, the Coates/SDR transforms, the exponential-decay and pure-matrix-GR derivations); the typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 57), so articles are cited by volume/issue/page. See the per-folder README for details.
