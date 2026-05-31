@@ -33,6 +33,17 @@ T2_CUTOFF_S = 1.5e-3         # intragranular / intergranular split
 
 # ---------------------------------------------- relaxation --------------
 
+def observed_rate(t_bulk, rho, sv):
+    """Observed relaxation rate in the fast-diffusion regime (Eqs. 1-2)
+
+        1/T_obs = 1/T_bulk + rho*(S/V),
+
+    the sum of the bulk-fluid rate and the surface rate (internal-gradient
+    diffusion T2D ruled out in the paper for this sample).
+    """
+    return 1.0 / t_bulk + rho * np.asarray(sv, float)
+
+
 def surface_rate(t_observed, t_bulk):
     """Surface relaxation rate  1/T_S = 1/T_obs - 1/T_bulk  (Eqs. 3-4)."""
     return 1.0 / np.asarray(t_observed, float) - 1.0 / t_bulk
@@ -41,6 +52,18 @@ def surface_rate(t_observed, t_bulk):
 def surface_to_volume(rho, t_surface):
     """Surface-to-volume ratio from the surface relaxation  S/V = 1/(rho*T_S)."""
     return 1.0 / (rho * np.asarray(t_surface, float))
+
+
+def sv_from_bet(s_bet, rho_bulk, phi):
+    """Pore surface-to-volume ratio from BET data (Eqs. 5-8)
+
+        S/V = SBET*rho_B/phi,
+
+    with SBET the specific surface area (m^2/g), rho_B the dry-pellet bulk
+    density (g/cm^3) and phi the (fractional) porosity.  Units: convert as needed
+    (m^2/g * g/cm^3 = 1e6 1/m if SBET in m^2/g and rho_B in g/cm^3).
+    """
+    return s_bet * rho_bulk / np.asarray(phi, float)
 
 
 def pore_diameter(rho, t_surface):
@@ -59,6 +82,16 @@ def bet_partition(phi_small, phi_large, s_bet):
     return s_small, s_bet - s_small
 
 
+def fast_diffusion_number(diameter, rho, d0):
+    """Fast-diffusion number  d*rho/D0  (validity check for Eqs. 3-4).
+
+    The fast-diffusion regime (uniform magnetization across a pore) requires
+    d*rho/D0 << 1; the paper confirms this holds for both pore types.  D0 is the
+    bulk self-diffusion coefficient; keep d, rho, D0 in consistent units.
+    """
+    return np.asarray(diameter, float) * rho / d0
+
+
 def fluid_type(t1t2, cutoff=2.0):
     """Type the fluid from the T1/T2 ratio: heptane (hydrocarbon) reads higher."""
     return "hydrocarbon" if t1t2 >= cutoff else "water"
@@ -75,21 +108,35 @@ def test_all():
     ts = 1.0 / surface_rate(0.5, 1.91)
     assert ts > 0
 
-    # Pore diameter from relaxivity and surface relaxation time
+    # The observed rate is the sum of bulk and surface rates (Eqs. 1-2)
     rho2 = 8.1e-6           # m/s (intergranular heptane)
+    sv = 1.2e5              # 1/m
+    tobs = 1.0 / observed_rate(1.91, rho2, sv)
+    assert np.isclose(surface_rate(tobs, 1.91), rho2 * sv)
+
+    # Pore diameter from relaxivity and surface relaxation time
     d = pore_diameter(rho2, 0.05)
     print(f"  pore diameter          = {d * 1e6:.2f} um")
     assert d > 0 and np.isclose(surface_to_volume(rho2, 0.05) * d, 6.0)
+
+    # S/V from BET surface area, bulk density and porosity
+    sv_bet = sv_from_bet(9.06, 0.75, 0.30)   # m^2/g, g/cm^3, fraction
+    assert sv_bet > 0 and np.isclose(sv_bet, 9.06 * 0.75 / 0.30)
 
     # BET partition sums back to the total surface area
     s_small, s_large = bet_partition(0.04, 0.06, 14.0)
     print(f"  SBET small / large     = {s_small:.2f} / {s_large:.2f} m^2/g")
     assert np.isclose(s_small + s_large, 14.0) and s_small < s_large
 
+    # Fast-diffusion regime holds (d*rho/D0 << 1) for a typical heptane pore
+    fd = fast_diffusion_number(d, rho2, d0=3.0e-9)
+    print(f"  fast-diffusion number  = {fd:.4f}")
+    assert fd < 1.0
+
     # T1/T2 fluid typing
     assert fluid_type(14.0) == "hydrocarbon" and fluid_type(1.2) == "water"
     print("  PASS")
-    return {"pore_d_um": float(d * 1e6), "SBET_small": float(s_small)}
+    return {"pore_d_um": float(d * 1e6), "SBET_small": float(s_small), "fast_diff": float(fd)}
 
 
 if __name__ == "__main__":

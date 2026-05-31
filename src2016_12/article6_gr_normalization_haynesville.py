@@ -57,6 +57,22 @@ def max_percent_shift(gr_raw, gr_norm):
     return float(np.max(np.abs(np.asarray(gr_norm, float) - gr) / gr) * 100.0)
 
 
+def mean_shift(gr_raw, gr_norm):
+    """Shift of the mean GR applied by normalization, as reported in Table 1.
+
+    Returns (shift_gapi, shift_percent) where
+
+        shift_gapi    = mean(GR_norm) - mean(GR_raw)
+        shift_percent = 100*shift_gapi/mean(GR_raw).
+
+    In the Haynesville field case the maximum mean shift reached 22.7%.
+    """
+    raw_mean = float(np.mean(gr_raw))
+    norm_mean = float(np.mean(gr_norm))
+    shift = norm_mean - raw_mean
+    return shift, 100.0 * shift / raw_mean
+
+
 # ---------------------------------------------- tests --------------
 
 def test_all():
@@ -85,8 +101,13 @@ def test_all():
     shift = max_percent_shift(raw, out)
     print(f"  max percent shift      = {shift:.1f} %")
     assert shift > 0
+
+    # Mean shift (as in Table 1): GAPI and percent, here +20 GAPI on an 80-mean log
+    dg, dp = mean_shift(raw, out)
+    print(f"  mean shift             = {dg:.1f} GAPI ({dp:.1f} %)")
+    assert np.isclose(dg, out.mean() - raw.mean())
     print("  PASS")
-    return {"out_mean": float(out.mean()), "max_shift": shift}
+    return {"out_mean": float(out.mean()), "max_shift": shift, "mean_shift_pct": dp}
 
 
 if __name__ == "__main__":
