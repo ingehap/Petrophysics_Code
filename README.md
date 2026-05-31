@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2017_08/   Vol. 58 No. 4 (Aug 2017)  —  6 modules + test suite
 ├── src2018_10/   Vol. 59 No. 5 (Oct 2018)  — 11 modules + test suite
 ├── src2018_12/   Vol. 59 No. 6 (Dec 2018)  — 12 modules + test suite
 ├── src2019_02/   Vol. 60 No. 1 (Feb 2019)  — 11 modules + test suite
@@ -71,6 +72,23 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2017_08 — Vol. 58, No. 4 (August 2017)
+
+Six articles (no tutorial), spanning high- and low-field NMR relaxometry/diffusometry of the Bakken petroleum system, laboratory and downhole wettability from the NMR T1/T2 ratio, an analytical model for centrifuge capillary-pressure measurements, the impact of depth and pressure measurement errors on pressure-gradient estimation, quantification of miscible OBM/WBM contamination in fluid samples, and a fast-neutron gamma density method. This issue's source PDF (~15 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; articles 1–4 have full bodies and article 5 its full method (appendix tail truncated), while article 6 was beyond the extraction (after p408) and is implemented as a methodology proxy. The typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 58), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_bakken_nmr_relaxometry` | Bakken NMR: the BPP spectral density, the T1/T2 ratio, component classification (kerogen/bitumen/clay-bound water/free oil/free water) by cutoffs, and the hydrogen-index porosity correction | Kausik, Fellah, Feng & Simpson, pp. 341–351 |
+| `article2_wettability_nmr_t1t2` | Wettability from NMR: the bulk/surface relaxation split, the pore-volume-weighted mean T1/T2, the linear T1/T2 → USBM* calibration, and the surface affinity index | Valori, Hursan & Ma, pp. 352–365 |
+| `article3_centrifuge_capillary_pressure` | Centrifuge Pc: the Hassler-Brunner inner-face capillary pressure, the critical rotation speed, the exponential saturation history Sw(t), and Corey relperms with a Pc correlation | Andersen, Skjæveland & Standnes, pp. 366–375 |
+| `article4_pressure_gradient_errors` | Pressure-gradient errors: the pressure-depth model, the pressure-on-depth / depth-on-pressure OLS bracket, orthogonal (total-least-squares) regression, and the method-of-moments correction | Bowers, Schnacke & Hermance, pp. 376–396 |
+| `article5_contamination_quantification` | Contamination: the exponential heavy-end composition, the two-endpoint mass balance and native recovery, the power-law OD/property cleanup, and the volume→weight conversion | Zuo et al., pp. 397–410 |
+| `article6_fast_neutron_gamma_density` | *Methodology proxy:* fast-neutron gamma density — the inelastic-gamma count attenuation with density, the density inverted from the count, the two-detector compensated density, and a spine-and-ribs standoff correction | Zhang et al., pp. 411–425 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 58, No. 4 page ranges instead. Article 6 is a methodology proxy (body beyond the extraction); equations are standard-form reconstructions. See `src2017_08/README.md`.
 
 ---
 
