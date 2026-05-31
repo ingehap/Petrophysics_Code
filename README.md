@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2015_04/   Vol. 56 No. 2 (Apr 2015)  —  5 modules + test suite
 ├── src2015_06/   Vol. 56 No. 3 (Jun 2015)  —  4 modules + test suite
 ├── src2015_08/   Vol. 56 No. 4 (Aug 2015)  —  5 modules + test suite
 ├── src2015_10/   Vol. 56 No. 5 (Oct 2015)  —  6 modules + test suite
@@ -94,6 +95,19 @@ Petrophysics_Code/
 
 ---
 
+## src2015_04 — Vol. 56, No. 2 (April 2015)
+
+Five articles (no tutorial), spanning automatic quantification of wireline/LWD pressure-test quality (drawdown mobility, buildup-stability least-squares, radius of investigation); steady-state stress-dependent permeability of tight oil-bearing rocks (Darcy, Terzaghi net confining stress, exponential k-stress decline); permeability estimation in the McMurray formation from high-resolution microresistivity images (Vsh-k log-linear transform and flow-based upscaling — the cover paper); automatic microresistivity-curve extraction from borehole-microimager button data (median curve + log-log calibration); and a new method to estimate porosity more accurately from NMR data at short relaxation times (regularized ILT with a bias-correction factor). This issue's source PDF (~7 MB) has a text layer, so titles/authors/pages and all five article bodies were read directly; the typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 56), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_pressure_test_quality` | Pressure-test quality: pseudosteady drawdown mobility, LSR buildup stability & residual std, relative radius of investigation | Proett, Musharfi, Gill, Ma, Meridji & Eyuboglu, pp. 101–115 |
+| `article2_stress_dependent_permeability` | Stress-dependent permeability: Darcy's law, Terzaghi net confining stress, exponential k = k0·exp(−γ·NCS) and its fit | Chhatre et al., pp. 116–124 |
+| `article3_mcmurray_permeability_upscaling` | McMurray permeability: log-linear Vsh-k transform and flow-based upscaling (harmonic ≤ geometric ≤ arithmetic bounds) | Manchuk, Garner & Deutsch, pp. 125–139 |
+| `article4_microresistivity_extraction` | Microresistivity extraction: histogram scaling, per-depth median image curve, log-log calibration Rmicro = 10^(A + B·log₁₀Rmedian) | Roslin, pp. 140–146 |
+| `article5_nmr_short_t2_porosity` | NMR short-T2 porosity: Tikhonov ILT T2 inversion, porosity bias from a delta scan, correction factor Cf = 1/(1+B), SNR weighting, total porosity | Venkataramanan et al., pp. 147–157 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 56, No. 2 page ranges instead. Equations are standard-form reconstructions. See `src2015_04/README.md`.
 ## src2015_06 — Vol. 56, No. 3 (June 2015)
 
 Three articles plus a technical note (no tutorial), spanning heavy-oil reservoir evaluation with NMR in the Long Lake / Kinosis SAGD bitumen projects (salinity-insensitive bitumen quantification from the density-vs-NMR porosity difference); a real-time downhole fluid-sample contamination-prediction method combining DFA sensors (linear mixing rules and power-law cleanup extrapolation); an asphaltenes tutorial for the nonchemist (the Yen-Mullins nanocolloidal model and the Flory-Huggins-Zuo asphaltene-gradient EoS); and the original Bateman-Konen resistivity-salinity transform technical note (whose "II" sequel is in the August 2015 issue). This issue's source PDF (~7 MB) has a text layer, so titles/authors/pages and all four item bodies were read directly; the typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 56), so articles are cited by volume/issue/page. See the per-folder README for details.
