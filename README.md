@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2015_08/   Vol. 56 No. 4 (Aug 2015)  —  5 modules + test suite
 ├── src2015_10/   Vol. 56 No. 5 (Oct 2015)  —  6 modules + test suite
 ├── src2015_12/   Vol. 56 No. 6 (Dec 2015)  —  4 modules + test suite
 ├── src2016_02/   Vol. 57 No. 1 (Feb 2016)  —  5 modules + test suite
@@ -92,6 +93,19 @@ Petrophysics_Code/
 
 ---
 
+## src2015_08 — Vol. 56, No. 4 (August 2015)
+
+Four articles plus a technical note (no tutorial), spanning subsurface fluid characterization with downhole/core NMR T1-T2 maps and pore-scale imaging; in-situ evaluation of vapor properties via condensed vapor gamma (the radon-condensation mechanism behind anomalous steamflood gamma); gas diffusion into oil with reservoir baffling and tar-mat formation (reservoir fluid geodynamics); an inversion-based petrophysical interpretation of LWD neutron-induced gamma-ray spectroscopy; and a technical note on the Bateman-Konen resistivity-salinity transform. This issue's source PDF (~20 MB) has a text layer; Articles 1–4 have full bodies (numbered relations survived as inline text), while the technical note (Article 5) was beyond the text extraction (the source truncates within Article 4) and is implemented as a methodology proxy from the standard resistivity-salinity-temperature transforms it concerns. The typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 56), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_nmr_t1t2_fluid_characterization` | NMR T1-T2: bulk/surface/diffusion relaxation, diffusion rate (γGTE)²D/12, multiexponential echo decay, T1/T2 fluid typing | Lessenger, Merkel, Medina, Ramakrishna, Chen, Balliet, Xie, Bhattad, Carnerup & Knackstedt, pp. 313–333 |
+| `article2_condensed_vapor_gamma` | Condensed vapor gamma: Clausius-Clapeyron vapor pressure, radon-222 decay/activity, vapor-liquid partition (Ostwald), condensation concentration | O'Sullivan, pp. 334–345 |
+| `article3_gas_diffusion_tar_mats` | Gas diffusion: diffusion length √(Dt), baffle equilibration L²/D, Fickian erfc gas profile, FHZ asphaltene gradient, tar-mat onset | Achourov, Pfeiffer, Kollien, Betancourt, Zuo, di Primio & Mullins, pp. 346–357 |
+| `article4_spectroscopy_inversion` | GR spectroscopy: Tikhonov/Occam regularized inversion, linear mixing law, matrix GR from K/U/Th, volume→weight fraction, density porosity | Ajayi, Torres-Verdín & Preeg, pp. 358–378 |
+| `article5_bateman_konen_resistivity_salinity` | *Technical note (methodology proxy):* Arps temperature conversion, salinity↔Rw transform, Rwa, Archie Sw | Kennedy, pp. 379–381 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 56, No. 4 page ranges instead. Equations are standard-form reconstructions. See `src2015_08/README.md`.
 ## src2015_10 — Vol. 56, No. 5 (October 2015)
 
 Six articles (no tutorial), spanning the untangling of acoustic anisotropy (intrinsic/stress/fracture/geometric, via Alford rotation and azimuthal sonic); reservoir fluid geodynamics — why GOR, asphaltenes and biomarkers equilibrate at different rates (Flory-Huggins-Zuo asphaltene gravity gradient and diffusion); a robust Bakken petrophysical model from advanced logs (multimineral, NMR SDR permeability, bimodal Rh-Rv thin-bed analysis); downhole cement evaluation with electromagnetic acoustic transducers (SH/Lamb guided waves); integrated petrophysical rock classification in the McElroy carbonate field; and a consistent thin-bedded-sand evaluation in a Gulf of Mexico deepwater field. This issue's source PDF (~7 MB) has a text layer; Articles 1–4 have full bodies (numbered relations survived as inline text), while Articles 5–6 were beyond the text extraction (the source truncates within Article 4) and are implemented as methodology proxies from the standard methods their titles/abstracts describe. The typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 56), so articles are cited by volume/issue/page. See the per-folder README for details.
