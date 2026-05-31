@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2016_04/   Vol. 57 No. 2 (Apr 2016)  —  5 modules + test suite
 ├── src2016_06/   Vol. 57 No. 3 (Jun 2016)  —  5 modules + test suite
 ├── src2016_08/   Vol. 57 No. 4 (Aug 2016)  —  5 modules + test suite
 ├── src2016_10/   Vol. 57 No. 5 (Oct 2016)  —  5 modules + test suite
@@ -88,6 +89,19 @@ Petrophysics_Code/
 
 ---
 
+## src2016_04 — Vol. 57, No. 2 (April 2016)
+
+Five articles (no tutorial), spanning the Reservoir Producibility Index — a log-based metric for tight-oil reservoir quality that treats producible oil as positive and immobile kerogen/bitumen as negative; integrated petrofacies characterization and depositional-environment interpretation of the Bakken shale from core and advanced logs; a new laboratory approach to measuring organic (kerogen) grain density via pycnometry, plasma ashing and TOC regression; a multilevel iterative method quantifying pore-size-distribution (capillary) effects on the phase equilibrium of confined multicomponent fluids; and a method for VTI acoustic-anisotropy interpretation when the Stoneley-wave velocity is missing (V-reg and M-ANNIE 2 closures). This issue's source PDF (~8 MB) has a text layer, so titles/authors/pages and the article bodies were read directly; all five articles have full bodies and their numbered relations survived as inline text. The typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 57), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_reservoir_producibility_index` | Reservoir Producibility Index: OSI = 100·S1/TOC, RPI = WC_oil²/WC_org, dry→WC_org conversion, NMR oil content, clay-bound water | Reeder et al., pp. 83–95 |
+| `article2_bakken_petrofacies` | Bakken petrofacies: Schmoker density TOC, averaged clay volume, stochastic multimineral linear inversion, ternary (Q/C, clay) petrofacies classification, and a chi-square association test | Bhattacharya & Carr, pp. 96–111 |
+| `article3_organic_density` | Organic density: bulk-density and total-grain-density mass balance, TOM = TOC/K, and the 1/ρ_gt-vs-TOC regression for mineral and kerogen grain densities | Dang, Sondergeld & Rai, pp. 112–120 |
+| `article4_pore_confinement_phase_equilibrium` | Confined-fluid phase equilibrium: Wilson K-values, Rachford-Rice flash, Young-Laplace capillary pressure, Macleod-Sugden parachor IFT, and a Peng-Robinson Z-factor kernel | Li, Mezzatesta, Li, Ma & Jamili, pp. 121–139 |
+| `article5_acoustic_anisotropy_no_stoneley` | VTI anisotropy without Stoneley: VTI moduli (→ isotropic), positive-definite check, Thomsen parameters, M-ANNIE 2 (γ = 0.93ε) closure for C66, V-reg off-axis velocities, and closure stress | Gu, Quirein, Murphy, Rivera Barraza & Ou, pp. 140–156 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 57, No. 2 page ranges instead. Equations are standard-form reconstructions. See `src2016_04/README.md`.
 ## src2016_06 — Vol. 57, No. 3 (June 2016)
 
 Five articles (no tutorial), spanning heterogeneous-carbonate subsurface consistency via saturation-height models calibrated to dynamic data; a modified capillary-channel model combining hydraulic and electrical conductivity to characterize carbonate pore space (eliminating tortuosity); permeability interpretation from wireline-formation-tester pressure transients with consideration of effective thickness; an improved multiscale (dual-tree complex wavelet) and leaky-P-removal analysis for shear-wave anisotropy inversion from crossed-dipole logs; and a review of wireline depth quality with an elastic-stretch correction. This issue's source PDF (~13 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies. Articles 1–4 have full bodies and their numbered relations survived as inline text; the typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. Article 5 (Bolt) was beyond the text extraction (the source truncates within Article 4) and is implemented as a methodology proxy from the standard Hooke's-law cable-stretch correction its title describes. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 57), so articles are cited by volume/issue/page. See the per-folder README for details.
