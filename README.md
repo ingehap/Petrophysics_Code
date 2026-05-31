@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2015_12/   Vol. 56 No. 6 (Dec 2015)  —  4 modules + test suite
 ├── src2016_02/   Vol. 57 No. 1 (Feb 2016)  —  5 modules + test suite
 ├── src2016_04/   Vol. 57 No. 2 (Apr 2016)  —  5 modules + test suite
 ├── src2016_06/   Vol. 57 No. 3 (Jun 2016)  —  5 modules + test suite
@@ -90,6 +91,18 @@ Petrophysics_Code/
 
 ---
 
+## src2015_12 — Vol. 56, No. 6 (December 2015)
+
+A carbonate-characterization special issue of four case-study articles (no tutorial): the multiscale spatial heterogeneity and core/NMR petrophysics of the presalt Sag carbonates (North Campos Basin, Brazil); presalt carbonate evaluation for Santos Basin (lithology/porosity, pore typing/permeability, saturation with variable m/n and dielectric textural exponent); petrophysical characterization of the bitumen-saturated karsted Grosmont Formation (Alberta); and rock typing of the giant Tengiz carbonate field (Kazakhstan). This issue's source PDF (~19 MB) has a text layer, so titles/authors/pages and the article bodies were read directly; all four articles have full bodies. As carbonate case studies with few display equations, each module implements the standard petrophysics the paper applies; the typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 56), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_presalt_sag_nmr_petrophysics` | Presalt Sag NMR: T2-cutoff BVI/FFI partition, total-porosity model, T2 log-mean, and Coates/SDR NMR permeability | Chitale, Alabi, Gramin, Lepley & Piccoli, pp. 552–576 |
+| `article2_santos_presalt_evaluation` | Santos presalt: SDR permeability, Archie with variable m/n, saturation exponent from the dielectric textural exponent (m·n), microporosity Sw, and the macro/vug porosity indicator | Boyd et al., pp. 577–591 |
+| `article3_grosmont_bitumen_carbonates` | Grosmont bitumen: dolomite-grain-density porosity, Archie with variable m/n, bitumen saturation Sb = 1−Sw, Dean-Stark porosity/saturations, and Rmf/Rw | MacNeil, pp. 592–614 |
+| `article4_tengiz_rock_typing` | Tengiz rock typing: RQI, normalized porosity, FZI hydraulic units, permeability from FZI, rock-type k–φ transform, saturation-height function and bulk volume water | Skalinski, Se, Playton, Theologou, Narr, Sullivan & Mallan, pp. 615–647 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 56, No. 6 page ranges instead. Equations are standard-form reconstructions. See `src2015_12/README.md`.
 ## src2016_02 — Vol. 57, No. 1 (February 2016)
 
 Five articles — the Best Papers of the 2015 SCA Symposium plus one regular submission (no tutorial) — spanning the impact of reservoir conditions and rock heterogeneity on CO2-brine multiphase flow in sandstone (capillary pressure, relative permeability, residual trapping); estimating water/oil saturations in organic shales from the 2D T1-T2 NMR ratio (with NMRD dispersion models for confinement); insights into low-permeability measurement methods (step-/pulse-decay, steady-state gas/liquid) under the Darcy-Klinkenberg model; a critical review of low-salinity waterflooding (fractional-flow shocks, residual-oil reduction, wettability); and graphical solutions for laminated (Rh-Rv) and dispersed (Waxman-Smits/Juhasz) shaly sands. This issue's source PDF (~10 MB) has a text layer, so titles/authors/pages and the article bodies were read directly; all five articles have full bodies. Articles 1 and 4 are experimental/review SCA papers implemented from the standard physics they rely on; Articles 2, 3 and 5 carry numbered relations that survived as inline text. The typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 57), so articles are cited by volume/issue/page. See the per-folder README for details.
