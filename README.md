@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2016_10/   Vol. 57 No. 5 (Oct 2016)  —  5 modules + test suite
 ├── src2016_12/   Vol. 57 No. 6 (Dec 2016)  —  6 modules + test suite
 ├── src2017_02/   Vol. 58 No. 1 (Feb 2017)  —  5 modules + test suite
 ├── src2017_04/   Vol. 58 No. 2 (Apr 2017)  —  5 modules + test suite
@@ -85,6 +86,19 @@ Petrophysics_Code/
 
 ---
 
+## src2016_10 — Vol. 57, No. 5 (October 2016)
+
+Five articles (no tutorial), spanning electromagnetic look-ahead-while-drilling resistivity for geostopping ahead of the bit; pore-scale-attribute drainage and imbibition water-saturation models in complex tight-gas reservoirs; first-order error propagation as an integral part of petrophysical calculation; advanced dielectric/CRIM log interpretation for Archie parameters in the Green River Formation; and microfracturing for direct in-situ stress measurement. This issue's source PDF (~13 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; all five articles have full bodies. Many numbered relations survived as inline text (the capillary-pressure conversions and Brooks-Corey imbibition model, the FOEP matrix relations, the skin-depth and CRIM workflow); the typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 57), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_emla_lookahead_resistivity` | EMLA look-ahead resistivity: EM skin depth, ultradeep harmonic-resistivity attenuation/phase from antenna couplings, and the look-ahead depth-of-detection scaling | Constable et al., pp. 426–446 |
+| `article2_tightgas_saturation_height` | Tight-gas Sw models: air-mercury→air-brine and lab→reservoir Pc conversions, clay-bound-water correction, the Thomeer drainage model, Land trapped gas, and the modified Brooks-Corey imbibition model | Merletti et al., pp. 447–464 |
+| `article3_foep_error_propagation` | First-order error propagation: σ_f = √(c′Σc), the variance-covariance matrix from stds/correlations, relative input contributions, and a numerical Jacobian, demonstrated on density porosity and Archie | Stalheim, pp. 465–478 |
+| `article4_dielectric_archie_greenriver` | Dielectric/CRIM interpretation: EM skin depth, the CRIM mixing law and bulk-volume water, and a Pickett-plot fit for Archie m and Rw | Merkel & Lessenger, pp. 479–491 |
+| `article5_microfracturing_insitu_stress` | Microfracturing: overburden from a density profile, Eaton-type minimum horizontal stress, Kirsch breakdown/reopening pressures, σ_H inversion, and G-function closure | Malik, Jones & Boratko, pp. 492–507 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 57, No. 5 page ranges instead. Equations are standard-form reconstructions. See `src2016_10/README.md`.
 ## src2016_12 — Vol. 57, No. 6 (December 2016)
 
 Five articles plus a technical note (no tutorial), spanning shale-fracturing characterization and optimization via anisotropic acoustics, 3D fracture modeling and supervised machine learning; the geomechanics of orthorhombic media; macroscale shale Young's moduli upscaled from nanoindentation; fluid typing and pore size in organic shale from 2D NMR of kerogen isolates; permeability estimation from ultrasonic borehole-image logs in dual-porosity carbonates; and a technical note on normalizing gamma-ray logs across mixed vertical/horizontal wells. This issue's source PDF (~18 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; all six items have full bodies. The typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions; the orthorhombic-media equations survived most fully). This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 57), so articles are cited by volume/issue/page. See the per-folder README for details.
