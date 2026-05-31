@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2015_02/   Vol. 56 No. 1 (Feb 2015)  —  5 modules + test suite
 ├── src2015_04/   Vol. 56 No. 2 (Apr 2015)  —  5 modules + test suite
 ├── src2015_06/   Vol. 56 No. 3 (Jun 2015)  —  4 modules + test suite
 ├── src2015_08/   Vol. 56 No. 4 (Aug 2015)  —  5 modules + test suite
@@ -95,6 +96,19 @@ Petrophysics_Code/
 
 ---
 
+## src2015_02 — Vol. 56, No. 1 (February 2015)
+
+Five articles — the Best Papers of the 2014 SCA Symposium plus two regular submissions (no tutorial) — spanning the onset of oil mobilization and the nonwetting-phase cluster-size distribution (macroscopic capillary number, power-law cluster statistics); CO2 EOR by diffusive mixing in fractured reservoirs (Fickian √t recovery); coupled multiphase-hydrodynamic and NMR pore-scale modeling (Bloch-Torrey with surface relaxation — the cover paper); petrophysical characterization of Permian Wolfcamp pore space (MICP, Washburn, Winland/Swanson permeability); and recharacterization/validation of a through-the-bit-logging tool (electron-density and spine-and-ribs density processing). This issue's source PDF (~15 MB) has a text layer, so titles/authors/pages and all five article bodies were read directly; the typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 56), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_oil_mobilization_clusters` | Oil mobilization: macroscopic (cluster-based) capillary number, logarithmic binning, power-law cluster-size distribution and exponent fit | Berg et al., pp. 15–22 |
+| `article2_co2_diffusive_mixing` | CO2 diffusive mixing: diffusion length √(Dt), diffusion-controlled √t recovery & slope, Fickian early-time block recovery, effective D | Eide, Ersland, Brattekås, Haugen, Graue & Fernø, pp. 23–31 |
+| `article3_nmr_pore_scale_modeling` | NMR pore-scale: magnetization decay, fast-diffusion surface relaxation, Mitra restricted diffusion, and a 1D Bloch-Torrey slab-pore simulation | Evseev, Dinariev, Hürlimann & Safonov, pp. 32–44 |
+| `article4_wolfcamp_pore_space` | Wolfcamp pore space: Washburn pore-throat radius, Winland r35 (+inverse), Swanson apex permeability, characteristic-radius k = c·φ^a·R² | Rafatian & Capsan, pp. 45–57 |
+| `article5_through_the_bit_logging` | Through-the-bit logging: log density from electron-density index, mixture electron density, spine-and-ribs mudcake/standoff density compensation | Slocombe, Bammi, Hunka, Reischman & Schmid, pp. 58–71 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 56, No. 1 page ranges instead. Equations are standard-form reconstructions. See `src2015_02/README.md`.
 ## src2015_04 — Vol. 56, No. 2 (April 2015)
 
 Five articles (no tutorial), spanning automatic quantification of wireline/LWD pressure-test quality (drawdown mobility, buildup-stability least-squares, radius of investigation); steady-state stress-dependent permeability of tight oil-bearing rocks (Darcy, Terzaghi net confining stress, exponential k-stress decline); permeability estimation in the McMurray formation from high-resolution microresistivity images (Vsh-k log-linear transform and flow-based upscaling — the cover paper); automatic microresistivity-curve extraction from borehole-microimager button data (median curve + log-log calibration); and a new method to estimate porosity more accurately from NMR data at short relaxation times (regularized ILT with a bias-correction factor). This issue's source PDF (~7 MB) has a text layer, so titles/authors/pages and all five article bodies were read directly; the typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 56), so articles are cited by volume/issue/page. See the per-folder README for details.
