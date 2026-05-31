@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2015_06/   Vol. 56 No. 3 (Jun 2015)  —  4 modules + test suite
 ├── src2015_08/   Vol. 56 No. 4 (Aug 2015)  —  5 modules + test suite
 ├── src2015_10/   Vol. 56 No. 5 (Oct 2015)  —  6 modules + test suite
 ├── src2015_12/   Vol. 56 No. 6 (Dec 2015)  —  4 modules + test suite
@@ -93,6 +94,18 @@ Petrophysics_Code/
 
 ---
 
+## src2015_06 — Vol. 56, No. 3 (June 2015)
+
+Three articles plus a technical note (no tutorial), spanning heavy-oil reservoir evaluation with NMR in the Long Lake / Kinosis SAGD bitumen projects (salinity-insensitive bitumen quantification from the density-vs-NMR porosity difference); a real-time downhole fluid-sample contamination-prediction method combining DFA sensors (linear mixing rules and power-law cleanup extrapolation); an asphaltenes tutorial for the nonchemist (the Yen-Mullins nanocolloidal model and the Flory-Huggins-Zuo asphaltene-gradient EoS); and the original Bateman-Konen resistivity-salinity transform technical note (whose "II" sequel is in the August 2015 issue). This issue's source PDF (~7 MB) has a text layer, so titles/authors/pages and all four item bodies were read directly; the typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 56), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_heavyoil_nmr_sagd` | Heavy-oil NMR (SAGD): density porosity, Clavier Vsh, NMR-visible bitumen below a 4-ms T2 cutoff, bitumen bulk volume from density−NMR difference, bitumen weight fraction | Cheng, Kotov, Pyke & Hanif, pp. 239–250 |
+| `article2_fluid_contamination_prediction` | Contamination prediction: linear mixing rules (OD/density/shrinkage), modified-GOR f-function, contamination fraction from any sensor, power-law cleanup endpoint extrapolation | Zuo, Gisolf, Dumont, Dubost, Pfeiffer, Wang, Mishra, Chen, Mullins, Biagi & Gemelli, pp. 251–265 |
+| `article3_asphaltenes_explained` | Asphaltenes tutorial: Yen-Mullins size hierarchy and the Flory-Huggins-Zuo OD-ratio (gravity + solubility terms) | Mullins, Pomerantz, Andrews & Zuo, pp. 266–275 |
+| `article4_bateman_konen_transform` | *Technical note:* Bateman-Konen R75 = 0.0123 + 3647.5/C^0.955 and inverse, Arps temperature conversion, Rw from salinity, modified F = b + a/φ^m | Kennedy, pp. 282–283 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 56, No. 3 page ranges instead. Equations are standard-form reconstructions. See `src2015_06/README.md`.
 ## src2015_08 — Vol. 56, No. 4 (August 2015)
 
 Four articles plus a technical note (no tutorial), spanning subsurface fluid characterization with downhole/core NMR T1-T2 maps and pore-scale imaging; in-situ evaluation of vapor properties via condensed vapor gamma (the radon-condensation mechanism behind anomalous steamflood gamma); gas diffusion into oil with reservoir baffling and tar-mat formation (reservoir fluid geodynamics); an inversion-based petrophysical interpretation of LWD neutron-induced gamma-ray spectroscopy; and a technical note on the Bateman-Konen resistivity-salinity transform. This issue's source PDF (~20 MB) has a text layer; Articles 1–4 have full bodies (numbered relations survived as inline text), while the technical note (Article 5) was beyond the text extraction (the source truncates within Article 4) and is implemented as a methodology proxy from the standard resistivity-salinity-temperature transforms it concerns. The typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 56), so articles are cited by volume/issue/page. See the per-folder README for details.
