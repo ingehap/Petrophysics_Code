@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2017_02/   Vol. 58 No. 1 (Feb 2017)  —  5 modules + test suite
 ├── src2017_04/   Vol. 58 No. 2 (Apr 2017)  —  5 modules + test suite
 ├── src2017_06/   Vol. 58 No. 3 (Jun 2017)  —  6 modules + test suite
 ├── src2017_08/   Vol. 58 No. 4 (Aug 2017)  —  6 modules + test suite
@@ -83,6 +84,19 @@ Petrophysics_Code/
 
 ---
 
+## src2017_02 — Vol. 58, No. 1 (February 2017)
+
+A multiphase-flow / special-core-analysis (SCAL) special issue with five articles (no tutorial), spanning flow regimes during immiscible displacement (Corey relperms vs capillary number, with pore-scale connectivity), relative-permeability effects overlooked in MICP measurements, wettability effects on osmosis as a low-salinity oil-mobilization mechanism, a fast micro-CT study of brine salinity on pore-scale fluid distribution, and a benchmark of four numerical SCAL simulators. This issue's source PDF (~12 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; all five articles have full bodies (articles 3 and 4 are experimental/imaging papers). The typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 58), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_flow_regimes_immiscible` | Flow regimes: the Corey relative permeabilities, the capillary number, the Euler characteristic (phase connectivity), and the ganglion flux fraction | Armstrong et al., pp. 10–18 |
+| `article2_micp_relperm_transition` | MICP relative-permeability effects: the equilibration shortfall (apparent vs equilibrium saturation), the (φ/K)^0.5 capillary-pressure scaling, a two-sample t statistic, and the homogeneity-number filter | Maas, Springer & Hebing, pp. 19–27 |
+| `article3_osmosis_low_salinity` | *Experimental paper:* osmosis in low-salinity waterflooding — the van't Hoff osmotic pressure, the Stokes-Einstein diffusivity, Fick's flux, and the Pc = P_oil − P_water convention | Fredriksen, Rognmo, Sandengen & Fernø, pp. 28–35 |
+| `article4_microct_salinity_distribution` | *Imaging study:* micro-CT fluid distribution — phase saturation from segmented voxels, a granulometry pore-size distribution, the oil fraction by pore size, and the mean oil pore size (wettability-shift signature) | Bartels et al., pp. 36–47 |
+| `article5_scal_simulator_comparison` | SCAL simulator comparison: the Pc = P_oil − P_water convention, the Corey relperms and water fractional flow, the Buckley-Leverett fractional-flow derivative, and the Darcy pressure drop | Lenormand, Lorentzen, Maas & Ruth, pp. 48–56 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 58, No. 1 page ranges instead. Articles 3–4 are experimental/imaging papers; equations are standard-form reconstructions. See `src2017_02/README.md`.
 ## src2017_04 — Vol. 58, No. 2 (April 2017)
 
 Five articles (no tutorial), spanning blind-source-separation (NMF) of new-generation NMR T1/T2 logs to resolve poro-fluid signatures, characterizing hydrocarbon storage in organic-rich mudstones by integrating core measurements with source-rock kinetics, the link between NMR relaxation and pore size in carbonate skeletal grains and micrite, rock-fluid affinity (wettability) from the low-field NMR T1/T2 ratio with Gassmann fluid substitution, and SEM evidence for tar-mat formation by asphaltene phase transition. This issue's source PDF (~16 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; all five articles have full bodies (article 5 is a conceptual SEM paper with no typeset equations). The typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 58), so articles are cited by volume/issue/page. See the per-folder README for details.
