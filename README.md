@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2016_12/   Vol. 57 No. 6 (Dec 2016)  —  6 modules + test suite
 ├── src2018_10/   Vol. 59 No. 5 (Oct 2018)  — 11 modules + test suite
 ├── src2018_12/   Vol. 59 No. 6 (Dec 2018)  — 12 modules + test suite
 ├── src2019_02/   Vol. 60 No. 1 (Feb 2019)  — 11 modules + test suite
@@ -71,6 +72,23 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2016_12 — Vol. 57, No. 6 (December 2016)
+
+Five articles plus a technical note (no tutorial), spanning shale-fracturing characterization and optimization via anisotropic acoustics, 3D fracture modeling and supervised machine learning; the geomechanics of orthorhombic media; macroscale shale Young's moduli upscaled from nanoindentation; fluid typing and pore size in organic shale from 2D NMR of kerogen isolates; permeability estimation from ultrasonic borehole-image logs in dual-porosity carbonates; and a technical note on normalizing gamma-ray logs across mixed vertical/horizontal wells. This issue's source PDF (~18 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; all six items have full bodies. The typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions; the orthorhombic-media equations survived most fully). This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 57), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_shale_fracturing_ml` | Shale fracturing: the ANNIE / modified-ANNIE VTI stiffness closure, the equivalent isotropic Young's modulus from the anisotropic moduli, and the return-on-fracturing-investment objective | Gu, Gokaraju, Chen & Quirein, pp. 573–587 |
+| `article2_orthorhombic_geomechanics` | Orthorhombic geomechanics: Hooke's law and compliance, the orthorhombic horizontal-stress model with pore pressure (reduces to VTI), and shear-wave splitting | Far, Quirein & Mekic, pp. 588–596 |
+| `article3_shale_youngs_nanoindentation` | Shale Young's moduli: the indentation modulus and hardness, Young's modulus from the indentation modulus, and the representative (soft-controlled) vs volume-average upscaling | Li & Sakhaee-Pour, pp. 597–603 |
+| `article4_2d_nmr_kerogen_fluid_typing` | 2D NMR kerogen: the bulk/surface relaxation split, the surface-relaxivity / S-V relation and pore diameter, the φ^(2/3) BET partition, and T1/T2 fluid typing | Singer, Chen & Hirasaki, pp. 604–619 |
+| `article5_ultrasonic_permeability_carbonate` | Ultrasonic image permeability: amplitude attenuation and acoustic reflectance, the multi-class image-permeability transform (fitted coefficients), and the calibration objective | Menezes de Jesus, Martins Compan & Surmas, pp. 620–637 |
+| `article6_gr_normalization_haynesville` | *Technical note:* GR normalization — histogram normalization, the true-stratigraphic-thickness projection, the affine mean/σ matching, and the maximum percent shift | Xu, Bayer, Wunderle & Bansal, pp. 638–643 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 57, No. 6 page ranges instead. Equations are standard-form reconstructions. See `src2016_12/README.md`.
 
 ---
 
