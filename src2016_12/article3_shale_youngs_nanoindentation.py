@@ -69,6 +69,22 @@ def volume_average_modulus(mineral_moduli, volume_fractions):
     return float(np.sum(np.asarray(mineral_moduli, float) * np.asarray(volume_fractions, float)))
 
 
+def softest_frame_contribution(moduli, fractions):
+    """Fractional contribution of the softest loading frame to En (Fig. 5)
+
+        ratio = (E1n * f1n) / En,
+
+    where (E1n, f1n) are the modulus/fraction of the softest (smallest-modulus)
+    distribution.  The paper reports this ratio < 0.33, consistent with the
+    soft-entity-controlled representative model.
+    """
+    moduli = np.asarray(moduli, float)
+    fractions = np.asarray(fractions, float)
+    i = int(np.argmin(moduli))
+    en = representative_modulus(moduli, fractions)
+    return float(moduli[i] * fractions[i] / en)
+
+
 # ---------------------------------------------- tests --------------
 
 def test_all():
@@ -90,8 +106,13 @@ def test_all():
     em = volume_average_modulus([40.0, 70.0, 95.0], [0.3, 0.4, 0.3])
     print(f"  En (representative) / Em (volume) = {en:.1f} / {em:.1f} GPa")
     assert em > en
+
+    # The softest loading frame contributes < 1/3 of En (Fig. 5)
+    ratio = softest_frame_contribution([10.0, 25.0, 45.0], [0.5, 0.3, 0.2])
+    print(f"  softest-frame contribution  = {ratio:.3f}")
+    assert ratio < 0.33
     print("  PASS")
-    return {"E": float(e), "En": en, "Em": em}
+    return {"E": float(e), "En": en, "Em": em, "soft_ratio": ratio}
 
 
 if __name__ == "__main__":

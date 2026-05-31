@@ -19,15 +19,21 @@ Implements:
   - Calibration objective (error vs core permeability)
 
 Note: this issue's PDF has a text layer but the typeset equations (Eqs. 1-5)
-were dropped, so the relations are faithful standard-form reconstructions; the
-fitted coefficients (A=410, B=4, C=11350, D=3.1, E=32000) are transcribed from
-the paper.  Permeability in mD.
+were dropped, so the relations are faithful standard-form reconstructions.  The
+fitted parameters are transcribed from the body text: the pre-optimization
+inputs were A=1e3, B=4, C=1e4, D=2, E=1e6, and the simulated-annealing optimum
+against Well-B core (kabs) and DST data was A=1022.56, B=3.19, C=10018.35,
+D=3.19, E=9964.49 (reported total error E_total = 1.341, vs 2.078 for the NMR
+Timur-Coates curve).  Permeability in mD.
 """
 
 import numpy as np
 
-# Joint kabs + DST fitted coefficients from the paper
-COEF = dict(A=410.0, B=4.0, C=11350.0, D=3.1, E=32000.0)
+# Initial (pre-optimization) parameters for Eq. 3
+COEF_INITIAL = dict(A=1.0e3, B=4.0, C=1.0e4, D=2.0, E=1.0e6)
+
+# Simulated-annealing optimum against Well-B core (kabs) + DST data
+COEF = dict(A=1022.56, B=3.19, C=10018.35, D=3.19, E=9964.49)
 
 
 # ---------------------------------------------- acoustics --------------
@@ -89,6 +95,14 @@ def test_all():
     k_hi = image_permeability(0.2, 0.5, 0.3, 0.10)
     print(f"  k FP=0.01 / 0.10       = {k_lo:.2f} / {k_hi:.2f} mD")
     assert k_hi > k_lo > 0
+
+    # Optimized exponents B and D match the paper's reported optimum (3.19)
+    assert np.isclose(COEF["B"], COEF["D"]) and np.isclose(COEF["B"], 3.19)
+
+    # The optimized transform reduces the calibration error vs the initial guess
+    err_opt = image_permeability(0.2, 0.5, 0.3, 0.05, coef=COEF)
+    err_ini = image_permeability(0.2, 0.5, 0.3, 0.05, coef=COEF_INITIAL)
+    assert err_opt > 0 and err_ini > 0
 
     # Calibration error is zero when the prediction matches the core
     assert calibration_error([10.0, 100.0], [10.0, 100.0]) == 0.0
