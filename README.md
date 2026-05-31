@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2016_02/   Vol. 57 No. 1 (Feb 2016)  —  5 modules + test suite
 ├── src2016_04/   Vol. 57 No. 2 (Apr 2016)  —  5 modules + test suite
 ├── src2016_06/   Vol. 57 No. 3 (Jun 2016)  —  5 modules + test suite
 ├── src2016_08/   Vol. 57 No. 4 (Aug 2016)  —  5 modules + test suite
@@ -89,6 +90,19 @@ Petrophysics_Code/
 
 ---
 
+## src2016_02 — Vol. 57, No. 1 (February 2016)
+
+Five articles — the Best Papers of the 2015 SCA Symposium plus one regular submission (no tutorial) — spanning the impact of reservoir conditions and rock heterogeneity on CO2-brine multiphase flow in sandstone (capillary pressure, relative permeability, residual trapping); estimating water/oil saturations in organic shales from the 2D T1-T2 NMR ratio (with NMRD dispersion models for confinement); insights into low-permeability measurement methods (step-/pulse-decay, steady-state gas/liquid) under the Darcy-Klinkenberg model; a critical review of low-salinity waterflooding (fractional-flow shocks, residual-oil reduction, wettability); and graphical solutions for laminated (Rh-Rv) and dispersed (Waxman-Smits/Juhasz) shaly sands. This issue's source PDF (~10 MB) has a text layer, so titles/authors/pages and the article bodies were read directly; all five articles have full bodies. Articles 1 and 4 are experimental/review SCA papers implemented from the standard physics they rely on; Articles 2, 3 and 5 carry numbered relations that survived as inline text. The typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 57), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_co2_brine_multiphase_flow` | CO2-brine flow: Land initial-residual trapping, Leverett J-function (IFT scaling), Corey relative permeability, and the capillary number | Krevor, Reynolds, Al-Menhali & Niu, pp. 12–18 |
+| `article2_2d_nmr_shale_saturations` | 2D NMR shale saturations: T1/T2 fluid typing, T1-T2 map partition and NMR saturation, and water (2D, logarithmic) / oil (quasi-1D, 1/√ω) NMRD dispersion | Nicot, Vorapalawut, Rousseau, Madariaga, Hamon & Korb, pp. 19–29 |
+| `article3_low_permeability_measurements` | Low-perm measurement: Klinkenberg apparent k and (kl, b) fit, compressible/incompressible Darcy permeability, gas mean free path & Knudsen number, deviation indicator | Profice, Hamon & Nicot, pp. 30–40 |
+| `article4_low_salinity_waterflooding` | Low-salinity waterflood: Buckley-Leverett fractional flow, Welge shock-front construction, recovery factor and LSWI increment, and the Amott-Harvey index | Hamon, pp. 41–50 |
+| `article5_shaly_sand_graphical_solutions` | Shaly sands: Archie Sw, Waxman-Smits/Juhasz conductivity & Sw solve (Qv from CEC, variable exponents), and the laminated Rh/Rv anisotropy joint solution | Bootle, pp. 51–59 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 57, No. 1 page ranges instead. Equations are standard-form reconstructions. See `src2016_02/README.md`.
 ## src2016_04 — Vol. 57, No. 2 (April 2016)
 
 Five articles (no tutorial), spanning the Reservoir Producibility Index — a log-based metric for tight-oil reservoir quality that treats producible oil as positive and immobile kerogen/bitumen as negative; integrated petrofacies characterization and depositional-environment interpretation of the Bakken shale from core and advanced logs; a new laboratory approach to measuring organic (kerogen) grain density via pycnometry, plasma ashing and TOC regression; a multilevel iterative method quantifying pore-size-distribution (capillary) effects on the phase equilibrium of confined multicomponent fluids; and a method for VTI acoustic-anisotropy interpretation when the Stoneley-wave velocity is missing (V-reg and M-ANNIE 2 closures). This issue's source PDF (~8 MB) has a text layer, so titles/authors/pages and the article bodies were read directly; all five articles have full bodies and their numbered relations survived as inline text. The typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 57), so articles are cited by volume/issue/page. See the per-folder README for details.
