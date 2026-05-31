@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2016_08/   Vol. 57 No. 4 (Aug 2016)  —  5 modules + test suite
 ├── src2016_10/   Vol. 57 No. 5 (Oct 2016)  —  5 modules + test suite
 ├── src2016_12/   Vol. 57 No. 6 (Dec 2016)  —  6 modules + test suite
 ├── src2017_02/   Vol. 58 No. 1 (Feb 2017)  —  5 modules + test suite
@@ -86,6 +87,19 @@ Petrophysics_Code/
 
 ---
 
+## src2016_08 — Vol. 57, No. 4 (August 2016)
+
+Five articles (no tutorial), spanning NMR relaxometry in shale and the relaxation mechanisms (dipolar vs spin-rotation) that set the T1/T2 ratios of each constituent; predicting carbonate rock properties from NMR with radial-basis-function generalized interpolation (and PCA of the T2 distribution); drainage capillary pressure and resistivity index from short-wait porous-plate experiments via exponential-decay equilibrium prediction; low-cost spectral gamma-ray measurement while drilling (sourceless gain regulation and K/U/Th window analysis); and a pure-matrix-GR indicator that removes porosity and bulk-density effects from the GR log. This issue's source PDF (~13 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; all five articles have full bodies. Many numbered relations survived as inline text (the BPP and spin-rotation relations, the Coates/SDR transforms, the exponential-decay and pure-matrix-GR derivations); the typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 57), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_nmr_relaxometry_shale` | NMR relaxometry: additive relaxation rates, the BPP spectral-density dipolar T1/T2 model (ratio ~1 for fast motion, large for bound fluids), and gas spin-rotation with T1 = T2 | Kausik, Fellah, Rylander, Singer, Lewis & Sinclair, pp. 339–350 |
+| `article2_carbonate_nmr_rbf` | Carbonate NMR + RBF: the NMR pore-size relation, the Coates and SDR/Kenyon permeability baselines and T2 log-mean, PCA of T2 distributions, and a radial-basis-function generalized-interpolation fit | Kwak, Hursan, Shao, Chen, Balliet, Eid & Guergueb, pp. 351–368 |
+| `article3_porous_plate_pc_ri` | Short-wait porous plate: exponential-decay Sw and 1/RI models, Guggenheim equilibrium extraction from an early transient, and Archie RI / saturation-exponent fit | Dernaika, Wilson, Skjæveland & Ebeltoft, pp. 369–376 |
+| `article4_spectral_gr_mwd` | Spectral GR while drilling: the sourceless-gain-regulation form factor, a weighted-least-squares K/U/Th spectral fit, and total (SGR) / uranium-free (CGR) gamma ray in API | Xu et al., pp. 377–389 |
+| `article5_pure_matrix_gr` | Pure matrix GR: the homogeneous gamma flux n/(ρμ), the matrix/fluid radioactivity split, the porosity/density-immune Nm, its error from fluid radioactivity, and the comparable matrix GR | Wang & Zhao, pp. 390–396 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 57, No. 4 page ranges instead. Equations are standard-form reconstructions. See `src2016_08/README.md`.
 ## src2016_10 — Vol. 57, No. 5 (October 2016)
 
 Five articles (no tutorial), spanning electromagnetic look-ahead-while-drilling resistivity for geostopping ahead of the bit; pore-scale-attribute drainage and imbibition water-saturation models in complex tight-gas reservoirs; first-order error propagation as an integral part of petrophysical calculation; advanced dielectric/CRIM log interpretation for Archie parameters in the Green River Formation; and microfracturing for direct in-situ stress measurement. This issue's source PDF (~13 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; all five articles have full bodies. Many numbered relations survived as inline text (the capillary-pressure conversions and Brooks-Corey imbibition model, the FOEP matrix relations, the skin-depth and CRIM workflow); the typeset display-equation glyphs were dropped and are faithful standard-form reconstructions. This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 57), so articles are cited by volume/issue/page. See the per-folder README for details.
