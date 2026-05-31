@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2017_02/   Vol. 58 No. 1 (Feb 2017)  —  5 modules + test suite
 ├── src2018_10/   Vol. 59 No. 5 (Oct 2018)  — 11 modules + test suite
 ├── src2018_12/   Vol. 59 No. 6 (Dec 2018)  — 12 modules + test suite
 ├── src2019_02/   Vol. 60 No. 1 (Feb 2019)  — 11 modules + test suite
@@ -71,6 +72,22 @@ Petrophysics_Code/
 ```
 
 ---
+
+---
+
+## src2017_02 — Vol. 58, No. 1 (February 2017)
+
+A multiphase-flow / special-core-analysis (SCAL) special issue with five articles (no tutorial), spanning flow regimes during immiscible displacement (Corey relperms vs capillary number, with pore-scale connectivity), relative-permeability effects overlooked in MICP measurements, wettability effects on osmosis as a low-salinity oil-mobilization mechanism, a fast micro-CT study of brine salinity on pore-scale fluid distribution, and a benchmark of four numerical SCAL simulators. This issue's source PDF (~12 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; all five articles have full bodies (articles 3 and 4 are experimental/imaging papers). The typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 58), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_flow_regimes_immiscible` | Flow regimes: the Corey relative permeabilities, the capillary number, the Euler characteristic (phase connectivity), and the ganglion flux fraction | Armstrong et al., pp. 10–18 |
+| `article2_micp_relperm_transition` | MICP relative-permeability effects: the equilibration shortfall (apparent vs equilibrium saturation), the (φ/K)^0.5 capillary-pressure scaling, a two-sample t statistic, and the homogeneity-number filter | Maas, Springer & Hebing, pp. 19–27 |
+| `article3_osmosis_low_salinity` | *Experimental paper:* osmosis in low-salinity waterflooding — the van't Hoff osmotic pressure, the Stokes-Einstein diffusivity, Fick's flux, and the Pc = P_oil − P_water convention | Fredriksen, Rognmo, Sandengen & Fernø, pp. 28–35 |
+| `article4_microct_salinity_distribution` | *Imaging study:* micro-CT fluid distribution — phase saturation from segmented voxels, a granulometry pore-size distribution, the oil fraction by pore size, and the mean oil pore size (wettability-shift signature) | Bartels et al., pp. 36–47 |
+| `article5_scal_simulator_comparison` | SCAL simulator comparison: the Pc = P_oil − P_water convention, the Corey relperms and water fractional flow, the Buckley-Leverett fractional-flow derivative, and the Darcy pressure drop | Lenormand, Lorentzen, Maas & Ruth, pp. 48–56 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 58, No. 1 page ranges instead. Articles 3–4 are experimental/imaging papers; equations are standard-form reconstructions. See `src2017_02/README.md`.
 
 ---
 
