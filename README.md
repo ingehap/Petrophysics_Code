@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2017_04/   Vol. 58 No. 2 (Apr 2017)  —  5 modules + test suite
 ├── src2017_06/   Vol. 58 No. 3 (Jun 2017)  —  6 modules + test suite
 ├── src2017_08/   Vol. 58 No. 4 (Aug 2017)  —  6 modules + test suite
 ├── src2017_10/   Vol. 58 No. 5 (Oct 2017)  —  5 modules + test suite
@@ -82,6 +83,19 @@ Petrophysics_Code/
 
 ---
 
+## src2017_04 — Vol. 58, No. 2 (April 2017)
+
+Five articles (no tutorial), spanning blind-source-separation (NMF) of new-generation NMR T1/T2 logs to resolve poro-fluid signatures, characterizing hydrocarbon storage in organic-rich mudstones by integrating core measurements with source-rock kinetics, the link between NMR relaxation and pore size in carbonate skeletal grains and micrite, rock-fluid affinity (wettability) from the low-field NMR T1/T2 ratio with Gassmann fluid substitution, and SEM evidence for tar-mat formation by asphaltene phase transition. This issue's source PDF (~16 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; all five articles have full bodies (article 5 is a conceptual SEM paper with no typeset equations). The typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 58), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_nmf_t1t2_fluid_signatures` | Blind-source separation of NMR T1-T2 maps: a non-negative matrix factorization (V ~ W·H by multiplicative updates), the reconstruction error, rank selection from the volume-matrix eigenvalues, and a carbon→hydrocarbon volume conversion | Anand et al., pp. 81–96 |
+| `article2_mudstone_hc_storage_kinetics` | Mudstone hydrocarbon storage: the hydrocarbon pore volume, the Dean-Stark formation volume factor, HPV from oil and from pyrolysis S1, an Arrhenius first-order kerogen conversion, and the max organic nanoporosity | Capsan & Sanchez-Ramirez, pp. 97–115 |
+| `article3_nmr_pore_size_shape_factor` | NMR relaxation and pore size: the surface relaxation rate (1/T2 = ρ·S/V), the shape-factor S/V = α/r, the pore radius r = α·ρ·T2, the shape-factor calibration, and a multiexponential decay | El-Husseiny & Knight, pp. 116–125 |
+| `article4_t1t2_affinity_gassmann` | Rock-fluid affinity from T1/T2: the ratio and wettability classification, elastic moduli from velocities, the Voigt/Reuss/Hill fluid-modulus averages selected by wettability, and the Gassmann saturated bulk modulus | Katika, Saidian, Prasad & Fabricius, pp. 126–140 |
+| `article5_tarmat_asphaltene_phase` | *Conceptual paper:* tar-mat asphaltene phase transition — the FHZ gravity asphaltene gradient, the linear OD/asphaltene relation, the asphaltene-weight classification (suspension/onset/solid tar mat), and the solvency-vs-GOR trend | Pfeiffer, Di Primio, Achourov & Mullins, pp. 141–152 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 58, No. 2 page ranges instead. Article 5 is a conceptual SEM paper (no typeset equations); equations are standard-form reconstructions. See `src2017_04/README.md`.
 ## src2017_06 — Vol. 58, No. 3 (June 2017)
 
 Six articles (no tutorial), spanning laboratory and field NMR characterization of the Tuscaloosa Marine Shale, a novel total-gas-in-place determination for gas shale from magnetic-resonance logs, forward mineral modeling by regularized least-squares with singular-value decomposition, recovering elastic properties from irregular rock fragments, a borehole complex-resistivity dispersion logging method for low-resistivity reservoirs, and an integrated carbonate pore-system case study from offshore Vietnam. This issue's source PDF (~21 MB) has a text layer, so titles/authors/pages were read from the contents page and bodies; articles 1–5 have full bodies while article 6 was truncated at its "Methodology of Study" heading and is implemented as a methodology proxy. The typeset glyphs were dropped throughout (equations are faithful standard-form reconstructions). This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 58), so articles are cited by volume/issue/page. See the per-folder README for details.
