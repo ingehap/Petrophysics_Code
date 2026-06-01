@@ -60,10 +60,14 @@ python article1_dualwater_dielectric_nmr.py
   spectroscopy paths of the workflow are completed by the inverse relations
   `Qv = Swb/(alpha*vQH)` (Eq. 3) and `CEC = Qv*phi/(rho_g*(1-phi))` (Eq. 4) and a
   clay-bound-water porosity from an NMR T2 distribution (T2 < 3 msec cutoff). The
-  paper's headline six-step joint inversion is wrapped end-to-end
-  (`solve_sw_workflow`: dielectric Sxo/Cmfe -> NMR Qv -> spectroscopy phi ->
-  microresistivity Cxo -> invert m0 -> uninvaded-zone Sw, with the dielectric
-  salinity-validity limit of ~50 ppt), and the Appendix n-vs-m trade-off
+  wet-rock conductivity Co (Sw = 1, `co_wet_conductivity`) and the
+  excess-conductivity `qv_from_co_cw` add the paper's *second*, independent Qv -
+  the Co-Cw estimate it validates ~1:1 against the NMR Qv. The paper's headline
+  six-step joint inversion is wrapped end-to-end (`solve_sw_workflow`: dielectric
+  Sxo/Cmfe -> NMR Qv -> spectroscopy phi -> microresistivity Cxo -> invert m0 ->
+  uninvaded-zone Sw, with the dielectric salinity-validity limit of ~50 ppt), the
+  Fig. 7 input-sensitivity study (`sw_parameter_sensitivity`) confirms the
+  dielectric Sxo is the dominant control on Sw, and the Appendix n-vs-m trade-off
   (`archie_cementation_for_sw`) reproduces the tabulated pairs that hold Sw fixed
   (e.g. Sw = 0.8: n=1.5->m=2.00, n=2.5->m=1.87, n=3.5->m=1.73).
 
@@ -77,7 +81,13 @@ python article1_dualwater_dielectric_nmr.py
   endpoints are completed by the movable-oil saturation `1 - Swi - Sor` (Sor
   converging to ~20% for high-perm and ~27-30% for tight RRTs) and a
   capillary-pressure unit reconciliation between the bar scale (SI, max 7 bar)
-  and the psi scale (FI, max 80 psi).
+  and the psi scale (FI, max 80 psi). The Leverett `leverett_j_function`
+  (Kalam et al., 2006) carries the paper's caveat - after Masalmeh & Jing
+  (2004) a single J-function does *not* reconcile the Pc curves across these
+  complex-carbonate RRTs - and the Washburn `pore_throat_radius` underpins the
+  NMR-T2 vs MICP capillary-tube comparison the paper uses to detect small-pore
+  "shielding" of large pores (a tube match for the tight RRT 6-7, a mismatch for
+  the high-perm RRT 1-5).
 
 - **Article 3 (Roustaei)**: nanofluid imbibition - Young's law contact angle and
   its cosine (Eq. 1), a wettability classification, the Young-Dupre work of
@@ -89,28 +99,43 @@ python article1_dualwater_dielectric_nmr.py
   capillary, linear -> gravity), and a first-order spontaneous-imbibition
   recovery curve. The nanofluid raises the oil-water IFT (2.65 -> 9.21 mN/m),
   lowers `cos(theta)` so the contact angle increases toward water-wet, and lifts
-  the final recovery above ~50% IOIP (brine ~4.3%, surfactant ~46%).
+  the final recovery above ~50% IOIP (brine ~4.3%, surfactant ~46%). An
+  `above_cmc` check encodes that the surfactant works only above its measured
+  critical micelle concentration (~0.45 wt%), the optimum nanoparticle loading
+  (`OPTIMUM_NANOPARTICLE_CONC_GL = 3` g/L) is recorded, and `incremental_recovery`
+  captures the paper's headline ~10% IOIP gain of the nanofluid over the plain
+  surfactant.
 
 - **Article 4 (Spears et al.)**: canister gas - the atmospheric air-contamination
-  correction (N2:O2 = 3.73, after Jin et al., 2010) and an air-contamination
-  fraction, a square-root-of-time lost-gas estimate (Direct Method, following
-  the desorption guidelines the paper cites) and total gas content, the
-  isotope/GC quality-control checks (delta-13C limits, 50 mV-sec CH4 peak area),
-  the canister-handling thresholds (the <=10 cm^3/day shipping criterion and the
-  ~1 bar/15 psi venting pressure), a Tedlar (PVF) bag hold-time check (<24 h)
-  backed by the paper's relative-permeation finding (O2 ~10x N2, He ~15x CO2),
-  and a biogenic/thermogenic gas-origin classification.
+  correction (N2:O2 = 3.73, after Jin et al., 2010), an air-contamination
+  fraction, and an air-free renormalised composition (`airfree_composition`); a
+  square-root-of-time lost-gas estimate (Direct Method, following the desorption
+  guidelines the paper cites) and total gas content; the isotope/GC
+  quality-control checks (delta-13C limits, 50 mV-sec CH4 peak area); the
+  canister-handling thresholds (the <=10 cm^3/day shipping criterion and the
+  ~1 bar/15 psi venting pressure), the 4-5 canister-volume helium flush
+  (`helium_flush_ok`), and the candidate-material thermal conductivities
+  (PVC 0.19, stainless 9.82, aluminum 147.4 BTU/ft-hr-degF, Yaws 1995 -
+  `fastest_equilibrating_material`); a Tedlar (PVF) bag hold-time check (<24 h)
+  backed by the paper's relative-permeation finding (O2 ~10x N2, He ~15x CO2);
+  and a biogenic/thermogenic gas-origin classification from delta-13C of methane,
+  plus the CO2-CH4 carbon-isotope separation (`gas_origin_co2_ch4`, Whiticar 1996)
+  that uses the CO2 isotope the paper measures alongside CH4.
 
 - **Article 5 (Gegenhuber & Schön)**: thermal conductivity from velocity - the
-  Hill average, the crack density in both its forms - by count `eps = (N/V)*r^3`
-  (Eq. 3) and from porosity/aspect ratio `eps = phi/((4/3)*pi*alpha)` (Eq. 4,
-  with its inverse crack porosity) - the Budiansky-O'Connell self-consistent
-  cracked moduli and P-wave velocity, the Sen plate-like depolarization
-  exponents, and the Clausius-Mossotti effective thermal conductivity. The two
-  halves are joined by the headline two-step estimator: invert the elastic model
-  for the crack density that matches a measured Vp, then map that (shared) crack
-  porosity to thermal conductivity - estimating `lambda` directly from `Vp`.
-  Best-fit aspect ratios: granite/gneiss/sandstone 0.20, basic magmatic 0.25.
+  Voigt and Reuss bounds and their Hill average (the Step-1 multi-mineral solid
+  matrix), the petrographic-code aspect ratios (`ASPECT_RATIO_BY_ROCK`:
+  granite/gneiss/sandstone 0.20, basic magmatic 0.25), the crack density in both
+  its forms - by count `eps = (N/V)*r^3` (Eq. 3) and from porosity/aspect ratio
+  `eps = phi/((4/3)*pi*alpha)` (Eq. 4, with its inverse crack porosity) - the
+  Budiansky-O'Connell self-consistent cracked moduli and P-wave velocity, the Sen
+  plate-like depolarization exponents, and the Clausius-Mossotti effective thermal
+  conductivity. The two halves are joined by the headline two-step estimator:
+  invert the elastic model for the crack density that matches a measured Vp, then
+  map that (shared) crack porosity to thermal conductivity - estimating `lambda`
+  directly from `Vp`. The `fit_velocity_conductivity_regression` builder samples
+  this model to produce the paper's practical Table-4 Vp->lambda regression, and
+  `prediction_within_tolerance` encodes its stated <15% / 0.5 W/m/K accuracy.
 
 ## Module conventions
 

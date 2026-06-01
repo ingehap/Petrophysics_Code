@@ -21,6 +21,10 @@ Implements:
   - Movable-oil saturation from the initial-water and residual-oil endpoints
   - Capillary-pressure unit reconciliation (the paper reports SI in bar and FI
     in psi)
+  - Leverett J-function (Kalam et al., 2006) - with the paper's caveat that it
+    does not reconcile Pc across the complex-carbonate RRTs
+  - Capillary-tube (Washburn) pore-throat radius for the NMR-T2 vs MICP
+    shielded-pore comparison
   - Archie formation resistivity factor  FRF = Ro/Rw = a/phi^m
   - Cementation-exponent fit from a log-log FRF vs phi regression
 
@@ -123,6 +127,36 @@ def psi_to_bar(pc_psi):
     return np.asarray(pc_psi, float) / 14.5037738
 
 
+def leverett_j_function(pc, sigma, contact_angle_deg, k, phi):
+    """Leverett J-function - the dimensionless capillary pressure
+
+        J(Sw) = Pc/(sigma*cos(theta)) * sqrt(k/phi),
+
+    used to normalise Pc curves across rock types (Kalam et al., 2006).  The
+    paper notes (after Masalmeh & Jing, 2004) that a single J-function does NOT
+    reconcile the Pc curves across these complex carbonate RRTs, which is why
+    Pc and the resistivity index are measured per RRT rather than scaled by J.
+    Use consistent units: Pc and sigma in pressure / (force per length), k as an
+    area (e.g. m^2); J is dimensionless.
+    """
+    return (np.asarray(pc, float) / (sigma * np.cos(np.radians(contact_angle_deg)))
+            * np.sqrt(k / phi))
+
+
+def pore_throat_radius(pc, sigma, contact_angle_deg):
+    """Capillary-tube (Washburn) pore-throat radius from a capillary pressure
+
+        r = 2*sigma*cos(theta)/Pc.
+
+    This is the capillary-tube model underlying the paper's NMR-T2 vs MICP
+    pore-size comparison: a match between the T2 distribution and the MICP pore-
+    throat sizes (tight RRT 6-7) indicates simple tube-like pores, while a
+    mismatch (high-perm RRT 1-5) flags large pores "shielded" behind small pore
+    throats.  Consistent units (sigma in N/m, Pc in Pa) give r in metres.
+    """
+    return 2.0 * sigma * np.cos(np.radians(contact_angle_deg)) / np.asarray(pc, float)
+
+
 # ---------------------------------------------- formation factor --------------
 
 def formation_resistivity_factor(ro, rw):
@@ -188,6 +222,20 @@ def test_all():
     assert np.isclose(bar_to_psi(7.0), 101.5, atol=0.1)   # 7 bar SI maximum
     assert np.isclose(psi_to_bar(80.0), 5.516, atol=1e-3)  # 80 psi FI maximum
     assert np.isclose(psi_to_bar(bar_to_psi(7.0)), 7.0)
+
+    # Leverett J-function normalises Pc; a higher-perm rock has a lower J at the
+    # same Pc (the sqrt(k/phi) scaling), but the paper finds J still does not
+    # collapse the carbonate RRT curves onto one another
+    j_hi = leverett_j_function(pc=5e5, sigma=0.03, contact_angle_deg=0.0, k=1e-12, phi=0.30)
+    j_lo = leverett_j_function(pc=5e5, sigma=0.03, contact_angle_deg=0.0, k=1e-15, phi=0.10)
+    print(f"  Leverett J: high-perm={j_hi:.2f}  tight={j_lo:.2f}")
+    assert j_hi > j_lo > 0
+
+    # Washburn pore-throat radius falls as the capillary pressure rises
+    r_lo_pc = pore_throat_radius(pc=1e5, sigma=0.03, contact_angle_deg=0.0)
+    r_hi_pc = pore_throat_radius(pc=1e6, sigma=0.03, contact_angle_deg=0.0)
+    print(f"  pore-throat radius: low Pc={r_lo_pc*1e6:.2f} um  high Pc={r_hi_pc*1e6:.2f} um")
+    assert r_lo_pc > r_hi_pc > 0 and np.isclose(r_lo_pc, 2 * 0.03 / 1e5)
 
     # RI from measured resistivities
     assert np.isclose(resistivity_index(40.0, 10.0), 4.0)

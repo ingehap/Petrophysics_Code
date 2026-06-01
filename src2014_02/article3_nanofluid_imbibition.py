@@ -19,6 +19,8 @@ Implements:
     "from a barrier to a driving force" by wettability alteration)
   - The recovery-curve-shape test for capillary- vs gravity-dominated imbibition
   - A first-order spontaneous-imbibition recovery curve toward a final plateau
+  - The critical-micelle-concentration (CMC) effectiveness check for the
+    surfactant, and the nanofluid's incremental recovery over the surfactant
 
 Note: this issue's PDF dropped the displayed Young's law (Eq. 1) in extraction;
 it is reconstructed in standard form.  No dimensionless-time, Bond-number or
@@ -33,6 +35,13 @@ water-wet), and lifts final recovery above ~50% IOIP (brine ~4.3%, surfactant
 """
 
 import numpy as np
+
+# Optimum SiO2-nanoparticle concentration (in 1 wt% C12TAB) for the strongest
+# wettability alteration and highest recovery (Roustaei, 2014).
+OPTIMUM_NANOPARTICLE_CONC_GL = 3.0  # g/L
+
+# Measured critical micelle concentration of the C12TAB surfactant (0.4-0.5 wt%).
+CMC_C12TAB_WT_PCT = 0.45
 
 
 # ---------------------------------------------- Young's law --------------
@@ -134,6 +143,29 @@ def imbibition_recovery(t, final_recovery, rate):
     return final_recovery * (1.0 - np.exp(-rate * np.asarray(t, float)))
 
 
+def above_cmc(concentration_wt_pct, cmc=CMC_C12TAB_WT_PCT):
+    """Whether a surfactant concentration exceeds the critical micelle
+    concentration (CMC).
+
+    The paper measured the C12TAB CMC at 0.4-0.5 wt% and ran all imbibition
+    tests above it (Standnes & Austad, 2003): only above the CMC do surfactant
+    micelles form and the wettability-altering / IFT action operate fully.
+    """
+    return bool(concentration_wt_pct > cmc)
+
+
+def incremental_recovery(recovery_nanofluid, recovery_surfactant):
+    """Incremental oil recovery of the nanofluid over the plain surfactant
+
+        dR = R_nanofluid - R_surfactant,
+
+    the paper's headline result that adding SiO2 nanoparticles to the surfactant
+    recovers ~10% IOIP more oil than the surfactant alone (nanofluid > ~50% vs
+    surfactant ~46% IOIP).
+    """
+    return recovery_nanofluid - recovery_surfactant
+
+
 # ---------------------------------------------- tests --------------
 
 def test_all():
@@ -181,6 +213,17 @@ def test_all():
     print(f"  final recovery: brine={r_brine[-1]:.2f}  surf={r_surf[-1]:.2f}  nano={r_nano[-1]:.2f}")
     assert r_nano[-1] > r_surf[-1] > r_brine[-1]
     assert np.all(np.diff(r_nano) >= 0) and r_nano[0] == 0.0
+
+    # CMC check: the imbibition surfactant concentration (1 wt%) is above the
+    # measured CMC (~0.45 wt%); a trace dose is below it
+    assert above_cmc(1.0) and not above_cmc(0.1)
+    assert OPTIMUM_NANOPARTICLE_CONC_GL == 3.0
+    # Nanofluid adds ~10% IOIP over the surfactant alone (paper's headline);
+    # at the (final-recovery) plateaus the increment is exactly 0.52 - 0.46
+    assert np.isclose(incremental_recovery(0.52, 0.46), 0.06)
+    d_rec = incremental_recovery(r_nano[-1], r_surf[-1])
+    print(f"  incremental recovery (nano - surf) = {d_rec*100:.1f}% IOIP")
+    assert d_rec > 0 and np.isclose(d_rec, 0.06, atol=5e-3)
 
     # Mechanism test: the curved (exponential) imbibition response is capillary-
     # dominated, a straight-line gravity drainage response is gravity-dominated

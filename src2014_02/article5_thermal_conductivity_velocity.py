@@ -14,12 +14,15 @@ controlled by the ratio porosity/aspect-ratio.
 
 Implements:
 
-  - Hill average of Voigt and Reuss bounds
+  - Voigt and Reuss bounds and the Hill average of them (Step-1 solid matrix)
+  - Best-fit inclusion aspect ratios by petrographic code (Step-2 calibration)
   - Crack density from crack count and radius  eps = (N/V)*r^3  (Eq. 3)
   - Crack density from porosity and aspect ratio  eps = phi/((4/3)*pi*alpha) (Eq. 4)
   - Budiansky-O'Connell self-consistent cracked moduli and P-wave velocity
   - Sen plate-like depolarization exponents  Lc = 1 - (pi/2)*alpha;  La=Lb=(1-Lc)/2
   - Clausius-Mossotti (Maxwell-Garnett) effective thermal conductivity
+  - The practical Vp -> lambda regression (Table 4) and the paper's <15% /
+    0.5 W/m/K prediction-accuracy criterion
 
 Note: this issue's PDF dropped Eqs. 1-9 in extraction; the forms are
 reconstructed from the named source theories (Hill, 1952; Budiansky & O'Connell,
@@ -30,12 +33,47 @@ m/s, thermal conductivity in W/m/K.
 
 import numpy as np
 
+# Best-fit inclusion aspect ratios by petrographic code (Gegenhuber & Schon,
+# 2014): granite/gneiss and sandstone alpha = 0.20 (axis ratio 1:5), basic
+# magmatic rocks alpha = 0.25 (axis ratio 1:4).
+ASPECT_RATIO_BY_ROCK = {
+    "granite": 0.20,
+    "gneiss": 0.20,
+    "sandstone": 0.20,
+    "basic_magmatic": 0.25,
+}
+
 
 # ---------------------------------------------- mixing --------------
 
+def voigt_bound(fractions, moduli):
+    """Voigt (iso-strain) upper bound for a mineral mixture  M_V = sum(f_i*M_i)."""
+    f = np.asarray(fractions, float)
+    m = np.asarray(moduli, float)
+    return float(np.sum(f * m))
+
+
+def reuss_bound(fractions, moduli):
+    """Reuss (iso-stress) lower bound for a mineral mixture  1/M_R = sum(f_i/M_i)."""
+    f = np.asarray(fractions, float)
+    m = np.asarray(moduli, float)
+    return float(1.0 / np.sum(f / m))
+
+
 def hill_average(voigt, reuss):
-    """Hill average of the Voigt and Reuss bounds  M = (M_Voigt + M_Reuss)/2."""
+    """Hill average of the Voigt and Reuss bounds  M = (M_Voigt + M_Reuss)/2.
+
+    The paper's Step 1 builds the dense solid-host moduli (and conductivity) of a
+    multi-mineral rock with Hill's average (Hill, 1952) of the ``voigt_bound`` and
+    ``reuss_bound`` of its mineral constituents.
+    """
     return 0.5 * (voigt + reuss)
+
+
+def aspect_ratio_for_rock(rock_type):
+    """Best-fit inclusion aspect ratio for a petrographic code (the paper's
+    Step-2 calibration): granite/gneiss/sandstone 0.20, basic magmatic 0.25."""
+    return ASPECT_RATIO_BY_ROCK[rock_type]
 
 
 # ---------------------------------------------- crack density --------------
@@ -169,6 +207,33 @@ def thermal_conductivity_from_velocity(vp, aspect_ratio, k_solid, mu_solid,
     return lam, phi, eps
 
 
+def fit_velocity_conductivity_regression(vp_values, aspect_ratio, k_solid, mu_solid,
+                                         nu_solid, rho, lambda_solid, lambda_incl,
+                                         degree=2):
+    """Build the practical Vp -> lambda regression (the paper's Table 4).
+
+    Samples the two-step model over a range of P-wave velocities and least-
+    squares-fits a polynomial lambda(Vp), giving the per-rock-type "approximated
+    regression equation" the paper tabulates so a sonic/acoustic log can be
+    converted to a thermal-conductivity log directly.  Returns (coeffs, predict),
+    where ``predict(vp)`` evaluates the fitted polynomial.
+    """
+    vps = np.asarray(vp_values, float)
+    lam = np.array([
+        thermal_conductivity_from_velocity(v, aspect_ratio, k_solid, mu_solid,
+                                           nu_solid, rho, lambda_solid, lambda_incl)[0]
+        for v in vps
+    ])
+    coeffs = np.polyfit(vps, lam, degree)
+    return coeffs, (lambda vp: np.polyval(coeffs, vp))
+
+
+def prediction_within_tolerance(lambda_pred, lambda_true, rel=0.15, abs_tol=0.5):
+    """The paper's stated accuracy criterion for the estimated thermal
+    conductivity: within 15% (or within 0.5 W/m/K) of the measured value."""
+    return bool(abs(lambda_pred - lambda_true) <= max(rel * lambda_true, abs_tol))
+
+
 # ---------------------------------------------- tests --------------
 
 def test_all():
@@ -178,6 +243,16 @@ def test_all():
 
     # Hill average lies between the bounds
     assert hill_average(40.0, 30.0) == 35.0
+
+    # Step-1 mineral mixing: Voigt >= Hill >= Reuss for a quartz/feldspar mix
+    fr, ks = [0.6, 0.4], [37.0, 75.0]   # bulk moduli (GPa)
+    kv, kr = voigt_bound(fr, ks), reuss_bound(fr, ks)
+    kh = hill_average(kv, kr)
+    print(f"  mixing bounds: Voigt={kv:.2f}  Hill={kh:.2f}  Reuss={kr:.2f} GPa")
+    assert kv > kh > kr
+    # Petrographic aspect-ratio codes
+    assert aspect_ratio_for_rock("sandstone") == 0.20
+    assert aspect_ratio_for_rock("basic_magmatic") == 0.25
 
     # Crack density grows with porosity and falls with aspect ratio
     eps = crack_density(0.03, aspect_ratio=0.20)
@@ -227,6 +302,19 @@ def test_all():
         vp0 * 0.90, 0.20, k_s, mu_s, nu_s, rho, lambda_solid=6.0, lambda_incl=0.6)
     print(f"  lambda(Vp high)={lam_hi:.2f}  lambda(Vp low)={lam_lo:.2f} W/m/K")
     assert lam_lo < lam_hi < 6.0 and phi_lo > phi_hi > 0
+
+    # Table-4 regression: fit lambda(Vp) over a velocity range, then check it
+    # reproduces the model within the paper's <15% / 0.5 W/m/K tolerance
+    vp_grid = np.linspace(vp0 * 0.85, vp0 * 0.99, 12)
+    coeffs, predict = fit_velocity_conductivity_regression(
+        vp_grid, 0.20, k_s, mu_s, nu_s, rho, lambda_solid=6.0, lambda_incl=0.6)
+    vp_test = vp0 * 0.93
+    lam_model = thermal_conductivity_from_velocity(
+        vp_test, 0.20, k_s, mu_s, nu_s, rho, lambda_solid=6.0, lambda_incl=0.6)[0]
+    lam_reg = float(predict(vp_test))
+    print(f"  regression lambda={lam_reg:.2f}  model lambda={lam_model:.2f} W/m/K")
+    assert prediction_within_tolerance(lam_reg, lam_model)
+    assert not prediction_within_tolerance(2.0, 6.0)  # far-off prediction fails
     print("  PASS")
     return {"crack_density": float(eps), "Vp_cracked": float(vp),
             "Lc": float(lc), "lambda": float(lam),
