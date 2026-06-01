@@ -18,10 +18,13 @@ Implements:
     (beta*Qv) and effective-connate-water ((1-alpha*vQH*Qv)*Cw) terms
   - Clay-bound-water saturation  Swb = alpha*vQH*Qv  (Eq. 3)
   - Qv from CEC  Qv = CEC*rho_grain*(1-phi)/phi  (Eq. 4)
+  - Wet-rock conductivity Co (Sw = 1) and Qv from the Co-Cw method (the
+    independent excess-conductivity Qv the paper validates 1:1 against NMR)
   - Inversion for the clay-dependent cementation exponent m0 (Eq. 5)
   - Solving the dual-water equation for water saturation
   - The end-to-end six-step joint-inversion workflow (dielectric + NMR +
     spectroscopy + microresistivity)
+  - The Fig. 7 input-sensitivity study (Sxo is the dominant control on Sw)
   - The Appendix n-vs-m trade-off (cementation factor for a target Sw)
 
 Note: this issue's PDF dropped the display equations in extraction; the two
@@ -106,6 +109,32 @@ def qv_from_cec(cec, rho_grain, phi):
     return cec * rho_grain * (1.0 - phi) / phi
 
 
+def co_wet_conductivity(phi, m0, cw, qv, alpha, vqh, beta):
+    """Wet-rock conductivity Co - the Sw = 1 limit of the dual-water Eq. 1
+
+        Co = phi^m0*[(1 - alpha*vQH*Qv)*Cw + beta*Qv],
+
+    the quantity measured in the Co-Cw experiment the paper uses to derive a
+    second, independent Qv (compared 1:1 against the NMR Qv on its core set).
+    """
+    return dual_water_conductivity(phi, 1.0, m0, n=1.0, cw=cw, qv=qv,
+                                   alpha=alpha, vqh=vqh, beta=beta)
+
+
+def qv_from_co_cw(co, phi, m0, cw, alpha, vqh, beta):
+    """Qv from the Co-Cw (excess-conductivity) method.
+
+    Inverting the wet-rock conductivity Co = phi^m0*[(1 - alpha*vQH*Qv)*Cw +
+    beta*Qv] for Qv (it is linear in Qv) gives
+
+        Qv = (Co/phi^m0 - Cw)/(beta - alpha*vQH*Cw),
+
+    the clay-cation concentration the paper reports agreeing ~1:1 with the NMR
+    Qv (their cross-validation of the two independent paths).
+    """
+    return (co / phi ** m0 - cw) / (beta - alpha * vqh * cw)
+
+
 def cec_from_qv(qv, rho_grain, phi):
     """CEC log from the Qv log (inverse of Eq. 4)
 
@@ -177,6 +206,37 @@ def solve_sw_workflow(rt, phi, qv, cw, n, sxo, cmfe, cxo, alpha, vqh, beta):
     return sw, m0
 
 
+def sw_parameter_sensitivity(rt, phi, qv, cw, n, sxo, cmfe, cxo,
+                             alpha, vqh, beta, frac=0.05):
+    """Sensitivity of the inverted uninvaded-zone Sw to the workflow inputs.
+
+    Re-runs ``solve_sw_workflow`` with each of the invaded-zone water saturation
+    Sxo, the clay-cation concentration Qv, the connate-water salinity (via Cw)
+    and the saturation exponent n perturbed by a relative ``frac``, and returns a
+    dict of the absolute change |dSw| for each.  This reproduces the headline of
+    the paper's Fig. 7 sensitivity study - the dielectric invaded-zone saturation
+    Sxo is the dominant control on the computed water saturation (the paper's full
+    reported ordering is Sxo > Qv > salinity > n, but the relative weighting of
+    the lesser terms depends on the chosen perturbation ranges and operating
+    point, so only the Sxo dominance is robust to a uniform perturbation).
+    """
+    base, _ = solve_sw_workflow(rt, phi, qv, cw, n, sxo, cmfe, cxo,
+                                alpha, vqh, beta)
+
+    def sw_with(**override):
+        args = dict(rt=rt, phi=phi, qv=qv, cw=cw, n=n, sxo=sxo, cmfe=cmfe,
+                    cxo=cxo, alpha=alpha, vqh=vqh, beta=beta)
+        args.update(override)
+        return solve_sw_workflow(**args)[0]
+
+    return {
+        "Sxo":      abs(sw_with(sxo=sxo * (1.0 + frac)) - base),
+        "Qv":       abs(sw_with(qv=qv * (1.0 + frac)) - base),
+        "salinity": abs(sw_with(cw=cw * (1.0 + frac)) - base),
+        "n":        abs(sw_with(n=n * (1.0 + frac)) - base),
+    }
+
+
 def archie_cementation_for_sw(sw, n, rt, rw, phi, a=1.0):
     """Cementation factor m that yields a target Sw for an assumed saturation
     exponent n (Appendix n-vs-m trade-off)
@@ -214,6 +274,13 @@ def test_all():
     assert np.isclose(cec_from_qv(qv_calc, 2.66, 0.25), 0.04)
     assert np.isclose(qv_from_clay_bound_water(swb, alpha, vqh), qv_calc)
 
+    # Co-Cw path: build the wet-rock conductivity from a known Qv, then recover
+    # Qv from it (the second, independent Qv the paper checks against NMR)
+    co = co_wet_conductivity(0.25, m0=2.0, cw=cw, qv=qv, alpha=alpha, vqh=vqh, beta=beta)
+    qv_cocw = qv_from_co_cw(co, 0.25, m0=2.0, cw=cw, alpha=alpha, vqh=vqh, beta=beta)
+    print(f"  Co={co:.3f} S/m   Qv(Co-Cw)={qv_cocw:.3f}")
+    assert np.isclose(qv_cocw, qv)
+
     # NMR clay-bound water: only T2 below the 3-msec cutoff counts toward CBW
     t2 = np.array([1.0, 2.5, 5.0, 50.0, 500.0])
     amps = np.array([0.02, 0.03, 0.05, 0.08, 0.07])
@@ -244,6 +311,12 @@ def test_all():
                                      alpha, vqh, beta)
     print(f"  workflow: m0={m0_wf:.3f}  Sw={sw_wf:.3f}")
     assert np.isclose(m0_wf, m0_true) and np.isclose(sw_wf, 0.40, atol=1e-3)
+
+    # Fig. 7 sensitivity: the dielectric Sxo is the dominant control on Sw
+    sens = sw_parameter_sensitivity(rt, phi, qv, cw, n, sxo, cmfe, cxo,
+                                    alpha, vqh, beta)
+    print("  Sw sensitivity:", {k: round(v, 4) for k, v in sens.items()})
+    assert max(sens, key=sens.get) == "Sxo" and all(v >= 0 for v in sens.values())
 
     # Appendix n-vs-m trade-off reproduces the paper's tabulated pairs
     m_15 = archie_cementation_for_sw(0.8, n=1.5, rt=20.0, rw=0.565, phi=0.20)

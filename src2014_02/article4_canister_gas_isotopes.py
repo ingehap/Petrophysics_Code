@@ -14,13 +14,17 @@ signal, and the gas origin is classified from carbon-isotope ratios.
 
 Implements:
 
-  - Air-contamination ("airfree") correction using the atmospheric N2:O2 = 3.73
+  - Air-contamination ("airfree") correction using the atmospheric N2:O2 = 3.73,
+    and an air-free renormalised composition
   - Square-root-of-time lost-gas estimate (Direct Method) and total gas content
   - Isotope and GC quality-control checks (delta-13C limits, CH4 peak area)
   - The canister desorption-rate shipping criterion (<= 10 cm^3/day)
   - The canister overpressure / venting threshold (~1 bar = 15 psi)
+  - The 4-5 canister-volume helium flush, and the candidate-material thermal
+    conductivities (PVC / stainless steel / aluminum, Yaws 1995)
   - The Tedlar (PVF) bag relative-permeation finding and hold-time check
-  - Biogenic / thermogenic gas-origin classification from delta-13C of methane
+  - Biogenic / thermogenic gas-origin classification from delta-13C of methane,
+    and the CO2-CH4 carbon-isotope separation (using the measured CO2 isotope)
 
 Note: this procedural paper renders no display equations.  The air-correction
 ratio (3.73:1, after Jin et al., 2010), the delta-13C validity limits (CH4
@@ -44,6 +48,15 @@ PVF_PERMEATION_HE_VS_CO2 = 15.0
 
 # Canister sealed/vented when internal pressure exceeds ~1 bar (15 psi)
 CANISTER_VENT_PRESSURE_BAR = 1.0
+
+# Thermal conductivity of candidate canister materials (BTU/ft-hr-degF, Yaws
+# 1995): a higher-conductivity body equilibrates the core to reservoir
+# temperature faster, but the paper's canisters are PVC (cheap, <=80 degC limit).
+CANISTER_THERMAL_CONDUCTIVITY = {
+    "PVC": 0.19,
+    "stainless_steel": 9.8243,
+    "aluminum": 147.3645,
+}
 
 
 # ---------------------------------------------- air correction --------------
@@ -71,6 +84,30 @@ def air_contamination_fraction(o2_measured, total_gas):
     N2); high values flag samples to reject.
     """
     return (1.0 + ATM_N2_O2) * o2_measured / total_gas
+
+
+def airfree_composition(composition):
+    """Air-free gas composition by volume percent.
+
+    Removes the atmospheric air (all O2 plus the accompanying N2_air = 3.73*O2)
+    and renormalises the remaining components to 100%, the "airfree" basis the
+    paper reports its compositions on.  ``composition`` maps species (e.g. "O2",
+    "N2", "CH4", "CO2") to volume percent.  Returns a new dict with O2 dropped,
+    atmospheric N2 stripped and the residue renormalised.
+    """
+    comp = {k: float(v) for k, v in composition.items()}
+    o2 = comp.pop("O2", 0.0)
+    comp["N2"] = comp.get("N2", 0.0) - ATM_N2_O2 * o2
+    total = sum(v for v in comp.values() if v > 0.0)
+    if total <= 0.0:
+        raise ValueError("no coal gas left after the air correction")
+    return {k: (v / total * 100.0 if v > 0.0 else 0.0) for k, v in comp.items()}
+
+
+def helium_flush_ok(canister_volumes, lo=4.0, hi=5.0):
+    """Helium-flush check: the paper purges the air from each canister with 4 to
+    5 total canister volumes of helium before sealing."""
+    return bool(lo <= canister_volumes <= hi)
 
 
 # ---------------------------------------------- lost / total gas --------------
@@ -109,6 +146,14 @@ def canister_overpressured(pressure_bar, limit=CANISTER_VENT_PRESSURE_BAR):
     internal pressure exceeds ~1 bar (15 psi); canisters are pressure-tested to
     2 bar.  Returns True when the canister should be vented."""
     return bool(pressure_bar > limit)
+
+
+def fastest_equilibrating_material(conductivities=None):
+    """Canister material that brings the core to reservoir temperature fastest -
+    the one with the highest thermal conductivity (Yaws, 1995).  Defaults to the
+    paper's three candidate materials (PVC, stainless steel, aluminum)."""
+    c = conductivities or CANISTER_THERMAL_CONDUCTIVITY
+    return max(c, key=c.get)
 
 
 # ---------------------------------------------- quality control --------------
@@ -154,6 +199,36 @@ def gas_origin(delta13c_ch4):
     return "thermogenic"
 
 
+def carbon_isotope_separation(delta13c_co2, delta13c_ch4):
+    """Carbon-isotope separation between co-existing CO2 and CH4
+
+        eps_C = delta13C-CO2 - delta13C-CH4   (Whiticar, 1996).
+
+    The paper measures the CO2 isotope alongside CH4 precisely so the two can be
+    cross-plotted; the separation discriminates the methane-generation pathway.
+    """
+    return delta13c_co2 - delta13c_ch4
+
+
+def gas_origin_co2_ch4(delta13c_co2, delta13c_ch4):
+    """Gas origin from the CO2-CH4 carbon-isotope separation (Whiticar, 1996)
+
+        eps_C > 60 permil : biogenic (microbial CO2 reduction),
+        eps_C < 25 permil : thermogenic,
+        otherwise         : mixed/transitional.
+
+    Using both isotopes (rather than CH4 alone) is what let the paper resolve the
+    Well 1 gas as a mixed thermogenic+biogenic system once the weak (<50 mV-sec)
+    GC points were discarded.
+    """
+    eps = carbon_isotope_separation(delta13c_co2, delta13c_ch4)
+    if eps > 60.0:
+        return "biogenic"
+    if eps < 25.0:
+        return "thermogenic"
+    return "mixed"
+
+
 # ---------------------------------------------- tests --------------
 
 def test_all():
@@ -169,6 +244,19 @@ def test_all():
     frac = air_contamination_fraction(o2_measured=2.0, total_gas=100.0)
     print(f"  air contamination = {frac*100:.1f}%")
     assert np.isclose(frac, (1 + 3.73) * 2.0 / 100.0)
+
+    # Air-free composition: drop O2 and its 3.73x N2, renormalise to 100%
+    raw = {"O2": 2.0, "N2": 12.0, "CH4": 80.0, "CO2": 6.0}
+    af = airfree_composition(raw)
+    print(f"  airfree composition = {{'CH4': {af['CH4']:.1f}, 'CO2': {af['CO2']:.1f}, 'N2': {af['N2']:.1f}}}")
+    assert "O2" not in af and np.isclose(sum(af.values()), 100.0)
+    # methane is enriched relative to its raw fraction once air is removed
+    assert af["CH4"] > 80.0 and af["N2"] < 12.0
+
+    # Helium flush of 4-5 canister volumes; material with highest conductivity
+    assert helium_flush_ok(4.5) and not helium_flush_ok(2.0)
+    assert fastest_equilibrating_material() == "aluminum"
+    assert CANISTER_THERMAL_CONDUCTIVITY["PVC"] == 0.19
 
     # Tedlar-bag hold-time guidance (<24 h); glass vials effectively impermeable
     assert tedlar_holdtime_ok(12.0) and not tedlar_holdtime_ok(48.0)
@@ -200,6 +288,14 @@ def test_all():
     assert gas_origin(-70) == "biogenic"
     assert gas_origin(-55) == "mixed"
     assert gas_origin(-45) == "thermogenic"
+
+    # CO2-CH4 carbon-isotope separation classifies the methanogenesis pathway
+    eps = carbon_isotope_separation(delta13c_co2=10.0, delta13c_ch4=-65.0)
+    print(f"  CO2-CH4 isotope separation = {eps:.1f} permil -> {gas_origin_co2_ch4(10.0, -65.0)}")
+    assert np.isclose(eps, 75.0)
+    assert gas_origin_co2_ch4(10.0, -65.0) == "biogenic"   # large separation
+    assert gas_origin_co2_ch4(-20.0, -40.0) == "thermogenic"  # small separation
+    assert gas_origin_co2_ch4(-5.0, -50.0) == "mixed"
     print("  PASS")
     return {"coal_N2": float(n2_coal), "lost_gas": float(lost), "total_gas": float(total)}
 
