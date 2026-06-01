@@ -13,10 +13,12 @@ typing.  This module implements the standard relations the review references.
 Implements:
 
   - Equivalent-circulating-density (ECD) drilling window check
+  - Eaton pore-pressure prediction (resistivity / acoustic forms)
   - Resistivity anisotropy ratio  lambda = sqrt(Rv/Rh)
   - Thomas-Stieber laminated-sand horizontal/vertical resistivity
+  - Shale-intrinsic-anisotropy-corrected laminated resistivities (Clavaud)
   - Laminated-sand water saturation from Rh
-  - NMR hydrogen index and a T1 fluid-typing contrast
+  - NMR hydrogen index, Coates/Timur permeability and a T1 fluid-typing contrast
 
 Note: this is an applied review; the models it cites (Eaton, Thomas-Stieber,
 Mollison, Coates) are referenced but not written, so the standard forms are
@@ -45,6 +47,23 @@ def ecd_margin(pore_pressure, fracture_pressure):
     return fracture_pressure - pore_pressure
 
 
+# ---------------------------------------------- pore pressure --------------
+
+def eaton_pore_pressure(overburden, hydrostatic, observed, normal, exponent=1.2):
+    """Eaton pore-pressure prediction from a compaction-sensitive log
+
+        Pp = OBP - (OBP - Pn)*(obs/normal)^exponent,
+
+    where (obs/normal) is the ratio of the observed to the normal-compaction-trend
+    log value.  The article notes deepwater practice favors the *acoustic*
+    (compressional-velocity) form over the original *resistivity* form (which is
+    contaminated by salinity / hydrocarbon-saturation changes); both share this
+    Eaton expression, differing only in which log supplies the ratio and the
+    exponent (~1.2 resistivity, ~3 sonic velocity).
+    """
+    return overburden - (overburden - hydrostatic) * (observed / normal) ** exponent
+
+
 # ---------------------------------------------- anisotropy --------------
 
 def anisotropy_ratio(r_v, r_h):
@@ -63,6 +82,24 @@ def laminated_resistivity(r_sand, r_shale, sand_fraction):
     vsd = sand_fraction
     rh = 1.0 / (vsd / r_sand + (1.0 - vsd) / r_shale)
     rv = vsd * r_sand + (1.0 - vsd) * r_shale
+    return rh, rv
+
+
+def laminated_resistivity_anisotropic(r_sand, rh_shale, rv_shale, sand_fraction):
+    """Thomas-Stieber laminated resistivities when the shale laminae are
+    themselves intrinsically anisotropic (Rh_shale != Rv_shale)
+
+        1/Rh = Vsd/Rsand + (1-Vsd)/Rh_shale     (horizontal),
+        Rv  = Vsd*Rsand + (1-Vsd)*Rv_shale       (vertical).
+
+    The review stresses that omitting the shale intrinsic-anisotropy correction
+    (Clavaud, 2008) yields unrealistically high hydrocarbon volumes; an
+    anisotropic shale (Rv_shale > Rh_shale) raises the bulk Rv (and the apparent
+    anisotropy) even before any laminar sand is added.  Returns (Rh, Rv).
+    """
+    vsd = sand_fraction
+    rh = 1.0 / (vsd / r_sand + (1.0 - vsd) / rh_shale)
+    rv = vsd * r_sand + (1.0 - vsd) * rv_shale
     return rh, rv
 
 
@@ -92,6 +129,19 @@ def t1_fluid_contrast(t1_hydrocarbon, t1_water):
     return t1_hydrocarbon / t1_water
 
 
+def coates_permeability(porosity, ffi, bvi, c=10.0):
+    """Coates (free-fluid) NMR permeability from the bound/free fluid split
+
+        k = (phi/C)^4 * (FFI/BVI)^2   [md],
+
+    with porosity phi in porosity units (p.u. = percent), free-fluid index FFI
+    and bulk-volume-irreducible BVI (FFI + BVI = phi, all in p.u.) and the
+    calibration constant C (~10).  This is the NMR-based permeability the review
+    cites (Coates, 1998) for ranking deepwater pay quality.
+    """
+    return (porosity / c) ** 4 * (ffi / bvi) ** 2
+
+
 # ---------------------------------------------- tests --------------
 
 def test_all():
@@ -118,13 +168,34 @@ def test_all():
     print(f"  Sw(sand)={sw_sand:.3f}  Sw(bulk Rh)={sw_bulk:.3f}")
     assert sw_sand < sw_bulk
 
+    # Eaton: undercompaction (observed < normal trend) raises predicted pore
+    # pressure above hydrostatic, narrowing the deepwater margin
+    pp_normal = eaton_pore_pressure(10000, 8000, observed=1.0, normal=1.0)
+    pp_under = eaton_pore_pressure(10000, 8000, observed=0.5, normal=1.0)
+    print(f"  Eaton Pp: normal={pp_normal:.0f}  undercompacted={pp_under:.0f} psi")
+    assert np.isclose(pp_normal, 8000) and pp_under > pp_normal
+
+    # Shale intrinsic anisotropy raises bulk Rv (and lambda) vs isotropic shale
+    rh_i, rv_i = laminated_resistivity(20.0, 1.0, 0.5)
+    rh_a, rv_a = laminated_resistivity_anisotropic(20.0, 1.0, 2.0, 0.5)
+    print(f"  anisotropic shale: Rv {rv_i:.2f} -> {rv_a:.2f}")
+    assert rv_a > rv_i and anisotropy_ratio(rv_a, rh_a) > anisotropy_ratio(rv_i, rh_i)
+
     # NMR: hydrogen index 0.33 flags gas; light HC has longer T1 than water
     hi = hydrogen_index(0.10, 0.30)
     print(f"  hydrogen index = {hi:.2f}")
     assert np.isclose(hi, 0.333, atol=0.01) and hi < 1.0
     assert t1_fluid_contrast(4.0, 0.5) > 1.0
+
+    # Coates NMR permeability (porosity & fluid indices in p.u.) rises with the
+    # free-fluid fraction; the field case has phi=30 p.u., k~1,000 md
+    k_low = coates_permeability(30.0, ffi=5.0, bvi=25.0)
+    k_high = coates_permeability(30.0, ffi=25.0, bvi=5.0)
+    print(f"  Coates k: bound-rich={k_low:.1f}  free-rich={k_high:.1f} md")
+    assert k_high > k_low and k_high > 1000.0
     print("  PASS")
-    return {"ECD_margin": 1000.0, "lambda": float(lam), "HI": float(hi)}
+    return {"ECD_margin": 1000.0, "lambda": float(lam), "HI": float(hi),
+            "Pp_undercompacted": float(pp_under), "k_coates": float(k_high)}
 
 
 if __name__ == "__main__":

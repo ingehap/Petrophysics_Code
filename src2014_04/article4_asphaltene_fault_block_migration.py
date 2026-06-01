@@ -16,6 +16,8 @@ Implements:
   - Gravity-only FHZ limit for low-GOR black oils
   - Asphaltene molar volume / particle size inferred from two depth points
   - Fault-block vertical offset between two equilibrated curves
+  - FHZ connectivity test (do two stations lie on one equilibrium curve?)
+  - Tar-mat onset flag from extrapolated asphaltene content (35-40 wt% cutoff)
 
 Note: this issue's PDF dropped the display equations in extraction; the FHZ EoS
 (Eq. 1) is reconstructed from the surrounding text and nomenclature with explicit
@@ -29,6 +31,11 @@ import numpy as np
 R = 8.314      # universal gas constant, J/(mol*K)
 G = 9.81       # m/s^2
 NA = 6.022e23  # 1/mol
+
+# Asphaltene weight fraction at which viscosity becomes extreme and a tar mat
+# is likely to form (the article's stated 35-40 wt% range).
+TAR_ONSET_WT_LOW = 0.35
+TAR_ONSET_WT_HIGH = 0.40
 
 
 # ---------------------------------------------- FHZ EoS --------------
@@ -100,6 +107,43 @@ def fault_block_offset(conc_block2, depth_block2, molar_volume_a, delta_rho,
     return depth_block2 - equilibrium_depth
 
 
+# ---------------------------------------------- connectivity test --------------
+
+def on_same_fhz_curve(conc1, depth1, conc2, depth2, molar_volume_a, delta_rho,
+                      temperature, rtol=0.05):
+    """Connectivity test: do two fluid stations lie on a single equilibrated
+    (gravity-only) FHZ curve?
+
+    Predicts the deeper concentration from the shallower one and compares to the
+    measurement.  Agreement (within `rtol`) means the stations are in one
+    connected, equilibrated column (the article's vertical/lateral test);
+    disagreement signals a sealing fault or disequilibrium between fault blocks.
+    """
+    predicted = conc1 * fhz_gravity_only(depth2, depth1, molar_volume_a,
+                                         delta_rho, temperature)
+    return bool(np.isclose(predicted, conc2, rtol=rtol))
+
+
+# ---------------------------------------------- tar-mat onset --------------
+
+def tar_mat_likely(asphaltene_wt_fraction):
+    """Flag a tar mat from the (possibly FHZ-extrapolated) asphaltene content
+
+        tar likely when asphaltene >= 35-40 wt%.
+
+    Returns "tar likely" at/above ~40 wt%, "tar onset" in the 35-40 wt% transition
+    band, and "no tar" below.  In the case study the downdip FHZ extrapolation
+    reached 40 wt%, yet no tar was found - evidence the blocks were faulted apart
+    before equilibration could build the predicted gradient.
+    """
+    a = float(asphaltene_wt_fraction)
+    if a >= TAR_ONSET_WT_HIGH:
+        return "tar likely"
+    if a >= TAR_ONSET_WT_LOW:
+        return "tar onset"
+    return "no tar"
+
+
 # ---------------------------------------------- tests --------------
 
 def test_all():
@@ -142,8 +186,22 @@ def test_all():
 
     # The full FHZ reduces to the gravity term when entropy/solubility vanish
     assert np.isclose(fhz_ratio(100.0, 0.0, va, delta_rho, T), ratio)
+
+    # Connectivity test: two equilibrated points lie on one FHZ curve; a station
+    # whose asphaltene decreases with depth (disequilibrium / isolated block)
+    # does not
+    assert on_same_fhz_curve(conc1, 0.0, conc2, 100.0, va, delta_rho, T)
+    assert not on_same_fhz_curve(conc1, 0.0, conc1 * 0.8, 100.0, va, delta_rho, T)
+    print("  connectivity test: equilibrated pair connected, reversed-gradient pair not")
+
+    # Tar-mat flag across the 35-40 wt% cutoff band
+    assert tar_mat_likely(0.20) == "no tar"
+    assert tar_mat_likely(0.37) == "tar onset"
+    assert tar_mat_likely(0.42) == "tar likely"
+    print(f"  tar flag at 40 wt% = {tar_mat_likely(0.40)!r}")
     print("  PASS")
-    return {"FHZ_ratio": float(ratio), "va": float(va), "offset": float(off)}
+    return {"FHZ_ratio": float(ratio), "va": float(va), "offset": float(off),
+            "tar_at_40wt": tar_mat_likely(0.40)}
 
 
 if __name__ == "__main__":

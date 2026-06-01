@@ -14,10 +14,12 @@ Implements:
 
   - Water/gas saturation and kerogen volumetric concentration (Eqs. 1-3)
   - Kerogen porosity and total porosity (Eqs. 4, 6)
+  - Plagioclase-quartz mineral constraint (Eq. 8, linear)
   - Kerogen volume from TOC (Eq. 9, linear)
   - Effective resistivity of gas-bearing kerogen  R_effK = R_K*exp(c*phi_K) (Eq. 10)
   - Laplace conductivity solver  div(sigma*grad V) = 0  (Eq. 7) for the effective
     resistivity of a heterogeneous (kerogen-bearing) medium
+  - Kerogen-conductivity threshold (~1000 Ohm*m) above which rock R is unaffected
   - Archie water saturation and its overestimation when kerogen is ignored
 
 Note: this issue's PDF dropped the display equations in extraction; the
@@ -60,6 +62,17 @@ def total_porosity(matrix_pore_volume, kerogen_pore_volume, v_total):
     return (matrix_pore_volume + kerogen_pore_volume) / v_total
 
 
+def plagioclase_from_quartz(c_quartz, slope, intercept=0.0):
+    """Plagioclase volumetric concentration from quartz (Eq. 8, linear)
+
+        C_plagioclase = slope*C_quartz + intercept,
+
+    the mineral correlation (Fig. 4) used as a constraint to reduce the
+    non-uniqueness of the multi-mineral log inversion (coefficients from core).
+    """
+    return slope * np.asarray(c_quartz, float) + intercept
+
+
 def kerogen_from_toc(toc, slope, intercept=0.0):
     """Kerogen volumetric concentration from TOC (Eq. 9, linear)
 
@@ -81,6 +94,24 @@ def effective_kerogen_resistivity(r_kerogen, phi_kerogen, c):
     raises the kerogen-domain resistivity); c is fitted (Fig. 12).
     """
     return r_kerogen * np.exp(c * np.asarray(phi_kerogen, float))
+
+
+# Above this kerogen resistivity the kerogen behaves as an insulator and the
+# bulk rock resistivity is essentially unaffected (synthetic Case 1).
+KEROGEN_CONDUCTIVE_THRESHOLD_OHMM = 1000.0
+
+
+def kerogen_affects_resistivity(r_kerogen):
+    """Whether conductive kerogen materially lowers the bulk rock resistivity
+
+        affects rock R only when R_kerogen <~ 1000 Ohm*m.
+
+    Per synthetic Case 1, for kerogen resistivity above ~1000 Ohm*m the rock
+    resistivity is unaffected (kerogen acts as an insulator like the matrix);
+    below it the rock resistivity falls with increasing kerogen conductivity and
+    Archie overestimates water saturation.
+    """
+    return bool(float(r_kerogen) < KEROGEN_CONDUCTIVE_THRESHOLD_OHMM)
 
 
 # ---------------------------------------------- Laplace conductivity solver --------------
@@ -148,6 +179,15 @@ def test_all():
     ck = kerogen_from_toc(5.0, slope=2.0, intercept=1.0)
     print(f"  kerogen concentration (TOC=5%) = {ck:.1f} vol%")
     assert np.isclose(ck, 11.0)
+    # plagioclase-quartz mineral constraint (Eq. 8)
+    assert np.isclose(plagioclase_from_quartz(30.0, slope=0.5, intercept=2.0), 17.0)
+
+    # Kerogen-conductivity threshold: conductive kerogen lowers rock R only
+    # below ~1000 Ohm*m
+    assert kerogen_affects_resistivity(100.0)
+    assert not kerogen_affects_resistivity(1e7)
+    print(f"  kerogen affects R: 100 Ohm*m={kerogen_affects_resistivity(100.0)}, "
+          f"1e7 Ohm*m={kerogen_affects_resistivity(1e7)}")
 
     # Effective kerogen resistivity rises with gas-filled kerogen porosity
     r1 = effective_kerogen_resistivity(100.0, 0.1, c=1.5)
@@ -179,7 +219,8 @@ def test_all():
     assert sw_apparent > sw_true               # overestimation
     print("  PASS")
     return {"C_k": float(ck), "R_effK": float(r2), "sigma_kerogen": float(sigma_kero),
-            "Sw_overestimate": float(sw_apparent - sw_true)}
+            "Sw_overestimate": float(sw_apparent - sw_true),
+            "kerogen_conductive": kerogen_affects_resistivity(100.0)}
 
 
 if __name__ == "__main__":

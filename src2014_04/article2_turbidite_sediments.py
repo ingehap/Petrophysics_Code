@@ -17,6 +17,10 @@ Implements:
   - Net-to-gross and sand-to-sand pore contact interpolated between layered and
     amalgamated end members
   - A connectivity/recovery proxy from the sand-to-sand pore contact
+  - Submarine-fan facies model (inner / middle channel-levee / outer fan) with
+    reservoir-quality rank
+  - Mass-transport-deposit (MTD) progression and its rock-quality preservation
+    ranking (slide -> slump -> debris flow -> turbidity current)
 
 Note: this is a narrative geology review with no display equations; the Bouma
 sequence is an ordinal facies model and the only hard numbers are the Ross
@@ -39,6 +43,34 @@ BOUMA = [
 # Ross Formation end members (Fig. 13): (net_to_gross, sand-to-sand pore contact)
 LAYERED = (0.45, 0.03)
 AMALGAMATED = (0.90, 0.67)
+
+# Submarine-fan facies belts (proximal -> distal), each with a qualitative
+# reservoir-quality rank (1 worst .. 4 best) and the review's characteristics.
+# The outer fan is the best overall target; the proximal levee permeability
+# anchor (>100 md) is from Fig. 9.
+PROXIMAL_LEVEE_PERMEABILITY_MD = 100.0
+
+FAN_FACIES = [
+    ("inner_fan",  "proximal canyon: confined amalgamated channels, high "
+                   "drawdown, poor lateral continuity",                 2),
+    ("middle_fan", "channel-levee 'gull-wing' systems; proximal levees "
+                   ">100 md, large levee storage",                      3),
+    ("outer_fan",  "distal sheets and lobes: best overall target "
+                   "(amalgamated or layered end members)",              4),
+    ("mtd",        "mass-transport deposits: disorganized, variable "
+                   "and generally poor reservoir",                      1),
+]
+
+# Mass-transport-deposit progression downslope, ordered by *decreasing*
+# preservation of the original layering / rock properties (Shanmugam et al.,
+# 1994; Fig. 16).  The turbidity current re-sorts sediment and can *restore*
+# quality, so it ranks highest.  rank: higher = better preserved/sorted.
+MTD_PROGRESSION = [
+    ("slide",            "detached/faulted block, original layering intact", 4),
+    ("slump",            "plastic deformation, fines begin redispersing",    3),
+    ("debris_flow",      "chaotic muddy matrix with clasts/olistoliths",     1),
+    ("turbidity_current", "re-suspended and re-sorted, quality restored",    5),
+]
 
 
 # ---------------------------------------------- Bouma sequence --------------
@@ -81,6 +113,33 @@ def recovery_proxy(pore_contact):
     return np.clip(pore_contact, 0.0, 1.0)
 
 
+# ---------------------------------------------- fan facies & MTDs --------------
+
+def fan_facies():
+    """Return the submarine-fan facies belts as
+    (code, description, reservoir_quality_rank), proximal to distal.  The outer
+    fan carries the highest rank (best overall reservoir target)."""
+    return list(FAN_FACIES)
+
+
+def best_reservoir_facies():
+    """The fan facies belt with the highest reservoir-quality rank.
+
+    Returns its code.  Per the review (and contra a naive Walther's-law
+    basinward-fining expectation) this is the distal *outer fan*, not the
+    proximal channel.
+    """
+    return max(FAN_FACIES, key=lambda f: f[2])[0]
+
+
+def mtd_progression():
+    """Return the mass-transport-deposit progression as
+    (code, description, preservation_rank), ordered downslope (slide -> slump
+    -> debris flow -> turbidity current).  Preservation degrades from slide to
+    debris flow, then the turbidity current re-sorts and *restores* quality."""
+    return list(MTD_PROGRESSION)
+
+
 # ---------------------------------------------- tests --------------
 
 def test_all():
@@ -108,9 +167,24 @@ def test_all():
     assert ng_l < ng_m < ng_a and pc_l < pc_m < pc_a
     assert recovery_proxy(pc_a) > recovery_proxy(pc_l)
     print(f"  recovery proxy: layered={recovery_proxy(pc_l):.2f}  amalgamated={recovery_proxy(pc_a):.2f}")
+
+    # Fan facies: the distal outer fan is the best overall reservoir target
+    facies = fan_facies()
+    print(f"  fan facies: {[c for c, _, _ in facies]}")
+    assert len(facies) == 4
+    assert best_reservoir_facies() == "outer_fan"
+    assert PROXIMAL_LEVEE_PERMEABILITY_MD == 100.0
+
+    # MTDs: a slide preserves rock properties better than a debris flow, and the
+    # turbidity current re-sorts sediment to the highest quality of all
+    mtd = dict((c, rank) for c, _, rank in mtd_progression())
+    print(f"  MTD ranks: {mtd}")
+    assert mtd["slide"] > mtd["slump"] > mtd["debris_flow"]
+    assert mtd["turbidity_current"] == max(mtd.values())
     print("  PASS")
     return {"NG_amalgamated": ng_a, "pore_contact_amalgamated": pc_a,
-            "recovery_amalgamated": float(recovery_proxy(pc_a))}
+            "recovery_amalgamated": float(recovery_proxy(pc_a)),
+            "best_facies": best_reservoir_facies()}
 
 
 if __name__ == "__main__":
