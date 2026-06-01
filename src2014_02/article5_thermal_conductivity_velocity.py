@@ -15,7 +15,8 @@ controlled by the ratio porosity/aspect-ratio.
 Implements:
 
   - Voigt and Reuss bounds and the Hill average of them (Step-1 solid matrix)
-  - Best-fit inclusion aspect ratios by petrographic code (Step-2 calibration)
+  - Best-fit inclusion aspect ratios and quartz-content classes (high ~50% /
+    low ~30%) by petrographic code (Step-1/Step-2 calibration)
   - Crack density from crack count and radius  eps = (N/V)*r^3  (Eq. 3)
   - Crack density from porosity and aspect ratio  eps = phi/((4/3)*pi*alpha) (Eq. 4)
   - Budiansky-O'Connell self-consistent cracked moduli and P-wave velocity
@@ -51,6 +52,15 @@ TYPICAL_POROSITY_BY_ROCK = {
     "gneiss": 0.03,
     "sandstone": 0.20,
     "basic_magmatic": 0.10,
+}
+
+# Quartz-content classes of the petrographic code (Gegenhuber & Schon, 2014):
+# the Step-1 solid host is built for a high-quartz (~50%) and a low-quartz
+# (~30%) end member, since quartz fraction sets the host elastic moduli and
+# thermal conductivity that the inclusion model then perturbs.
+QUARTZ_CONTENT_BY_CLASS = {
+    "high_quartz": 0.50,
+    "low_quartz": 0.30,
 }
 
 
@@ -282,6 +292,9 @@ def test_all():
     # Petrographic aspect-ratio codes
     assert aspect_ratio_for_rock("sandstone") == 0.20
     assert aspect_ratio_for_rock("basic_magmatic") == 0.25
+    # Quartz-content classes of the Step-1 host (high ~50%, low ~30%)
+    assert QUARTZ_CONTENT_BY_CLASS["high_quartz"] > QUARTZ_CONTENT_BY_CLASS["low_quartz"]
+    assert QUARTZ_CONTENT_BY_CLASS["high_quartz"] == 0.50
 
     # Crack density grows with porosity and falls with aspect ratio
     eps = crack_density(0.03, aspect_ratio=0.20)

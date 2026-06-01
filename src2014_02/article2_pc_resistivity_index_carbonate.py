@@ -27,7 +27,9 @@ Implements:
     shielded-pore comparison
   - Archie formation resistivity factor  FRF = Ro/Rw = a/phi^m
   - Cementation-exponent fit from a log-log FRF vs phi regression
-  - Permeability-based RRT grouping (Group 1 high-perm vs Group 2 tight)
+  - Permeability-based RRT grouping (Group 1 high-perm vs Group 2 tight) and
+    each group's reported PD->FI saturation-exponent progression
+  - NMR-vs-helium porosity QC agreement (within 1.1 p.u.)
 
 Note: this experimental paper renders no display equations; the resistivity-
 index power law and the Archie formation factor are written in standard form.
@@ -44,6 +46,20 @@ import numpy as np
 # reservoir temperature 121 degC; NMR T2 acquired with a 200 usec echo spacing.
 RESERVOIR_TEMPERATURE_C = 121.0
 NMR_ECHO_SPACING_USEC = 200.0
+
+# Reported saturation-exponent progression (primary drainage -> forced
+# imbibition) by petrophysical group (Dernaika et al., 2014): the higher-perm
+# Group 1 (RRT 1-5) rises n = 1.99 -> 2.28, the tighter, more homogeneous
+# Group 2 (RRT 6-7, < 1 md) rises n = 1.56 -> 1.82.  Both groups share the
+# paper's headline: n increases through the displacement cycle (PD ~ SI < FI).
+REPORTED_SATURATION_EXPONENTS = {
+    "group1": (1.99, 2.28),
+    "group2": (1.56, 1.82),
+}
+
+# NMR porosity agreed with helium porosity to within 1.1 porosity units (p.u.)
+# across all samples - the study's NMR-vs-routine-core porosity QC criterion.
+NMR_HELIUM_POROSITY_TOLERANCE_PU = 1.1
 
 
 # ---------------------------------------------- resistivity index --------------
@@ -117,6 +133,19 @@ def rrt_group(permeability_md):
     Returns "group1" for permeability >= 0.1 md, "group2" below it.
     """
     return "group1" if permeability_md >= 0.1 else "group2"
+
+
+def nmr_helium_porosity_agrees(phi_nmr_pu, phi_helium_pu,
+                               tol_pu=NMR_HELIUM_POROSITY_TOLERANCE_PU):
+    """NMR-vs-helium porosity QC check (Dernaika et al., 2014).
+
+    The study reports its NMR porosity agreeing with the helium (routine-core)
+    porosity to within 1.1 porosity units on every sample, validating the NMR
+    pore-volume calibration before the T2/MICP pore-size comparison.  Porosities
+    are given in porosity units (percentage points); returns True when the
+    absolute difference is within ``tol_pu``.
+    """
+    return bool(abs(phi_nmr_pu - phi_helium_pu) <= tol_pu)
 
 
 # ---------------------------------------------- saturation endpoints --------------
@@ -284,6 +313,16 @@ def test_all():
     assert rrt_group(600.0) == "group1" and rrt_group(50.0) == "group1"
     assert rrt_group(0.05) == "group2"
     assert RESERVOIR_TEMPERATURE_C == 121.0
+
+    # Reported PD->FI exponent progression: both groups rise, the tighter
+    # Group 2 starting and ending lower than the high-perm Group 1
+    g1_pd, g1_fi = REPORTED_SATURATION_EXPONENTS["group1"]
+    g2_pd, g2_fi = REPORTED_SATURATION_EXPONENTS["group2"]
+    print(f"  reported n: group1 {g1_pd}->{g1_fi}  group2 {g2_pd}->{g2_fi}")
+    assert g1_fi > g1_pd and g2_fi > g2_pd and g1_pd > g2_pd and g1_fi > g2_fi
+
+    # NMR-vs-helium porosity QC: within 1.1 p.u. passes, a larger gap fails
+    assert nmr_helium_porosity_agrees(24.0, 24.8) and not nmr_helium_porosity_agrees(24.0, 26.0)
     print("  PASS")
     return {"n_PD": float(n_pd), "n_FI": float(n_fi), "m": float(m_fit),
             "movable_oil": float(so_mov)}

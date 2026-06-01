@@ -27,6 +27,8 @@ Implements:
   - The Fig. 7 input-sensitivity study (Sxo is the dominant control on Sw)
   - The Appendix n-vs-m trade-off (cementation factor for a target Sw)
   - Lithology classification from the m0 log (clean ~1.8 -> shaly ~2.2)
+  - The case-study core composite Archie exponents (m* = 1.93-2.01,
+    n* = 1.75-2.20) and a validity check against them
 
 Note: this issue's PDF dropped the display equations in extraction; the two
 conductivity terms are transcribed verbatim (with the worked example) and the
@@ -48,6 +50,19 @@ CASE_STUDY_SATURATION_EXPONENT = 1.67
 # at 60 degC).
 REFERENCE_SALINITY_PPT = 19.0
 REFERENCE_CW_SI = 5.81
+
+# Core-measured composite Archie exponents of the case study (Tan et al., 2014):
+# the formation-resistivity-factor and resistivity-index regressions on the SCAL
+# plugs give a cementation exponent m* = 1.93-2.01 and a saturation exponent
+# n* = 1.75-2.20 (the n* spread is why the paper's final Sw uses the six-core
+# average n = 1.67, which sits just below this composite range).
+CORE_CEMENTATION_EXPONENT_RANGE = (1.93, 2.01)
+CORE_SATURATION_EXPONENT_RANGE = (1.75, 2.20)
+
+# NMR clay-bound-water cutoff: Martin & Dacy (2004) correlated CBW to the NMR
+# transverse relaxation T2 < 2.8 msec; the paper applies a slightly rounded
+# practical T2 < 3 msec cutoff (the default of clay_bound_water_porosity_nmr).
+NMR_CBW_T2_CUTOFF_MS = 2.8
 
 
 # ---------------------------------------------- dual-water terms --------------
@@ -171,6 +186,19 @@ def invert_m0(cxo, sxo, n, cmfe, qv, alpha, vqh, beta, phi):
     cwf = effective_water_conductivity(cmfe, alpha, vqh, qv)
     bracket = sxo ** n * cwf + sxo ** (n - 1) * beta * qv
     return np.log(cxo / bracket) / np.log(phi)
+
+
+def core_exponent_in_range(value, kind="m"):
+    """Whether a fitted Archie exponent matches the case-study core composite.
+
+    The paper's SCAL programme brackets the cementation exponent to
+    m* = 1.93-2.01 and the saturation exponent to n* = 1.75-2.20 (Tan et al.,
+    2014).  ``kind`` selects which range to test ("m" or "n"); returns True when
+    ``value`` lies inside the corresponding composite range.
+    """
+    lo, hi = (CORE_CEMENTATION_EXPONENT_RANGE if kind == "m"
+              else CORE_SATURATION_EXPONENT_RANGE)
+    return bool(lo <= value <= hi)
 
 
 def m0_lithology(m0):
@@ -352,6 +380,14 @@ def test_all():
     # m0 log lithology split (clean sand ~1.8 -> shalier sand ~2.2)
     assert m0_lithology(1.8) == "clean" and m0_lithology(2.2) == "shaly"
     assert CASE_STUDY_SATURATION_EXPONENT == 1.67
+
+    # Core-measured composite exponents: a fitted m/n inside the SCAL ranges
+    # (m* = 1.93-2.01, n* = 1.75-2.20) validates against the case study
+    assert core_exponent_in_range(1.97, "m") and not core_exponent_in_range(2.3, "m")
+    assert core_exponent_in_range(2.0, "n") and not core_exponent_in_range(1.5, "n")
+    # the six-core average n = 1.67 sits just below the composite n* range
+    assert CASE_STUDY_SATURATION_EXPONENT < CORE_SATURATION_EXPONENT_RANGE[0]
+    assert NMR_CBW_T2_CUTOFF_MS == 2.8
     print("  PASS")
     return {"excess_clay": float(clay), "Qv": float(qv_calc), "m0": float(m0_rec),
             "Sw": float(sw)}

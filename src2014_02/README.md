@@ -49,6 +49,28 @@ python article1_dualwater_dielectric_nmr.py
 > from their genuine quantitative content. The cover features Article 4 (coalbed-
 > methane gas isotopes). (This issue has no tutorial.)
 
+## Latest update — additional PDF-grounded anchors
+
+A completeness pass against the surviving running text of `Petrophysics_2014_02.pdf`
+added the few quantitative anchors that were not yet captured:
+
+- **Article 1**: the SCAL composite core Archie exponents
+  `CORE_CEMENTATION_EXPONENT_RANGE` (m* = 1.93–2.01) and
+  `CORE_SATURATION_EXPONENT_RANGE` (n* = 1.75–2.20) with a `core_exponent_in_range`
+  validity check, plus the Martin & Dacy (2004) NMR clay-bound-water cutoff
+  `NMR_CBW_T2_CUTOFF_MS = 2.8` (the basis for the rounded T2 < 3 msec cutoff).
+- **Article 2**: each petrophysical group's reported PD→FI saturation-exponent
+  progression `REPORTED_SATURATION_EXPONENTS` (Group 1 n = 1.99 → 2.28, Group 2
+  n = 1.56 → 1.82) and the NMR-vs-helium porosity QC agreement
+  `nmr_helium_porosity_agrees` (within 1.1 p.u.).
+- **Article 5**: the Step-1 quartz-content classes `QUARTZ_CONTENT_BY_CLASS`
+  (high-quartz ~50%, low-quartz ~30%) that set the solid-host moduli/conductivity.
+
+Each addition is exercised by the relevant module's `test_all()`; all five
+modules still pass. (Equation bodies and the numeric data tables - Article 5
+Table 4's vp→λ regression coefficients in particular - remain image-only in the
+source PDF and cannot be recovered from its text layer.)
+
 ## Implementation notes & substitutions
 
 - **Article 1 (Tan et al.)**: dual-water joint inversion - the dual-water
@@ -74,7 +96,13 @@ python article1_dualwater_dielectric_nmr.py
   1.8 (clean sand) -> 2.2 (shalier sand) range, and the case-study six-core
   average saturation exponent (`CASE_STUDY_SATURATION_EXPONENT = 1.67`, used in
   the paper's final Sw) and the worked-example reference salinity/conductivity
-  (19 ppt -> Cw = 5.81 S/m at 60 degC) are recorded.
+  (19 ppt -> Cw = 5.81 S/m at 60 degC) are recorded.  The SCAL programme's
+  composite core Archie exponents (`CORE_CEMENTATION_EXPONENT_RANGE` m* =
+  1.93-2.01, `CORE_SATURATION_EXPONENT_RANGE` n* = 1.75-2.20) and a validity
+  check `core_exponent_in_range` are added (the six-core average n = 1.67 sits
+  just below the composite n*), alongside the Martin & Dacy (2004) NMR
+  clay-bound-water correlation cutoff (`NMR_CBW_T2_CUTOFF_MS = 2.8`, the basis
+  for the rounded T2 < 3 msec practical cutoff).
 
 - **Article 2 (Dernaika et al.)**: Pc & resistivity index - the resistivity
   index `RI = Rt/Ro = Sw^-n` and a saturation-exponent fit, plus the Archie
@@ -96,7 +124,11 @@ python article1_dualwater_dielectric_nmr.py
   petrophysical groups by permeability - Group 1 (RRT 1/2/4, rudstone/floatstone,
   >0.1 md, n ~ 2.0, Sor ~ 20%) vs Group 2 (RRT 6/7, wackestone/mudstone, <0.1 md,
   Sor ~ 27-30%) - and the reservoir conditions (121 degC, 200 usec NMR echo
-  spacing) are recorded as constants.
+  spacing) are recorded as constants.  Each group's reported PD->FI
+  saturation-exponent progression (`REPORTED_SATURATION_EXPONENTS`: Group 1
+  n = 1.99 -> 2.28, the tighter Group 2 n = 1.56 -> 1.82) and the study's
+  NMR-vs-helium porosity QC agreement (`nmr_helium_porosity_agrees`, within
+  1.1 p.u.) are added.
 
 - **Article 3 (Roustaei)**: nanofluid imbibition - Young's law contact angle and
   its cosine (Eq. 1), a wettability classification, the Young-Dupre work of
@@ -156,7 +188,9 @@ python article1_dualwater_dielectric_nmr.py
   triaxial depolarization function `rmi_depolarization_factor` (Rmi as a function
   of La, Lb, Lc, the form the paper's Eqs. 6-7 reference) and the per-code typical
   porosities (`TYPICAL_POROSITY_BY_ROCK`: granite/gneiss 3%, sandstone 20%, basic
-  magmatic ~10%) are also provided.
+  magmatic ~10%) are also provided, along with the Step-1 quartz-content classes
+  (`QUARTZ_CONTENT_BY_CLASS`: high-quartz ~50%, low-quartz ~30%) that set the
+  solid-host moduli and conductivity.
 
 ## Module conventions
 
