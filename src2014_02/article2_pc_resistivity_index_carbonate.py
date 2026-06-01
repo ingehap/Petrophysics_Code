@@ -27,6 +27,7 @@ Implements:
     shielded-pore comparison
   - Archie formation resistivity factor  FRF = Ro/Rw = a/phi^m
   - Cementation-exponent fit from a log-log FRF vs phi regression
+  - Permeability-based RRT grouping (Group 1 high-perm vs Group 2 tight)
 
 Note: this experimental paper renders no display equations; the resistivity-
 index power law and the Archie formation factor are written in standard form.
@@ -38,6 +39,11 @@ up to 80 psi.  Saturations as fractions, resistivities in Ohm*m.
 """
 
 import numpy as np
+
+# Reservoir conditions of the study (Dernaika et al., 2014): measurements at
+# reservoir temperature 121 degC; NMR T2 acquired with a 200 usec echo spacing.
+RESERVOIR_TEMPERATURE_C = 121.0
+NMR_ECHO_SPACING_USEC = 200.0
 
 
 # ---------------------------------------------- resistivity index --------------
@@ -94,6 +100,23 @@ def saturation_exponents_by_cycle(cycles):
     """
     return {label: fit_saturation_exponent(sw, ri)
             for label, (sw, ri) in cycles.items()}
+
+
+# ---------------------------------------------- rock typing --------------
+
+def rrt_group(permeability_md):
+    """Group a carbonate reservoir rock type by permeability (Dernaika et al.).
+
+    The paper splits its RRTs into two petrophysical groups:
+
+      - Group 1 (RRT 1, 2, 4): rudstone / floatstone, higher permeability
+        (RRT1 > 500 md, RRT2 100-500 md, RRT4 25-100 md), n ~ 2.0 and Sor ~ 20%;
+      - Group 2 (RRT 6, 7): wackestone / mudstone, tight (< 0.1 md) with
+        preserved intraparticle porosity and a higher Sor (~27-30%).
+
+    Returns "group1" for permeability >= 0.1 md, "group2" below it.
+    """
+    return "group1" if permeability_md >= 0.1 else "group2"
 
 
 # ---------------------------------------------- saturation endpoints --------------
@@ -256,6 +279,11 @@ def test_all():
     print(f"  fitted m={m_fit:.3f}  a={a_fit:.3f}")
     assert np.isclose(m_fit, 2.0) and np.isclose(a_fit, 1.0)
     assert np.isclose(formation_resistivity_factor(20.0, 0.5), 40.0)
+
+    # Permeability-based RRT grouping: high-perm RRT 1-4 vs tight RRT 6-7
+    assert rrt_group(600.0) == "group1" and rrt_group(50.0) == "group1"
+    assert rrt_group(0.05) == "group2"
+    assert RESERVOIR_TEMPERATURE_C == 121.0
     print("  PASS")
     return {"n_PD": float(n_pd), "n_FI": float(n_fi), "m": float(m_fit),
             "movable_oil": float(so_mov)}

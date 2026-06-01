@@ -20,6 +20,7 @@ Implements:
   - Isotope and GC quality-control checks (delta-13C limits, CH4 peak area)
   - The canister desorption-rate shipping criterion (<= 10 cm^3/day)
   - The canister overpressure / venting threshold (~1 bar = 15 psi)
+  - The PVC canister reservoir-temperature limit (~80 degC)
   - The 4-5 canister-volume helium flush, and the candidate-material thermal
     conductivities (PVC / stainless steel / aluminum, Yaws 1995)
   - The Tedlar (PVF) bag relative-permeation finding and hold-time check
@@ -48,6 +49,10 @@ PVF_PERMEATION_HE_VS_CO2 = 15.0
 
 # Canister sealed/vented when internal pressure exceeds ~1 bar (15 psi)
 CANISTER_VENT_PRESSURE_BAR = 1.0
+
+# PVC softens above ~80 degC, capping the (cheap, machinable) PVC canister's
+# usable reservoir temperature; hotter cores need a higher-temperature material.
+PVC_TEMPERATURE_LIMIT_C = 80.0
 
 # Thermal conductivity of candidate canister materials (BTU/ft-hr-degF, Yaws
 # 1995): a higher-conductivity body equilibrates the core to reservoir
@@ -146,6 +151,16 @@ def canister_overpressured(pressure_bar, limit=CANISTER_VENT_PRESSURE_BAR):
     internal pressure exceeds ~1 bar (15 psi); canisters are pressure-tested to
     2 bar.  Returns True when the canister should be vented."""
     return bool(pressure_bar > limit)
+
+
+def pvc_canister_temp_ok(reservoir_temp_c, limit=PVC_TEMPERATURE_LIMIT_C):
+    """Whether a PVC canister can be used at the core's reservoir temperature.
+
+    The paper's canisters are PVC (cheap and machinable) but limited to ~80 degC;
+    hotter cores require a higher-temperature material.  Returns True when the
+    reservoir temperature is within the PVC limit.
+    """
+    return bool(reservoir_temp_c <= limit)
 
 
 def fastest_equilibrating_material(conductivities=None):
@@ -266,6 +281,8 @@ def test_all():
     # Canister handling thresholds: ship once desorption slows, vent above ~1 bar
     assert desorption_shipping_ready(8.0) and not desorption_shipping_ready(25.0)
     assert canister_overpressured(1.5) and not canister_overpressured(0.5)
+    # PVC canister usable below its ~80 degC softening limit
+    assert pvc_canister_temp_ok(60.0) and not pvc_canister_temp_ok(95.0)
 
     # USBM lost gas: a perfect sqrt(t) line back-extrapolates to its intercept
     t = np.array([1.0, 2.0, 3.0, 4.0])

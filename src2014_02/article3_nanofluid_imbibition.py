@@ -21,6 +21,7 @@ Implements:
   - A first-order spontaneous-imbibition recovery curve toward a final plateau
   - The critical-micelle-concentration (CMC) effectiveness check for the
     surfactant, and the nanofluid's incremental recovery over the surfactant
+  - The measured contact-angle alteration sequence and tested-concentration range
 
 Note: this issue's PDF dropped the displayed Young's law (Eq. 1) in extraction;
 it is reconstructed in standard form.  No dimensionless-time, Bond-number or
@@ -42,6 +43,22 @@ OPTIMUM_NANOPARTICLE_CONC_GL = 3.0  # g/L
 
 # Measured critical micelle concentration of the C12TAB surfactant (0.4-0.5 wt%).
 CMC_C12TAB_WT_PCT = 0.45
+
+# Silica nanoparticle size (Plasmachem) and the concentration range tested
+# (1-4 g/L; optimum 3 g/L), Roustaei (2014).
+NANOPARTICLE_SIZE_NM = 14.0
+NANOPARTICLE_CONC_RANGE_GL = (1.0, 4.0)
+
+# Measured contact angles (degrees) through the wettability-alteration sequence
+# (Roustaei, 2014): the oil-phase contact angle (oil drop under water) and the
+# water/air contact angle on aged carbonate plates.  The nanofluid drives the
+# oil-phase angle up (oil-wet -> oil repelled) and the water/air angle down
+# (strongly water-wet).
+MEASURED_CONTACT_ANGLES = {
+    "untreated":  {"oil_phase": 32.0,  "water_air": 93.0},
+    "surfactant": {"oil_phase": 95.0,  "water_air": 51.0},
+    "nanofluid":  {"oil_phase": 134.0, "water_air": 21.0},
+}
 
 
 # ---------------------------------------------- Young's law --------------
@@ -154,6 +171,13 @@ def above_cmc(concentration_wt_pct, cmc=CMC_C12TAB_WT_PCT):
     return bool(concentration_wt_pct > cmc)
 
 
+def nanoparticle_conc_in_tested_range(conc_gl, conc_range=NANOPARTICLE_CONC_RANGE_GL):
+    """Whether a nanoparticle concentration lies within the paper's tested
+    1-4 g/L range (the recovery optimum is 3 g/L)."""
+    lo, hi = conc_range
+    return bool(lo <= conc_gl <= hi)
+
+
 def incremental_recovery(recovery_nanofluid, recovery_surfactant):
     """Incremental oil recovery of the nanofluid over the plain surfactant
 
@@ -229,6 +253,20 @@ def test_all():
     # dominated, a straight-line gravity drainage response is gravity-dominated
     assert imbibition_mechanism(r_nano) == "capillary"
     assert imbibition_mechanism(np.linspace(0.0, 0.5, 50)) == "gravity"
+
+    # Measured contact-angle progression: the nanofluid drives the oil-phase
+    # angle up toward oil-repelling and the water/air angle down toward water-wet
+    oil_seq = [MEASURED_CONTACT_ANGLES[s]["oil_phase"]
+               for s in ("untreated", "surfactant", "nanofluid")]
+    wa_seq = [MEASURED_CONTACT_ANGLES[s]["water_air"]
+              for s in ("untreated", "surfactant", "nanofluid")]
+    print(f"  oil-phase angles {oil_seq}   water/air angles {wa_seq}")
+    assert oil_seq == sorted(oil_seq) and wa_seq == sorted(wa_seq, reverse=True)
+    assert wettability_class(MEASURED_CONTACT_ANGLES["nanofluid"]["water_air"]) == "water-wet"
+
+    # Nanoparticle dosing: 3 g/L optimum lies inside the tested 1-4 g/L range
+    assert nanoparticle_conc_in_tested_range(OPTIMUM_NANOPARTICLE_CONC_GL)
+    assert not nanoparticle_conc_in_tested_range(6.0) and NANOPARTICLE_SIZE_NM == 14.0
 
     print("  PASS")
     return {"theta_nanofluid": float(theta_high_ift), "R_nano": float(r_nano[-1]),

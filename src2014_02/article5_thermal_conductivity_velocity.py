@@ -20,6 +20,7 @@ Implements:
   - Crack density from porosity and aspect ratio  eps = phi/((4/3)*pi*alpha) (Eq. 4)
   - Budiansky-O'Connell self-consistent cracked moduli and P-wave velocity
   - Sen plate-like depolarization exponents  Lc = 1 - (pi/2)*alpha;  La=Lb=(1-Lc)/2
+  - The triaxial depolarization function Rmi (a function of La, Lb, Lc; Eqs. 6-7)
   - Clausius-Mossotti (Maxwell-Garnett) effective thermal conductivity
   - The practical Vp -> lambda regression (Table 4) and the paper's <15% /
     0.5 W/m/K prediction-accuracy criterion
@@ -41,6 +42,15 @@ ASPECT_RATIO_BY_ROCK = {
     "gneiss": 0.20,
     "sandstone": 0.20,
     "basic_magmatic": 0.25,
+}
+
+# Typical porosities by petrographic code (Gegenhuber & Schon, 2014): tight
+# crystalline rocks ~3%, sandstone ~20%, basic magmatic rocks ~5-15% (midpoint).
+TYPICAL_POROSITY_BY_ROCK = {
+    "granite": 0.03,
+    "gneiss": 0.03,
+    "sandstone": 0.20,
+    "basic_magmatic": 0.10,
 }
 
 
@@ -151,6 +161,25 @@ def sen_depolarization(aspect_ratio):
 
 
 # ---------------------------------------------- thermal conductivity --------------
+
+def rmi_depolarization_factor(la, lb, lc, lambda_solid, lambda_incl):
+    """Depolarization function Rmi for an ellipsoidal inclusion (Eqs. 6-7).
+
+    The paper's Clausius-Mossotti conductivity is written with an Rmi that is a
+    function of the full set of depolarization exponents La, Lb, Lc (not Lc
+    alone).  Using the standard orientation-averaged Maxwell-Garnett / Berryman
+    (1995) form over the three principal axes,
+
+        Rmi = (1/3)*sum_{j=a,b,c} ls/(ls + L_j*(li - ls)),
+
+    so Rmi = 1 when the inclusion matches the solid (li = ls).  The single-Lc
+    ``clausius_mossotti_conductivity`` below is the plate-like-crack limit (Sen,
+    1981, where Lc dominates); this function restores the general triaxial form.
+    """
+    dl = lambda_incl - lambda_solid
+    return (1.0 / 3.0) * sum(lambda_solid / (lambda_solid + L * dl)
+                             for L in (la, lb, lc))
+
 
 def clausius_mossotti_conductivity(lambda_solid, lambda_incl, phi, depolarization):
     """Effective thermal conductivity from Clausius-Mossotti / Maxwell-Garnett
@@ -277,6 +306,14 @@ def test_all():
     la, lb, lc = sen_depolarization(0.20)
     print(f"  depolarization La=Lb={la:.3f}  Lc={lc:.3f}")
     assert np.isclose(la + lb + lc, 1.0) and 0 < lc < 1
+
+    # Triaxial Rmi factor (Eqs. 6-7): unity when the inclusion matches the solid;
+    # for low-conductivity pores (li < ls) each axis term ls/(ls+L*(li-ls)) > 1
+    assert np.isclose(rmi_depolarization_factor(la, lb, lc, 6.0, 6.0), 1.0)
+    rmi = rmi_depolarization_factor(la, lb, lc, 6.0, 0.6)
+    print(f"  Rmi(li=0.6, ls=6.0) = {rmi:.3f}")
+    assert rmi > 1.0
+    assert TYPICAL_POROSITY_BY_ROCK["sandstone"] == 0.20
 
     # Thermal conductivity: low-conductivity pores (air/water) reduce lambda
     lam = clausius_mossotti_conductivity(lambda_solid=6.0, lambda_incl=0.6,
