@@ -47,6 +47,17 @@ def airfree_correction(n2_measured, o2_measured):
     return n2_coal, air_removed
 
 
+def air_contamination_fraction(o2_measured, total_gas):
+    """Fraction of a measured gas sample attributable to atmospheric air
+
+        air_fraction = (1 + 3.73)*O2_measured/total_gas,
+
+    a contamination metric (each measured O2 implies 3.73 of accompanying air
+    N2); high values flag samples to reject.
+    """
+    return (1.0 + ATM_N2_O2) * o2_measured / total_gas
+
+
 # ---------------------------------------------- lost / total gas --------------
 
 def lost_gas_usbm(sqrt_times, cumulative_gas):
@@ -84,6 +95,17 @@ def gc_peak_valid(ch4_peak_area_mvs, threshold=50.0):
     return bool(ch4_peak_area_mvs >= threshold)
 
 
+def tedlar_holdtime_ok(hold_time_hours, max_hours=24.0):
+    """Tedlar (PVF) bag hold-time check.
+
+    The paper's key finding is that gases permeate the PVF film (O2 ~10x faster
+    than N2, He ~15x faster than CO2), biasing composition and isotopes, so the
+    USEPA <24 h hold-time is recommended; glass vials are effectively
+    impermeable.  Returns True if the sample was analysed within the limit.
+    """
+    return bool(hold_time_hours <= max_hours)
+
+
 # ---------------------------------------------- gas origin --------------
 
 def gas_origin(delta13c_ch4):
@@ -110,6 +132,13 @@ def test_all():
     n2_coal, air = airfree_correction(n2_measured=10.0, o2_measured=2.0)
     print(f"  coal N2 = {n2_coal:.2f}   air removed = {air:.2f}")
     assert np.isclose(n2_coal, 10.0 - 3.73 * 2.0) and np.isclose(air, 3.73 * 2 + 2)
+    # air-contamination fraction of the whole sample
+    frac = air_contamination_fraction(o2_measured=2.0, total_gas=100.0)
+    print(f"  air contamination = {frac*100:.1f}%")
+    assert np.isclose(frac, (1 + 3.73) * 2.0 / 100.0)
+
+    # Tedlar-bag hold-time guidance (<24 h); glass vials effectively impermeable
+    assert tedlar_holdtime_ok(12.0) and not tedlar_holdtime_ok(48.0)
 
     # USBM lost gas: a perfect sqrt(t) line back-extrapolates to its intercept
     t = np.array([1.0, 2.0, 3.0, 4.0])

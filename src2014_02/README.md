@@ -56,30 +56,40 @@ python article1_dualwater_dielectric_nmr.py
   water (`(1-alpha*vQH*Qv)*Cw`) terms (reproducing the paper's worked example),
   the clay-bound-water saturation (Eq. 3), Qv from CEC (Eq. 4), the inversion for
   the clay-dependent cementation exponent m0 (Eq. 5), and a bisection solve for
-  Sw. The dielectric tool is a black box (no CRIM law appears).
+  Sw. The dielectric tool is a black box (no CRIM law appears). The NMR and
+  spectroscopy paths of the workflow are completed by the inverse relations
+  `Qv = Swb/(alpha*vQH)` (Eq. 3) and `CEC = Qv*phi/(rho_g*(1-phi))` (Eq. 4) and a
+  clay-bound-water porosity from an NMR T2 distribution (T2 < 3 msec cutoff).
 
 - **Article 2 (Dernaika et al.)**: Pc & resistivity index - the resistivity
   index `RI = Rt/Ro = Sw^-n` and a saturation-exponent fit, plus the Archie
   formation factor and a cementation-exponent fit. Reported n increases through
-  the displacement cycles (PD 1.99 -> FI 2.28 for the high-perm RRTs).
+  the displacement cycles (PD 1.99 -> FI 2.28 for the high-perm RRTs). The
+  measured exponent is applied through the inverse `Sw = RI^(-1/n)` and a full
+  Archie water saturation.
 
-- **Article 3 (Roustaei)**: nanofluid imbibition - Young's law contact angle
-  (Eq. 1), a wettability classification, and a first-order spontaneous-imbibition
-  recovery curve. The nanofluid raises the oil-water IFT (2.65 -> 9.21 mN/m),
-  increases the contact angle toward water-wet, and lifts the final recovery
-  above ~50% IOIP.
+- **Article 3 (Roustaei)**: nanofluid imbibition - Young's law contact angle and
+  its cosine (Eq. 1), a wettability classification, the Young-Dupre work of
+  adhesion, and a first-order spontaneous-imbibition recovery curve. The nanofluid
+  raises the oil-water IFT (2.65 -> 9.21 mN/m), lowers `cos(theta)` so the contact
+  angle increases toward water-wet, and lifts the final recovery above ~50% IOIP.
 
 - **Article 4 (Spears et al.)**: canister gas - the atmospheric air-contamination
-  correction (N2:O2 = 3.73), the USBM square-root-of-time lost-gas estimate and
-  total gas content, the isotope/GC quality-control checks (delta-13C limits,
-  50 mV-sec CH4 peak area), and a biogenic/thermogenic gas-origin classification.
+  correction (N2:O2 = 3.73) and an air-contamination fraction, the USBM
+  square-root-of-time lost-gas estimate and total gas content, the isotope/GC
+  quality-control checks (delta-13C limits, 50 mV-sec CH4 peak area), a Tedlar
+  (PVF) bag hold-time check (<24 h, the paper's gas-permeation finding), and a
+  biogenic/thermogenic gas-origin classification.
 
 - **Article 5 (Gegenhuber & Schön)**: thermal conductivity from velocity - the
-  Hill average, the crack density from porosity/aspect ratio, the
-  Budiansky-O'Connell self-consistent cracked moduli and P-wave velocity, the
-  Sen plate-like depolarization exponents, and the Clausius-Mossotti effective
-  thermal conductivity. Best-fit aspect ratios: granite/gneiss/sandstone 0.20,
-  basic magmatic 0.25.
+  Hill average, the crack density from porosity/aspect ratio (and its inverse
+  crack porosity), the Budiansky-O'Connell self-consistent cracked moduli and
+  P-wave velocity, the Sen plate-like depolarization exponents, and the
+  Clausius-Mossotti effective thermal conductivity. The two halves are joined by
+  the headline two-step estimator: invert the elastic model for the crack density
+  that matches a measured Vp, then map that (shared) crack porosity to thermal
+  conductivity - estimating `lambda` directly from `Vp`. Best-fit aspect ratios:
+  granite/gneiss/sandstone 0.20, basic magmatic 0.25.
 
 ## Module conventions
 
