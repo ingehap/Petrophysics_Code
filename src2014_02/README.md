@@ -59,7 +59,13 @@ python article1_dualwater_dielectric_nmr.py
   Sw. The dielectric tool is a black box (no CRIM law appears). The NMR and
   spectroscopy paths of the workflow are completed by the inverse relations
   `Qv = Swb/(alpha*vQH)` (Eq. 3) and `CEC = Qv*phi/(rho_g*(1-phi))` (Eq. 4) and a
-  clay-bound-water porosity from an NMR T2 distribution (T2 < 3 msec cutoff).
+  clay-bound-water porosity from an NMR T2 distribution (T2 < 3 msec cutoff). The
+  paper's headline six-step joint inversion is wrapped end-to-end
+  (`solve_sw_workflow`: dielectric Sxo/Cmfe -> NMR Qv -> spectroscopy phi ->
+  microresistivity Cxo -> invert m0 -> uninvaded-zone Sw, with the dielectric
+  salinity-validity limit of ~50 ppt), and the Appendix n-vs-m trade-off
+  (`archie_cementation_for_sw`) reproduces the tabulated pairs that hold Sw fixed
+  (e.g. Sw = 0.8: n=1.5->m=2.00, n=2.5->m=1.87, n=3.5->m=1.73).
 
 - **Article 2 (Dernaika et al.)**: Pc & resistivity index - the resistivity
   index `RI = Rt/Ro = Sw^-n` and a saturation-exponent fit, plus the Archie

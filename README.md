@@ -103,7 +103,7 @@ Five articles (no tutorial): solving the complex dual-water equation by combinin
 
 | Module | Topic | Reference |
 | --- | --- | --- |
-| `article1_dualwater_dielectric_nmr` | Dual-water joint inversion: excess-clay & effective-water conductivity terms, Swb↔Qv↔CEC, NMR clay-bound water (T2 < 3 ms), m0 inversion, Sw solve | Tan, Lafferty & Neville, pp. 14–23 |
+| `article1_dualwater_dielectric_nmr` | Dual-water joint inversion: excess-clay & effective-water conductivity terms, Swb↔Qv↔CEC, NMR clay-bound water (T2 < 3 ms), m0 inversion, the end-to-end six-step workflow, the Appendix n-vs-m trade-off, Sw solve | Tan, Lafferty & Neville, pp. 14–23 |
 | `article2_pc_resistivity_index_carbonate` | Resistivity index RI = Sw⁻ⁿ and saturation-exponent fit, Archie formation factor & cementation-exponent fit, Sw = RI^(−1/n) | Dernaika et al., pp. 24–30 |
 | `article3_nanofluid_imbibition` | Young's law contact angle & cosine, wettability class, Young-Dupré work of adhesion, first-order spontaneous-imbibition recovery | Roustaei, pp. 31–37 |
 | `article4_canister_gas_isotopes` | Air-free (N2:O2 = 3.73) correction & contamination fraction, USBM √t lost gas, isotope/GC QC, Tedlar hold-time, gas-origin classification | Spears, Alles & Makhonin, pp. 38–50 |

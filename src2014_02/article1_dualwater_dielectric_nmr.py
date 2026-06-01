@@ -20,6 +20,9 @@ Implements:
   - Qv from CEC  Qv = CEC*rho_grain*(1-phi)/phi  (Eq. 4)
   - Inversion for the clay-dependent cementation exponent m0 (Eq. 5)
   - Solving the dual-water equation for water saturation
+  - The end-to-end six-step joint-inversion workflow (dielectric + NMR +
+    spectroscopy + microresistivity)
+  - The Appendix n-vs-m trade-off (cementation factor for a target Sw)
 
 Note: this issue's PDF dropped the display equations in extraction; the two
 conductivity terms are transcribed verbatim (with the worked example) and the
@@ -144,6 +147,50 @@ def solve_water_saturation(ct, phi, m0, n, cw, qv, alpha, vqh, beta,
     return 0.5 * (lo + hi)
 
 
+# ---------------------------------------------- joint workflow --------------
+
+def dielectric_water_salinity_ok(salinity_ppt, limit_ppt=50.0):
+    """Dielectric-tool validity check (Step 1): the dielectric-derived invaded-
+    zone water conductivity Cmfe is reliable only when the effective water
+    salinity is below ~50 ppt."""
+    return bool(salinity_ppt < limit_ppt)
+
+
+def solve_sw_workflow(rt, phi, qv, cw, n, sxo, cmfe, cxo, alpha, vqh, beta):
+    """End-to-end six-step dual-water joint-inversion workflow (Tan et al., 2014).
+
+    Combines the independent measurements to evaluate Sw in the uninvaded zone:
+
+      - Step 1 (dielectric): invaded-zone Sxo and water conductivity Cmfe,
+      - Step 2 (NMR): clay-cation concentration Qv,
+      - Step 3 (spectroscopy/density): porosity phi,
+      - Step 4 (microresistivity): invaded-zone conductivity Cxo,
+      - Step 5: invert the invaded-zone dual-water equation for m0 (Eq. 5),
+      - Step 6: carry m0 to the uninvaded zone and solve Eq. 1 for Sw, using the
+        true formation conductivity Ct = 1/Rt.
+
+    Returns (Sw, m0).
+    """
+    m0 = invert_m0(cxo, sxo, n, cmfe, qv, alpha, vqh, beta, phi)
+    ct = 1.0 / rt
+    sw = solve_water_saturation(ct, phi, m0, n, cw, qv, alpha, vqh, beta)
+    return sw, m0
+
+
+def archie_cementation_for_sw(sw, n, rt, rw, phi, a=1.0):
+    """Cementation factor m that yields a target Sw for an assumed saturation
+    exponent n (Appendix n-vs-m trade-off)
+
+        m = log(a*Rw/(Sw^n*Rt))/log(phi),
+
+    from the clean-Archie relation  Sw^n = a*Rw/(phi^m*Rt).  Because n and m are
+    competing factors toward a fixed Sw, increasing n decreases the inverted m
+    (e.g. for Sw = 0.8, Rt = 20, phi = 0.20, Rw = 0.565: n=1.5->m=2.00,
+    n=2.5->m=1.87, n=3.5->m=1.73).
+    """
+    return np.log10(a * rw / (sw ** n * rt)) / np.log10(phi)
+
+
 # ---------------------------------------------- tests --------------
 
 def test_all():
@@ -186,6 +233,25 @@ def test_all():
     sw = solve_water_saturation(ct, phi, m0_true, n, cw, qv, alpha, vqh, beta)
     print(f"  recovered Sw = {sw:.3f}")
     assert np.isclose(sw, 0.40, atol=1e-3)
+
+    # Six-step workflow: build a synthetic invaded zone (Sxo at a known m0),
+    # then recover m0 and the uninvaded-zone Sw end-to-end
+    assert dielectric_water_salinity_ok(19.0) and not dielectric_water_salinity_ok(60.0)
+    sxo, cmfe = 0.8, 6.0
+    cxo = dual_water_conductivity(phi, sxo, m0_true, n, cmfe, qv, alpha, vqh, beta)
+    rt = 1.0 / ct
+    sw_wf, m0_wf = solve_sw_workflow(rt, phi, qv, cw, n, sxo, cmfe, cxo,
+                                     alpha, vqh, beta)
+    print(f"  workflow: m0={m0_wf:.3f}  Sw={sw_wf:.3f}")
+    assert np.isclose(m0_wf, m0_true) and np.isclose(sw_wf, 0.40, atol=1e-3)
+
+    # Appendix n-vs-m trade-off reproduces the paper's tabulated pairs
+    m_15 = archie_cementation_for_sw(0.8, n=1.5, rt=20.0, rw=0.565, phi=0.20)
+    m_25 = archie_cementation_for_sw(0.8, n=2.5, rt=20.0, rw=0.565, phi=0.20)
+    m_35 = archie_cementation_for_sw(0.8, n=3.5, rt=20.0, rw=0.565, phi=0.20)
+    print(f"  n-m trade-off @ Sw=0.8: n=1.5->m={m_15:.2f}  n=2.5->m={m_25:.2f}  n=3.5->m={m_35:.2f}")
+    assert np.isclose(m_15, 2.00, atol=0.02) and np.isclose(m_25, 1.87, atol=0.02)
+    assert np.isclose(m_35, 1.73, atol=0.02) and m_15 > m_25 > m_35
     print("  PASS")
     return {"excess_clay": float(clay), "Qv": float(qv_calc), "m0": float(m0_rec),
             "Sw": float(sw)}
