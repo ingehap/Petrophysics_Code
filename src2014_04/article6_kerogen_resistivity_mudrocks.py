@@ -13,13 +13,14 @@ equation on a rock with conductive kerogen to quantify the effect and correct it
 Implements:
 
   - Water/gas saturation and kerogen volumetric concentration (Eqs. 1-3)
-  - Kerogen porosity and total porosity (Eqs. 4, 6)
+  - Kerogen porosity, net gas-bearing kerogen volume and total porosity (Eqs. 4-6)
   - Plagioclase-quartz mineral constraint (Eq. 8, linear)
   - Kerogen volume from TOC (Eq. 9, linear)
   - Effective resistivity of gas-bearing kerogen  R_effK = R_K*exp(c*phi_K) (Eq. 10)
   - Laplace conductivity solver  div(sigma*grad V) = 0  (Eq. 7) for the effective
     resistivity of a heterogeneous (kerogen-bearing) medium
   - Kerogen-conductivity threshold (~1000 Ohm*m) above which rock R is unaffected
+  - Connectivity case anchors (22.63 vs 13.83 Ohm*m -> 38.9% R drop -> ~30% Sw)
   - Archie water saturation and its overestimation when kerogen is ignored
 
 Note: this issue's PDF dropped the display equations in extraction; the
@@ -52,6 +53,15 @@ def kerogen_concentration(v_kerogen, v_total):
 def kerogen_porosity(v_gas_kerogen, v_kerogen):
     """Kerogen porosity (Eq. 4)  phi_k = V_gk/V_k."""
     return v_gas_kerogen / v_kerogen
+
+
+def gas_bearing_kerogen_volume(phi_kerogen, v_kerogen):
+    """Net gas-bearing kerogen volume (Eq. 5)  V_gk = phi_k*V_k,
+
+    the inverse of Eq. 4: the gas-filled pore volume inside the kerogen network,
+    which feeds the total porosity (Eq. 6) and the conductive-kerogen domain.
+    """
+    return np.asarray(phi_kerogen, float) * np.asarray(v_kerogen, float)
 
 
 def total_porosity(matrix_pore_volume, kerogen_pore_volume, v_total):
@@ -165,6 +175,40 @@ def archie_sw(rt, rw, phi, a=1.0, m=2.0, n=2.0):
     return (a * rw / (phi ** m * rt)) ** (1.0 / n)
 
 
+# Synthetic Case 2 connectivity anchors (Figs. 10-11): the same kerogen
+# concentration gives a higher bulk resistivity when the kerogen is poorly
+# connected (more tortuous current path) than when it is well connected.
+CASE2_R_LESS_CONNECTED_OHMM = 22.63
+CASE2_R_MORE_CONNECTED_OHMM = 13.83
+
+
+def relative_resistivity_decrease(r_high, r_low):
+    """Relative resistivity decrease from improved kerogen connectivity
+
+        drop = (r_high - r_low)/r_high,
+
+    e.g. 22.63 -> 13.83 Ohm*m is a 38.9% decrease (Case 2): connecting the same
+    conductive kerogen lowers the measured rock resistivity.
+    """
+    return (r_high - r_low) / r_high
+
+
+def archie_sw_overestimation(rt_true, rt_measured, rw=0.02, phi=0.10,
+                             a=1.0, m=2.0, n=2.0):
+    """Relative Archie Sw overestimation when conductive kerogen lowers Rt
+
+        Sw_app/Sw_true = (rt_true/rt_measured)^(1/n),
+        overestimation = Sw_app/Sw_true - 1.
+
+    Ignoring the kerogen conductivity uses the lowered (measured) resistivity in
+    Archie and so overstates water saturation; the Case 2 38.9% resistivity drop
+    maps to a ~28% (the article's ~30%) Sw overestimation at n = 2.
+    """
+    sw_true = archie_sw(rt_true, rw, phi, a, m, n)
+    sw_app = archie_sw(rt_measured, rw, phi, a, m, n)
+    return sw_app / sw_true - 1.0
+
+
 # ---------------------------------------------- tests --------------
 
 def test_all():
@@ -181,6 +225,9 @@ def test_all():
     assert np.isclose(ck, 11.0)
     # plagioclase-quartz mineral constraint (Eq. 8)
     assert np.isclose(plagioclase_from_quartz(30.0, slope=0.5, intercept=2.0), 17.0)
+    # net gas-bearing kerogen volume (Eq. 5) is the inverse of kerogen porosity (Eq. 4)
+    vgk = gas_bearing_kerogen_volume(0.10, 0.20)
+    assert np.isclose(vgk, 0.02) and np.isclose(kerogen_porosity(vgk, 0.20), 0.10)
 
     # Kerogen-conductivity threshold: conductive kerogen lowers rock R only
     # below ~1000 Ohm*m
@@ -217,10 +264,21 @@ def test_all():
     print(f"  Sw(true)={sw_true:.3f}  Sw(ignoring kerogen)={sw_apparent:.3f}"
           f"  (+{overestimate*100:.0f}%)")
     assert sw_apparent > sw_true               # overestimation
+
+    # Case 2 connectivity anchors: 22.63 -> 13.83 Ohm*m is a 38.9% resistivity
+    # drop, which at n=2 maps to a ~28% Archie Sw overestimation (~30% reported)
+    drop = relative_resistivity_decrease(CASE2_R_LESS_CONNECTED_OHMM,
+                                         CASE2_R_MORE_CONNECTED_OHMM)
+    sw_over = archie_sw_overestimation(CASE2_R_LESS_CONNECTED_OHMM,
+                                       CASE2_R_MORE_CONNECTED_OHMM)
+    print(f"  Case 2: resistivity drop = {drop*100:.1f}%, Sw overestimation = {sw_over*100:.0f}%")
+    assert np.isclose(drop, 0.389, atol=0.005)
+    assert 0.25 < sw_over < 0.32               # ~30% as reported
     print("  PASS")
     return {"C_k": float(ck), "R_effK": float(r2), "sigma_kerogen": float(sigma_kero),
             "Sw_overestimate": float(sw_apparent - sw_true),
-            "kerogen_conductive": kerogen_affects_resistivity(100.0)}
+            "kerogen_conductive": kerogen_affects_resistivity(100.0),
+            "case2_R_drop": float(drop), "case2_Sw_overestimation": float(sw_over)}
 
 
 if __name__ == "__main__":

@@ -21,6 +21,8 @@ Implements:
     reservoir-quality rank
   - Mass-transport-deposit (MTD) progression and its rock-quality preservation
     ranking (slide -> slump -> debris flow -> turbidity current)
+  - Deepwater giant-discovery statistics (counts, gas Tcf, oil-equivalent BBOE)
+  - Amalgamated-vs-layered recovery / connectivity contrast
 
 Note: this is a narrative geology review with no display equations; the Bouma
 sequence is an ordinal facies model and the only hard numbers are the Ross
@@ -43,6 +45,16 @@ BOUMA = [
 # Ross Formation end members (Fig. 13): (net_to_gross, sand-to-sand pore contact)
 LAYERED = (0.45, 0.03)
 AMALGAMATED = (0.90, 0.67)
+
+# Deepwater giant-discovery statistics from the introduction (Fig. 1).  A
+# "giant" is >500 million BOE found in water depths greater than 500 m.  Two
+# windows are reported and they are additive.
+GIANT_THRESHOLD_BOE = 500e6
+DEEPWATER_THRESHOLD_M = 500.0
+DISCOVERY_WINDOWS = {
+    "2000-2009": dict(discoveries=18, gas_Tcf=105.0, oil_equiv_BBOE=33.0),
+    "2010-2012": dict(discoveries=13, gas_Tcf=72.0,  oil_equiv_BBOE=18.0),
+}
 
 # Submarine-fan facies belts (proximal -> distal), each with a qualitative
 # reservoir-quality rank (1 worst .. 4 best) and the review's characteristics.
@@ -113,6 +125,35 @@ def recovery_proxy(pore_contact):
     return np.clip(pore_contact, 0.0, 1.0)
 
 
+def recovery_contrast():
+    """Amalgamated-vs-layered recovery / connectivity ratio (the article's thesis)
+
+        ratio = pore_contact_amalgamated / pore_contact_layered = 0.67/0.03,
+
+    i.e. the amalgamated unit drains a roughly 20-fold better connected sand
+    network than the layered unit, the central reason architecture (not just
+    net-to-gross) controls recoverable volume in turbidite reservoirs.
+    """
+    return AMALGAMATED[1] / LAYERED[1]
+
+
+# ---------------------------------------------- discovery statistics --------------
+
+def discovery_totals():
+    """Cumulative deepwater giant-discovery statistics across both windows
+
+        returns dict(discoveries, gas_Tcf, oil_equiv_BBOE),
+
+    summing the 2000-2009 and 2010-2012 windows to 31 discoveries, 177 Tcf gas
+    and 51 billion BOE - the growth that frames the article's motivation.
+    """
+    totals = dict(discoveries=0, gas_Tcf=0.0, oil_equiv_BBOE=0.0)
+    for w in DISCOVERY_WINDOWS.values():
+        for k in totals:
+            totals[k] += w[k]
+    return totals
+
+
 # ---------------------------------------------- fan facies & MTDs --------------
 
 def fan_facies():
@@ -181,10 +222,25 @@ def test_all():
     print(f"  MTD ranks: {mtd}")
     assert mtd["slide"] > mtd["slump"] > mtd["debris_flow"]
     assert mtd["turbidity_current"] == max(mtd.values())
+
+    # Recovery contrast: the amalgamated unit is ~20x better connected
+    contrast = recovery_contrast()
+    print(f"  amalgamated/layered pore-contact ratio = {contrast:.0f}x")
+    assert np.isclose(contrast, 0.67 / 0.03)
+
+    # Discovery statistics: the two windows sum to 31 discoveries, 177 Tcf, 51 BBOE
+    tot = discovery_totals()
+    print(f"  deepwater giants: {tot['discoveries']} discoveries, "
+          f"{tot['gas_Tcf']:.0f} Tcf, {tot['oil_equiv_BBOE']:.0f} BBOE")
+    assert tot["discoveries"] == 31
+    assert np.isclose(tot["gas_Tcf"], 177.0) and np.isclose(tot["oil_equiv_BBOE"], 51.0)
+    assert GIANT_THRESHOLD_BOE == 500e6 and DEEPWATER_THRESHOLD_M == 500.0
     print("  PASS")
     return {"NG_amalgamated": ng_a, "pore_contact_amalgamated": pc_a,
             "recovery_amalgamated": float(recovery_proxy(pc_a)),
-            "best_facies": best_reservoir_facies()}
+            "best_facies": best_reservoir_facies(),
+            "recovery_contrast": float(contrast),
+            "total_discoveries": tot["discoveries"]}
 
 
 if __name__ == "__main__":
