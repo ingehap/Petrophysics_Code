@@ -15,14 +15,21 @@ Implements:
 
   - Young's law contact angle  cos(theta) = (sigma_so - sigma_sw)/sigma_wo (Eq. 1)
   - Wettability classification from the contact angle
+  - The Young-Laplace capillary pressure (the capillary force the paper turns
+    "from a barrier to a driving force" by wettability alteration)
+  - The recovery-curve-shape test for capillary- vs gravity-dominated imbibition
   - A first-order spontaneous-imbibition recovery curve toward a final plateau
 
 Note: this issue's PDF dropped the displayed Young's law (Eq. 1) in extraction;
 it is reconstructed in standard form.  No dimensionless-time, Bond-number or
 Amott-index relation appears (the recovery analysis is qualitative), so the
-recovery is modelled with the standard first-order capillary-imbibition curve.
+recovery is modelled with the standard first-order capillary-imbibition curve
+and the capillary/gravity discrimination follows the paper's stated rule (the
+shape of the recovery response: curved -> capillary, linear -> gravity).
 Measured anchors: nanofluid raises oil-water IFT 2.65 -> 9.21 mN/m, drives the
-oil-phase contact angle to ~134 deg, and lifts final recovery above ~50% IOIP.
+oil-phase contact angle to ~134 deg (water/air contact angle ~21 deg, strongly
+water-wet), and lifts final recovery above ~50% IOIP (brine ~4.3%, surfactant
+~46%).
 """
 
 import numpy as np
@@ -77,6 +84,43 @@ def wettability_class(contact_angle_deg):
     return "oil-wet"
 
 
+# ---------------------------------------------- capillary force --------------
+
+def capillary_pressure(sigma_wo, contact_angle_deg, pore_radius):
+    """Young-Laplace capillary pressure in a cylindrical pore
+
+        Pc = 2*sigma_wo*cos(theta)/r,
+
+    the capillary force driving (or resisting) spontaneous imbibition.  This is
+    the paper's central mechanism: wettability alteration toward water-wet
+    (theta < 90 deg) makes cos(theta) positive, turning the capillary force
+    "from a barrier to a driving force", and because raising the oil-water IFT
+    (the nanofluid effect, 2.65 -> 9.21 mN/m) raises sigma_wo, the imbibition
+    capillary pressure increases and more oil is displaced.  Pc > 0 imbibes
+    water; Pc < 0 (oil-wet, theta > 90 deg) opposes it.  sigma_wo in N/m (or
+    mN/m), r in m (or mm) consistently; returns Pc in the matching pressure unit.
+    """
+    return 2.0 * sigma_wo * np.cos(np.radians(contact_angle_deg)) / pore_radius
+
+
+def imbibition_mechanism(recovery, atol=0.02):
+    """Classify the dominant spontaneous-imbibition driving force from the shape
+    of a cumulative recovery-vs-time response (the paper's qualitative test)
+
+        curved response  -> capillary-dominated,
+        linear response  -> gravity-dominated.
+
+    A straight-line fit residual below ``atol`` (fraction of IOIP) flags a
+    linear, gravity-dominated response; a larger residual flags curvature, i.e.
+    a capillary-dominated response.  Returns "capillary" or "gravity".
+    """
+    r = np.asarray(recovery, float)
+    t = np.arange(r.size, dtype=float)
+    slope, intercept = np.polyfit(t, r, 1)
+    residual = float(np.sqrt(np.mean((r - (slope * t + intercept)) ** 2)))
+    return "gravity" if residual < atol else "capillary"
+
+
 # ---------------------------------------------- imbibition recovery --------------
 
 def imbibition_recovery(t, final_recovery, rate):
@@ -119,6 +163,15 @@ def test_all():
     assert wettability_class(95) == "intermediate"
     assert wettability_class(134) == "oil-wet"
 
+    # Capillary force flips sign with wettability: oil-wet (theta>90) resists
+    # imbibition (Pc<0), water-wet (theta<90, nanofluid) drives it (Pc>0), and
+    # raising the oil-water IFT (2.65 -> 9.21 mN/m) increases the driving Pc
+    pc_oilwet = capillary_pressure(sigma_wo=0.00265, contact_angle_deg=134.0, pore_radius=5e-6)
+    pc_ww_low = capillary_pressure(sigma_wo=0.00265, contact_angle_deg=21.0, pore_radius=5e-6)
+    pc_ww_high = capillary_pressure(sigma_wo=0.00921, contact_angle_deg=21.0, pore_radius=5e-6)
+    print(f"  Pc: oil-wet={pc_oilwet:.1f}  water-wet(low IFT)={pc_ww_low:.1f}  water-wet(high IFT)={pc_ww_high:.1f} Pa")
+    assert pc_oilwet < 0 < pc_ww_low < pc_ww_high   # barrier -> driving force
+
     # Imbibition recovery rises monotonically to the plateau; nanofluid (higher
     # final recovery) beats surfactant which beats brine
     t = np.linspace(0, 10, 50)
@@ -128,9 +181,15 @@ def test_all():
     print(f"  final recovery: brine={r_brine[-1]:.2f}  surf={r_surf[-1]:.2f}  nano={r_nano[-1]:.2f}")
     assert r_nano[-1] > r_surf[-1] > r_brine[-1]
     assert np.all(np.diff(r_nano) >= 0) and r_nano[0] == 0.0
+
+    # Mechanism test: the curved (exponential) imbibition response is capillary-
+    # dominated, a straight-line gravity drainage response is gravity-dominated
+    assert imbibition_mechanism(r_nano) == "capillary"
+    assert imbibition_mechanism(np.linspace(0.0, 0.5, 50)) == "gravity"
+
     print("  PASS")
     return {"theta_nanofluid": float(theta_high_ift), "R_nano": float(r_nano[-1]),
-            "work_adhesion_ww": float(w_ww)}
+            "work_adhesion_ww": float(w_ww), "Pc_water_wet": float(pc_ww_high)}
 
 
 if __name__ == "__main__":

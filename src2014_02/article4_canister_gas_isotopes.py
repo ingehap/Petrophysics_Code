@@ -15,20 +15,35 @@ signal, and the gas origin is classified from carbon-isotope ratios.
 Implements:
 
   - Air-contamination ("airfree") correction using the atmospheric N2:O2 = 3.73
-  - USBM square-root-of-time lost-gas estimate and total gas content
+  - Square-root-of-time lost-gas estimate (Direct Method) and total gas content
   - Isotope and GC quality-control checks (delta-13C limits, CH4 peak area)
+  - The canister desorption-rate shipping criterion (<= 10 cm^3/day)
+  - The canister overpressure / venting threshold (~1 bar = 15 psi)
+  - The Tedlar (PVF) bag relative-permeation finding and hold-time check
   - Biogenic / thermogenic gas-origin classification from delta-13C of methane
 
-Note: this procedural paper renders no display equations; the air-correction
-ratio (3.73:1), the delta-13C validity limits (CH4 > -20 permil and CO2 > +20
-permil do not occur naturally), the 50 mV-sec CH4 peak-area cutoff and the USBM
-square-root-of-time lost-gas method are transcribed from the text.  Gas volumes
-in cm^3, isotopes in permil.
+Note: this procedural paper renders no display equations.  The air-correction
+ratio (3.73:1, after Jin et al., 2010), the delta-13C validity limits (CH4
+> -20 permil and CO2 > +20 permil do not occur naturally), the 50 mV-sec CH4
+peak-area cutoff, the <=10 cm^3/day shipping criterion, the ~1 bar (15 psi)
+canister venting pressure and the PVF-bag relative-permeation rates are
+transcribed from the text; the square-root-of-time lost-gas estimate follows the
+accepted desorption guidelines the paper cites (Diamond & Levine, 1981; Mavor &
+Nelson, 1997; Barker et al., 2003).  Gas volumes in cm^3, isotopes in permil.
 """
 
 import numpy as np
 
-ATM_N2_O2 = 3.73  # atmospheric N2:O2 volume ratio
+ATM_N2_O2 = 3.73  # atmospheric N2:O2 volume ratio (Jin et al., 2010)
+
+# Relative permeation rates through PVF (Tedlar) bag film, from the paper's
+# controlled experiments (the basis for the <24 h hold-time guidance): O2
+# permeates ~10x faster than N2, and He ~15x faster than CO2.
+PVF_PERMEATION_O2_VS_N2 = 10.0
+PVF_PERMEATION_HE_VS_CO2 = 15.0
+
+# Canister sealed/vented when internal pressure exceeds ~1 bar (15 psi)
+CANISTER_VENT_PRESSURE_BAR = 1.0
 
 
 # ---------------------------------------------- air correction --------------
@@ -61,12 +76,14 @@ def air_contamination_fraction(o2_measured, total_gas):
 # ---------------------------------------------- lost / total gas --------------
 
 def lost_gas_usbm(sqrt_times, cumulative_gas):
-    """USBM square-root-of-time lost-gas estimate (Direct Method)
+    """Square-root-of-time lost-gas estimate (Direct Method)
 
         V(t) = m + b*sqrt(t),
 
     fit to the early desorption data; the lost gas is the back-extrapolated
     intercept magnitude |m| at t = 0 (the gas escaping before measurement).
+    Follows the accepted desorption guidelines the paper cites (Diamond &
+    Levine, 1981; Barker et al., 2003) rather than a printed equation.
     """
     b, m = np.polyfit(np.asarray(sqrt_times, float),
                       np.asarray(cumulative_gas, float), 1)
@@ -74,8 +91,24 @@ def lost_gas_usbm(sqrt_times, cumulative_gas):
 
 
 def total_gas_content(lost_gas, desorbed_gas, residual_gas):
-    """Total gas content  = lost gas + measured desorbed gas + residual gas."""
+    """Total gas content  = lost gas + measured desorbed gas + residual gas.
+
+    The crushed (residual) gas represents the endpoint of total gas content.
+    """
     return lost_gas + desorbed_gas + residual_gas
+
+
+def desorption_shipping_ready(rate_cm3_per_day, limit=10.0):
+    """Canister shipping criterion: a canister is stable enough to ship once its
+    desorption rate falls to no more than ~10 cm^3 of gas per day."""
+    return bool(rate_cm3_per_day <= limit)
+
+
+def canister_overpressured(pressure_bar, limit=CANISTER_VENT_PRESSURE_BAR):
+    """Canister venting check: the canister is sealed but vented when the
+    internal pressure exceeds ~1 bar (15 psi); canisters are pressure-tested to
+    2 bar.  Returns True when the canister should be vented."""
+    return bool(pressure_bar > limit)
 
 
 # ---------------------------------------------- quality control --------------
@@ -139,6 +172,12 @@ def test_all():
 
     # Tedlar-bag hold-time guidance (<24 h); glass vials effectively impermeable
     assert tedlar_holdtime_ok(12.0) and not tedlar_holdtime_ok(48.0)
+    # PVF relative-permeation finding underpinning the hold-time guidance
+    assert PVF_PERMEATION_O2_VS_N2 == 10.0 and PVF_PERMEATION_HE_VS_CO2 == 15.0
+
+    # Canister handling thresholds: ship once desorption slows, vent above ~1 bar
+    assert desorption_shipping_ready(8.0) and not desorption_shipping_ready(25.0)
+    assert canister_overpressured(1.5) and not canister_overpressured(0.5)
 
     # USBM lost gas: a perfect sqrt(t) line back-extrapolates to its intercept
     t = np.array([1.0, 2.0, 3.0, 4.0])
