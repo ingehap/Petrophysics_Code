@@ -70,6 +70,29 @@ def clay_bound_water_saturation(alpha, vqh, qv):
     return alpha * vqh * qv
 
 
+def qv_from_clay_bound_water(swb, alpha, vqh):
+    """Qv from the clay-bound-water saturation (inverse of Eq. 3)
+
+        Qv = Swb/(alpha*vQH),
+
+    the NMR path: clay-bound water (T2 below the cutoff) gives Qv directly.
+    """
+    return swb / (alpha * vqh)
+
+
+def clay_bound_water_porosity_nmr(t2, amplitudes, t2_cutoff=3.0):
+    """Clay-bound-water (CBW) porosity from an NMR T2 distribution
+
+        CBW = sum(A_i : T2_i < cutoff),
+
+    summing the porosity-calibrated amplitudes below the clay-bound-water cutoff
+    (Martin & Dacy, 2004; the paper uses a practical T2 < 3 msec cutoff).
+    """
+    t2 = np.asarray(t2, float)
+    a = np.asarray(amplitudes, float)
+    return float(a[t2 < t2_cutoff].sum())
+
+
 def qv_from_cec(cec, rho_grain, phi):
     """Cation exchange capacity per pore volume from CEC (Eq. 4)
 
@@ -78,6 +101,16 @@ def qv_from_cec(cec, rho_grain, phi):
     with CEC in meq/g, grain density in g/cm^3 and Qv in meq/cm^3.
     """
     return cec * rho_grain * (1.0 - phi) / phi
+
+
+def cec_from_qv(qv, rho_grain, phi):
+    """CEC log from the Qv log (inverse of Eq. 4)
+
+        CEC = Qv*phi/(rho_grain*(1 - phi)),
+
+    the cation-exchange-capacity curve the paper derives from Qv.
+    """
+    return qv * phi / (rho_grain * (1.0 - phi))
 
 
 # ---------------------------------------------- inversion --------------
@@ -130,6 +163,16 @@ def test_all():
     swb = clay_bound_water_saturation(alpha, vqh, qv_calc)
     print(f"  Qv={qv_calc:.3f} meq/cm3   Swb={swb:.3f}")
     assert qv_calc > 0 and 0 < swb < 1
+    # Qv <-> CEC and Qv <-> Swb invert cleanly (the NMR and spectroscopy paths)
+    assert np.isclose(cec_from_qv(qv_calc, 2.66, 0.25), 0.04)
+    assert np.isclose(qv_from_clay_bound_water(swb, alpha, vqh), qv_calc)
+
+    # NMR clay-bound water: only T2 below the 3-msec cutoff counts toward CBW
+    t2 = np.array([1.0, 2.5, 5.0, 50.0, 500.0])
+    amps = np.array([0.02, 0.03, 0.05, 0.08, 0.07])
+    cbw = clay_bound_water_porosity_nmr(t2, amps, t2_cutoff=3.0)
+    print(f"  NMR CBW porosity = {cbw:.3f}")
+    assert np.isclose(cbw, 0.05)  # only the 1.0 and 2.5 msec bins
 
     # m0 inversion round-trips: build Cxo from a known m0, then recover it
     phi, sxo, n, m0_true = 0.25, 0.7, 1.67, 2.05

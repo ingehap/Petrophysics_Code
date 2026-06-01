@@ -22,6 +22,7 @@ replacement for the original papers.
 
 ```
 Petrophysics_Code/
+├── src2014_02/   Vol. 55 No. 1 (Feb 2014)  —  5 modules + test suite
 ├── src2015_02/   Vol. 56 No. 1 (Feb 2015)  —  5 modules + test suite
 ├── src2015_04/   Vol. 56 No. 2 (Apr 2015)  —  5 modules + test suite
 ├── src2015_06/   Vol. 56 No. 3 (Jun 2015)  —  4 modules + test suite
@@ -95,6 +96,20 @@ Petrophysics_Code/
 ---
 
 ---
+
+## src2014_02 — Vol. 55, No. 1 (February 2014)
+
+Five articles (no tutorial): solving the complex dual-water equation by combining dielectric, NMR and nuclear-spectroscopy logs (excess-clay and effective-connate-water conductivity terms, the NMR clay-bound-water → Qv → CEC path, and the invaded-zone m0 inversion carried to the uninvaded zone — the dielectric tool is treated as a black box); capillary pressure and the resistivity index in a mixed-wet carbonate (RI = Sw⁻ⁿ with the saturation exponent rising through the displacement cycles, plus the Archie formation factor); spontaneous imbibition of water into oil-wet carbonate cores using nanofluid (Young's law, the work of adhesion, and a first-order imbibition recovery — the nanofluid raises the oil-water IFT and shifts the rock toward water-wet); desorbed canister gas sampling and gas isotopic analysis of two coalbed-methane wells (air-free correction, USBM √t lost-gas, isotope/GC quality control, and biogenic/thermogenic classification); and thermal-conductivity estimation from elastic-wave velocity with a petrographic-coded model (Budiansky-O'Connell cracked moduli and Clausius-Mossotti conductivity joined through a shared crack density, so λ is estimated directly from Vp). This issue's source PDF (~9 MB) has a text layer, but almost every numbered display equation was dropped in extraction, so the bodies are standard-form reconstructions from the surviving text, worked examples and nomenclature (the dual-water worked example is reproduced exactly). This issue **predates SPWLA DOI assignment** (the PDF and CrossRef carry none for Vol. 55), so articles are cited by volume/issue/page. See the per-folder README for details.
+
+| Module | Topic | Reference |
+| --- | --- | --- |
+| `article1_dualwater_dielectric_nmr` | Dual-water joint inversion: excess-clay & effective-water conductivity terms, Swb↔Qv↔CEC, NMR clay-bound water (T2 < 3 ms), m0 inversion, Sw solve | Tan, Lafferty & Neville, pp. 14–23 |
+| `article2_pc_resistivity_index_carbonate` | Resistivity index RI = Sw⁻ⁿ and saturation-exponent fit, Archie formation factor & cementation-exponent fit, Sw = RI^(−1/n) | Dernaika et al., pp. 24–30 |
+| `article3_nanofluid_imbibition` | Young's law contact angle & cosine, wettability class, Young-Dupré work of adhesion, first-order spontaneous-imbibition recovery | Roustaei, pp. 31–37 |
+| `article4_canister_gas_isotopes` | Air-free (N2:O2 = 3.73) correction & contamination fraction, USBM √t lost gas, isotope/GC QC, Tedlar hold-time, gas-origin classification | Spears, Alles & Makhonin, pp. 38–50 |
+| `article5_thermal_conductivity_velocity` | Hill average, Budiansky-O'Connell cracked moduli, Sen depolarization, Clausius-Mossotti λ, and the λ-from-Vp two-step estimator | Gegenhuber & Schön, pp. 51–56 |
+
+No DOIs: this issue predates SPWLA DOI assignment, so modules cite Vol. 55, No. 1 page ranges instead. Equations are standard-form reconstructions. See `src2014_02/README.md`.
 
 ## src2015_02 — Vol. 56, No. 1 (February 2015)
 

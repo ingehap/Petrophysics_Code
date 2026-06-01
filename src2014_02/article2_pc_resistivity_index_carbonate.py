@@ -41,6 +41,25 @@ def resistivity_index_from_sw(sw, n):
     return np.asarray(sw, float) ** (-n)
 
 
+def water_saturation_from_ri(ri, n):
+    """Water saturation from the resistivity index (inverse of RI = Sw^-n)
+
+        Sw = RI^(-1/n),
+
+    the application of the measured saturation exponent to logs.
+    """
+    return np.asarray(ri, float) ** (-1.0 / n)
+
+
+def archie_water_saturation(rt, rw, phi, a=1.0, m=2.0, n=2.0):
+    """Archie water saturation combining the formation factor and resistivity
+    index
+
+        Sw = (a*Rw/(phi^m*Rt))^(1/n).
+    """
+    return (a * rw / (np.asarray(phi, float) ** m * rt)) ** (1.0 / n)
+
+
 def fit_saturation_exponent(sw, ri):
     """Fit the saturation exponent n from a log-log RI vs Sw regression
 
@@ -98,6 +117,15 @@ def test_all():
 
     # RI from measured resistivities
     assert np.isclose(resistivity_index(40.0, 10.0), 4.0)
+
+    # Saturation inverts from the resistivity index (the application of n)
+    assert np.allclose(water_saturation_from_ri(ri, n=2.0), sw)
+    # a higher saturation exponent yields a higher Sw for the same RI
+    assert water_saturation_from_ri(4.0, n=2.28) > water_saturation_from_ri(4.0, n=1.99)
+    # full Archie Sw is consistent with FRF*RI = Rt/Rw
+    sw_arch = archie_water_saturation(rt=40.0, rw=0.5, phi=0.25, m=2.0, n=2.0)
+    print(f"  Archie Sw = {sw_arch:.3f}")
+    assert 0 < sw_arch < 1
 
     # Cementation exponent from a synthetic FRF vs phi trend
     phi = np.array([0.10, 0.15, 0.20, 0.25, 0.30])

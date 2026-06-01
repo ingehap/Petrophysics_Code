@@ -49,6 +49,14 @@ def crack_density(phi, aspect_ratio):
     return phi / (4.0 / 3.0 * np.pi * aspect_ratio)
 
 
+def crack_porosity(crack_density_eps, aspect_ratio):
+    """Crack porosity from the crack density and aspect ratio (inverse of Eq. 4)
+
+        phi = (4/3)*pi*alpha*eps.
+    """
+    return 4.0 / 3.0 * np.pi * aspect_ratio * crack_density_eps
+
+
 # ---------------------------------------------- Budiansky-O'Connell --------------
 
 def cracked_moduli(k_solid, mu_solid, nu_solid, crack_density_eps):
@@ -104,6 +112,48 @@ def clausius_mossotti_conductivity(lambda_solid, lambda_incl, phi, depolarizatio
                            / (lambda_solid + depolarization * (1.0 - phi) * dl))
 
 
+# ---------------------------------------------- velocity -> conductivity --------------
+
+def crack_density_from_velocity(vp, k_solid, mu_solid, nu_solid, rho,
+                                eps_max=1.0, n_iter=100, tol=1e-10):
+    """Invert the Budiansky-O'Connell elastic model for the crack density that
+    reproduces a measured P-wave velocity.
+
+    Solves p_wave_velocity(K_sc(eps), mu_sc(eps), rho) = vp for eps by bisection
+    on [0, eps_max].  Because velocity decreases monotonically with crack
+    density, the inversion is unique.  Returns the crack density eps.
+    """
+    lo, hi = 0.0, eps_max
+    for _ in range(n_iter):
+        mid = 0.5 * (lo + hi)
+        k_sc, mu_sc = cracked_moduli(k_solid, mu_solid, nu_solid, mid)
+        if p_wave_velocity(k_sc, mu_sc, rho) > vp:
+            lo = mid          # too few cracks -> velocity too high
+        else:
+            hi = mid
+        if hi - lo < tol:
+            break
+    return 0.5 * (lo + hi)
+
+
+def thermal_conductivity_from_velocity(vp, aspect_ratio, k_solid, mu_solid,
+                                       nu_solid, rho, lambda_solid, lambda_incl):
+    """Estimate thermal conductivity from P-wave velocity (the paper's two-step
+    petrographic-coded model).
+
+    The shared crack density links the elastic and thermal responses: invert the
+    elastic model for the crack density that matches the measured vp, convert it
+    to a crack porosity (via the aspect ratio), and feed that porosity through
+    the Clausius-Mossotti thermal model with the Sen depolarization factor.
+    Returns (lambda_eff, phi, crack_density).
+    """
+    eps = crack_density_from_velocity(vp, k_solid, mu_solid, nu_solid, rho)
+    phi = crack_porosity(eps, aspect_ratio)
+    _, _, lc = sen_depolarization(aspect_ratio)
+    lam = clausius_mossotti_conductivity(lambda_solid, lambda_incl, phi, lc)
+    return lam, phi, eps
+
+
 # ---------------------------------------------- tests --------------
 
 def test_all():
@@ -140,9 +190,26 @@ def test_all():
     assert np.isclose(lam0, 6.0) and lam < 6.0
     # higher porosity reduces it further
     assert clausius_mossotti_conductivity(6.0, 0.6, 0.20, lc) < lam
+
+    # Crack density inverts from velocity (round-trip) and crack porosity is
+    # the inverse of the crack-density relation
+    eps_inv = crack_density_from_velocity(vp, k_s, mu_s, nu_s, rho)
+    print(f"  crack density from Vp = {eps_inv:.4f}  (true {eps:.4f})")
+    assert np.isclose(eps_inv, eps, atol=1e-4)
+    assert np.isclose(crack_porosity(eps, 0.20), 0.03)
+
+    # Two-step model: estimate thermal conductivity straight from the velocity.
+    # A lower (more cracked) velocity gives a lower estimated conductivity.
+    lam_hi, phi_hi, _ = thermal_conductivity_from_velocity(
+        vp0 * 0.98, 0.20, k_s, mu_s, nu_s, rho, lambda_solid=6.0, lambda_incl=0.6)
+    lam_lo, phi_lo, _ = thermal_conductivity_from_velocity(
+        vp0 * 0.90, 0.20, k_s, mu_s, nu_s, rho, lambda_solid=6.0, lambda_incl=0.6)
+    print(f"  lambda(Vp high)={lam_hi:.2f}  lambda(Vp low)={lam_lo:.2f} W/m/K")
+    assert lam_lo < lam_hi < 6.0 and phi_lo > phi_hi > 0
     print("  PASS")
     return {"crack_density": float(eps), "Vp_cracked": float(vp),
-            "Lc": float(lc), "lambda": float(lam)}
+            "Lc": float(lc), "lambda": float(lam),
+            "lambda_from_Vp": float(lam_hi)}
 
 
 if __name__ == "__main__":
