@@ -23,6 +23,10 @@ Implements:
     "Goldilocks" length over which the two timescales compete)
   - Reservoir-equilibrium state (young / moderately aged / aged) from a vertical
     property profile
+  - Reservoir length from TVD height and dip  L = h/sin(theta)
+  - Asphaltene half-height scaling with aggregation number (20 m clusters vs the
+    ~cm "cluster of clusters")
+  - Biodegradation SARA mass balance (asphaltene enrichment -> oil consumed)
 
 Note: this issue's PDF dropped the display equations in extraction; Eq. 1
 survived (x^2 = 2 D t) and Eqs. 2-3 are reconstructed from the surrounding text
@@ -97,6 +101,49 @@ def asphaltene_half_height(particle_diameter, delta_density, temperature):
     """
     v = np.pi / 6.0 * particle_diameter ** 3
     return KB * temperature * np.log(2.0) / (v * delta_density * G)
+
+
+def half_height_aggregation_ratio(aggregation_number):
+    """Reduction in asphaltene half-height for an N-fold larger aggregate
+
+        h_1/2 ~ 1/V ~ 1/N      (V proportional to the aggregation number N),
+
+    so a "cluster of clusters" of N nanoaggregates has a half-height 1/N times
+    that of the single cluster.  The article contrasts the ~20 m cluster gradient
+    with the ~cm gradient that an order-of-magnitude-larger aggregate would give -
+    the test that rules out a "sandstorm" (large-particle) model of the column.
+    """
+    return 1.0 / float(aggregation_number)
+
+
+# ---------------------------------------------- reservoir geometry --------------
+
+def reservoir_length(tvd_height, dip_deg):
+    """Along-bed reservoir length from the true-vertical relief and dip
+
+        L = tvd_height/sin(theta),
+
+    e.g. a 100 m vertical column at 10 deg dip spans ~576 m of reservoir length -
+    the geometry that sets how far fluids must communicate to equilibrate.
+    """
+    return np.asarray(tvd_height, float) / np.sin(np.radians(dip_deg))
+
+
+# ---------------------------------------------- biodegradation mass balance --------------
+
+def oil_consumed_for_asphaltene_increase(asph_initial, asph_final):
+    """Fraction of oil that must be removed to enrich asphaltene from one weight
+    fraction to a higher one (a conserved-asphaltene mass balance)
+
+        fraction_remaining = asph_initial/asph_final,
+        fraction_consumed  = 1 - asph_initial/asph_final.
+
+    The article uses this to argue against biodegradation as the origin of a
+    heavy-oil/tar column: enriching asphaltene from ~3% to ~30% would require
+    removing ~90% of the oil, an implausibly large loss, favouring instead
+    gravitational accumulation of clusters.
+    """
+    return 1.0 - float(asph_initial) / float(asph_final)
 
 
 # ---------------------------------------------- diffusion vs displacement --------------
@@ -197,9 +244,26 @@ def test_all():
     assert reservoir_equilibrium_state([1.0, 2.0, 1.5, 3.0]) == "young"        # reversals
     assert reservoir_equilibrium_state([1.0, 2.0, 4.0, 8.0]) == "moderately aged"  # monotonic, curved
     assert reservoir_equilibrium_state([1.0, 2.0, 3.0, 4.0]) == "aged"         # smooth gradient
+
+    # Reservoir geometry: 100 m of vertical relief at 10 deg dip spans ~576 m
+    L = reservoir_length(100.0, 10.0)
+    print(f"  reservoir length (100 m TVD, 10 deg dip) = {L:.0f} m")
+    assert np.isclose(L, 576.0, atol=1.0)
+
+    # Aggregation-number scaling: a 10x larger aggregate has a 10x shorter
+    # half-height (20 m clusters -> ~2 m, i.e. away from the metre-scale gradient)
+    r10 = half_height_aggregation_ratio(10)
+    print(f"  half-height ratio for a 10x aggregate = {r10:.2f}")
+    assert np.isclose(r10, 0.1) and half_height_aggregation_ratio(1) == 1.0
+
+    # Biodegradation mass balance: 3% -> 30% asphaltene needs ~90% oil removed
+    consumed = oil_consumed_for_asphaltene_increase(0.03, 0.30)
+    print(f"  oil consumed to go 3% -> 30% asphaltene = {consumed*100:.0f}%")
+    assert np.isclose(consumed, 0.9)
     print("  PASS")
     return {"diffusion_yr": float(years), "V_gravity": float(v),
-            "half_height_cluster": float(h_cluster), "charge_regime": regime}
+            "half_height_cluster": float(h_cluster), "charge_regime": regime,
+            "reservoir_length_m": float(L), "biodeg_oil_consumed": float(consumed)}
 
 
 if __name__ == "__main__":

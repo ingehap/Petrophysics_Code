@@ -154,3 +154,44 @@ articles but not yet implemented. Every addition is exercised by the module's
 - **Article 6**: added `plagioclase_from_quartz` (Eq. 8, completing the Eqs.
   1-10 set) and `kerogen_affects_resistivity` (the ~1000 Ohm*m kerogen
   conductivity threshold).
+
+## Changelog - second comprehensiveness pass
+
+A second review of all six modules against the full PDF found that, while the
+core equations were faithful, each module still left genuine article-sourced
+quantitative content unimplemented (and a few small labelling/unit issues).
+The additions below close those gaps; every addition is exercised by the
+module's `test_all()` and all six modules still pass.
+
+- **Article 1**: added the deepwater demand split (`deepwater_demand_share`,
+  ~10 of ~27 MMbbl/d), compound spending growth (`capex_growth`, the 8-10% CAGR
+  toward >$250 billion), the discovered-resource and Lower-Tertiary geometry
+  anchors (`GOM_RESOURCE`: 25 Bbbl oil, 200 Tcf gas, 600,000 mi^2, 175 mi
+  offshore, 80x400 mi fairway), and the landmark structure water-depth records
+  (`STRUCTURE_RECORDS`, `deepest_structure`, `ft_to_m`). Fixed the Wilcox table
+  so the 2,500-6,000 ft gross turbidite sand pile is stored as
+  `sand_pile_thickness_ft` (with `water_depth_ft` = 5,000-10,000 ft) instead of
+  being mislabelled as net pay.
+- **Article 2**: added the introduction's deepwater giant-discovery statistics
+  (`DISCOVERY_WINDOWS`, `discovery_totals` -> 31 discoveries, 177 Tcf, 51 BBOE,
+  with the >500 MMBOE / >500 m thresholds) and the amalgamated-vs-layered
+  recovery contrast (`recovery_contrast`, ~22x).
+- **Article 3**: added `reservoir_length` (L = h/sin(theta) -> 576 m for 100 m
+  at 10 deg), `half_height_aggregation_ratio` (the aggregation-number scaling
+  that rules out a large-particle "sandstorm" model) and
+  `oil_consumed_for_asphaltene_increase` (the SARA mass balance: 3% -> 30%
+  asphaltene needs ~90% oil removed, the argument against biodegradation).
+- **Article 4**: added the Yen-Mullins size catalog (`YEN_MULLINS_DIAMETERS`),
+  `molar_volume_from_diameter` (forward operation) and `nearest_yen_mullins`
+  (the internal-consistency check that the inferred size lands on a Yen-Mullins
+  form). Corrected the solubility-parameter unit note (Pa^0.5, SI, not MPa^0.5).
+- **Article 5**: added the differential-T1 (TDA) gas flag (`differential_t1_gas`,
+  8 s / 1 s wait times) and the field-case anchors (115 ft net moveable sand,
+  optical range 2,100-5,500 nm, asphaltene 20 wt% GoM / 5 wt% Saudi, well-test
+  k = 1,000 md). Clarified that the Coates NMR permeability uses p.u. porosity
+  with C~10 and that the field's 1,000 md is a well-test value, not a Coates
+  output to validate against.
+- **Article 6**: added `gas_bearing_kerogen_volume` (Eq. 5, completing Eqs. 1-10)
+  and the Case 2 connectivity anchors (`relative_resistivity_decrease`,
+  `archie_sw_overestimation`: 22.63 -> 13.83 Ohm*m is a 38.9% resistivity drop
+  mapping to a ~30% Archie Sw overestimation).

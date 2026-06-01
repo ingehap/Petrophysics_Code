@@ -20,6 +20,9 @@ Implements:
   - Porosity-permeability spread (orders of magnitude at fixed porosity)
   - Reservoir-quality classification by GoM play / geologic epoch
   - Dual-gradient mud-line pressure reduction (the riser-margin solution)
+  - Deepwater demand / supply split and compound (CAGR) spending growth
+  - GoM discovered-resource and Lower-Tertiary geometry anchors
+  - Landmark deepwater structure water-depth records (m <-> ft)
 
 Note: this is a narrative review with no display equations; the relations below
 are the standard pressure/overburden framing of the deepwater challenges it
@@ -35,17 +38,54 @@ SEAWATER_SG = 1.025          # seawater specific gravity
 
 # Reservoir-quality anchors by GoM play / geologic epoch, as reported in the
 # review.  Depths are sub-mudline reservoir depths (ft), porosity in fraction,
-# permeability in md.  None marks a quantity the article does not pin down.
+# permeability in md.  `net_thickness_ft` is producing/net sand; for the Lower-
+# Tertiary Wilcox the article instead reports the gross turbidite *sand-pile*
+# thickness (2,500 ft in E Walker Ridge to 6,000 ft in Alaminos Canyon), kept
+# in a separate `sand_pile_thickness_ft` field so it is not confused with net
+# pay.  None marks a quantity the article does not pin down.
 GOM_PLAYS = {
     "pleistocene": dict(reservoir_depth_ft=(3000, 10000), net_thickness_ft=(0, 300),
-                        porosity=None, permeability_md=None),
+                        porosity=None, permeability_md=None,
+                        water_depth_ft=None, sand_pile_thickness_ft=None),
     "pliocene":    dict(reservoir_depth_ft=(5000, 13000), net_thickness_ft=(0, 300),
-                        porosity=None, permeability_md=None),
+                        porosity=None, permeability_md=None,
+                        water_depth_ft=None, sand_pile_thickness_ft=None),
     "miocene":     dict(reservoir_depth_ft=None, net_thickness_ft=None,
-                        porosity=(0.20, 0.35), permeability_md=None),
-    "wilcox":      dict(reservoir_depth_ft=(10000, 30000), net_thickness_ft=(0, 6000),
-                        porosity=(0.15, 0.25), permeability_md=(0.1, 10.0)),
+                        porosity=(0.20, 0.35), permeability_md=None,
+                        water_depth_ft=None, sand_pile_thickness_ft=None),
+    "wilcox":      dict(reservoir_depth_ft=(10000, 30000), net_thickness_ft=None,
+                        porosity=(0.15, 0.25), permeability_md=(0.1, 10.0),
+                        water_depth_ft=(5000, 10000),
+                        sand_pile_thickness_ft=(2500, 6000)),
 }
+
+# Discovered-resource and basin-geometry anchors for the Gulf of Mexico, as
+# reported in the review's introduction.
+GOM_RESOURCE = dict(
+    discovered_oil_Bbbl=25.0,        # ~25 billion bbl oil discovered to date
+    discovered_gas_Tcf=200.0,        # ~200 Tcf gas discovered to date
+    basin_area_mi2=600000.0,         # ~600,000 mi^2 (about the size of Alaska)
+    undiscovered_global_deepwater_BBOE=500.0,  # risk-weighted, >500 billion BOE
+    wilcox_offshore_distance_mi=175.0,         # Lower-Tertiary trend ~175 mi offshore
+    wilcox_fairway_mi=(80.0, 400.0),           # ~80 x 400 mi fairway
+)
+
+# Global liquids-demand framing (by ~2020): incremental demand and the deepwater
+# share expected to supply it (MMbbl/d).
+GLOBAL_INCREMENTAL_DEMAND_MMBD = 27.0
+DEEPWATER_SUPPLY_MMBD = 10.0
+
+# Landmark deepwater structures and their water depths (ft), tracing the
+# industry's march into ever-deeper water (Fig. 3 and the historical narrative).
+STRUCTURE_RECORDS = [
+    ("Cognac",      1978,  1025),
+    ("Bullwinkle",  1991,  1353),
+    ("Auger TLP",   1994,  2854),
+    ("Mensa",       1997,  5300),
+    ("Na Kika",     2003,  7745),
+]
+
+FT_PER_M = 3.28084
 
 
 # ---------------------------------------------- water depth --------------
@@ -151,6 +191,47 @@ def single_gradient_mudline_pressure(water_depth_ft, mud_sg):
     return PSI_PER_FT_FRESH * mud_sg * np.asarray(water_depth_ft, float)
 
 
+# ---------------------------------------------- demand & economics --------------
+
+def deepwater_demand_share(deepwater_supply=DEEPWATER_SUPPLY_MMBD,
+                           incremental_demand=GLOBAL_INCREMENTAL_DEMAND_MMBD):
+    """Fraction of the global incremental liquids demand met by deepwater
+
+        share = deepwater_supply/incremental_demand,
+
+    ~10 of ~27 MMbbl/d (~37%) by 2020 in the review's framing - the demand pull
+    that motivates the deepwater push.
+    """
+    return deepwater_supply / incremental_demand
+
+
+def capex_growth(initial, cagr, years):
+    """Compound (CAGR) growth of deepwater E&P spending
+
+        P = P0*(1 + cagr)**years,
+
+    the one genuinely compounding relation the review states (deepwater spend
+    growing ~8-10%/yr toward the >$250 billion cumulative E&P investment).
+    """
+    return initial * (1.0 + cagr) ** np.asarray(years, float)
+
+
+# ---------------------------------------------- unit helpers --------------
+
+def ft_to_m(feet):
+    """Convert feet to metres (the structure records are reported in both)."""
+    return np.asarray(feet, float) / FT_PER_M
+
+
+def deepest_structure():
+    """The deepest-water landmark structure on record (name, year, water_depth_ft).
+
+    Returns Na Kika (7,745 ft), the ultra-deepwater end of the historical march
+    the review traces from Cognac (1,025 ft, first >1,000 ft) onward.
+    """
+    return max(STRUCTURE_RECORDS, key=lambda s: s[2])
+
+
 # ---------------------------------------------- tests --------------
 
 def test_all():
@@ -190,6 +271,11 @@ def test_all():
     # its permeability band itself spans ~2 orders within one porosity range
     assert permeability_orders_of_magnitude(*wilcox["permeability_md"]) >= 2.0
     assert reservoir_quality("miocene")["porosity"] == (0.20, 0.35)
+    # the Wilcox gross sand pile (2,500-6,000 ft) is tracked separately from net
+    # pay (which the article does not report for the Wilcox)
+    assert wilcox["sand_pile_thickness_ft"] == (2500, 6000)
+    assert wilcox["net_thickness_ft"] is None
+    assert wilcox["water_depth_ft"] == (5000, 10000)
 
     # Dual-gradient drilling lightens the mud-line pressure vs a single mud column
     p_dual = dual_gradient_mudline_pressure(5000, mud_sg=1.6)
@@ -197,9 +283,32 @@ def test_all():
     print(f"  mud-line pressure  dual={p_dual:.0f} psi  single={p_single:.0f} psi")
     assert p_dual < p_single
     assert np.isclose(p_dual, seawater_hydrostatic_pressure(5000))
+
+    # Deepwater is expected to supply ~10 of the ~27 MMbbl/d incremental demand
+    share = deepwater_demand_share()
+    print(f"  deepwater share of incremental demand = {share*100:.0f}%")
+    assert np.isclose(share, 10.0 / 27.0)
+
+    # Deepwater spend compounds at ~8-10%/yr; 10 yr at 9% nearly 2.4x
+    grown = capex_growth(100.0, 0.09, 10)
+    print(f"  $100 spend at 9% CAGR over 10 yr = ${grown:.0f}")
+    assert grown > 200.0 and np.isclose(grown, 100.0 * 1.09 ** 10)
+
+    # Structure records: Na Kika is the deepest; feet/metres round-trip
+    name, year, depth_ft = deepest_structure()
+    print(f"  deepest structure: {name} ({year}) at {depth_ft} ft = {ft_to_m(depth_ft):.0f} m")
+    assert name == "Na Kika" and depth_ft == 7745
+    assert np.isclose(ft_to_m(depth_ft) * FT_PER_M, depth_ft)
+    assert water_depth_class(depth_ft) == "ultra-deepwater"
+
+    # Discovered-resource anchors
+    assert GOM_RESOURCE["discovered_oil_Bbbl"] == 25.0
+    assert GOM_RESOURCE["basin_area_mi2"] == 600000.0
     print("  PASS")
     return {"seawater_head_5000ft": float(p5000), "ob_gradient": float(grad),
-            "k_orders": float(n), "dual_gradient_relief_psi": float(p_single - p_dual)}
+            "k_orders": float(n), "dual_gradient_relief_psi": float(p_single - p_dual),
+            "deepwater_demand_share": float(share), "capex_10yr_9pct": float(grown),
+            "deepest_structure": name}
 
 
 if __name__ == "__main__":
