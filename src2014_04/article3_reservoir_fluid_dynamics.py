@@ -19,6 +19,10 @@ Implements:
   - Asphaltene gravitational (Boltzmann) distribution  A_h/A_o = exp(...) (Eq. 3)
   - Asphaltene gradient half-height
   - Yen-Mullins particle sizes (molecule / nanoaggregate / cluster)
+  - Diffusive-front vs gas-oil-contact displacement comparison (the ~20 m
+    "Goldilocks" length over which the two timescales compete)
+  - Reservoir-equilibrium state (young / moderately aged / aged) from a vertical
+    property profile
 
 Note: this issue's PDF dropped the display equations in extraction; Eq. 1
 survived (x^2 = 2 D t) and Eqs. 2-3 are reconstructed from the surrounding text
@@ -95,6 +99,52 @@ def asphaltene_half_height(particle_diameter, delta_density, temperature):
     return KB * temperature * np.log(2.0) / (v * delta_density * G)
 
 
+# ---------------------------------------------- diffusion vs displacement --------------
+
+def diffusion_vs_displacement(diffusion, displacement_rate, time, length):
+    """Compare the diffusive front with a gas-oil-contact (GOC) displacement
+    over a charge time, at a characteristic vertical length.
+
+    Returns (diffusion_distance, displacement_distance, regime) where
+        diffusion_distance    = sqrt(2*D*t)            (front spreads as sqrt t)
+        displacement_distance = displacement_rate*t    (contact moves linearly)
+    and regime is whichever process has travelled farther over the charge time:
+    "diffusion-dominated" if the diffusive front outruns the moving contact,
+    else "displacement-dominated".  The article notes a ~20 m vertical
+    "Goldilocks" length where the two are comparable: over scales much shorter
+    than `length` diffusion wins, over much longer scales the moving contact
+    wins (e.g. ~30 m/Ma GOC rise vs a methane front that crosses ~15 m in ~1 Ma).
+    """
+    diff = float(diffusion_length(diffusion, time))
+    disp = displacement_rate * time
+    regime = "diffusion-dominated" if diff >= disp else "displacement-dominated"
+    return diff, disp, regime
+
+
+# ---------------------------------------------- equilibrium state --------------
+
+def reservoir_equilibrium_state(profile, tol=1e-3):
+    """Classify a vertical fluid-property profile (e.g. asphaltene vs depth)
+
+        - "aged"             : equilibrated (flat / monotonic & smooth gradient),
+        - "moderately aged"  : monotonic but not yet equilibrated,
+        - "young"            : non-monotonic (reversals -> incomplete mixing).
+
+    `profile` is sampled top->bottom.  A young column shows large nonmonotonic
+    variation; an aged column has collapsed onto a single smooth equilibrium
+    gradient (the FHZ / Boltzmann curve).
+    """
+    p = np.asarray(profile, float)
+    d = np.diff(p)
+    monotonic = bool(np.all(d >= -tol) or np.all(d <= tol))
+    if not monotonic:
+        return "young"
+    # equilibrated if the gradient is nearly constant (smooth single curve)
+    if len(d) >= 2 and float(np.std(d)) <= tol * (1.0 + float(np.mean(np.abs(p)))):
+        return "aged"
+    return "moderately aged"
+
+
 # ---------------------------------------------- tests --------------
 
 def test_all():
@@ -134,9 +184,22 @@ def test_all():
     h_nano = asphaltene_half_height(YEN_MULLINS["nanoaggregate"], 200.0, 350.0)
     print(f"  half-height: cluster={h_cluster:.1f} m  nanoaggregate={h_nano:.0f} m")
     assert h_cluster < h_nano and YEN_MULLINS["cluster"] > YEN_MULLINS["nanoaggregate"]
+
+    # Diffusion vs displacement: a ~30 m/Ma GOC rise over 3.3 Ma outruns the
+    # methane diffusive front across the ~20 m characteristic length
+    rate = 30.0 / (1e6 * 365.25 * 24 * 3600)   # 30 m/Ma -> m/s
+    t_charge = 3.3e6 * 365.25 * 24 * 3600        # 3.3 Ma -> s
+    diff_d, disp_d, regime = diffusion_vs_displacement(d_methane, rate, t_charge, 20.0)
+    print(f"  over 3.3 Ma: diffusion={diff_d:.1f} m  displacement={disp_d:.1f} m  -> {regime}")
+    assert disp_d > diff_d and regime == "displacement-dominated"
+
+    # Equilibrium state from a vertical profile
+    assert reservoir_equilibrium_state([1.0, 2.0, 1.5, 3.0]) == "young"        # reversals
+    assert reservoir_equilibrium_state([1.0, 2.0, 4.0, 8.0]) == "moderately aged"  # monotonic, curved
+    assert reservoir_equilibrium_state([1.0, 2.0, 3.0, 4.0]) == "aged"         # smooth gradient
     print("  PASS")
     return {"diffusion_yr": float(years), "V_gravity": float(v),
-            "half_height_cluster": float(h_cluster)}
+            "half_height_cluster": float(h_cluster), "charge_regime": regime}
 
 
 if __name__ == "__main__":

@@ -18,6 +18,8 @@ Implements:
   - Seawater hydrostatic pressure  P = rho_sw*g*water_depth
   - Overburden pressure (seawater column + sediment) and its gradient
   - Porosity-permeability spread (orders of magnitude at fixed porosity)
+  - Reservoir-quality classification by GoM play / geologic epoch
+  - Dual-gradient mud-line pressure reduction (the riser-margin solution)
 
 Note: this is a narrative review with no display equations; the relations below
 are the standard pressure/overburden framing of the deepwater challenges it
@@ -30,6 +32,20 @@ import numpy as np
 
 PSI_PER_FT_FRESH = 0.433     # hydrostatic gradient of fresh water, psi/ft
 SEAWATER_SG = 1.025          # seawater specific gravity
+
+# Reservoir-quality anchors by GoM play / geologic epoch, as reported in the
+# review.  Depths are sub-mudline reservoir depths (ft), porosity in fraction,
+# permeability in md.  None marks a quantity the article does not pin down.
+GOM_PLAYS = {
+    "pleistocene": dict(reservoir_depth_ft=(3000, 10000), net_thickness_ft=(0, 300),
+                        porosity=None, permeability_md=None),
+    "pliocene":    dict(reservoir_depth_ft=(5000, 13000), net_thickness_ft=(0, 300),
+                        porosity=None, permeability_md=None),
+    "miocene":     dict(reservoir_depth_ft=None, net_thickness_ft=None,
+                        porosity=(0.20, 0.35), permeability_md=None),
+    "wilcox":      dict(reservoir_depth_ft=(10000, 30000), net_thickness_ft=(0, 6000),
+                        porosity=(0.15, 0.25), permeability_md=(0.1, 10.0)),
+}
 
 
 # ---------------------------------------------- water depth --------------
@@ -94,6 +110,47 @@ def permeability_orders_of_magnitude(k_min, k_max):
     return np.log10(k_max / k_min)
 
 
+def reservoir_quality(play):
+    """Reported reservoir-quality ranges for a named GoM play / epoch
+
+        play in {pleistocene, pliocene, miocene, wilcox},
+
+    returning the dict of (reservoir_depth_ft, net_thickness_ft, porosity,
+    permeability_md) ranges the review tabulates.  The deep, low-permeability,
+    moderate-porosity Wilcox is the end member that frames the article's
+    "challenges" (deep, hot, tight, narrow-margin).
+    """
+    return GOM_PLAYS[play.lower()]
+
+
+# ---------------------------------------------- dual-gradient drilling --------------
+
+def dual_gradient_mudline_pressure(water_depth_ft, mud_sg):
+    """Mud-line pressure with dual-gradient drilling
+
+        P = 0.433*(SG_sw*water_depth)   [psi],
+
+    i.e. the long riser column of heavy mud is replaced by a seawater-density
+    return so that only the seawater head acts above the mud line.  This lifts
+    the effective pressure profile off the fracture gradient and widens the
+    narrow deepwater margin (the article's dual-gradient / managed-pressure
+    solution).  Compare with the single-gradient riser pressure that would
+    instead carry the full mud column to surface.
+    """
+    return PSI_PER_FT_FRESH * SEAWATER_SG * np.asarray(water_depth_ft, float)
+
+
+def single_gradient_mudline_pressure(water_depth_ft, mud_sg):
+    """Mud-line pressure with a conventional single (riser) mud gradient
+
+        P = 0.433*SG_mud*water_depth   [psi],
+
+    the heavy-mud column carried all the way to the rig - always heavier than
+    the dual-gradient case, the comparison that motivates dual-gradient drilling.
+    """
+    return PSI_PER_FT_FRESH * mud_sg * np.asarray(water_depth_ft, float)
+
+
 # ---------------------------------------------- tests --------------
 
 def test_all():
@@ -123,9 +180,26 @@ def test_all():
     n = permeability_orders_of_magnitude(0.1, 100.0)
     print(f"  permeability spread = {n:.1f} orders of magnitude")
     assert np.isclose(n, 3.0)
+
+    # Reservoir quality: the Wilcox is the deep, tight, moderate-porosity play
+    wilcox = reservoir_quality("Wilcox")
+    print(f"  Wilcox: depth {wilcox['reservoir_depth_ft']} ft, "
+          f"porosity {wilcox['porosity']}, k {wilcox['permeability_md']} md")
+    assert wilcox["reservoir_depth_ft"][1] == 30000
+    assert wilcox["porosity"] == (0.15, 0.25)
+    # its permeability band itself spans ~2 orders within one porosity range
+    assert permeability_orders_of_magnitude(*wilcox["permeability_md"]) >= 2.0
+    assert reservoir_quality("miocene")["porosity"] == (0.20, 0.35)
+
+    # Dual-gradient drilling lightens the mud-line pressure vs a single mud column
+    p_dual = dual_gradient_mudline_pressure(5000, mud_sg=1.6)
+    p_single = single_gradient_mudline_pressure(5000, mud_sg=1.6)
+    print(f"  mud-line pressure  dual={p_dual:.0f} psi  single={p_single:.0f} psi")
+    assert p_dual < p_single
+    assert np.isclose(p_dual, seawater_hydrostatic_pressure(5000))
     print("  PASS")
     return {"seawater_head_5000ft": float(p5000), "ob_gradient": float(grad),
-            "k_orders": float(n)}
+            "k_orders": float(n), "dual_gradient_relief_psi": float(p_single - p_dual)}
 
 
 if __name__ == "__main__":
