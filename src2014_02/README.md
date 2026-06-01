@@ -70,32 +70,47 @@ python article1_dualwater_dielectric_nmr.py
 - **Article 2 (Dernaika et al.)**: Pc & resistivity index - the resistivity
   index `RI = Rt/Ro = Sw^-n` and a saturation-exponent fit, plus the Archie
   formation factor and a cementation-exponent fit. Reported n increases through
-  the displacement cycles (PD 1.99 -> FI 2.28 for the high-perm RRTs). The
-  measured exponent is applied through the inverse `Sw = RI^(-1/n)` and a full
-  Archie water saturation.
+  the displacement cycles (PD 1.99 -> FI 2.28 for the high-perm RRTs), so a
+  `saturation_exponents_by_cycle` helper fits n per cycle and reproduces the
+  paper's PD ~ SI < FI ordering. The measured exponent is applied through the
+  inverse `Sw = RI^(-1/n)` and a full Archie water saturation. The SCAL
+  endpoints are completed by the movable-oil saturation `1 - Swi - Sor` (Sor
+  converging to ~20% for high-perm and ~27-30% for tight RRTs) and a
+  capillary-pressure unit reconciliation between the bar scale (SI, max 7 bar)
+  and the psi scale (FI, max 80 psi).
 
 - **Article 3 (Roustaei)**: nanofluid imbibition - Young's law contact angle and
   its cosine (Eq. 1), a wettability classification, the Young-Dupre work of
-  adhesion, and a first-order spontaneous-imbibition recovery curve. The nanofluid
-  raises the oil-water IFT (2.65 -> 9.21 mN/m), lowers `cos(theta)` so the contact
-  angle increases toward water-wet, and lifts the final recovery above ~50% IOIP.
+  adhesion, the Young-Laplace capillary pressure `Pc = 2*sigma_wo*cos(theta)/r`
+  (the paper's central mechanism: wettability alteration turns the capillary
+  force "from a barrier to a driving force" - `Pc < 0` oil-wet vs `Pc > 0`
+  water-wet - and a higher oil-water IFT raises the driving `Pc`), the
+  capillary-vs-gravity discrimination from the recovery-curve shape (curved ->
+  capillary, linear -> gravity), and a first-order spontaneous-imbibition
+  recovery curve. The nanofluid raises the oil-water IFT (2.65 -> 9.21 mN/m),
+  lowers `cos(theta)` so the contact angle increases toward water-wet, and lifts
+  the final recovery above ~50% IOIP (brine ~4.3%, surfactant ~46%).
 
 - **Article 4 (Spears et al.)**: canister gas - the atmospheric air-contamination
-  correction (N2:O2 = 3.73) and an air-contamination fraction, the USBM
-  square-root-of-time lost-gas estimate and total gas content, the isotope/GC
-  quality-control checks (delta-13C limits, 50 mV-sec CH4 peak area), a Tedlar
-  (PVF) bag hold-time check (<24 h, the paper's gas-permeation finding), and a
-  biogenic/thermogenic gas-origin classification.
+  correction (N2:O2 = 3.73, after Jin et al., 2010) and an air-contamination
+  fraction, a square-root-of-time lost-gas estimate (Direct Method, following
+  the desorption guidelines the paper cites) and total gas content, the
+  isotope/GC quality-control checks (delta-13C limits, 50 mV-sec CH4 peak area),
+  the canister-handling thresholds (the <=10 cm^3/day shipping criterion and the
+  ~1 bar/15 psi venting pressure), a Tedlar (PVF) bag hold-time check (<24 h)
+  backed by the paper's relative-permeation finding (O2 ~10x N2, He ~15x CO2),
+  and a biogenic/thermogenic gas-origin classification.
 
 - **Article 5 (Gegenhuber & Schön)**: thermal conductivity from velocity - the
-  Hill average, the crack density from porosity/aspect ratio (and its inverse
-  crack porosity), the Budiansky-O'Connell self-consistent cracked moduli and
-  P-wave velocity, the Sen plate-like depolarization exponents, and the
-  Clausius-Mossotti effective thermal conductivity. The two halves are joined by
-  the headline two-step estimator: invert the elastic model for the crack density
-  that matches a measured Vp, then map that (shared) crack porosity to thermal
-  conductivity - estimating `lambda` directly from `Vp`. Best-fit aspect ratios:
-  granite/gneiss/sandstone 0.20, basic magmatic 0.25.
+  Hill average, the crack density in both its forms - by count `eps = (N/V)*r^3`
+  (Eq. 3) and from porosity/aspect ratio `eps = phi/((4/3)*pi*alpha)` (Eq. 4,
+  with its inverse crack porosity) - the Budiansky-O'Connell self-consistent
+  cracked moduli and P-wave velocity, the Sen plate-like depolarization
+  exponents, and the Clausius-Mossotti effective thermal conductivity. The two
+  halves are joined by the headline two-step estimator: invert the elastic model
+  for the crack density that matches a measured Vp, then map that (shared) crack
+  porosity to thermal conductivity - estimating `lambda` directly from `Vp`.
+  Best-fit aspect ratios: granite/gneiss/sandstone 0.20, basic magmatic 0.25.
 
 ## Module conventions
 

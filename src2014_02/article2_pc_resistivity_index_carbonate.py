@@ -16,13 +16,21 @@ Implements:
 
   - Resistivity index  RI = Rt/Ro = Sw^(-n)
   - Saturation-exponent fit from a log-log RI vs Sw regression
+  - Per-displacement-cycle saturation exponents (PD -> SI -> FI), the paper's
+    headline result that n rises through the displacement cycles
+  - Movable-oil saturation from the initial-water and residual-oil endpoints
+  - Capillary-pressure unit reconciliation (the paper reports SI in bar and FI
+    in psi)
   - Archie formation resistivity factor  FRF = Ro/Rw = a/phi^m
   - Cementation-exponent fit from a log-log FRF vs phi regression
 
 Note: this experimental paper renders no display equations; the resistivity-
 index power law and the Archie formation factor are written in standard form.
 Reported saturation exponents: high-perm RRT 1-5 n = 1.99 (PD) -> 2.28 (FI);
-tight RRT 6-7 n = 1.56 -> 1.82.  Saturations as fractions, resistivities in Ohm*m.
+tight RRT 6-7 n = 1.56 -> 1.82 (n differs little between PD and SI but rises in
+FI).  Residual oil saturation converges to ~20% for the high-perm RRTs and ~27-
+30% for the tight RRTs; SI reduces Pc from a maximum 7 bar to zero and FI applies
+up to 80 psi.  Saturations as fractions, resistivities in Ohm*m.
 """
 
 import numpy as np
@@ -71,6 +79,50 @@ def fit_saturation_exponent(sw, ri):
     return -slope
 
 
+def saturation_exponents_by_cycle(cycles):
+    """Fit the saturation exponent n for each displacement cycle.
+
+    ``cycles`` maps a cycle label ("PD", "SI", "FI", ...) to a (Sw, RI) pair of
+    arrays; each is fitted with ``fit_saturation_exponent``.  This reproduces the
+    paper's central observation that n is similar for primary drainage (PD) and
+    spontaneous imbibition (SI) but rises in forced imbibition (FI) - e.g. for
+    the high-perm RRTs n = 1.99 (PD) -> 2.28 (FI).  Returns a dict of {label: n}.
+    """
+    return {label: fit_saturation_exponent(sw, ri)
+            for label, (sw, ri) in cycles.items()}
+
+
+# ---------------------------------------------- saturation endpoints --------------
+
+def movable_oil_saturation(swi, sor):
+    """Movable-oil saturation from the initial-water and residual-oil endpoints
+
+        So_movable = 1 - Swi - Sor,
+
+    the oil between the initial-water saturation (after primary drainage) and the
+    residual-oil saturation reached after forced imbibition.  The paper reports
+    Sor converging to ~0.20 for the high-perm RRTs and ~0.27-0.30 for the tight
+    RRTs.
+    """
+    return 1.0 - swi - sor
+
+
+# ---------------------------------------------- capillary pressure --------------
+
+def bar_to_psi(pc_bar):
+    """Convert a capillary pressure from bar to psi  (1 bar = 14.5038 psi).
+
+    The paper reports spontaneous-imbibition Pc in bar (maximum 7 bar) but
+    forced-imbibition Pc in psi (up to 80 psi); this reconciles the two scales.
+    """
+    return np.asarray(pc_bar, float) * 14.5037738
+
+
+def psi_to_bar(pc_psi):
+    """Convert a capillary pressure from psi to bar  (1 psi = 0.0689476 bar)."""
+    return np.asarray(pc_psi, float) / 14.5037738
+
+
 # ---------------------------------------------- formation factor --------------
 
 def formation_resistivity_factor(ro, rw):
@@ -115,6 +167,28 @@ def test_all():
     print(f"  fitted n: PD={n_pd:.2f}  FI={n_fi:.2f}")
     assert np.isclose(n_pd, 1.99) and np.isclose(n_fi, 2.28) and n_fi > n_pd
 
+    # Per-cycle exponents: n similar for PD/SI, higher for FI (paper's result)
+    cycles = {
+        "PD": (sw, resistivity_index_from_sw(sw, 1.99)),
+        "SI": (sw, resistivity_index_from_sw(sw, 2.01)),
+        "FI": (sw, resistivity_index_from_sw(sw, 2.28)),
+    }
+    n_by_cycle = saturation_exponents_by_cycle(cycles)
+    print(f"  n by cycle: PD={n_by_cycle['PD']:.2f} SI={n_by_cycle['SI']:.2f} FI={n_by_cycle['FI']:.2f}")
+    assert n_by_cycle["FI"] > n_by_cycle["SI"] > n_by_cycle["PD"]
+
+    # Movable oil between the initial-water and residual-oil endpoints
+    so_mov = movable_oil_saturation(swi=0.15, sor=0.20)
+    print(f"  movable oil (Swi=0.15, Sor=0.20) = {so_mov:.2f}")
+    assert np.isclose(so_mov, 0.65)
+    # tighter RRTs (higher Sor) leave less movable oil
+    assert movable_oil_saturation(0.15, 0.30) < so_mov
+
+    # Capillary-pressure unit reconciliation (SI bar <-> FI psi)
+    assert np.isclose(bar_to_psi(7.0), 101.5, atol=0.1)   # 7 bar SI maximum
+    assert np.isclose(psi_to_bar(80.0), 5.516, atol=1e-3)  # 80 psi FI maximum
+    assert np.isclose(psi_to_bar(bar_to_psi(7.0)), 7.0)
+
     # RI from measured resistivities
     assert np.isclose(resistivity_index(40.0, 10.0), 4.0)
 
@@ -135,7 +209,8 @@ def test_all():
     assert np.isclose(m_fit, 2.0) and np.isclose(a_fit, 1.0)
     assert np.isclose(formation_resistivity_factor(20.0, 0.5), 40.0)
     print("  PASS")
-    return {"n_PD": float(n_pd), "n_FI": float(n_fi), "m": float(m_fit)}
+    return {"n_PD": float(n_pd), "n_FI": float(n_fi), "m": float(m_fit),
+            "movable_oil": float(so_mov)}
 
 
 if __name__ == "__main__":

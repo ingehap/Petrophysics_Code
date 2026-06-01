@@ -15,7 +15,8 @@ controlled by the ratio porosity/aspect-ratio.
 Implements:
 
   - Hill average of Voigt and Reuss bounds
-  - Crack density from porosity and aspect ratio  eps = phi/((4/3)*pi*alpha)
+  - Crack density from crack count and radius  eps = (N/V)*r^3  (Eq. 3)
+  - Crack density from porosity and aspect ratio  eps = phi/((4/3)*pi*alpha) (Eq. 4)
   - Budiansky-O'Connell self-consistent cracked moduli and P-wave velocity
   - Sen plate-like depolarization exponents  Lc = 1 - (pi/2)*alpha;  La=Lb=(1-Lc)/2
   - Clausius-Mossotti (Maxwell-Garnett) effective thermal conductivity
@@ -39,12 +40,26 @@ def hill_average(voigt, reuss):
 
 # ---------------------------------------------- crack density --------------
 
+def crack_density_from_count(n_per_volume, crack_radius):
+    """Crack density parameter from its primary definition (Eq. 3)
+
+        eps = (N/V)*r^3,
+
+    the number of cracks N per unit volume V times the crack radius r cubed
+    (Budiansky & O'Connell, 1976).  Eq. 4 re-expresses this same eps through the
+    porosity and aspect ratio (see ``crack_density``).
+    """
+    return n_per_volume * crack_radius ** 3
+
+
 def crack_density(phi, aspect_ratio):
-    """Crack density parameter from porosity and aspect ratio (Eqs. 3-4)
+    """Crack density parameter from porosity and aspect ratio (Eq. 4)
 
         eps = phi/((4/3)*pi*alpha),
 
-    so the inclusion effect is governed by the ratio phi/alpha.
+    so the inclusion effect is governed by the ratio phi/alpha.  This is the
+    porosity form of the crack density defined by count in Eq. 3
+    (``crack_density_from_count``).
     """
     return phi / (4.0 / 3.0 * np.pi * aspect_ratio)
 
@@ -168,6 +183,12 @@ def test_all():
     eps = crack_density(0.03, aspect_ratio=0.20)
     print(f"  crack density (phi=3%, alpha=0.20) = {eps:.4f}")
     assert eps > 0 and crack_density(0.20, 0.20) > eps
+
+    # The count form (Eq. 3) and porosity form (Eq. 4) are the same parameter:
+    # match them by choosing the count that reproduces a given crack porosity
+    eps_count = crack_density_from_count(n_per_volume=eps / 0.5 ** 3, crack_radius=0.5)
+    print(f"  crack density from count = {eps_count:.4f}")
+    assert np.isclose(eps_count, eps)
 
     # Cracks lower the moduli and the P-wave velocity
     k_s, mu_s, nu_s, rho = 37.0, 44.0, 0.07, 2.65   # quartz-rich granite-like
