@@ -69,7 +69,12 @@ python article1_dualwater_dielectric_nmr.py
   Fig. 7 input-sensitivity study (`sw_parameter_sensitivity`) confirms the
   dielectric Sxo is the dominant control on Sw, and the Appendix n-vs-m trade-off
   (`archie_cementation_for_sw`) reproduces the tabulated pairs that hold Sw fixed
-  (e.g. Sw = 0.8: n=1.5->m=2.00, n=2.5->m=1.87, n=3.5->m=1.73).
+  (e.g. Sw = 0.8: n=1.5->m=2.00, n=2.5->m=1.87, n=3.5->m=1.73).  The m0 log
+  itself is classified clean-vs-shaly (`m0_lithology`) across its reported
+  1.8 (clean sand) -> 2.2 (shalier sand) range, and the case-study six-core
+  average saturation exponent (`CASE_STUDY_SATURATION_EXPONENT = 1.67`, used in
+  the paper's final Sw) and the worked-example reference salinity/conductivity
+  (19 ppt -> Cw = 5.81 S/m at 60 degC) are recorded.
 
 - **Article 2 (Dernaika et al.)**: Pc & resistivity index - the resistivity
   index `RI = Rt/Ro = Sw^-n` and a saturation-exponent fit, plus the Archie
@@ -87,7 +92,11 @@ python article1_dualwater_dielectric_nmr.py
   complex-carbonate RRTs - and the Washburn `pore_throat_radius` underpins the
   NMR-T2 vs MICP capillary-tube comparison the paper uses to detect small-pore
   "shielding" of large pores (a tube match for the tight RRT 6-7, a mismatch for
-  the high-perm RRT 1-5).
+  the high-perm RRT 1-5).  A `rrt_group` helper encodes the paper's two
+  petrophysical groups by permeability - Group 1 (RRT 1/2/4, rudstone/floatstone,
+  >0.1 md, n ~ 2.0, Sor ~ 20%) vs Group 2 (RRT 6/7, wackestone/mudstone, <0.1 md,
+  Sor ~ 27-30%) - and the reservoir conditions (121 degC, 200 usec NMR echo
+  spacing) are recorded as constants.
 
 - **Article 3 (Roustaei)**: nanofluid imbibition - Young's law contact angle and
   its cosine (Eq. 1), a wettability classification, the Young-Dupre work of
@@ -102,9 +111,13 @@ python article1_dualwater_dielectric_nmr.py
   the final recovery above ~50% IOIP (brine ~4.3%, surfactant ~46%). An
   `above_cmc` check encodes that the surfactant works only above its measured
   critical micelle concentration (~0.45 wt%), the optimum nanoparticle loading
-  (`OPTIMUM_NANOPARTICLE_CONC_GL = 3` g/L) is recorded, and `incremental_recovery`
-  captures the paper's headline ~10% IOIP gain of the nanofluid over the plain
-  surfactant.
+  (`OPTIMUM_NANOPARTICLE_CONC_GL = 3` g/L, inside the tested 1-4 g/L range via
+  `nanoparticle_conc_in_tested_range`; 14-nm silica) is recorded, and
+  `incremental_recovery` captures the paper's headline ~10% IOIP gain of the
+  nanofluid over the plain surfactant.  The measured contact-angle alteration
+  sequence (`MEASURED_CONTACT_ANGLES`: untreated 32 deg oil-phase / 93 deg
+  water-air -> surfactant 95/51 -> nanofluid 134/21, i.e. oil-phase angle rising
+  and water/air angle falling toward strongly water-wet) is tabulated.
 
 - **Article 4 (Spears et al.)**: canister gas - the atmospheric air-contamination
   correction (N2:O2 = 3.73, after Jin et al., 2010), an air-contamination
@@ -120,7 +133,10 @@ python article1_dualwater_dielectric_nmr.py
   backed by the paper's relative-permeation finding (O2 ~10x N2, He ~15x CO2);
   and a biogenic/thermogenic gas-origin classification from delta-13C of methane,
   plus the CO2-CH4 carbon-isotope separation (`gas_origin_co2_ch4`, Whiticar 1996)
-  that uses the CO2 isotope the paper measures alongside CH4.
+  that uses the CO2 isotope the paper measures alongside CH4.  The PVC canister's
+  ~80 degC working limit (`pvc_canister_temp_ok`) - the constraint behind the
+  cheap PVC body the paper selects - is added alongside the existing handling
+  thresholds.
 
 - **Article 5 (Gegenhuber & Schön)**: thermal conductivity from velocity - the
   Voigt and Reuss bounds and their Hill average (the Step-1 multi-mineral solid
@@ -136,6 +152,11 @@ python article1_dualwater_dielectric_nmr.py
   directly from `Vp`. The `fit_velocity_conductivity_regression` builder samples
   this model to produce the paper's practical Table-4 Vp->lambda regression, and
   `prediction_within_tolerance` encodes its stated <15% / 0.5 W/m/K accuracy.
+  The single-Lc Clausius-Mossotti is the plate-like-crack limit; the general
+  triaxial depolarization function `rmi_depolarization_factor` (Rmi as a function
+  of La, Lb, Lc, the form the paper's Eqs. 6-7 reference) and the per-code typical
+  porosities (`TYPICAL_POROSITY_BY_ROCK`: granite/gneiss 3%, sandstone 20%, basic
+  magmatic ~10%) are also provided.
 
 ## Module conventions
 

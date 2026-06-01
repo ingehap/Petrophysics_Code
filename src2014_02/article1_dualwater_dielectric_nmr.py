@@ -26,6 +26,7 @@ Implements:
     spectroscopy + microresistivity)
   - The Fig. 7 input-sensitivity study (Sxo is the dominant control on Sw)
   - The Appendix n-vs-m trade-off (cementation factor for a target Sw)
+  - Lithology classification from the m0 log (clean ~1.8 -> shaly ~2.2)
 
 Note: this issue's PDF dropped the display equations in extraction; the two
 conductivity terms are transcribed verbatim (with the worked example) and the
@@ -35,6 +36,18 @@ in S/m, Qv in meq/cm^3.
 """
 
 import numpy as np
+
+# Saturation exponent: the paper notes n = 2.0 is a good generic starting value,
+# while the case study's six-core average (used in its final Sw computation) is
+# n = 1.67 (Tan et al., 2014).
+DEFAULT_SATURATION_EXPONENT = 2.0
+CASE_STUDY_SATURATION_EXPONENT = 1.67
+
+# Reference connate-water salinity and conductivity of the worked example
+# (formation water 15-23 ppt NaCl-equivalent; reference 19 ppt -> Cw = 5.81 S/m
+# at 60 degC).
+REFERENCE_SALINITY_PPT = 19.0
+REFERENCE_CW_SI = 5.81
 
 
 # ---------------------------------------------- dual-water terms --------------
@@ -158,6 +171,16 @@ def invert_m0(cxo, sxo, n, cmfe, qv, alpha, vqh, beta, phi):
     cwf = effective_water_conductivity(cmfe, alpha, vqh, qv)
     bracket = sxo ** n * cwf + sxo ** (n - 1) * beta * qv
     return np.log(cxo / bracket) / np.log(phi)
+
+
+def m0_lithology(m0):
+    """Classify lithology from the dual-water cementation exponent m0.
+
+    The paper's m0 log spans ~1.8 in clean sand, increasing toward ~2.2 in the
+    shalier sand (m0 rises with clay content).  Splitting at the 2.0 midpoint of
+    that 1.8-2.2 range, returns "clean" for m0 < 2.0 and "shaly" otherwise.
+    """
+    return "clean" if m0 < 2.0 else "shaly"
 
 
 def solve_water_saturation(ct, phi, m0, n, cw, qv, alpha, vqh, beta,
@@ -325,6 +348,10 @@ def test_all():
     print(f"  n-m trade-off @ Sw=0.8: n=1.5->m={m_15:.2f}  n=2.5->m={m_25:.2f}  n=3.5->m={m_35:.2f}")
     assert np.isclose(m_15, 2.00, atol=0.02) and np.isclose(m_25, 1.87, atol=0.02)
     assert np.isclose(m_35, 1.73, atol=0.02) and m_15 > m_25 > m_35
+
+    # m0 log lithology split (clean sand ~1.8 -> shalier sand ~2.2)
+    assert m0_lithology(1.8) == "clean" and m0_lithology(2.2) == "shaly"
+    assert CASE_STUDY_SATURATION_EXPONENT == 1.67
     print("  PASS")
     return {"excess_clay": float(clay), "Qv": float(qv_calc), "m0": float(m0_rec),
             "Sw": float(sw)}
