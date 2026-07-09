@@ -31,6 +31,13 @@ porosity/saturation as fractions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- permeability --------------
 
@@ -46,7 +53,7 @@ def sdr_permeability(phi, t2lm, c=4.0, a_exp=4.0, b_exp=2.0):
 
 def archie_sw(rt, rw, phi, m=2.0, n=2.0, a=1.0):
     """Archie water saturation  Sw = (a*Rw/(phi^m * Rt))^(1/n)."""
-    return (a * rw / (phi ** m * rt)) ** (1.0 / n)
+    return petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, a=a, m=m, n=n)
 
 
 def saturation_exponent_from_dielectric(textural_exponent, m):

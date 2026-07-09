@@ -32,6 +32,13 @@ lived in figures and are left as inputs.  Resistivities in Ohm*m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- saturations & volumes --------------
 
@@ -172,7 +179,7 @@ def effective_conductivity_2d(sigma_map, n_iter=5000, tol=1e-7):
 
 def archie_sw(rt, rw, phi, a=1.0, m=2.0, n=2.0):
     """Archie water saturation  Sw = (a*Rw/(phi^m*Rt))^(1/n)."""
-    return (a * rw / (phi ** m * rt)) ** (1.0 / n)
+    return petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, a=a, m=m, n=n)
 
 
 # Synthetic Case 2 connectivity anchors (Figs. 10-11): the same kerogen

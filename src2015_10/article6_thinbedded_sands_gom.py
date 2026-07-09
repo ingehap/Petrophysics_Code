@@ -29,6 +29,13 @@ fractions, resistivity in ohm-m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Thomas-Stieber --------------
 
@@ -92,7 +99,7 @@ def sand_resistivity(rh, rshale, vlam):
 
 def archie_sw(rsand, rw, phi_sand, m=2.0, n=2.0, a=1.0):
     """Archie sand water saturation  Sw = (a*Rw/(phi_sand^m * Rsand))^(1/n)."""
-    return (a * rw / (phi_sand ** m * rsand)) ** (1.0 / n)
+    return petrolib.saturation_resistivity.archie_sw(rsand, rw, phi=phi_sand, a=a, m=m, n=n)
 
 
 # ---------------------------------------------- tests --------------

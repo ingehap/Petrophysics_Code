@@ -28,6 +28,13 @@ consistent units, resistivities in ohm-m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- decay models --------------
 
@@ -80,7 +87,7 @@ def fit_equilibrium(times, values):
 
 def resistivity_index(rt, ro):
     """Resistivity index  RI = Rt/Ro  (Ro = resistivity at 100% water)."""
-    return np.asarray(rt, float) / ro
+    return petrolib.saturation_resistivity.resistivity_index(rt, ro)
 
 
 def archie_saturation_exponent(sw, ri):
@@ -90,15 +97,12 @@ def archie_saturation_exponent(sw, ri):
 
     by least-squares through the (log Sw, log RI) points.  Returns n.
     """
-    x = np.log10(np.asarray(sw, float))
-    y = np.log10(np.asarray(ri, float))
-    slope, _ = np.polyfit(x, y, 1)
-    return -slope
+    return petrolib.saturation_resistivity.fit_saturation_exponent(sw, ri)
 
 
 def resistivity_index_from_sw(sw, n):
     """Archie resistivity index  RI = Sw^(-n)."""
-    return np.asarray(sw, float) ** (-n)
+    return petrolib.saturation_resistivity.resistivity_index_from_sw(sw, n=n)
 
 
 # ---------------------------------------------- tests --------------

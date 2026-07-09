@@ -29,6 +29,13 @@ typeset matrix glyphs were dropped and reconstructed in standard form.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- FOEP core --------------
 
@@ -100,7 +107,7 @@ def density_porosity_jacobian(rho_b, rho_ma, rho_fl):
 
 def archie_sw(rt, rw, phi, m=2.0, n=2.0):
     """Archie water saturation  Sw = (Rw/(phi^m * Rt))^(1/n)  (Eq. 16)."""
-    return (rw / (phi ** m * rt)) ** (1.0 / n)
+    return petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, m=m, n=n)
 
 
 def vsh_gr(gr, gr_sand, gr_shale):
