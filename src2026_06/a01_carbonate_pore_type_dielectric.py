@@ -34,6 +34,13 @@ Measurement context (verbatim from the paper):
 """
 
 import cmath
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass, field
 from typing import List, Sequence, Tuple
 
@@ -61,12 +68,12 @@ def complex_permittivity(eps_real: float, eps_imag: float) -> complex:
     complex
         e* = e' - i*e''  (engineering sign convention used in the paper).
     """
-    return complex(eps_real, -abs(eps_imag))
+    return complex(petrolib.em_dielectric.complex_permittivity(eps_real, eps_imag=abs(eps_imag)))
 
 
 def loss_tangent(eps_real: float, eps_imag: float) -> float:
     """Dielectric loss tangent  tan(delta) = e'' / e'."""
-    return abs(eps_imag) / eps_real
+    return float(petrolib.em_dielectric.loss_tangent(complex(eps_real, -abs(eps_imag))))
 
 
 def imag_from_conductivity(sigma: float, freq_hz: float) -> float:
@@ -84,8 +91,7 @@ def imag_from_conductivity(sigma: float, freq_hz: float) -> float:
     -------
     e'' (dimensionless, relative).
     """
-    eps0 = 8.8541878128e-12  # F/m
-    return sigma / (2.0 * cmath.pi * freq_hz * eps0)
+    return float(petrolib.em_dielectric.imag_permittivity_from_sigma(sigma, freq_hz))
 
 
 # ---------------------------------------------------------------------------

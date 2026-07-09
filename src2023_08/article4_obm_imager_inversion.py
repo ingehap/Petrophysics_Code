@@ -51,6 +51,13 @@ from __future__ import annotations
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 EPS0 = 8.8541878128e-12  # F/m, vacuum permittivity
 
 
@@ -67,9 +74,7 @@ def layer_impedance(thickness, eps_r, sigma, freq_hz):
     sigma     : conductivity (S/m).  sigma = 1/Rho (Ohm.m).
     freq_hz   : frequency in Hz
     """
-    omega = 2.0 * np.pi * freq_hz
-    eps_complex = eps_r * EPS0 - 1j * sigma / omega
-    return thickness / (1j * omega * eps_complex)
+    return thickness * petrolib.em_dielectric.impedivity(eps_r, sigma, freq_hz)
 
 
 def button_impedance(R_fmt, eps_fmt, standoff, R_mud, eps_mud, freq_hz,

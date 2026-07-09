@@ -31,6 +31,13 @@ from typing import Tuple
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 EPS0 = 8.8541878128e-12  # F/m
 
 
@@ -47,10 +54,7 @@ def maxwell_garnett(eps_host: complex, eps_incl: complex,
 
         (e_eff - e_h)/(e_eff + 2 e_h) = f * (e_i - e_h)/(e_i + 2 e_h)
     """
-    f = vol_incl
-    num = (eps_incl - eps_host) / (eps_incl + 2.0 * eps_host)
-    beta = f * num
-    return eps_host * (1.0 + 2.0 * beta) / (1.0 - beta)
+    return petrolib.em_dielectric.maxwell_garnett(eps_host, eps_incl, vol_incl)
 
 
 def bruggeman(eps_host: complex, eps_incl: complex, vol_incl: float,

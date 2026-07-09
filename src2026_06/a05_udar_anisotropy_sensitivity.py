@@ -36,6 +36,13 @@ from typing import Tuple
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 MU0 = 4.0e-7 * math.pi  # vacuum permeability, H/m
 
 
@@ -58,7 +65,7 @@ def skin_depth(resistivity: float, freq_hz: float) -> float:
     -------
     Skin depth, m.
     """
-    return math.sqrt(resistivity / (math.pi * freq_hz * MU0))
+    return petrolib.em_dielectric.skin_depth(resistivity, freq_hz)
 
 
 def induction_number(spacing: float, resistivity: float, freq_hz: float
@@ -67,7 +74,7 @@ def induction_number(spacing: float, resistivity: float, freq_hz: float
     Dimensionless induction number L/delta (spacing over skin depth).
     Near-field regime when L/delta << 1, far-field when L/delta >> 1.
     """
-    return spacing / skin_depth(resistivity, freq_hz)
+    return petrolib.em_dielectric.induction_number(spacing, resistivity, freq_hz)
 
 
 def field_regime(spacing: float, resistivity: float, freq_hz: float) -> str:
@@ -82,7 +89,7 @@ def field_regime(spacing: float, resistivity: float, freq_hz: float) -> str:
 
 def anisotropy_ratio(rh: float, rv: float) -> float:
     """Anisotropy ratio lambda = sqrt(Rv / Rh) (>= 1 for Rv >= Rh)."""
-    return math.sqrt(rv / rh)
+    return petrolib.em_dielectric.anisotropy_coefficient(rh, rv)
 
 
 @dataclass

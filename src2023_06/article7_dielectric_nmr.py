@@ -30,6 +30,13 @@ from __future__ import annotations
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # BPP relaxation rates
@@ -59,7 +66,9 @@ def bpp_t2(omega: float, tau_c: float | np.ndarray,
 def debye_permittivity(omega: np.ndarray, eps_inf: float,
                        eps_s: float, tau: float) -> np.ndarray:
     """Complex Debye permittivity."""
-    return eps_inf + (eps_s - eps_inf) / (1.0 + 1j * omega * tau)
+    return petrolib.em_dielectric.debye(
+        omega / (2.0 * np.pi), eps_inf=eps_inf, eps_s=eps_s, tau=tau
+    )
 
 
 def havriliak_negami(omega: np.ndarray, eps_inf: float, eps_s: float,
@@ -71,8 +80,9 @@ def havriliak_negami(omega: np.ndarray, eps_inf: float, eps_s: float,
         Cole-Davidson when alpha=1
         Debye when alpha=beta=1
     """
-    return eps_inf + (eps_s - eps_inf) \
-        / (1.0 + (1j * omega * tau) ** alpha) ** beta
+    return petrolib.em_dielectric.havriliak_negami(
+        omega / (2.0 * np.pi), eps_inf=eps_inf, eps_s=eps_s, tau=tau, alpha=alpha, beta=beta
+    )
 
 
 # ---------------------------------------------------------------------------
