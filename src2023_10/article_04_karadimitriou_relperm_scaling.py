@@ -39,6 +39,13 @@ from dataclasses import dataclass
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Brooks-Corey baseline
@@ -55,10 +62,8 @@ class CoreyParams:
 
 def brooks_corey_kr(Sw: np.ndarray, p: CoreyParams) -> tuple[np.ndarray,
                                                              np.ndarray]:
-    Swe = np.clip((Sw - p.Swir) / (1.0 - p.Swir - p.Snwr), 0.0, 1.0)
-    krw = p.krw_max * Swe ** p.nw
-    krnw = p.krnw_max * (1.0 - Swe) ** p.nnw
-    return krw, krnw
+    return petrolib.relperm_wettability.corey_kr(
+        Sw, swr=p.Swir, sor=p.Snwr, krw_max=p.krw_max, kro_max=p.krnw_max, nw=p.nw, no=p.nnw)
 
 
 # ---------------------------------------------------------------------------
@@ -66,7 +71,9 @@ def brooks_corey_kr(Sw: np.ndarray, p: CoreyParams) -> tuple[np.ndarray,
 # ---------------------------------------------------------------------------
 def capillary_number(mu_w_Pas: float, v_w_m_s: float,
                      ift_Nm: float) -> float:
-    return mu_w_Pas * v_w_m_s / ift_Nm
+    return float(
+        petrolib.relperm_wettability.capillary_number(mu=mu_w_Pas, v=v_w_m_s, sigma=ift_Nm)
+    )
 
 
 def rate_scaled_kr(Sw: np.ndarray, Ca: float, p: CoreyParams,

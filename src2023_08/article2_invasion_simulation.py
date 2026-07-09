@@ -74,18 +74,16 @@ def jerauld_sgt(sgi, sgt_max):
 # ---------------------------------------------------------------------------
 def krg_brooks_corey(sw, swcg, sgc, krg_end=1.0, ng=2.0):
     """Gas relative permeability in a wetting-phase saturation framework."""
-    sw = np.asarray(sw, dtype=float)
-    s_eff = (1.0 - sw - sgc) / (1.0 - swcg - sgc)
-    s_eff = np.clip(s_eff, 0.0, 1.0)
-    return krg_end * np.power(s_eff, ng)
+    # Sw-framework gas (free-exponent): Sg = 1 - Sw, swc = Swcg, sorg = 0.
+    return petrolib.relperm_wettability.corey_krg(
+        1.0 - np.asarray(sw, dtype=float), sgc=sgc, swc=swcg, sorg=0.0, krg_max=krg_end, ng=ng)
 
 
 def krw_brooks_corey(sw, swcw, sgc, krw_end=1.0, nw=2.0):
     """Water relative permeability."""
-    sw = np.asarray(sw, dtype=float)
-    s_eff = (sw - swcw) / (1.0 - swcw - sgc)
-    s_eff = np.clip(s_eff, 0.0, 1.0)
-    return krw_end * np.power(s_eff, nw)
+    # Free-exponent Corey water; the other-phase residual here is Sgc.
+    return petrolib.relperm_wettability.corey_krw(
+        sw, swr=swcw, sor=sgc, krw_max=krw_end, nw=nw)
 
 
 # ---------------------------------------------------------------------------

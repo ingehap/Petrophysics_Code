@@ -19,6 +19,13 @@ Reference: DOI:10.30632/PJV65N5-2024a3
 import numpy as np
 from typing import Tuple, Optional
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 def capillary_dispersion(dSw_dt: np.ndarray,
                          dSw_dy: np.ndarray,
@@ -145,11 +152,8 @@ def relative_permeability_corey(Sw: np.ndarray,
     -------
     Krw, Kro : (np.ndarray, np.ndarray)
     """
-    Sw = np.asarray(Sw, dtype=float)
-    Se = np.clip((Sw - Sw_irr) / (1.0 - Sw_irr - So_res), 0, 1)
-    Krw = Krw_max * Se ** nw
-    Kro = Kro_max * (1.0 - Se) ** no
-    return Krw, Kro
+    return petrolib.relperm_wettability.corey_kr(
+        Sw, swr=Sw_irr, sor=So_res, krw_max=Krw_max, kro_max=Kro_max, nw=nw, no=no)
 
 
 def capillary_pressure_model(Sw: np.ndarray,

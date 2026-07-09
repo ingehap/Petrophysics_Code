@@ -35,26 +35,28 @@ except ImportError:  # bare clone, not installed
 # --------------------------------------------- dimensionless numbers -----
 
 def capillary_number(v_m_s, mu_Pa_s, sigma_N_m):
-    return v_m_s * mu_Pa_s / sigma_N_m
+    return petrolib.relperm_wettability.capillary_number(mu=mu_Pa_s, v=v_m_s, sigma=sigma_N_m)
 
 
 def bond_number(delta_rho_kg_m3, R_m, sigma_N_m, g=9.81):
-    return delta_rho_kg_m3 * g * R_m ** 2 / sigma_N_m
+    # R**2 (pore-radius) Bond number: k is the characteristic area = R**2.
+    return petrolib.relperm_wettability.bond_number(
+        drho=delta_rho_kg_m3, k=R_m ** 2, sigma=sigma_N_m, g=g)
 
 
 # --------------------------------------------- Brooks-Corey + Leverett --
 
 def krw_kro_brooks_corey(sw, swi=0.20, sor=0.20, nw=2.0, no=2.0,
                          krw_max=0.8, kro_max=0.9):
-    se = np.clip((sw - swi) / (1.0 - swi - sor), 0.0, 1.0)
-    return krw_max * se ** nw, kro_max * (1.0 - se) ** no
+    # Free-exponent Corey pair (the "brooks_corey" name notwithstanding).
+    return petrolib.relperm_wettability.corey_kr(
+        sw, swr=swi, sor=sor, krw_max=krw_max, kro_max=kro_max, nw=nw, no=no)
 
 
 def fractional_flow(sw, mu_w_Pa_s, mu_o_Pa_s, **kwargs):
     krw, kro = krw_kro_brooks_corey(sw, **kwargs)
-    num = krw / mu_w_Pa_s
-    den = num + kro / mu_o_Pa_s
-    return num / (den + 1e-30)
+    return petrolib.relperm_wettability.fractional_flow(
+        krw, kro, mu_w=mu_w_Pa_s, mu_nw=mu_o_Pa_s)
 
 
 def leverett_J(Pc_Pa, k_m2, phi, sigma_N_m, theta_deg=180.0):
