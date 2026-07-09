@@ -28,6 +28,13 @@ from typing import Optional
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ──────────────────────────────────────────────────────────────────────
 # 1. Pore Surface Area in a Uniform Spherical-Pore Model (App. A1)
@@ -198,8 +205,7 @@ def langmuir_isotherm(
     P_L : float
         Langmuir pressure (pressure at half-maximum adsorption).
     """
-    P = np.asarray(P, float)
-    return V_L * P / (P + P_L)
+    return petrolib.geochem_fluids.adsorption.langmuir(P, V_L, P_L)
 
 
 # ──────────────────────────────────────────────────────────────────────

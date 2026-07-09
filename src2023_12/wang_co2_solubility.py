@@ -7,10 +7,17 @@ model in simplified form.
 """
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 def henry_co2(T_K):
     """Approximate Henry's-law constant for CO2 in pure water (MPa/molality)."""
-    return np.exp(-9.4234 + 4.0087e-2 * T_K - 4.5e-5 * T_K ** 2) * 10
+    return petrolib.geochem_fluids.solubility.henry_constant_co2(T_K)
 
 
 def activity_coeff_salt(m_nacl, T_K):
@@ -21,11 +28,7 @@ def activity_coeff_salt(m_nacl, T_K):
 
 def co2_solubility(P_MPa, T_K, m_nacl, m_ch4=0.0):
     """CO2 solubility in mol/kg H2O. Includes a CH4 competition correction."""
-    H = henry_co2(T_K)
-    gamma = activity_coeff_salt(m_nacl, T_K)
-    m_co2_pure = P_MPa / (H * gamma)
-    correction = 1.0 / (1.0 + 0.6 * m_ch4)  # CH4 displaces CO2
-    return m_co2_pure * correction
+    return petrolib.geochem_fluids.solubility.co2_solubility_brine(P_MPa, T_K, m_nacl, m_ch4=m_ch4)
 
 
 def trapping_capacity(porosity, sw, rho_brine, m_co2, M_co2=44e-3):

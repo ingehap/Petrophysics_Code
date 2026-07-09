@@ -233,7 +233,7 @@ def arps_temperature_correction(sigma_1, t1, t2):
     """Convert conductivity from temperature T1 to T2 (Arps, 1953, Eq. 23).
     sigma_2 = sigma_1 * (T2 + 21.5) / (T1 + 21.5)   [T in Celsius]
     """
-    return sigma_1 * (t2 + 21.5) / (t1 + 21.5)
+    return petrolib.geochem_fluids.brine.arps_correct(sigma_1, t2, t1, unit="C")
 
 
 # ---------------------------------------------------------------------------
