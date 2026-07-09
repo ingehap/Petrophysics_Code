@@ -84,8 +84,7 @@ def density_porosity(rhob: float, rho_matrix: float = 2.65,
     float
         Density porosity (fraction).
     """
-    phi = (rho_matrix - rhob) / (rho_matrix - rho_fluid)
-    return float(np.clip(phi, 0.0, 0.60))
+    return float(petrolib.porosity_lithology.density_porosity(rhob, rho_matrix, rho_fluid, clip=(0.0, 0.60)))
 
 
 def laminated_sand_analysis(phi_total: float,
