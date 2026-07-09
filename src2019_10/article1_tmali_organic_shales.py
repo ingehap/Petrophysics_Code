@@ -29,6 +29,13 @@ density 1.1-1.6 g/cm^3 (rho_k ~ 1.21 at Ro 0.7%, ~1.33 at 1.1%, ~1.42 at 1.4%).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- composition -------------
 
@@ -80,12 +87,12 @@ def toc_to_kerogen_volume(toc, F_k, rho_ma, rho_k):
 
 def bulk_density(phi, rho_f, rho_ma):
     """Volumetric bulk density  rho_b = phi*rho_f + (1-phi)*rho_ma  (Eq. 11)."""
-    return phi * rho_f + (1.0 - phi) * rho_ma
+    return petrolib.porosity_lithology.bulk_density(phi, rho_ma, rho_f)
 
 
 def density_porosity(rho_b, rho_ma, rho_f):
     """Density porosity  phi_D = (rho_ma - rho_b)/(rho_ma - rho_f)  (Eq. 12)."""
-    return (rho_ma - np.asarray(rho_b, float)) / (rho_ma - rho_f)
+    return petrolib.porosity_lithology.density_porosity(rho_b, rho_ma, rho_f)
 
 
 def sigma_water_saturation(sigma_b, sigma_ma, sigma_w, sigma_hc, phi):

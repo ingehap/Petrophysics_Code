@@ -23,12 +23,20 @@ the storage-capacity volumetrics the tutorial describes.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- porosity partition ------
 
 def kerogen_volume(toc, rho_b, rho_k=1.30, carbon_frac=0.80):
     """Kerogen volume fraction from TOC  V_k = (TOC/carbon_frac)*rho_b/rho_k."""
-    return (toc / carbon_frac) * rho_b / rho_k
+    return petrolib.porosity_lithology.kerogen_volume_from_toc(
+        toc, rho_b, rho_k=rho_k, carbon_frac=carbon_frac)
 
 
 def partition_porosity(phi_total, cbw, sw_cap):
@@ -47,7 +55,7 @@ def partition_porosity(phi_total, cbw, sw_cap):
 
 def bulk_volume_hydrocarbon(phi_total, sw):
     """Bulk volume hydrocarbon  BVH = phi_total*(1 - Sw)."""
-    return phi_total * (1.0 - np.asarray(sw, float))
+    return petrolib.porosity_lithology.hydrocarbon_pore_volume(phi_total, sw)
 
 
 def water_saturation(cbw_vol, cap_vol, phi_total):

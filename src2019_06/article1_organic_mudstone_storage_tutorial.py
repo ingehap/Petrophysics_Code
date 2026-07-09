@@ -25,17 +25,25 @@ describes.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- porosity ----------------
 
 def kerogen_volume(toc, rho_b, rho_k=1.30, carbon_frac=0.80):
     """Kerogen volume fraction from TOC  V_k = (TOC/carbon_frac)*rho_b/rho_k."""
-    return (toc / carbon_frac) * rho_b / rho_k
+    return petrolib.porosity_lithology.kerogen_volume_from_toc(
+        toc, rho_b, rho_k=rho_k, carbon_frac=carbon_frac)
 
 
 def effective_porosity(phi_total, vsh, phi_sh):
     """Shale-corrected effective porosity  phi_e = phi_total - Vsh*phi_sh."""
-    return np.clip(phi_total - vsh * phi_sh, 0.0, None)
+    return petrolib.porosity_lithology.effective_porosity(phi_total, vsh, phi_sh)
 
 
 # ---------------------------------------------- gas content -------------
