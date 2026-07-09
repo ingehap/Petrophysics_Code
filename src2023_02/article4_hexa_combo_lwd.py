@@ -22,6 +22,13 @@ runs the case-study interpretation workflow:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # --------------------------------------------- synthetic log suite ---------
 
@@ -85,8 +92,11 @@ def effective_porosity(phi_d, nphi, vsh, phi_sh=0.30):
 
 
 def archie_sw(phi, rt, Rw=0.04, m=2.0, n=2.0, a=1.0):
-    return np.clip(((a * Rw) / (np.maximum(phi, 1e-3) ** m * rt)) ** (1.0 / n),
-                   0.0, 1.0)
+    # HAZARD (LIBRARY_MERGE_PLAN.md section 9): this article's argument order
+    # is (phi, rt) with a baked field default Rw=0.04 — the canonical order is
+    # (rt, rw, phi=).  Mapped explicitly; the phi floor is historical.
+    return petrolib.saturation_resistivity.archie_sw(rt, Rw, phi=np.maximum(phi, 1e-3), a=a, m=m, n=n,
+                           clip=(0.0, 1.0))
 
 
 # --------------------------------------------- NMR partitioning ----------

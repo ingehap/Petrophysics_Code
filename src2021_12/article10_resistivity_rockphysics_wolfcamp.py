@@ -28,6 +28,13 @@ available.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # bbl of pore volume per acre-ft (7758 bbl = 1 acre-ft)
 BBL_PER_ACRE_FT = 7758.0
 
@@ -36,8 +43,10 @@ BBL_PER_ACRE_FT = 7758.0
 
 def archie_sw(rt, phi, rw, a=1.0, m=2.0, n=2.0):
     """Archie  Sw = (a*Rw / (phi^m * Rt))^(1/n)."""
-    sw = (a * rw / (np.asarray(phi, float) ** m * np.asarray(rt, float))) ** (1.0 / n)
-    return np.clip(sw, 0.0, 1.0)
+    # HAZARD (LIBRARY_MERGE_PLAN.md section 9): this article's argument order
+    # is (rt, phi, rw) — the canonical order is (rt, rw, phi=).  Mapped
+    # explicitly.
+    return petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, a=a, m=m, n=n, clip=(0.0, 1.0))
 
 
 # ---------------------------------------------- dual-conductivity -------

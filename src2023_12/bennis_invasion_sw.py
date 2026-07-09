@@ -9,6 +9,13 @@ least-squares inversion that fits an Archie-style apparent-resistivity forward
 operator to synthetic logs.
 """
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from scipy.optimize import least_squares
 
 
@@ -19,7 +26,8 @@ def radial_sw_profile(r, r_invaded, sw_inv, sw_virgin, transition=0.1):
 
 def archie_rt(sw, phi, rw, a=1.0, m=2.0, n=2.0):
     """Archie's equation for true resistivity."""
-    return a * rw / (phi ** m * sw ** n)
+    # NOTE the historical argument order (sw, phi, rw); canonical (sw, rw, phi=).
+    return petrolib.saturation_resistivity.archie_rt(sw, rw, phi=phi, a=a, m=m, n=n)
 
 
 def apparent_resistivity(r_grid, sw_profile, phi, rw, depths_of_investigation):

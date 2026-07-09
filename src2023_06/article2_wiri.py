@@ -29,13 +29,20 @@ from __future__ import annotations
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Forward Archie model
 # ---------------------------------------------------------------------------
 def archie_ri(sw: np.ndarray, n: float) -> np.ndarray:
     """Resistivity Index   RI = Sw**(-n)."""
-    return np.power(sw, -n)
+    return petrolib.saturation_resistivity.resistivity_index_from_sw(sw, n=n)
 
 
 # ---------------------------------------------------------------------------

@@ -26,6 +26,13 @@ pressures in bar, T2 in ms.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 G_ACCEL = 9.81           # m/s^2
 
 
@@ -33,13 +40,12 @@ G_ACCEL = 9.81           # m/s^2
 
 def archie_sw(Rt, Rw, phi, a=1.0, m=2.0, n=2.0):
     """Archie water saturation  Sw = (a Rw / (phi^m Rt))^(1/n)."""
-    phi = np.asarray(phi, float)
-    return (a * Rw / (phi ** m * np.asarray(Rt, float))) ** (1.0 / n)
+    return petrolib.saturation_resistivity.archie_sw(Rt, Rw, phi=phi, a=a, m=m, n=n)
 
 
 def formation_factor(phi, a=1.0, m=2.0):
     """Archie formation factor  F = a / phi^m."""
-    return a / np.asarray(phi, float) ** m
+    return petrolib.saturation_resistivity.formation_factor(phi, a=a, m=m)
 
 
 # ---------------------------------------------- NMR permeability --------
@@ -57,7 +63,7 @@ def sdr(phi, t2lm_ms, a=4.0, m=4.0, n=2.0):
 
 def bulk_volume_water(phi, sw):
     """Bulk volume water  BVW = phi * Sw (constant in a Buckles-law zone)."""
-    return np.asarray(phi, float) * np.asarray(sw, float)
+    return petrolib.saturation_resistivity.bulk_volume_water(phi, sw)
 
 
 # ---------------------------------------------- pressure ----------------

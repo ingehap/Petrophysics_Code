@@ -30,22 +30,29 @@ Pc in MPa, resistivities/indices dimensionless, saturation as fraction.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Eqs. 1-2: Archie --------
 
 def resistivity_index(sw, n):
     """Archie second law  I = Rt/Ro = Sw^(-n)  (Eq. 1)."""
-    return np.asarray(sw, float) ** (-n)
+    return petrolib.saturation_resistivity.resistivity_index_from_sw(sw, n=n)
 
 
 def formation_factor(phi, m, a=1.0):
     """Archie first law  F = a * phi^(-m)  (Eq. 2)."""
-    return a * np.asarray(phi, float) ** (-m)
+    return petrolib.saturation_resistivity.formation_factor(phi, a=a, m=m)
 
 
 def saturation_from_index(I, n):
     """Invert Archie:  Sw = I^(-1/n)."""
-    return np.asarray(I, float) ** (-1.0 / n)
+    return petrolib.saturation_resistivity.sw_from_resistivity_index(I, n=n)
 
 
 # ---------------------------------------------- Eq. 5: Waxman-Smits -----
