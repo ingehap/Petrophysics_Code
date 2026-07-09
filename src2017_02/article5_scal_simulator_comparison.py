@@ -25,6 +25,13 @@ flow physics the simulators share.  SI units.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- capillary / kr --------------
 
@@ -35,16 +42,14 @@ def capillary_pressure(p_oil, p_water):
 
 def corey_kr(sw, swc, sor, krw_max, kro_max, nw, no):
     """Corey water/oil relative permeabilities, returns (krw, kro)."""
-    swn = np.clip((np.asarray(sw, float) - swc) / (1.0 - swc - sor), 0.0, 1.0)
-    return krw_max * swn ** nw, kro_max * (1.0 - swn) ** no
+    return petrolib.relperm_wettability.corey_kr(
+        sw, swr=swc, sor=sor, krw_max=krw_max, kro_max=kro_max, nw=nw, no=no)
 
 
 def fractional_flow(sw, swc, sor, krw_max, kro_max, nw, no, mu_w=1e-3, mu_o=2e-3):
     """Water fractional flow  fw = (krw/mu_w)/(krw/mu_w + kro/mu_o)."""
     krw, kro = corey_kr(sw, swc, sor, krw_max, kro_max, nw, no)
-    lam_w = krw / mu_w
-    lam_o = kro / mu_o
-    return np.where(lam_w + lam_o > 0, lam_w / (lam_w + lam_o), 0.0)
+    return petrolib.relperm_wettability.fractional_flow(krw, kro, mu_w=mu_w, mu_nw=mu_o)
 
 
 def fractional_flow_derivative(sw, swc, sor, krw_max, kro_max, nw, no, mu_w=1e-3, mu_o=2e-3):

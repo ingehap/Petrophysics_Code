@@ -29,6 +29,13 @@ fractional flow dimensionless, viscosities in cP (consistent).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- relative permeability --------------
 
@@ -42,8 +49,8 @@ def corey_relperm(sw, swc, sorw, krw_max=0.3, kro_max=1.0, nw=3.0, no=2.0):
         krw = krw_max*Swn^nw,   kro = kro_max*(1 - Swn)^no.
     Returns (krw, kro).
     """
-    swn = np.clip(_normalized_sw(sw, swc, sorw), 0.0, 1.0)
-    return krw_max * swn ** nw, kro_max * (1.0 - swn) ** no
+    return petrolib.relperm_wettability.corey_kr(
+        sw, swr=swc, sor=sorw, krw_max=krw_max, kro_max=kro_max, nw=nw, no=no)
 
 
 # ---------------------------------------------- fractional flow --------------
@@ -53,9 +60,7 @@ def fractional_flow_water(krw, kro, mu_w, mu_o):
 
         fw = (krw/mu_w) / (krw/mu_w + kro/mu_o).
     """
-    mob_w = krw / mu_w
-    mob_o = kro / mu_o
-    return mob_w / (mob_w + mob_o)
+    return petrolib.relperm_wettability.fractional_flow(krw, kro, mu_w=mu_w, mu_nw=mu_o)
 
 
 def welge_shock_front(swc, sorw, mu_w, mu_o, krw_max=0.3, kro_max=1.0, nw=3.0, no=2.0,
@@ -70,20 +75,15 @@ def welge_shock_front(swc, sorw, mu_w, mu_o, krw_max=0.3, kro_max=1.0, nw=3.0, n
     sw = np.linspace(swc + 1e-4, 1.0 - sorw - 1e-4, n)
     krw, kro = corey_relperm(sw, swc, sorw, krw_max, kro_max, nw, no)
     fw = fractional_flow_water(krw, kro, mu_w, mu_o)
-    # tangent from (swc, 0): maximize the secant slope fw/(sw - swc)
-    secant = fw / (sw - swc)
-    i = int(np.argmax(secant))
-    swf, fwf = sw[i], fw[i]
-    dfw = secant[i]                       # tangent slope == secant slope at Swf
-    sw_avg = swf + (1.0 - fwf) / dfw
-    return float(swf), float(fwf), float(sw_avg)
+    # The grid/Corey/fw setup is this article's; delegate the tangent construction.
+    return petrolib.relperm_wettability.welge_shock(sw, fw, swc)
 
 
 # ---------------------------------------------- recovery / wettability --------------
 
 def recovery_factor(soi, sor):
     """Oil recovery factor  RF = (Soi - Sor)/Soi  (fraction of oil in place)."""
-    return (soi - sor) / soi
+    return petrolib.relperm_wettability.displacement_efficiency(soi, sor)
 
 
 def lswi_incremental_recovery(sorw_hs, sorw_ls):
@@ -104,9 +104,11 @@ def amott_harvey_index(v_sp_water, v_total_water, v_sp_oil, v_total_oil):
 
     in [-1, 1]: positive = water-wet, ~0 = mixed/neutral, negative = oil-wet.
     """
-    iw = v_sp_water / v_total_water
-    io = v_sp_oil / v_total_oil
-    return iw - io
+    # amott_indices takes (spont, forced); this article passes totals, so the
+    # forced volume is total - spont.  It returns (Iw, Io, Iah); we want Iah.
+    return petrolib.relperm_wettability.amott_indices(
+        v_sp_water, v_total_water - v_sp_water,
+        v_sp_oil, v_total_oil - v_sp_oil)[2]
 
 
 # ---------------------------------------------- tests --------------

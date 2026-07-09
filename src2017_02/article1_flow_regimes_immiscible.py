@@ -25,6 +25,13 @@ the complete nomenclature.  Fractions dimensionless; SI for Ca.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Corey kr --------------
 
@@ -33,8 +40,7 @@ def corey_krw(sw, swc, sor, kwro, nw):
 
         krw = kwro*((Sw - Swc)/(1 - Swc - Sor))^nw.
     """
-    swn = np.clip((np.asarray(sw, float) - swc) / (1.0 - swc - sor), 0.0, 1.0)
-    return kwro * swn ** nw
+    return petrolib.relperm_wettability.corey_krw(sw, swr=swc, sor=sor, krw_max=kwro, nw=nw)
 
 
 def corey_kro(sw, swc, sor, kocw, no):
@@ -42,13 +48,14 @@ def corey_kro(sw, swc, sor, kocw, no):
 
         kro = kocw*((1 - Sw - Sor)/(1 - Swc - Sor))^no.
     """
-    son = np.clip((1.0 - np.asarray(sw, float) - sor) / (1.0 - swc - sor), 0.0, 1.0)
-    return kocw * son ** no
+    # Article normalizes oil independently as (1-Sw-Sor)/(1-Swc-Sor); the
+    # library's (1-Se) form is algebraically identical (agrees to ~1 ULP).
+    return petrolib.relperm_wettability.corey_kro(sw, swr=swc, sor=sor, kro_max=kocw, no=no)
 
 
 def capillary_number(viscosity, velocity, ift):
     """Capillary number  Ca = mu*v/sigma (viscous / capillary force ratio)."""
-    return viscosity * velocity / ift
+    return petrolib.relperm_wettability.capillary_number(mu=viscosity, v=velocity, sigma=ift)
 
 
 # ---------------------------------------------- topology --------------
