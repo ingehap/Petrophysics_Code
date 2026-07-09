@@ -24,6 +24,13 @@ the capillary-pressure relations the tutorial teaches.  SI units; k in m^2.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 G_ACCEL = 9.81
 
 
@@ -31,25 +38,28 @@ G_ACCEL = 9.81
 
 def capillary_pressure(sigma, theta_deg, r):
     """Young-Laplace capillary pressure  Pc = 2*sigma*cos(theta)/r  (Pa)."""
-    return 2.0 * sigma * np.cos(np.radians(theta_deg)) / np.asarray(r, float)
+    # Signed cos (theta > 90 gives Pc < 0).
+    return petrolib.capillary_pressure.young_laplace_pc(
+        r, sigma=sigma, theta_deg=theta_deg, absolute=False)
 
 
 def leverett_j(pc, k, phi, sigma, theta_deg):
     """Leverett J-function  J = Pc*sqrt(k/phi)/(sigma*cos(theta))  (dimensionless)."""
-    return (np.asarray(pc, float) * np.sqrt(k / phi)
-            / (sigma * np.cos(np.radians(theta_deg))))
+    return petrolib.capillary_pressure.leverett_j(
+        pc, sigma=sigma, theta_deg=theta_deg, k=k, phi=phi, absolute=False)
 
 
 def saturation_height(pc, rho_w, rho_hc):
     """Height above the free-water level  h = Pc/((rho_w - rho_hc)*g)  (m)."""
-    return np.asarray(pc, float) / ((rho_w - rho_hc) * G_ACCEL)
+    return petrolib.capillary_pressure.height_above_fwl(
+        pc, delta_rho=rho_w - rho_hc, g=G_ACCEL)
 
 
 def brooks_corey_sw(pc, pe, lam, swr=0.1):
     """Brooks-Corey water saturation  Sw = Swr + (1-Swr)*(Pe/Pc)^lambda (Pc>=Pe)."""
-    pc = np.asarray(pc, float)
-    sw = np.where(pc <= pe, 1.0, swr + (1.0 - swr) * (pe / pc) ** lam)
-    return np.clip(sw, swr, 1.0)
+    # lam (direct pore-size index) convention, not the 1/N reciprocal.
+    return petrolib.capillary_pressure.brooks_corey_sw(
+        pc, pc_entry=pe, lam=lam, swirr=swr)
 
 
 # ---------------------------------------------- tests --------------

@@ -24,6 +24,13 @@ the capillary-pressure conversion relations the tutorial teaches.  SI units.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 G_ACCEL = 9.81
 
 
@@ -36,20 +43,22 @@ def lab_to_reservoir_pc(pc_lab, sigma_lab, theta_lab, sigma_res, theta_res):
     Magnitudes are used so a non-wetting lab system (e.g. air-mercury, theta>90)
     converts to a positive reservoir capillary pressure.
     """
-    return (np.asarray(pc_lab, float)
-            * abs(sigma_res * np.cos(np.radians(theta_res)))
-            / abs(sigma_lab * np.cos(np.radians(theta_lab))))
+    # |cos| convention (magnitudes); from = lab, to = reservoir.
+    return petrolib.capillary_pressure.pc_convert_system(
+        pc_lab, sigma_from=sigma_lab, theta_from_deg=theta_lab,
+        sigma_to=sigma_res, theta_to_deg=theta_res, absolute=True)
 
 
 def saturation_height(pc, rho_w, rho_hc):
     """Height above the free-water level  h = Pc/((rho_w - rho_hc)*g)  (m)."""
-    return np.asarray(pc, float) / ((rho_w - rho_hc) * G_ACCEL)
+    return petrolib.capillary_pressure.height_above_fwl(
+        pc, delta_rho=rho_w - rho_hc, g=G_ACCEL)
 
 
 def leverett_j(pc, k, phi, sigma, theta_deg):
     """Leverett J-function  J = Pc*sqrt(k/phi)/(sigma*cos(theta))."""
-    return (np.asarray(pc, float) * np.sqrt(k / phi)
-            / (sigma * np.cos(np.radians(theta_deg))))
+    return petrolib.capillary_pressure.leverett_j(
+        pc, sigma=sigma, theta_deg=theta_deg, k=k, phi=phi, absolute=False)
 
 
 def imbibition_sw(drainage_sw, sor=0.25):
