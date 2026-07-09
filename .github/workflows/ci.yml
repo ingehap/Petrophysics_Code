@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install tooling
+        run: pip install ruff mypy numpy
+      - name: ruff lint
+        run: ruff check petrolib tests tools
+      - name: ruff format
+        run: ruff format --check petrolib tests tools
+      - name: mypy (strict, petrolib only)
+        run: mypy
+
+  petrolib-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: "3.10"
+            numpy: "numpy==1.26.*"   # oldest supported numpy
+          - python: "3.12"
+            numpy: "numpy"           # latest 2.x
+          - python: "3.13"
+            numpy: "numpy"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - name: Install petrolib (editable) with pinned numpy
+        run: |
+          pip install -e . pytest
+          pip install "${{ matrix.numpy }}"
+      - name: Fast lane — petrolib unit tests + repository invariants
+        run: pytest -m "not articles" -q

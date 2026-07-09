@@ -1,0 +1,67 @@
+# The full 75-directory article suite + golden stdout diff, in BOTH modes
+# (bare checkout and editable install) — LIBRARY_MERGE_PLAN.md section 8.
+#
+# Runs nightly, on demand (workflow_dispatch), on PRs labeled 'run-articles',
+# and automatically when a PR touches the article dirs, the library, the
+# harness, or the goldens.
+
+name: Articles
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+
+jobs:
+  decide:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.decide.outputs.run }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: decide
+        env:
+          EVENT: ${{ github.event_name }}
+          LABELS: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          run=false
+          if [ "$EVENT" != "pull_request" ]; then
+            run=true                                   # nightly / manual dispatch
+          elif echo " $LABELS " | grep -q " run-articles "; then
+            run=true
+          elif git diff --name-only "$BASE_SHA"...HEAD \
+               | grep -qE '^(src20|petrolib/|tools/|tests/|pyproject)'; then
+            run=true
+          fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+
+  articles:
+    needs: decide
+    if: needs.decide.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [bare, editable]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install article-suite dependencies
+        run: |
+          pip install numpy scipy scikit-learn xgboost scikit-image pytest
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Editable-install petrolib
+        if: matrix.mode == 'editable'
+        run: pip install -e .
+      - name: Repository invariants
+        run: pytest tests/test_articles.py -m "not articles" -q
+      - name: Full article suite + golden stdout diff
+        run: python tools/golden_diff.py --require-all --jobs 4
