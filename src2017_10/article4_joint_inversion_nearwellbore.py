@@ -51,21 +51,17 @@ def gas_fraction(sg, so):
 
 def velocities(k, mu, rho):
     """Elastic velocities  Vp = sqrt((K + 4/3*mu)/rho),  Vs = sqrt(mu/rho)."""
-    vp = np.sqrt((k + 4.0 / 3.0 * mu) / rho)
-    vs = np.sqrt(mu / rho)
-    return vp, vs
+    return petrolib.acoustic_geomech.velocity_from_moduli(k, mu, rho)
 
 
 def wood_fluid_modulus(saturations, moduli):
     """Wood's law effective fluid modulus  1/K = sum_i S_i/K_i  (Eq. A1.5)."""
-    s = np.asarray(saturations, float)
-    k = np.asarray(moduli, float)
-    return 1.0 / np.sum(s / k)
+    return petrolib.acoustic_geomech.wood_fluid_modulus(saturations, moduli)
 
 
 def brie_fluid_modulus(k_water, k_gas, sw, e=3.0):
     """Brie's empirical fluid modulus  K = (Kw - Kg)*Sw^e + Kg  (Eq. A1.6)."""
-    return (k_water - k_gas) * np.asarray(sw, float) ** e + k_gas
+    return petrolib.acoustic_geomech.brie_fluid_modulus(sw, k_water, k_gas, e=e)
 
 
 def density_mix(matrix_fraction, matrix_density, phi, sw, so, sg,

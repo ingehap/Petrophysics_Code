@@ -53,12 +53,12 @@ def affinity_class(t1t2, neutral=1.5):
 
 def compressional_modulus(rho, vp):
     """P-wave modulus  M = rho*Vp^2  (Eq. 2)."""
-    return rho * np.asarray(vp, float) ** 2
+    return petrolib.acoustic_geomech.stiffness_from_velocity(rho, vp)
 
 
 def shear_modulus(rho, vs):
     """Shear modulus  G = rho*Vs^2  (Eq. 3)."""
-    return rho * np.asarray(vs, float) ** 2
+    return petrolib.acoustic_geomech.stiffness_from_velocity(rho, vs)
 
 
 def bulk_modulus(m, g):
@@ -68,12 +68,12 @@ def bulk_modulus(m, g):
 
 def voigt_average(fractions, moduli):
     """Voigt (arithmetic) average modulus  sum(f_i*K_i)."""
-    return float(np.sum(np.asarray(fractions, float) * np.asarray(moduli, float)))
+    return float(petrolib.acoustic_geomech.voigt(fractions, moduli))
 
 
 def reuss_average(fractions, moduli):
     """Reuss (harmonic) average modulus  1/sum(f_i/K_i)."""
-    return float(1.0 / np.sum(np.asarray(fractions, float) / np.asarray(moduli, float)))
+    return float(petrolib.acoustic_geomech.reuss(fractions, moduli))
 
 
 def fluid_modulus(fractions, moduli, wettability):
@@ -93,9 +93,8 @@ def gassmann(k_frame, k_mineral, k_fluid, phi):
 
         Ksat = Kf + (1 - Kf/Km)^2 / (phi/Kfl + (1 - phi)/Km - Kf/Km^2).
     """
-    num = (1.0 - k_frame / k_mineral) ** 2
-    den = phi / k_fluid + (1.0 - phi) / k_mineral - k_frame / k_mineral ** 2
-    return k_frame + num / den
+    return petrolib.acoustic_geomech.gassmann_ksat(
+        k_dry=k_frame, k_mineral=k_mineral, k_fluid=k_fluid, phi=phi)
 
 
 # ---------------------------------------------- tests --------------

@@ -31,6 +31,13 @@ kg/m^3, stresses/strains as noted.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 GAMMA_EPSILON_RATIO = 0.93    # observed gamma = 0.93*epsilon across many shales
 
 
@@ -68,17 +75,17 @@ def is_positive_definite(c11, c33, c44, c66, c13):
 
 def thomsen_epsilon(c11, c33):
     """Thomsen P-wave anisotropy  epsilon = (C11 - C33)/(2*C33)."""
-    return (c11 - c33) / (2.0 * c33)
+    return petrolib.acoustic_geomech.thomsen_epsilon(c11, c33)
 
 
 def thomsen_gamma(c66, c44):
     """Thomsen S-wave anisotropy  gamma = (C66 - C44)/(2*C44)."""
-    return (c66 - c44) / (2.0 * c44)
+    return petrolib.acoustic_geomech.thomsen_gamma(c66, c44)
 
 
 def thomsen_delta(c13, c33, c44):
     """Thomsen  delta = [(C13+C44)^2 - (C33-C44)^2] / (2*C33*(C33-C44))."""
-    return ((c13 + c44) ** 2 - (c33 - c44) ** 2) / (2.0 * c33 * (c33 - c44))
+    return petrolib.acoustic_geomech.thomsen_delta(c13, c33, c44)
 
 
 def mannie2_c66(c11, c33, c44, k=GAMMA_EPSILON_RATIO):
@@ -106,7 +113,7 @@ def vreg_offaxis_velocity(v0, slope, intercept):
 def stiffness_from_velocity(rho, velocity):
     """Stiffness coefficient from a propagation velocity  C = rho*V^2
     (e.g. C33 = rho*Vp(0)^2, C11 = rho*Vp(90)^2, C66 = rho*Vsh(90)^2)."""
-    return rho * np.asarray(velocity, float) ** 2
+    return petrolib.acoustic_geomech.stiffness_from_velocity(rho, velocity)
 
 
 def c13_from_45deg(c11, c33, c44, rho, v45):
@@ -128,8 +135,8 @@ def min_horizontal_stress(sigma_v, pp, e_h, nu_h, biot=1.0, eps_h=0.0, eps_H=0.0
         sigma_h = nu/(1-nu)*(sigma_v - alpha*pp) + alpha*pp
                   + E/(1-nu^2)*(eps_h + nu*eps_H).
     """
-    return (nu_h / (1.0 - nu_h) * (sigma_v - biot * pp) + biot * pp
-            + e_h / (1.0 - nu_h ** 2) * (eps_h + nu_h * eps_H))
+    return petrolib.acoustic_geomech.min_horizontal_stress(
+        sigma_v, pp, nu_h, biot=biot, e=e_h, eps_h=eps_h, eps_H=eps_H)
 
 
 # ---------------------------------------------- tests --------------

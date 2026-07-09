@@ -29,6 +29,13 @@ Stresses/pressures in psi, depths in ft, densities in g/cm^3.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 PSI_PER_FT_PER_GCC = 0.433    # psi/ft per g/cm^3 (overburden gradient)
 
 
@@ -53,7 +60,8 @@ def min_horizontal_stress(sigma_v, pore_pressure, nu, biot=1.0, tectonic=0.0):
 
         sigma_h = nu/(1-nu)*(sigma_v - alpha*Pp) + alpha*Pp + tectonic.
     """
-    return nu / (1.0 - nu) * (sigma_v - biot * pore_pressure) + biot * pore_pressure + tectonic
+    return petrolib.acoustic_geomech.min_horizontal_stress(
+        sigma_v, pore_pressure, nu, biot=biot, tectonic=tectonic)
 
 
 # ---------------------------------------------- breakdown / reopening --------------
@@ -66,7 +74,8 @@ def breakdown_pressure(sigma_h, sigma_H, pore_pressure, tensile_strength):
     the pressure at which the wellbore tangential (hoop) stress reaches the rock
     tensile strength T0 and a fracture initiates (Hubbert & Willis, 1957).
     """
-    return 3.0 * sigma_h - sigma_H - pore_pressure + tensile_strength
+    return petrolib.acoustic_geomech.breakdown_pressure(
+        sigma_h, sigma_H, pore_pressure, tensile_strength=tensile_strength)
 
 
 def reopening_pressure(sigma_h, sigma_H, pore_pressure):
@@ -74,7 +83,7 @@ def reopening_pressure(sigma_h, sigma_H, pore_pressure):
 
         Pr = 3*sigma_h - sigma_H - Pp.
     """
-    return 3.0 * sigma_h - sigma_H - pore_pressure
+    return petrolib.acoustic_geomech.reopening_pressure(sigma_h, sigma_H, pore_pressure)
 
 
 def shmax_from_reopening(pr, sigma_h, pore_pressure):
@@ -82,7 +91,7 @@ def shmax_from_reopening(pr, sigma_h, pore_pressure):
 
         sigma_H = 3*sigma_h - Pr - Pp.
     """
-    return 3.0 * sigma_h - pr - pore_pressure
+    return petrolib.acoustic_geomech.shmax_from_reopening(pr, sigma_h, pore_pressure)
 
 
 # ---------------------------------------------- closure / net pressure --------------

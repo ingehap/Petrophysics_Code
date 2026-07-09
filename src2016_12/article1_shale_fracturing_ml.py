@@ -33,27 +33,34 @@ Stiffnesses/moduli in consistent units (e.g. GPa); stresses/strains as noted.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- ANNIE closure --------------
 
 def annie_c11(c33, c44, c66):
     """ANNIE  C11 = 2*(C66 - C44) + C33  (Eq. 3)."""
-    return 2.0 * (c66 - c44) + c33
+    return petrolib.acoustic_geomech.annie_c11(c33, c44, c66)
 
 
 def annie_c13(c11, c66):
     """ANNIE  C13 = C11 - 2*C66  (Eq. 2); equivalently C13 = C33 - 2*C44."""
-    return c11 - 2.0 * c66
+    return petrolib.acoustic_geomech.annie_c13(c11, c66)
 
 
 def mannie_c13(c11, c66, k):
     """Modified-ANNIE  C13 = k*(C11 - 2*C66)  (Eq. 4); k from core data (k=1 -> ANNIE)."""
-    return k * (c11 - 2.0 * c66)
+    return petrolib.acoustic_geomech.mannie_c13(c11, c66, k=k)
 
 
 def mannie_c11(c33, c44, c66, k_prime):
     """Modified-ANNIE  C11 = k'*(2*(C66 - C44)) + C33  (Eq. 5); k'=1 -> ANNIE."""
-    return k_prime * (2.0 * (c66 - c44)) + c33
+    return petrolib.acoustic_geomech.mannie_c11(c33, c44, c66, kp=k_prime)
 
 
 # ---------------------------------------------- VTI engineering moduli --------------

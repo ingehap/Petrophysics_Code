@@ -29,6 +29,13 @@ in psi, ratios/strains dimensionless.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- elasticity --------------
 
@@ -118,7 +125,7 @@ def sigma_h(sigma_v, pore_pressure, biot, e_h_dir, nu_hv, nu_hh, eps_h, eps_hh):
 
 def shear_wave_splitting(vs_fast, vs_slow):
     """Shear-wave splitting  SWS = (Vs_fast - Vs_slow)/Vs_fast  (Eq. 27)."""
-    return (vs_fast - vs_slow) / vs_fast
+    return petrolib.acoustic_geomech.shear_wave_splitting(vs_fast, vs_slow)
 
 
 # ---------------------------------------------- tests --------------

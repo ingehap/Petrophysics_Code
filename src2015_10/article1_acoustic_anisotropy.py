@@ -25,6 +25,13 @@ Velocities in m/s, slowness in us/ft, angles in radians unless noted.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- anisotropy magnitude --------------
 
@@ -72,7 +79,7 @@ def fast_shear_azimuth(xx, xy, yx, yy, n_theta=361):
 
 def thomsen_gamma(c66, c44):
     """Thomsen shear-anisotropy parameter  gamma = (C66 - C44)/(2*C44)."""
-    return (c66 - c44) / (2.0 * c44)
+    return petrolib.acoustic_geomech.thomsen_gamma(c66, c44)
 
 
 # ---------------------------------------------- tests --------------

@@ -101,7 +101,7 @@ def shear_splitting_index(v_fast, v_slow):
 
         Sp = (Vfast - Vslow)/Vfast.
     """
-    return (v_fast - v_slow) / v_fast
+    return petrolib.acoustic_geomech.shear_wave_splitting(v_fast, v_slow)
 
 
 # ---------------------------------------------- Kuster-Toksoz --------------
@@ -133,7 +133,7 @@ def p_wave_velocity(k, mu, rho):
 
 def acoustic_impedance(rho, vp):
     """Acoustic impedance  AI = rho*Vp."""
-    return rho * vp
+    return petrolib.acoustic_geomech.acoustic_impedance(rho, vp)
 
 
 # ---------------------------------------------- tests --------------

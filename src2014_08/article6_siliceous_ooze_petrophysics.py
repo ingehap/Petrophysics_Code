@@ -135,7 +135,7 @@ def biot_coefficient(k_dry, k_mineral=5.0):
     with the dry-frame bulk modulus K_dry and mineral bulk modulus K_o.  beta < 1
     indicates a cemented/stiff frame; beta -> 1 is normal compaction.
     """
-    return 1.0 - k_dry / k_mineral
+    return petrolib.acoustic_geomech.biot_coefficient(k_dry, k_mineral)
 
 
 # ---------------------------------------------- tests --------------

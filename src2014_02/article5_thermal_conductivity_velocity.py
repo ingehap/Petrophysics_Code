@@ -35,6 +35,13 @@ m/s, thermal conductivity in W/m/K.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Best-fit inclusion aspect ratios by petrographic code (Gegenhuber & Schon,
 # 2014): granite/gneiss and sandstone alpha = 0.20 (axis ratio 1:5), basic
 # magmatic rocks alpha = 0.25 (axis ratio 1:4).
@@ -68,16 +75,12 @@ QUARTZ_CONTENT_BY_CLASS = {
 
 def voigt_bound(fractions, moduli):
     """Voigt (iso-strain) upper bound for a mineral mixture  M_V = sum(f_i*M_i)."""
-    f = np.asarray(fractions, float)
-    m = np.asarray(moduli, float)
-    return float(np.sum(f * m))
+    return float(petrolib.acoustic_geomech.voigt(fractions, moduli))
 
 
 def reuss_bound(fractions, moduli):
     """Reuss (iso-stress) lower bound for a mineral mixture  1/M_R = sum(f_i/M_i)."""
-    f = np.asarray(fractions, float)
-    m = np.asarray(moduli, float)
-    return float(1.0 / np.sum(f / m))
+    return float(petrolib.acoustic_geomech.reuss(fractions, moduli))
 
 
 def hill_average(voigt, reuss):
