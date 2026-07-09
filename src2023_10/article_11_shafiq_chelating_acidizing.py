@@ -34,6 +34,13 @@ from typing import Dict
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Effective dissolution rate constants (1/s) at 90 deg C, 0.6 M
@@ -81,7 +88,9 @@ def fractional_dissolution(agent: str, mineral: str,
 
 
 def kozeny_carman_update(phi: float, phi_new: float, k_mD: float) -> float:
-    return k_mD * (phi_new / phi) ** 3 * ((1.0 - phi) / (1.0 - phi_new)) ** 2
+    return float(
+        petrolib.flow_transport.kozeny_carman_ratio(k_mD, phi_new, phi, grain_term=True)
+    )
 
 
 def acidize(core: CoreState, agent: str, conc_mol_L: float,

@@ -103,9 +103,7 @@ def winland_r35(permeability_md: float, porosity_fraction: float) -> float:
     """
     if permeability_md <= 0 or porosity_fraction <= 0:
         raise ValueError("k and phi must be positive")
-    log_r35 = (0.732 + 0.588 * np.log10(permeability_md)
-               - 0.864 * np.log10(100.0 * porosity_fraction))
-    return float(10.0 ** log_r35)
+    return float(petrolib.flow_transport.winland_r35(permeability_md, porosity_fraction))
 
 
 def r35_rock_type(r35_um: float) -> str:

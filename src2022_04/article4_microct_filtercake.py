@@ -24,6 +24,13 @@ Implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Dewan-Chenevert growth -
 
@@ -39,7 +46,7 @@ def mudcake_porosity(t_s, phi_0=0.40, tau_s=1800.0, c=0.15):
 
 
 def kozeny_carman_mudcake(phi_t, phi_0, k_0):
-    return k_0 * (phi_t / phi_0) ** 3 * ((1.0 - phi_0) / (1.0 - phi_t)) ** 2
+    return petrolib.flow_transport.kozeny_carman_ratio(k_0, phi_t, phi_0, grain_term=True)
 
 
 # ---------------------------------------------- synthetic CT slice -----
