@@ -19,11 +19,24 @@ from pathlib import Path
 import numpy as np
 
 # ---------------------------------------------------------------------------
-# Make the package importable regardless of working directory
+# Make the package importable regardless of working directory.
+# The package lives in the repository as src2026_04/, but this test suite
+# imports it under its public name petrophysics_spwla_2026: register an
+# alias so `python test_all.py` works from a bare checkout, from any
+# working directory, with no install step.
 # ---------------------------------------------------------------------------
+import importlib
+
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+if "petrophysics_spwla_2026" not in sys.modules:
+    if str(_HERE.parent) not in sys.path:
+        sys.path.insert(0, str(_HERE.parent))
+    sys.modules["petrophysics_spwla_2026"] = importlib.import_module(_HERE.name)
+    for _name, _module in list(sys.modules.items()):
+        if _name.startswith(_HERE.name + "."):
+            sys.modules["petrophysics_spwla_2026" + _name[len(_HERE.name):]] = _module
 
 import petrophysics_spwla_2026.a01_sponge_core_saturation_uncertainty  as a01
 import petrophysics_spwla_2026.a02_nmr_wettability_pore_partitioning   as a02

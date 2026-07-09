@@ -7,8 +7,22 @@ Petrophysics, Vol. 67, No. 1 (February 2026).
 """
 
 import numpy as np
+import importlib
 import sys
-sys.path.insert(0, "/home/claude")
+from pathlib import Path
+
+# The package lives in the repository as src2026_02/, but this test suite
+# imports it under its public name petrophysics_2026 (see __init__.py).
+# Register an alias so `python test_all.py` works from a bare checkout,
+# from any working directory, with no install step.
+if "petrophysics_2026" not in sys.modules:
+    _repo_root = str(Path(__file__).resolve().parent.parent)
+    if _repo_root not in sys.path:
+        sys.path.insert(0, _repo_root)
+    sys.modules["petrophysics_2026"] = importlib.import_module("src2026_02")
+    for _name, _module in list(sys.modules.items()):
+        if _name.startswith("src2026_02."):
+            sys.modules["petrophysics_2026" + _name[len("src2026_02"):]] = _module
 
 passed = 0
 failed = 0
