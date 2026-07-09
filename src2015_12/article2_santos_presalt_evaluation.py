@@ -46,7 +46,7 @@ def sdr_permeability(phi, t2lm, c=4.0, a_exp=4.0, b_exp=2.0):
 
     with A typically 2-4 and B the T2 exponent (~2); T2lm is the log-mean T2.
     """
-    return c * phi ** a_exp * t2lm ** b_exp
+    return petrolib.nmr.sdr(phi, t2lm, a=c, m=a_exp, n=b_exp)
 
 
 # ---------------------------------------------- saturation --------------

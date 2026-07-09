@@ -28,6 +28,13 @@ A default T2 cutoff of 100 ms is reported.  Permeability in mD, T2 in ms.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- T2 statistics --------------
 
@@ -36,9 +43,7 @@ def t2_logmean(t2, amplitudes):
 
         T2gm = exp(sum_i A_i*ln(T2_i)/sum_i A_i).
     """
-    t2 = np.asarray(t2, float)
-    a = np.asarray(amplitudes, float)
-    return float(np.exp(np.sum(a * np.log(t2)) / np.sum(a)))
+    return petrolib.nmr.t2_logmean(t2, amplitudes)
 
 
 def ffi_bvi(t2, amplitudes, t2_cutoff=100.0):
@@ -64,7 +69,7 @@ def coates_permeability(phi, ffi, bvi, c=10.0):
 
     with the calibration coefficient C (~10) and the free/bound fluid ratio.
     """
-    return (phi / c) ** 4 * (ffi / bvi) ** 2
+    return petrolib.nmr.timur_coates(phi, ffi, bvi, C=c)
 
 
 def sdr_permeability(phi, t2gm, a=4.0):
@@ -74,7 +79,7 @@ def sdr_permeability(phi, t2gm, a=4.0):
 
     with the calibration constant a and the logarithmic-mean T2.
     """
-    return a * phi ** 4 * t2gm ** 2
+    return petrolib.nmr.sdr(phi, t2gm, a=a)
 
 
 # ---------------------------------------------- RBF model --------------

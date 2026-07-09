@@ -30,6 +30,13 @@ Times in s, diffusion in m^2/s, gradient in T/m, echo spacing in s.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 GAMMA_PROTON = 2.675e8        # rad/(s*T), proton gyromagnetic ratio
 
 
@@ -37,7 +44,7 @@ GAMMA_PROTON = 2.675e8        # rad/(s*T), proton gyromagnetic ratio
 
 def t1_relaxation(t1_bulk, t1_surface):
     """Longitudinal relaxation  1/T1 = 1/T1bulk + 1/T1surface  (Eq. 1)."""
-    return 1.0 / (1.0 / t1_bulk + 1.0 / t1_surface)
+    return petrolib.nmr.combine_relaxation_times(t1_bulk, t1_surface)
 
 
 def t2_apparent(t2_bulk, t2_surface, t2_diffusion):
@@ -45,7 +52,7 @@ def t2_apparent(t2_bulk, t2_surface, t2_diffusion):
 
         1/T2app = 1/T2bulk + 1/T2surface + 1/T2diffusion.
     """
-    return 1.0 / (1.0 / t2_bulk + 1.0 / t2_surface + 1.0 / t2_diffusion)
+    return petrolib.nmr.combine_relaxation_times(t2_bulk, t2_surface, t2_diffusion)
 
 
 def t2_intrinsic(t2_bulk, t2_surface):
@@ -53,7 +60,7 @@ def t2_intrinsic(t2_bulk, t2_surface):
 
         1/T2int = 1/T2bulk + 1/T2surface.
     """
-    return 1.0 / (1.0 / t2_bulk + 1.0 / t2_surface)
+    return petrolib.nmr.combine_relaxation_times(t2_bulk, t2_surface)
 
 
 def diffusion_relaxation_rate(diffusion_coeff, gradient, echo_spacing, gamma=GAMMA_PROTON):
@@ -64,7 +71,8 @@ def diffusion_relaxation_rate(diffusion_coeff, gradient, echo_spacing, gamma=GAM
     with G the tool field gradient, TE the echo spacing and D the molecular
     diffusion coefficient (gas > water > oil, decreasing with oil viscosity).
     """
-    return (gamma * gradient * echo_spacing) ** 2 * diffusion_coeff / 12.0
+    return petrolib.nmr.diffusion_relaxation_rate(
+        diffusion_coeff, G=gradient, TE=echo_spacing, gamma=gamma)
 
 
 # ---------------------------------------------- echo decay / typing --------------
@@ -76,10 +84,7 @@ def multiexponential_decay(times, amplitudes, t2_components):
 
     the multimodal sum the inversion recovers (subject to A_i >= 0, Eq. 5).
     """
-    t = np.asarray(times, float)[:, None]
-    a = np.asarray(amplitudes, float)[None, :]
-    t2 = np.asarray(t2_components, float)[None, :]
-    return np.sum(a * np.exp(-t / t2), axis=1)
+    return petrolib.nmr.multiexp_decay(times, amplitudes, t2_components)
 
 
 def t1_t2_ratio_fluid_type(t1, t2, water_cutoff=2.0):

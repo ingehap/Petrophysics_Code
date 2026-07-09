@@ -27,6 +27,13 @@ are reported.  Times in seconds, fields in tesla, gradient in T/m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 GAMMA_H = 2.675222e8  # proton gyromagnetic ratio, rad/(s*T)
 
 
@@ -39,7 +46,7 @@ def larmor_frequency(b0):
 
     with B0 in tesla; returns Hz.  (B0 ~ 0.0528 T gives ~2.25 MHz.)
     """
-    return GAMMA_H * b0 / (2.0 * np.pi)
+    return petrolib.nmr.larmor_frequency(b0, gamma=GAMMA_H)
 
 
 # ---------------------------------------------- CPMG relaxation --------------
@@ -49,7 +56,7 @@ def cpmg_decay(t, m0, t2eff):
 
         M(t) = M0*exp(-t/T2eff).
     """
-    return m0 * np.exp(-np.asarray(t, float) / t2eff)
+    return petrolib.nmr.multiexp_decay(t, m0, t2eff)
 
 
 def t2_effective(t2_bulk, relaxivity, surface_to_volume, diffusion,
@@ -62,9 +69,9 @@ def t2_effective(t2_bulk, relaxivity, surface_to_volume, diffusion,
     with surface relaxivity rho2, surface-to-volume S/V, diffusion D, constant
     gradient G (T/m) and echo spacing TE.
     """
-    inv = (1.0 / t2_bulk + relaxivity * surface_to_volume
-           + diffusion * GAMMA_H ** 2 * gradient ** 2 * echo_spacing ** 2 / 12.0)
-    return 1.0 / inv
+    return petrolib.nmr.t2_apparent(
+        t2_bulk=t2_bulk, rho=relaxivity, s_over_v=surface_to_volume,
+        D=diffusion, G=gradient, TE=echo_spacing, gamma=GAMMA_H)
 
 
 def porosity_from_signal(signal_sample, signal_ref, porosity_ref):
