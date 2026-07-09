@@ -30,12 +30,19 @@ transcribed from it.  Volumes consistent (cm^3), fractions dimensionless.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- porosity / saturation --------------
 
 def porosity(grain_volume, bulk_volume):
     """Porosity  phi = (BV - GV)/BV  (pore volume over bulk volume)."""
-    return (bulk_volume - np.asarray(grain_volume, float)) / bulk_volume
+    return petrolib.porosity_lithology.porosity_from_volumes(bulk_volume, grain_volume)
 
 
 def retort_saturations(oil_volume, water_volume, pore_volume):
@@ -53,7 +60,7 @@ def dean_stark_sw(water_volume, pore_volume):
 
 def hydrocarbon_pore_volume(phi, sw):
     """Hydrocarbon pore volume fraction  HCPV = phi*(1 - Sw)."""
-    return phi * (1.0 - np.asarray(sw, float))
+    return petrolib.porosity_lithology.hydrocarbon_pore_volume(phi, sw)
 
 
 def relative_discrepancy(value_a, value_b):
