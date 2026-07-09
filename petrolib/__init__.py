@@ -23,6 +23,7 @@ _SUBMODULES = frozenset(
         "acoustic_geomech",
         "capillary_pressure",
         "constants",
+        "em_dielectric",
         "flow_transport",
         "geochem_fluids",
         "ml_stats",
