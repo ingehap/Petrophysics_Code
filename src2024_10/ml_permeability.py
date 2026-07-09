@@ -73,9 +73,7 @@ def archie_sw(Rt: np.ndarray, Rw: float, phi: np.ndarray,
     """Standard Archie Sw."""
     phi = np.maximum(np.asarray(phi, dtype=float), 0.01)
     Rt = np.maximum(np.asarray(Rt, dtype=float), 0.01)
-    F = a / (phi ** m)
-    Sw = (F * Rw / Rt) ** (1.0 / n)
-    return np.clip(Sw, 0, 1)
+    return petrolib.saturation_resistivity.archie_sw(Rt, Rw, phi=phi, a=a, m=m, n=n, clip=(0.0, 1.0))
 
 
 def sandstone_resistivity(Rt: np.ndarray, Csh: np.ndarray,
