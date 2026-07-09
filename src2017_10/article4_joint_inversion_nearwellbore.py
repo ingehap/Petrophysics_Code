@@ -29,12 +29,19 @@ velocities in m/s, density in kg/m^3, resistivity in ohm.m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- petrophysics --------------
 
 def archie_resistivity(rw, phi, sw, a=1.0, m=2.0, n=2.0):
     """Archie resistivity of a pixel  Rh = a*Rw/(phi^m*Sw^n)  (Eq. 1)."""
-    return a * rw / (np.asarray(phi, float) ** m * np.asarray(sw, float) ** n)
+    return petrolib.saturation_resistivity.archie_rt(sw, rw, phi=phi, a=a, m=m, n=n)
 
 
 def gas_fraction(sg, so):

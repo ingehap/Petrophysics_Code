@@ -26,6 +26,13 @@ rmax/rmin = 1000; limestone Dt = 2.25 (phi = 0.19); Boise Dt = 2.1 (phi = 0.32).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # np.trapz was renamed to np.trapezoid in NumPy 2.0; support both.
 _trapezoid = getattr(np, "trapezoid", getattr(np, "trapz", None))
 
@@ -55,7 +62,9 @@ def bc_lambda(Df, De=3.0):
 
 def resistivity_index(sw, n=2.0):
     """Archie resistivity index  I = Ro/Rt = Sw^(-n)  (Eq. 11)."""
-    return np.asarray(sw, float) ** (-n)
+    # NOTE: despite the name this is the power law in Sw — it maps to
+    # resistivity_index_from_sw.
+    return petrolib.saturation_resistivity.resistivity_index_from_sw(sw, n=n)
 
 
 # ---------------------------------------------- relative permeability ---

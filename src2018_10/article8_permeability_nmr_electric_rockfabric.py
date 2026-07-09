@@ -26,6 +26,13 @@ relations the paper's title describes.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- NMR / electrical --------
 
@@ -36,12 +43,12 @@ def timur_coates(phi, ffi, bvi, C=10.0):
 
 def formation_factor(phi, a=1.0, m=2.0):
     """Archie formation factor  F = a/phi^m."""
-    return a / np.asarray(phi, float) ** m
+    return petrolib.saturation_resistivity.formation_factor(phi, a=a, m=m)
 
 
 def cementation_exponent(F, phi, a=1.0):
     """Cementation exponent from F and phi  m = ln(F/a)/ln(1/phi)."""
-    return np.log(F / a) / np.log(1.0 / np.asarray(phi, float))
+    return petrolib.saturation_resistivity.cementation_exponent_at_point(phi, F, a=a)
 
 
 def joint_permeability(phi, ffi, bvi, m, m_ref=2.0):

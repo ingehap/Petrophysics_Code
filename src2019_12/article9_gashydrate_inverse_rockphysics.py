@@ -25,6 +25,13 @@ title describes.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- forward models ----------
 
@@ -42,7 +49,7 @@ def archie_resistivity(sh, Rw=0.3, phi=0.4, a=1.0, m=2.0, n=2.0):
     Water saturation = 1 - Sh (hydrate is an insulator displacing brine).
     """
     sw = 1.0 - np.asarray(sh, float)
-    return a * Rw / (phi ** m * sw ** n)
+    return petrolib.saturation_resistivity.archie_rt(sw, Rw, phi=phi, a=a, m=m, n=n)
 
 
 # ---------------------------------------------- joint inversion ---------

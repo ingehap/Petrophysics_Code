@@ -25,22 +25,29 @@ analysis the paper applies.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Archie ------------------
 
 def formation_factor(phi, a=1.0, m=2.0):
     """Archie formation factor  F = a/phi^m."""
-    return a / np.asarray(phi, float) ** m
+    return petrolib.saturation_resistivity.formation_factor(phi, a=a, m=m)
 
 
 def effective_m(F, phi, a=1.0):
     """Effective cementation exponent from F and phi  m = ln(F/a)/ln(1/phi)."""
-    return np.log(F / a) / np.log(1.0 / np.asarray(phi, float))
+    return petrolib.saturation_resistivity.cementation_exponent_at_point(phi, F, a=a)
 
 
 def archie_sw(Rt, Rw, phi, a=1.0, m=2.0, n=2.0):
     """Archie water saturation  Sw = (a*Rw/(phi^m*Rt))^(1/n)."""
-    return (a * Rw / (np.asarray(phi, float) ** m * Rt)) ** (1.0 / n)
+    return petrolib.saturation_resistivity.archie_sw(Rt, Rw, phi=phi, a=a, m=m, n=n)
 
 
 # ---------------------------------------------- vug / fracture m --------

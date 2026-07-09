@@ -27,12 +27,19 @@ reconstructions from the prose and nomenclature.  Conductivities in S/m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- conductivity models --------------
 
 def archie_conductivity(sigma_w, phi, sw, a=1.0, m=2.0, n=2.0):
     """Archie bulk conductivity  sigma_R = sigma_w*a*phi^m*Sw^n  (Eq. 1)."""
-    return sigma_w * a * np.asarray(phi, float) ** m * np.asarray(sw, float) ** n
+    return petrolib.saturation_resistivity.archie_conductivity(sw, sigma_w * a, phi=phi, m=m, n=n)
 
 
 def montaron_conductivity(sigma_w, cw, phi, sw, mu=2.0):

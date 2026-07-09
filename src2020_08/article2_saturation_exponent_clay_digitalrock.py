@@ -29,17 +29,24 @@ conductivity model.  Paper anchors: clean-rock n ~ 1.5, clay lowers n (toward
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Archie ------------------
 
 def formation_factor(phi, a=1.0, m=2.0):
     """Archie formation factor  F = a*phi^-m  (Eq. 1)."""
-    return a * np.asarray(phi, float) ** (-m)
+    return petrolib.saturation_resistivity.formation_factor(phi, a=a, m=m)
 
 
 def resistivity_index(sw, n=2.0, b=1.0):
     """Archie resistivity index  I = b*Sw^-n  (Eq. 2)."""
-    return b * np.asarray(sw, float) ** (-n)
+    return petrolib.saturation_resistivity.resistivity_index_from_sw(sw, n=n, b=b)
 
 
 # ---------------------------------------------- Waxman-Smits ------------

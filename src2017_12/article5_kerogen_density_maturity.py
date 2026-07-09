@@ -28,6 +28,13 @@ reconstructions from the surviving nomenclature; the reported constants
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 RHO_PYRITE = 4.95
 RHO_FE = 7.87
 
@@ -58,7 +65,9 @@ def total_porosity(rho_matrix, rho_b, rho_fluid=1.0):
 
 def archie_sw(rw, rt, phi, m=2.0, n=1.5):
     """Archie water saturation  Sw = (Rw/(phi^m*Rt))^(1/n), clipped to [0,1] (m=2, n=1.5)."""
-    return np.clip((rw / (phi ** m * np.asarray(rt, float))) ** (1.0 / n), 0.0, 1.0)
+    # HAZARD (LIBRARY_MERGE_PLAN.md section 9): this article's argument order
+    # is (rw, rt) — the canonical order is (rt, rw).  Mapped explicitly.
+    return petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, m=m, n=n, clip=(0.0, 1.0))
 
 
 def porosity_sensitivity(rho_b, rho_matrix, d_rho_matrix, rho_fluid=1.0):
