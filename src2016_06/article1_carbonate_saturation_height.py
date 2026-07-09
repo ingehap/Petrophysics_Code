@@ -72,20 +72,15 @@ def buoyancy_pc(height_above_fwl, sg_water, sg_hc):
 def permeability_average(k_values, method="geometric"):
     """Average a set of rock-type permeabilities (arithmetic / geometric /
     harmonic); geometric is the paper's preferred carbonate transform."""
-    k = np.asarray(k_values, float)
-    if method == "arithmetic":
-        return float(np.mean(k))
-    if method == "geometric":
-        return float(np.exp(np.mean(np.log(k))))
-    if method == "harmonic":
-        return float(len(k) / np.sum(1.0 / k))
-    raise ValueError(f"unknown method: {method}")
+    return petrolib.flow_transport.permeability_average(k_values, method=method)
 
 
 def lucia_permeability(phi, a, b):
     """Lucia-type permeability transform  log10(k) = a*log10(phi) + b  ->
     k = 10^(a*log10(phi) + b)."""
-    return 10.0 ** (a * np.log10(np.asarray(phi, float)) + b)
+    # This is the log-log poro-perm power law; the library writes it as
+    # 10**(A + B*log10(phi)), so A=b (intercept) and B=a (slope) here.
+    return petrolib.flow_transport.poroperm_powerlaw(phi, a=b, b=a)
 
 
 def mobility_to_permeability(mobility, viscosity):

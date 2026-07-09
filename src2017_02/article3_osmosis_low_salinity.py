@@ -26,6 +26,13 @@ formulas transcribed from it.  SI units (Pi in Pa, D in m^2/s).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 R_GAS = 8.314                # J/(mol K)
 KB = 1.380649e-23            # J/K
 
@@ -42,12 +49,12 @@ def stokes_einstein_diffusivity(temperature_k, viscosity, radius):
 
     Water diffusion is inversely proportional to the oil-phase viscosity.
     """
-    return KB * temperature_k / (6.0 * np.pi * viscosity * radius)
+    return petrolib.flow_transport.stokes_einstein(temperature_k, viscosity, radius)
 
 
 def fick_flux(diffusivity, dconcentration, dx):
     """Fick's first-law diffusive flux  J = -D*dc/dx."""
-    return -diffusivity * dconcentration / dx
+    return petrolib.flow_transport.fick_flux(diffusivity, dconcentration, dx)
 
 
 def capillary_pressure(p_oil, p_water):
