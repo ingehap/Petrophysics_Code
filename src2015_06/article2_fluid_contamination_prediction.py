@@ -89,10 +89,9 @@ def fit_virgin_endpoint(volumes, properties, gamma):
     (intercept = virgin-fluid endpoint, slope = amplitude).  Returns
     (P_virgin, amplitude).
     """
-    x = np.asarray(volumes, float) ** (-gamma)
-    y = np.asarray(properties, float)
-    slope, intercept = np.polyfit(x, y, 1)
-    return intercept, slope
+    lf = petrolib.inversion_numerics.fitting.fit_line(
+        np.asarray(volumes, float) ** (-gamma), properties)
+    return lf.intercept, lf.slope
 
 
 # ---------------------------------------------- tests --------------

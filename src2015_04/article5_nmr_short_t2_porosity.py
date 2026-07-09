@@ -52,10 +52,7 @@ def tikhonov_t2_inversion(g, l, alpha):
     the smoothed inverse-Laplace estimate of the T2 distribution (the second
     term suppresses noise but biases short-T2 amplitudes).
     """
-    l = np.asarray(l, float)
-    g = np.asarray(g, float)
-    n = l.shape[1]
-    return np.linalg.solve(l.T @ l + alpha * np.eye(n), l.T @ g)
+    return petrolib.inversion_numerics.linear.tikhonov_solve(l, g, alpha)
 
 
 # ---------------------------------------------- bias / correction --------------

@@ -39,6 +39,13 @@ Nelson, 1997; Barker et al., 2003).  Gas volumes in cm^3, isotopes in permil.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 ATM_N2_O2 = 3.73  # atmospheric N2:O2 volume ratio (Jin et al., 2010)
 
 # Relative permeation rates through PVF (Tedlar) bag film, from the paper's
@@ -127,9 +134,9 @@ def lost_gas_usbm(sqrt_times, cumulative_gas):
     Follows the accepted desorption guidelines the paper cites (Diamond &
     Levine, 1981; Barker et al., 2003) rather than a printed equation.
     """
-    b, m = np.polyfit(np.asarray(sqrt_times, float),
-                      np.asarray(cumulative_gas, float), 1)
-    return abs(m)
+    intercept = petrolib.inversion_numerics.fitting.fit_line(
+        sqrt_times, cumulative_gas).intercept
+    return abs(intercept)
 
 
 def total_gas_content(lost_gas, desorbed_gas, residual_gas):

@@ -79,9 +79,8 @@ def fit_power_law_exponent(sizes, counts, log_binned=True):
     gives (alpha - 1), so the true exponent alpha is the fitted exponent + 1
     (Newman, 2005).  Returns the true exponent alpha.
     """
-    x = np.log10(np.asarray(sizes, float))
-    y = np.log10(np.asarray(counts, float))
-    slope, _ = np.polyfit(x, y, 1)
+    slope = petrolib.inversion_numerics.fitting.fit_line(
+        sizes, counts, xform="log10", yform="log10").slope
     exponent = -slope
     return exponent + 1.0 if log_binned else exponent
 

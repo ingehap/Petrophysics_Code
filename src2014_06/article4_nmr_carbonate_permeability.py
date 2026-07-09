@@ -117,7 +117,7 @@ def rbf_fit(inputs, targets, sigma, ridge=1e-6):
     g = np.empty((n, n))
     for i in range(n):
         g[i] = gaussian_rbf(np.linalg.norm(x - x[i][None, :], axis=1), sigma)
-    w = np.linalg.solve(g.T @ g + ridge * np.eye(n), g.T @ y)
+    w = petrolib.inversion_numerics.linear.tikhonov_solve(g, y, ridge)
     return w
 
 

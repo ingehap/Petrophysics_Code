@@ -97,9 +97,9 @@ def fit_event_exponent(event_volumes, pore_volume, counts):
 
         log N = log c - n*log(dV/Vpore)  ->  returns n.
     """
-    x = np.log10(np.asarray(event_volumes, float) / pore_volume)
-    y = np.log10(np.asarray(counts, float))
-    slope, _ = np.polyfit(x, y, 1)
+    slope = petrolib.inversion_numerics.fitting.fit_line(
+        np.asarray(event_volumes, float) / pore_volume, counts,
+        xform="log10", yform="log10").slope
     return -slope
 
 
