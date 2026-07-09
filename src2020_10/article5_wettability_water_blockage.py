@@ -27,6 +27,13 @@ The paper's anchors are reproduced: 2.5 wt% KCl brine, step pressurization to
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 PSI_TO_PA = 6894.76
 THRESHOLD_PSI = 1500.0       # restore oil-phase continuity above this Pc
 MAX_PRESS_PSI = 7000.0       # step-pressurization endpoint -> 100% saturation
@@ -36,12 +43,14 @@ MAX_PRESS_PSI = 7000.0       # step-pressurization endpoint -> 100% saturation
 
 def capillary_pressure(sigma_Nm, theta_deg, r_m):
     """Young-Laplace capillary pressure  Pc = 2*sigma*cos(theta)/r  (Pa)."""
-    return 2.0 * sigma_Nm * np.cos(np.radians(theta_deg)) / np.asarray(r_m, float)
+    return petrolib.capillary_pressure.young_laplace_pc(
+        r_m, sigma=sigma_Nm, theta_deg=theta_deg, absolute=False)
 
 
 def pore_throat_radius(pc_pa, sigma_Nm, theta_deg):
     """Washburn pore-throat radius  r = 2*sigma*cos(theta)/Pc  (m)."""
-    return 2.0 * sigma_Nm * np.cos(np.radians(theta_deg)) / np.asarray(pc_pa, float)
+    return petrolib.capillary_pressure.washburn_radius(
+        pc_pa, sigma=sigma_Nm, theta_deg=theta_deg, absolute=False)
 
 
 # ---------------------------------------------- wettability -------------

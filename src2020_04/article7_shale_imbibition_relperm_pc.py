@@ -25,6 +25,13 @@ the paper's title describes.  Saturations as fractions; pressures in psi.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Brooks-Corey -----------
 
@@ -35,9 +42,12 @@ def effective_saturation(sw, swr, snwr=0.0):
 
 def brooks_corey_pc(sw, swr, pe, lam):
     """Brooks-Corey capillary pressure  Pc = Pe*Se^(-1/lambda)."""
+    # Normalize and guard-clip Se locally (this article's convention), then
+    # delegate the Pe*Se^(-1/lam) kernel (Se pre-normalized -> swirr=0).
     se = effective_saturation(sw, swr)
     se = np.clip(se, 1e-6, 1.0)
-    return pe * se ** (-1.0 / lam)
+    return petrolib.capillary_pressure.brooks_corey_pc(
+        se, pc_entry=pe, lam=lam, swirr=0.0)
 
 
 def brooks_corey_krw(sw, swr, lam, snwr=0.0):

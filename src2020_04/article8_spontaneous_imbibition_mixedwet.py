@@ -24,6 +24,13 @@ paper's title describes.  SI units; angles in degrees.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Lucas-Washburn ----------
 
@@ -33,9 +40,11 @@ def washburn_length(sigma, r, theta_deg, mu, t):
     Only defined (real imbibition) for water-wet pores (cos(theta) > 0);
     returns 0 where the pore is oil-wet (no spontaneous water uptake).
     """
-    c = np.cos(np.radians(theta_deg))
-    drive = sigma * r * c * np.asarray(t, float) / (2.0 * mu)
-    return np.sqrt(np.clip(drive, 0.0, None))
+    # The library returns NaN for oil-wet pores (cos < 0); this article's
+    # clip-to-zero convention maps that NaN to 0 here in the facade.
+    length = petrolib.capillary_pressure.lucas_washburn_length(
+        t, sigma=sigma, radius=r, theta_deg=theta_deg, mu=mu)
+    return np.nan_to_num(length, nan=0.0)
 
 
 def imbibition_rate(sigma, r, theta_deg, mu, t):
@@ -52,7 +61,8 @@ def capillary_pressure(sigma, r, theta_deg):
 
     Positive for water-wet (theta < 90), negative for oil-wet (theta > 90).
     """
-    return 2.0 * sigma * np.cos(np.radians(theta_deg)) / r
+    return petrolib.capillary_pressure.young_laplace_pc(
+        r, sigma=sigma, theta_deg=theta_deg, absolute=False)
 
 
 # ---------------------------------------------- mixed-wet ---------------

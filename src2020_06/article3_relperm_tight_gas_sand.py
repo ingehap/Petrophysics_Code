@@ -26,6 +26,13 @@ anchors: Corey exponent ng in 0.5-3.75, Klinkenberg gas permeability
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- centrifuge Pc -----------
 
@@ -35,8 +42,11 @@ def centrifuge_pc(drho, rpm, L, LR):
     drho kg/m^3, L (core length) and LR (rotation-center to outer face) in m,
     rpm -> w = 2*pi*rpm/60.  Returns Pa.
     """
-    w = 2.0 * np.pi * rpm / 60.0
-    return 0.5 * drho * w ** 2 * (LR ** 2 - (LR - L) ** 2)
+    # Hassler-Brunner with the two radii as (LR - L) inner and LR outer face;
+    # rpm -> omega conversion kept here at the facade.
+    omega = 2.0 * np.pi * rpm / 60.0
+    return petrolib.capillary_pressure.centrifuge_pc(
+        omega, delta_rho=drho, r1=LR - L, r2=LR)
 
 
 # ---------------------------------------------- Corey-Brooks ------------

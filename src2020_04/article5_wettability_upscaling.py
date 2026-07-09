@@ -27,6 +27,13 @@ reference contact angle 30 deg.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Young-Laplace -----------
 
@@ -36,12 +43,14 @@ def drainage_threshold_radius(pc, sigma, theta_deg):
         r = 2*sigma*cos(theta)/Pc
     Higher Pc invades smaller pores (drainage).
     """
-    return 2.0 * sigma * np.cos(np.radians(theta_deg)) / np.asarray(pc, float)
+    return petrolib.capillary_pressure.washburn_radius(
+        pc, sigma=sigma, theta_deg=theta_deg, absolute=False)
 
 
 def capillary_pressure(sigma, theta_deg, r):
     """Young-Laplace capillary entry pressure  Pc = 2*sigma*cos(theta)/r."""
-    return 2.0 * sigma * np.cos(np.radians(theta_deg)) / np.asarray(r, float)
+    return petrolib.capillary_pressure.young_laplace_pc(
+        r, sigma=sigma, theta_deg=theta_deg, absolute=False)
 
 
 # ---------------------------------------------- Wenzel roughness --------

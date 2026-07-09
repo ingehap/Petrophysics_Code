@@ -29,6 +29,13 @@ definitions.  Paper benchmarks reproduced: porosity +80% (limestone) / +40.4%
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 DELTA_H_KJ_MOL = 369.0       # average reaction enthalpy
 
 
@@ -82,7 +89,8 @@ def shear_modulus(rho, vs):
 
 def young_laplace_pc(sigma, theta_deg, r):
     """Young-Laplace capillary pressure  Pc = 2*sigma*cos(theta)/r  (Eq. 3)."""
-    return 2.0 * sigma * np.cos(np.radians(theta_deg)) / np.asarray(r, float)
+    return petrolib.capillary_pressure.young_laplace_pc(
+        r, sigma=sigma, theta_deg=theta_deg, absolute=False)
 
 
 def centrifuge_pc(drho, rpm, r1, r2):
@@ -90,8 +98,10 @@ def centrifuge_pc(drho, rpm, r1, r2):
 
     drho in kg/m^3, radii in m, rpm -> w = 2*pi*rpm/60 ; returns Pa.
     """
-    w = 2.0 * np.pi * rpm / 60.0
-    return 0.5 * drho * w ** 2 * (r2 ** 2 - r1 ** 2)
+    # rpm -> omega conversion kept here at the facade.
+    omega = 2.0 * np.pi * rpm / 60.0
+    return petrolib.capillary_pressure.centrifuge_pc(
+        omega, delta_rho=drho, r1=r1, r2=r2)
 
 
 def scratch_energy(intrinsic_energy, area):
