@@ -28,6 +28,13 @@ velocity in m/s, density in g/cc.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 K_WATER = 2.2          # GPa
 K_GAS = 0.000142       # GPa
 RHO_WATER = 1.0        # g/cc
@@ -38,26 +45,25 @@ RHO_GAS = 0.001        # g/cc
 
 def gassmann_ksat(k_dry, k0, k_fl, phi):
     """Gassmann saturated bulk modulus (Eq. 1).  Shear modulus is unchanged."""
-    num = (1.0 - k_dry / k0) ** 2
-    den = phi / k_fl + (1.0 - phi) / k0 - k_dry / k0 ** 2
-    return k_dry + num / den
+    return petrolib.acoustic_geomech.gassmann_ksat(
+        k_dry=k_dry, k_mineral=k0, k_fluid=k_fl, phi=phi)
 
 
 # ---------------------------------------------- Eqs. 2-4: fluid moduli --
 
 def wood_lindsay(sw, kw=K_WATER, kg=K_GAS):
     """Reuss (harmonic) fluid modulus  1/Kfl = Sw/Kw + (1-Sw)/Kg  (Eq. 2)."""
-    return 1.0 / (sw / kw + (1.0 - sw) / kg)
+    return petrolib.acoustic_geomech.wood_fluid_modulus([sw, 1.0 - sw], [kw, kg])
 
 
 def domenico(sw, kw=K_WATER, kg=K_GAS):
     """Voigt (arithmetic) fluid modulus  Kfl = Sw*Kw + (1-Sw)*Kg  (Eq. 3)."""
-    return sw * kw + (1.0 - sw) * kg
+    return petrolib.acoustic_geomech.voigt([sw, 1.0 - sw], [kw, kg])
 
 
 def brie(sw, e=8.0, kw=K_WATER, kg=K_GAS):
     """Brie et al. empirical fluid modulus  Kfl = (Kw-Kg)*Sw^e + Kg  (Eq. 4)."""
-    return (kw - kg) * np.asarray(sw, float) ** e + kg
+    return petrolib.acoustic_geomech.brie_fluid_modulus(sw, kw, kg, e=e)
 
 
 # ---------------------------------------------- Eq. 5: White patchy -----

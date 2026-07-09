@@ -26,6 +26,13 @@ Russell 2003), flagged as such.  Velocities m/s, density kg/m^3, moduli Pa.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Eq. 1: density ----------
 
@@ -43,48 +50,47 @@ def velocity(length, traveltime):
 
 def shear_modulus(rho, vs):
     """G = rho * Vs^2."""
-    return rho * vs ** 2
+    return petrolib.acoustic_geomech.stiffness_from_velocity(rho, vs)
 
 
 def bulk_modulus(rho, vp, vs):
     """K = rho * (Vp^2 - 4/3 Vs^2)."""
-    return rho * (vp ** 2 - 4.0 / 3.0 * vs ** 2)
+    return petrolib.acoustic_geomech.moduli_from_velocity(vp, vs, rho)[0]
 
 
 def youngs_modulus(rho, vp, vs):
     """E = rho * Vs^2 * (3 Vp^2 - 4 Vs^2)/(Vp^2 - Vs^2)."""
-    return rho * vs ** 2 * (3 * vp ** 2 - 4 * vs ** 2) / (vp ** 2 - vs ** 2)
+    return petrolib.acoustic_geomech.youngs_poisson_dynamic(vp, vs, rho)[0]
 
 
 def poisson_ratio(vp, vs):
     """nu = (Vp^2 - 2 Vs^2) / (2 (Vp^2 - Vs^2))."""
-    return (vp ** 2 - 2 * vs ** 2) / (2.0 * (vp ** 2 - vs ** 2))
+    return petrolib.acoustic_geomech.poisson_from_velocity(vp, vs)
 
 
 def acoustic_impedance(rho, v):
     """Acoustic impedance  Z = rho * v."""
-    return rho * v
+    return petrolib.acoustic_geomech.acoustic_impedance(rho, v)
 
 
 # ---------------------------------------------- Thomsen parameters ------
 
 def thomsen_epsilon(vp_parallel, vp_perp):
     """P-wave anisotropy  epsilon = (Vp90^2 - Vp0^2)/(2 Vp0^2)."""
-    return (vp_parallel ** 2 - vp_perp ** 2) / (2.0 * vp_perp ** 2)
+    return petrolib.acoustic_geomech.thomsen_epsilon(vp_parallel ** 2, vp_perp ** 2)
 
 
 def thomsen_gamma(vs_fast, vs_slow):
     """S-wave anisotropy (splitting)  gamma = (Vs1^2 - Vs2^2)/(2 Vs2^2)."""
-    return (vs_fast ** 2 - vs_slow ** 2) / (2.0 * vs_slow ** 2)
+    return petrolib.acoustic_geomech.thomsen_gamma(vs_fast ** 2, vs_slow ** 2)
 
 
 # ---------------------------------------------- Gassmann ----------------
 
 def gassmann_ksat(k_dry, k_mineral, k_fluid, phi):
     """Gassmann saturated bulk modulus (shear unchanged)."""
-    num = (1.0 - k_dry / k_mineral) ** 2
-    den = phi / k_fluid + (1.0 - phi) / k_mineral - k_dry / k_mineral ** 2
-    return k_dry + num / den
+    return petrolib.acoustic_geomech.gassmann_ksat(
+        k_dry=k_dry, k_mineral=k_mineral, k_fluid=k_fluid, phi=phi)
 
 
 # ---------------------------------------------- tests --------------

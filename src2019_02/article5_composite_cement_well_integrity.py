@@ -24,6 +24,13 @@ Impedance in Mrayl.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- impedance ---------------
 
@@ -32,13 +39,12 @@ def acoustic_impedance(rho, v):
 
     rho(g/cc)*1000 -> kg/m^3, times v -> rayl, /1e6 -> Mrayl, i.e. rho*v/1000.
     """
-    return np.asarray(rho, float) * np.asarray(v, float) / 1000.0
+    return petrolib.acoustic_geomech.acoustic_impedance(rho, v) / 1000.0
 
 
 def reflection_coefficient(Z1, Z2):
     """Reflection coefficient  R = (Z2 - Z1)/(Z2 + Z1)."""
-    Z1 = np.asarray(Z1, float); Z2 = np.asarray(Z2, float)
-    return (Z2 - Z1) / (Z2 + Z1)
+    return petrolib.acoustic_geomech.reflection_coefficient(Z1, Z2)
 
 
 def classify_annulus(Z, gas_max=0.5, liquid_max=2.6):

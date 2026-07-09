@@ -81,30 +81,27 @@ def minmax(x, lo=-1.0, hi=1.0):
 
 def vs_pickett_limestone(vp):
     """Pickett (1963) limestone  Vs = Vp/1.9  (Eq. A1.1)."""
-    return np.asarray(vp, float) / 1.9
+    return petrolib.acoustic_geomech.vs_from_vp(vp, method="pickett_ls")
 
 
 def vs_pickett_dolomite(vp):
     """Pickett (1963) dolomite  Vs = Vp/1.8  (Eq. A1.2)."""
-    return np.asarray(vp, float) / 1.8
+    return petrolib.acoustic_geomech.vs_from_vp(vp, method="pickett_dol")
 
 
 def vs_carroll(vp):
     """Carroll (1969)  Vs = 0.756090 * Vp^0.81846  (Eq. A1.3).  km/s."""
-    return 0.756090 * np.asarray(vp, float) ** 0.81846
+    return petrolib.acoustic_geomech.vs_from_vp(vp, method="carroll")
 
 
 def vs_castagna_limestone(vp):
     """Castagna et al. (1985) limestone (Eq. A1.4).  km/s."""
-    vp = np.asarray(vp, float)
-    return -0.05050 * vp ** 2 + 1.10168 * vp - 1.0305
+    return petrolib.acoustic_geomech.vs_from_vp(vp, method="castagna_ls")
 
 
 def vs_brocher(vp):
     """Brocher (2005) regression (Eq. A1.8).  km/s."""
-    vp = np.asarray(vp, float)
-    return (0.7858 - 1.2344 * vp + 0.7949 * vp ** 2
-            - 0.1238 * vp ** 3 + 0.0064 * vp ** 4)
+    return petrolib.acoustic_geomech.vs_from_vp(vp, method="brocher")
 
 
 # ---------------------------------------------- linear surrogate --------

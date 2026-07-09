@@ -28,6 +28,13 @@ demonstrator.  Impedance in MRayl, density in kg/m^3, velocity in m/s.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Standard material properties (reconstructed defaults; not from the paper)
 RHO_STEEL, V_STEEL = 7850.0, 5900.0      # kg/m^3, m/s
 Z_STEEL = RHO_STEEL * V_STEEL / 1e6      # MRayl (~46)
@@ -44,17 +51,17 @@ Z_CEMENT_MIN = 3.0
 
 def acoustic_impedance(rho, v):
     """Acoustic impedance  Z = rho * v  (R1).  Returns MRayl for SI inputs."""
-    return rho * v / 1e6
+    return petrolib.acoustic_geomech.acoustic_impedance(rho, v, out="mrayl")
 
 
 def reflection_coefficient(z1, z2):
     """Normal-incidence reflection coefficient  R = (Z2 - Z1)/(Z2 + Z1)  (R2)."""
-    return (z2 - z1) / (z2 + z1)
+    return petrolib.acoustic_geomech.reflection_coefficient(z1, z2)
 
 
 def transmitted_energy(z1, z2):
     """Energy transmission coefficient  1 - R^2  (R3)."""
-    return 1.0 - reflection_coefficient(z1, z2) ** 2
+    return petrolib.acoustic_geomech.transmission_energy(z1, z2)
 
 
 def two_interface_energy_fraction(z_metal, z_fluid):

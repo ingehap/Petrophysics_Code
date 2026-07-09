@@ -28,6 +28,13 @@ shifts, and the 0.3 Mrayl acoustic-impedance gas cutoff.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 AI_GAS_CUTOFF_MRAYL = 0.3        # paper's color-map gas flag
 
 
@@ -49,13 +56,8 @@ def vti_moduli(C11, C33, C13, C44, C66):
       nu_vert(31) = C13/(C11 + C12)
       nu_horz(12) = (C12*C33 - C13^2)/(C11*C33 - C13^2)
     """
-    C12 = C11 - 2.0 * C66
-    E_v = C33 - 2.0 * C13 ** 2 / (C11 + C12)
-    E_h = (C11 - C12) * (C11 * C33 - 2.0 * C13 ** 2 + C12 * C33) \
-        / (C11 * C33 - C13 ** 2)
-    nu_v = C13 / (C11 + C12)
-    nu_h = (C12 * C33 - C13 ** 2) / (C11 * C33 - C13 ** 2)
-    return E_v, E_h, nu_v, nu_h
+    d = petrolib.acoustic_geomech.vti_engineering_moduli(C11, C33, C44, C66, C13)
+    return d["Ev"], d["Eh"], d["nu_v"], d["nu_h"]
 
 
 # ---------------------------------------------- saturation / AI ---------
@@ -69,7 +71,7 @@ def sigma_water_saturation(sigma_log, phi, sigma_ma, sigma_w, sigma_hc):
 
 def acoustic_impedance(rho_kg_m3, vp_m_s):
     """Acoustic impedance  Z = rho*Vp  (Mrayl)."""
-    return np.asarray(rho_kg_m3, float) * np.asarray(vp_m_s, float) / 1e6
+    return petrolib.acoustic_geomech.acoustic_impedance(rho_kg_m3, vp_m_s, out="mrayl")
 
 
 def is_gas(impedance_mrayl, cutoff=AI_GAS_CUTOFF_MRAYL):

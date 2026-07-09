@@ -26,6 +26,13 @@ Slowness in us/ft; spacings in ft; time in us.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- STC semblance -----------
 
@@ -72,14 +79,12 @@ def pick_slowness(traces, dt_us, dz_ft, slowness_grid, t0_grid, window_us=40.0):
 
 def impedance(rho, v):
     """Acoustic impedance  Z = rho * v  (rho kg/m^3, v m/s -> Rayl)."""
-    return np.asarray(rho, float) * np.asarray(v, float)
+    return petrolib.acoustic_geomech.acoustic_impedance(rho, v)
 
 
 def reflection_coefficient(Z1, Z2):
     """Normal-incidence reflection coefficient  R = (Z2 - Z1)/(Z2 + Z1)."""
-    Z1 = np.asarray(Z1, float)
-    Z2 = np.asarray(Z2, float)
-    return (Z2 - Z1) / (Z2 + Z1)
+    return petrolib.acoustic_geomech.reflection_coefficient(Z1, Z2)
 
 
 def pulse_echo_image(rho_fluid, v_fluid, rho_fm, v_fm):

@@ -69,12 +69,12 @@ def multiexponential(t, amplitudes, T2s):
 
 def vp(K, mu, rho):
     """Compressional velocity  Vp = sqrt((K + 4*mu/3)/rho)  (Eq. 5)."""
-    return np.sqrt((K + 4.0 * mu / 3.0) / rho)
+    return petrolib.acoustic_geomech.velocity_from_moduli(K, mu, rho)[0]
 
 
 def vs(mu, rho):
     """Shear velocity  Vs = sqrt(mu/rho)  (Eq. 6)."""
-    return np.sqrt(mu / rho)
+    return petrolib.acoustic_geomech.velocity_from_moduli(0.0, mu, rho)[1]
 
 
 # ---------------------------------------------- tests --------------
