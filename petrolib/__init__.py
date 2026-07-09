@@ -26,6 +26,7 @@ _SUBMODULES = frozenset(
         "em_dielectric",
         "flow_transport",
         "geochem_fluids",
+        "inversion_numerics",
         "ml_stats",
         "nmr",
         "nuclear",
