@@ -153,13 +153,8 @@ def water_saturation_hc(sigma_t, sigma_w, sigma_al, phi_al, porosity, p=1.5):
 
 def gassmann_bulk_modulus(k_dry, k_s, k_fl, porosity):
     """Gassmann saturated bulk modulus (Eq. 11)."""
-    phi = np.asarray(porosity, dtype=float)
-    kd = np.asarray(k_dry, dtype=float)
-    ks = np.asarray(k_s, dtype=float)
-    kf = np.asarray(k_fl, dtype=float)
-    num = (1.0 - kd / ks) ** 2
-    den = phi / kf + (1.0 - phi) / ks - kd / ks ** 2
-    return kd + num / den
+    return petrolib.acoustic_geomech.gassmann_ksat(
+        k_dry=k_dry, k_mineral=k_s, k_fluid=k_fl, phi=porosity)
 
 
 def suspension_modulus(k_fl, k_s, g_s, porosity):
@@ -208,12 +203,12 @@ def isoframe_shear_modulus(k_s, g_s, k_fl, porosity, iso_frame):
 
 def pwave_modulus(k, g):
     """P-wave modulus M = K + 4G/3  (Eq. 20)."""
-    return np.asarray(k, dtype=float) + 4.0 / 3.0 * np.asarray(g, dtype=float)
+    return petrolib.acoustic_geomech.pwave_modulus(k, g)
 
 
 def biot_coefficient(k_dry, k_s):
     """Biot's coefficient alpha = 1 - K_dry / K_s  (Eq. 10)."""
-    return 1.0 - np.asarray(k_dry, dtype=float) / np.asarray(k_s, dtype=float)
+    return petrolib.acoustic_geomech.biot_coefficient(k_dry, k_s)
 
 
 def vertical_elastic_strain(sigma_total, pore_pressure, m_dry, alpha):
@@ -227,7 +222,7 @@ def vertical_elastic_strain(sigma_total, pore_pressure, m_dry, alpha):
 
 def overburden_stress(depth, rho_avg=1980.0, g=9.81):
     """Total overburden stress (Eq. 28): sigma = rho_avg * g * depth."""
-    return rho_avg * g * np.asarray(depth, dtype=float)
+    return petrolib.acoustic_geomech.overburden_stress(depth, rho_avg, g=g)
 
 
 # ---------------------------------------------------------------------------

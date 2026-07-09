@@ -25,6 +25,13 @@ Reservoir averages from the paper (used as the baseline composite):
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- mineral & fluid catalogue ---
 # (K, G, density) in GPa, GPa, kg/m^3 -- standard rock-physics handbook values
@@ -113,7 +120,7 @@ def composite_with_fluid(mineral_fractions, porosity, fluid=GAS,
 
 def poisson_ratio(K, G):
     """nu = (3K - 2G) / (2 (3K + G))   (Eq. 6)."""
-    return (3.0 * K - 2.0 * G) / (2.0 * (3.0 * K + G))
+    return petrolib.acoustic_geomech.poisson_from_kg(K, G)
 
 
 # -------------------------------------------- Backus / dip dependence -----

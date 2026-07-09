@@ -24,12 +24,20 @@ The validation block reproduces the paper's Shearwater Field test case
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Eq. 1 ------------------
 
 def adiabatic_modulus(rho_g_cm3, V_p_m_s):
     """K_ad [GPa] = rho [kg/m^3] * V_p^2 [m^2/s^2] / 1e9."""
-    return (rho_g_cm3 * 1000.0) * V_p_m_s ** 2 / 1.0e9
+    return petrolib.acoustic_geomech.stiffness_from_velocity(
+        rho_g_cm3 * 1000.0, V_p_m_s) / 1.0e9
 
 
 # ---------------------------------------------- Eq. 3 - CGR -----------

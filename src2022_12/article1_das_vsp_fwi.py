@@ -24,6 +24,13 @@ based forward operator.  This module implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- moment tensors (Eqs 10-11) -
 
@@ -53,7 +60,7 @@ def well_deviation_examples():
 
 def impedance_to_reflectivity(Z):
     """Acoustic reflectivity series R_i = (Z_{i+1} - Z_i) / (Z_{i+1} + Z_i)."""
-    return (Z[1:] - Z[:-1]) / (Z[1:] + Z[:-1])
+    return petrolib.acoustic_geomech.reflection_coefficient(Z[:-1], Z[1:])
 
 
 def ricker(t, f0, t0):

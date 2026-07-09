@@ -18,6 +18,13 @@ Reference: https://doi.org/10.30632/PJV66N2-2025a6 (SPWLA)
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass
 from typing import Tuple, List, Optional
 
@@ -49,9 +56,8 @@ def acoustic_impedance(density_g_cm3: float, velocity_m_s: float) -> float:
     -------
     float : Acoustic impedance in MRayl (10⁶ kg/m²s)
     """
-    density_kg_m3 = density_g_cm3 * 1000.0
-    Z = density_kg_m3 * velocity_m_s
-    return Z / 1e6  # Convert to MRayl
+    return petrolib.acoustic_geomech.acoustic_impedance(
+        density_g_cm3 * 1000.0, velocity_m_s, out="mrayl")
 
 
 def reflection_coefficient(Z1: float, Z2: float) -> float:
@@ -69,7 +75,7 @@ def reflection_coefficient(Z1: float, Z2: float) -> float:
     -------
     float : Reflection coefficient (-1 to 1)
     """
-    return (Z2 - Z1) / (Z2 + Z1)
+    return petrolib.acoustic_geomech.reflection_coefficient(Z1, Z2)
 
 
 def otsu_threshold(image: np.ndarray) -> float:
