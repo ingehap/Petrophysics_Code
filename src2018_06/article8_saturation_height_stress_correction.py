@@ -28,6 +28,13 @@ inferred from the issue's confirmed pattern.  SI units.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 G_ACCEL = 9.81
 
 
@@ -35,12 +42,14 @@ G_ACCEL = 9.81
 
 def leverett_j(pc, k, phi, sigma, theta_deg):
     """Leverett J-function  J = Pc*sqrt(k/phi)/(sigma*cos(theta))."""
-    return np.asarray(pc, float) * np.sqrt(k / phi) / (sigma * np.cos(np.radians(theta_deg)))
+    return petrolib.capillary_pressure.leverett_j(
+        pc, sigma=sigma, theta_deg=theta_deg, k=k, phi=phi, absolute=False)
 
 
 def saturation_height(pc, rho_w, rho_hc):
     """Height above the free-water level  h = Pc/((rho_w - rho_hc)*g)  (m)."""
-    return np.asarray(pc, float) / ((rho_w - rho_hc) * G_ACCEL)
+    return petrolib.capillary_pressure.height_above_fwl(
+        pc, delta_rho=rho_w - rho_hc, g=G_ACCEL)
 
 
 # ---------------------------------------------- stress correction --------------
@@ -67,9 +76,8 @@ def stress_corrected_pc(pc_lab, k0, phi0, k_stress, phi_stress):
 
 def brooks_corey_sw(pc, pc_entry, lam=2.0, swirr=0.1):
     """Brooks-Corey saturation  Sw = Swirr + (1 - Swirr)*(Pe/Pc)^lambda  (Pc >= Pe)."""
-    pc = np.asarray(pc, float)
-    sw = swirr + (1.0 - swirr) * (pc_entry / pc) ** lam
-    return np.clip(sw, swirr, 1.0)
+    return petrolib.capillary_pressure.brooks_corey_sw(
+        pc, pc_entry=pc_entry, lam=lam, swirr=swirr)
 
 
 # ---------------------------------------------- tests --------------

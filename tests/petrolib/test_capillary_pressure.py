@@ -62,6 +62,12 @@ def _original_washburn_mercury_2014_12(pc, sigma=0.480, theta_deg=140.0):
     return -2.0 * sigma * np.cos(np.radians(theta_deg)) / np.asarray(pc, float)
 
 
+def _original_washburn_diameter_2018_02(pc, sigma=0.485, theta_deg=140.0):
+    # src2018_02/article3 washburn_diameter: -4*sigma*cos(theta)/Pc, the diameter
+    # dialect of the mercury |cos| (absolute=True) convention (theta in [90,180]).
+    return -4.0 * sigma * np.cos(np.radians(theta_deg)) / np.asarray(pc, float)
+
+
 def test_equivalence_washburn_variants() -> None:
     assert_matches_original(
         _original_pore_throat_radius_2014_02,
@@ -85,6 +91,12 @@ def test_equivalence_washburn_variants() -> None:
         _original_washburn_mercury_2014_12,
         lambda pc, s, th: cap.washburn_radius(pc, sigma=s, theta_deg=th, absolute=True),
         [(PC, 0.480, 140.0), (PC, 0.480, 120.0), (PC, 0.480, 160.0)],
+    )
+    # src2018_02/article3: the mercury -4*sigma*cos/Pc diameter form == absolute=True
+    assert_matches_original(
+        _original_washburn_diameter_2018_02,
+        lambda pc, s, th: cap.washburn_diameter(pc, sigma=s, theta_deg=th, absolute=True),
+        [(PC, 0.485, 140.0), (PC, 0.485, 120.0), (PC, 0.485, 160.0)],
     )
 
 
@@ -204,6 +216,12 @@ def _original_bc_pc_normalized_2016_06(sw_star, pc0, ep):
     return pc0 * np.asarray(sw_star, float) ** (-ep)
 
 
+def _original_drainage_pc_offset_2018_02(swn, pc_threshold, a, b):
+    # src2018_02/article2: Pc = Pcth + A*Swn^(-B).  The A*Swn^(-B) term is the
+    # normalized Brooks-Corey Pc (swirr=0, lam=1/B); Pcth is the article's offset.
+    return pc_threshold + a * np.asarray(swn, float) ** (-b)
+
+
 def test_brooks_corey_conventions_and_round_trip() -> None:
     # lam-convention article (clip form is value-equal to the where form)
     assert_matches_original(
@@ -225,6 +243,14 @@ def test_brooks_corey_conventions_and_round_trip() -> None:
         _original_bc_pc_normalized_2016_06,
         lambda sw_, pc0, ep: cap.brooks_corey_pc(sw_, pc_entry=pc0, lam=1.0 / ep, swirr=0.0),
         [(swn, 3e4, 1.5)],
+    )
+    # src2018_02/article2: offset drainage Pc = Pcth + A*Swn^(-B) (BC-Pc + offset)
+    assert_matches_original(
+        _original_drainage_pc_offset_2018_02,
+        lambda swn_, pcth, a, b: (
+            pcth + cap.brooks_corey_pc(swn_, pc_entry=a, lam=1.0 / b, swirr=0.0)
+        ),
+        [(swn, 1e4, 3e4, 2.0)],
     )
     # forward/inverse round trip above the entry pressure
     pc = cap.brooks_corey_pc(SW, pc_entry=5e4, lam=1.8, swirr=0.1)

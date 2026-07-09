@@ -25,6 +25,13 @@ Default Swanson constants A=339, B=1.691 (Swanson 1981).  Pc in psi, d in m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 PSI_TO_PA = 6894.76
 
 
@@ -36,8 +43,11 @@ def washburn_diameter(pc_psi, sigma=0.485, theta_deg=140.0):
     Mercury is non-wetting (theta ~ 140), so cos(theta) < 0 and d > 0.  sigma is
     the mercury-air interfacial tension (0.485 N/m); Pc converted from psi.
     """
+    # -4*cos folds the obtuse mercury angle to a positive diameter; the library
+    # expresses this as the |cos| (absolute=True) convention.  psi->Pa is kept here.
     pc_pa = np.asarray(pc_psi, float) * PSI_TO_PA
-    return -4.0 * sigma * np.cos(np.radians(theta_deg)) / pc_pa
+    return petrolib.capillary_pressure.washburn_diameter(
+        pc_pa, sigma=sigma, theta_deg=theta_deg, absolute=True)
 
 
 def micp_apex(shg_pct, pc_psi):

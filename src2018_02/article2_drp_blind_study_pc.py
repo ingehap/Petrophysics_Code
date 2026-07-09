@@ -27,6 +27,13 @@ Pc in Pa, sigma in N/m, r in m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- capillary pressure --------------
 
@@ -35,7 +42,8 @@ def pore_throat_radius(pc, sigma=0.072, theta_deg=0.0):
 
     Young-Laplace for a cylindrical throat; primary drainage uses theta ~ 0.
     """
-    return 2.0 * sigma * np.cos(np.radians(theta_deg)) / np.asarray(pc, float)
+    return petrolib.capillary_pressure.washburn_radius(
+        pc, sigma=sigma, theta_deg=theta_deg, absolute=False)
 
 
 def normalized_sw(sw, swir):
@@ -49,13 +57,17 @@ def drainage_pc(swn, pc_threshold, a, b):
     Pc rises sharply as the normalized saturation approaches its irreducible
     value; Pcth is the threshold (entry) capillary pressure.
     """
-    return pc_threshold + a * np.asarray(swn, float) ** (-b)
+    # The A*Swn^(-B) term is the normalized Brooks-Corey Pc (swirr=0, lam=1/B);
+    # the additive threshold Pcth is this article's own offset, kept here.
+    return pc_threshold + petrolib.capillary_pressure.brooks_corey_pc(
+        swn, pc_entry=a, lam=1.0 / b, swirr=0.0)
 
 
 def rescale_ift(pc, sigma_from, sigma_to, theta_from=0.0, theta_to=0.0):
     """Rescale Pc between fluid systems by the |sigma*cos(theta)| ratio."""
-    return (np.asarray(pc, float) * abs(sigma_to * np.cos(np.radians(theta_to)))
-            / abs(sigma_from * np.cos(np.radians(theta_from))))
+    return petrolib.capillary_pressure.pc_convert_system(
+        pc, sigma_from=sigma_from, theta_from_deg=theta_from,
+        sigma_to=sigma_to, theta_to_deg=theta_to, absolute=True)
 
 
 # ---------------------------------------------- tests --------------
