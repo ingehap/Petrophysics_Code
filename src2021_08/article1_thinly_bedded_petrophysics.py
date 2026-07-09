@@ -53,7 +53,7 @@ def vertical_resistivity(fractions, resistivities):
 
 def anisotropy_coefficient(Rv, Rh):
     """Coefficient of anisotropy  lambda = sqrt(Rv / Rh)  (>= 1)."""
-    return np.sqrt(Rv / Rh)
+    return petrolib.em_dielectric.anisotropy_coefficient(Rh, Rv)
 
 
 # ---------------------------------------------- Eq. 1: Moran-Gianzero ---
@@ -64,9 +64,7 @@ def moran_gianzero_apparent(Rh, Rv, dip_deg):
     Ra = Rh * sqrt(cos^2(theta) + lambda^2 * sin^2(theta)), lambda=sqrt(Rv/Rh).
     Ra = Rh at theta=0; Ra = sqrt(Rh*Rv) (geometric mean) at theta=90 deg.
     """
-    lam = anisotropy_coefficient(Rv, Rh)
-    t = np.radians(dip_deg)
-    return Rh * np.sqrt(np.cos(t) ** 2 + lam ** 2 * np.sin(t) ** 2)
+    return petrolib.em_dielectric.apparent_resistivity_dip(Rh, Rv, dip_deg)
 
 
 # ---------------------------------------------- sand resistivity --------

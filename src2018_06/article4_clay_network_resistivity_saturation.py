@@ -64,8 +64,9 @@ def maxwell_garnett(sigma_host, sigma_incl, vol_frac, depol=1.0 / 3.0):
     depol = depolarization factor L (1/3 for spheres); f = inclusion volume
     fraction.  Used to fold dispersed clay / hydrocarbon / grains into the host.
     """
-    ds = sigma_incl - sigma_host
-    return sigma_host * (1.0 + vol_frac * ds / (sigma_host + depol * (1.0 - vol_frac) * ds))
+    return petrolib.em_dielectric.maxwell_garnett(
+        sigma_host, sigma_incl, vol_frac, depol=depol
+    )
 
 
 def total_conductivity(sigma_other, sigma_pc):
