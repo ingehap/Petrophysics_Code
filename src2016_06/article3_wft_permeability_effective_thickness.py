@@ -29,6 +29,13 @@ in cm^3/s, viscosity in cP.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Brooks-Corey --------------
 
@@ -52,7 +59,10 @@ def kro(sw_star, kro0, eo):
 
 def capillary_pressure(sw_star, pc0, ep):
     """Brooks-Corey capillary pressure  Pc = Pc0 * Sw*^(-ep)  (Eq. 3)."""
-    return pc0 * np.asarray(sw_star, float) ** (-ep)
+    # Sw* is already normalized here, so pass swirr=0 (identity window); the
+    # library's exponent is -1/lam, so lam = 1/ep recovers Sw*^(-ep).
+    return petrolib.capillary_pressure.brooks_corey_pc(
+        sw_star, pc_entry=pc0, lam=1.0 / ep, swirr=0.0)
 
 
 # ---------------------------------------------- WFT permeability --------------
