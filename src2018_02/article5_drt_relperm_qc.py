@@ -26,6 +26,13 @@ relative permeabilities fractional.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Corey kr --------------
 
@@ -36,8 +43,8 @@ def normalized_sw(sw, swir, sor):
 
 def corey_kr(sw, swir, sor, krw_max, kro_max, nw, no):
     """Corey water/oil relative permeabilities, returns (krw, kro)."""
-    swn = normalized_sw(sw, swir, sor)
-    return krw_max * swn ** nw, kro_max * (1.0 - swn) ** no
+    return petrolib.relperm_wettability.corey_kr(
+        sw, swr=swir, sor=sor, krw_max=krw_max, kro_max=kro_max, nw=nw, no=no)
 
 
 def relperm_bounds(sw):
@@ -64,9 +71,9 @@ def fractional_flow(krw, kro, viscosity_ratio=0.13):
 
     viscosity_ratio = mu_w/mu_o (0.13 in the paper).
     """
-    lam_w = np.asarray(krw, float)
-    lam_o = np.asarray(kro, float) * viscosity_ratio
-    return lam_w / (lam_w + lam_o)
+    # fw with a single viscosity ratio: mu_w = viscosity_ratio, mu_o = 1.
+    return petrolib.relperm_wettability.fractional_flow(
+        krw, kro, mu_w=viscosity_ratio, mu_nw=1.0)
 
 
 # ---------------------------------------------- tests --------------

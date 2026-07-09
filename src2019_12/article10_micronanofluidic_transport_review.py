@@ -26,6 +26,13 @@ relations the review surveys.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 KB = 1.380649e-23        # J/K
 
 
@@ -79,7 +86,7 @@ def apparent_permeability_factor(kn, alpha=1.0):
 
 def capillary_number(mu, v, sigma):
     """Capillary number  N_c = mu*v/sigma."""
-    return mu * np.asarray(v, float) / sigma
+    return petrolib.relperm_wettability.capillary_number(mu=mu, v=v, sigma=sigma)
 
 
 # ---------------------------------------------- tests --------------
