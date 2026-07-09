@@ -309,3 +309,98 @@ def test_formation_factor_negative_power_spelling() -> None:
     assert_matches_original(
         _original_ff_negative_power, lambda p, m=2.0: sat.formation_factor(p, m=m), [(PHI,)]
     )
+
+
+# --- Shaly-sand solver chunk additions ---------------------------------------
+
+
+def test_archie_sw_from_conductivity_inverts_forward() -> None:
+    ct = sat.archie_conductivity(SW, 20.0, phi=PHI)
+    np.testing.assert_allclose(sat.archie_sw_from_conductivity(ct, 20.0, phi=PHI), SW, rtol=1e-12)
+
+
+def _original_archie_saturation_2018_06(sigma_r, sigma_w, phi, m=2.0, n=2.0):
+    # src2018_06/article4 (conductivity-domain inverse, clipped)
+    sw = (np.asarray(sigma_r, float) / (sigma_w * phi**m)) ** (1.0 / n)
+    return np.clip(sw, 0.0, 1.0)
+
+
+def test_equivalence_conductivity_inverse_2018_06() -> None:
+    ct = sat.archie_conductivity(SW, 20.0, phi=PHI)
+    assert_matches_original(
+        _original_archie_saturation_2018_06,
+        lambda sr, cw, phi, m=2.0, n=2.0: sat.archie_sw_from_conductivity(
+            sr, cw, phi=phi, m=m, n=n, clip=(0.0, 1.0)
+        ),
+        [(ct, 20.0, PHI)],
+    )
+
+
+def _original_solve_water_saturation_2014_02(
+    ct, phi, m0, n, cw, qv, alpha, vqh, beta, n_iter=100, tol=1e-10
+):
+    # src2014_02/article1: scalar bisection on [1e-4, 1]
+    lo, hi = 1e-4, 1.0
+    for _ in range(n_iter):
+        mid = 0.5 * (lo + hi)
+        cwf = (1.0 - alpha * vqh * qv) * cw
+        c = phi**m0 * (mid**n * cwf + mid ** (n - 1) * beta * qv)
+        if c < ct:
+            lo = mid
+        else:
+            hi = mid
+        if hi - lo < tol:
+            break
+    return 0.5 * (lo + hi)
+
+
+def test_equivalence_dual_water_qv_solver_2014_02() -> None:
+    phi, m0, n = 0.24, 2.0, 2.0
+    cw, qv, alpha, vqh, beta = 5.81, 0.3, 1.0, 0.319, 4.604
+    for sw_true in (0.25, 0.5, 0.85):
+        ct = float(
+            sat.dual_water_conductivity_qv(
+                sw_true, cw=cw, qv=qv, alpha_vqh=alpha * vqh, beta=beta, phi=phi, m0=m0, n=n
+            )
+        )
+        old = _original_solve_water_saturation_2014_02(ct, phi, m0, n, cw, qv, alpha, vqh, beta)
+        new = float(
+            sat.dual_water_sw_qv(
+                ct,
+                cw=cw,
+                qv=qv,
+                alpha_vqh=alpha * vqh,
+                beta=beta,
+                phi=phi,
+                m0=m0,
+                n=n,
+                lo=1e-4,
+                n_iter=100,
+                tol=1e-10,
+            )
+        )
+        # identical bisection path (same bracket, updates, and convergence
+        # check); ties at exact equality are the only divergence and do not
+        # occur with float physics values
+        assert new == old
+        assert new == pytest.approx(sw_true, abs=1e-8)
+
+
+def _original_ws_ct_2016_02(sw, rw, phi, qv, m_star, n_star, b, a=1.0):
+    # src2016_02/article5: Rw-parameterized with the a divisor
+    f_star_inv = phi**m_star / a
+    return f_star_inv * (sw**n_star / rw + b * qv * sw ** (n_star - 1.0))
+
+
+def test_equivalence_ws_rw_form_2016_02() -> None:
+    # article form == canonical(cw=1/rw)/a; float paths differ by ~1 ULP
+    assert_matches_original(
+        _original_ws_ct_2016_02,
+        lambda sw, rw, phi, qv, m_star, n_star, b, a=1.0: (
+            sat.waxman_smits_conductivity(
+                sw, cw=1.0 / rw, qv=qv, b=b, phi=phi, m_star=m_star, n_star=n_star
+            )
+            / a
+        ),
+        [(SW, 0.17, PHI, 0.3, 2.1, 1.9, 0.45)],
+    )

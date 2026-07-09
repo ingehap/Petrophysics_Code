@@ -39,6 +39,13 @@ in S/m, Qv in meq/cm^3.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Saturation exponent: the paper notes n = 2.0 is a good generic starting value,
 # while the case study's six-core average (used in its final Sw computation) is
 # n = 1.67 (Tan et al., 2014).
@@ -92,9 +99,8 @@ def dual_water_conductivity(phi, sw, m0, n, cw, qv, alpha, vqh, beta):
     the effective-connate-water term plus the excess-clay term, reducing to
     Co = phi^m0*[(1-alpha*vQH*Qv)*Cw + beta*Qv] at Sw = 1.
     """
-    sw = np.asarray(sw, float)
-    cwf = effective_water_conductivity(cw, alpha, vqh, qv)
-    return phi ** m0 * (sw ** n * cwf + sw ** (n - 1) * beta * qv)
+    return petrolib.saturation_resistivity.dual_water_conductivity_qv(
+        sw, cw=cw, qv=qv, alpha_vqh=alpha * vqh, beta=beta, phi=phi, m0=m0, n=n)
 
 
 # ---------------------------------------------- clay-bound water --------------
@@ -134,7 +140,7 @@ def qv_from_cec(cec, rho_grain, phi):
 
     with CEC in meq/g, grain density in g/cm^3 and Qv in meq/cm^3.
     """
-    return cec * rho_grain * (1.0 - phi) / phi
+    return petrolib.saturation_resistivity.qv_from_cec(cec, rho_grain=rho_grain, phi=phi)
 
 
 def co_wet_conductivity(phi, m0, cw, qv, alpha, vqh, beta):
@@ -170,7 +176,7 @@ def cec_from_qv(qv, rho_grain, phi):
 
     the cation-exchange-capacity curve the paper derives from Qv.
     """
-    return qv * phi / (rho_grain * (1.0 - phi))
+    return petrolib.saturation_resistivity.cec_from_qv(qv, rho_grain=rho_grain, phi=phi)
 
 
 # ---------------------------------------------- inversion --------------
@@ -214,17 +220,9 @@ def m0_lithology(m0):
 def solve_water_saturation(ct, phi, m0, n, cw, qv, alpha, vqh, beta,
                            n_iter=100, tol=1e-10):
     """Solve the dual-water equation for Sw by bisection on [1e-4, 1]."""
-    lo, hi = 1e-4, 1.0
-    for _ in range(n_iter):
-        mid = 0.5 * (lo + hi)
-        c = dual_water_conductivity(phi, mid, m0, n, cw, qv, alpha, vqh, beta)
-        if c < ct:
-            lo = mid
-        else:
-            hi = mid
-        if hi - lo < tol:
-            break
-    return 0.5 * (lo + hi)
+    return float(petrolib.saturation_resistivity.dual_water_sw_qv(
+        ct, cw=cw, qv=qv, alpha_vqh=alpha * vqh, beta=beta, phi=phi,
+        m0=m0, n=n, lo=1e-4, n_iter=n_iter, tol=tol))
 
 
 # ---------------------------------------------- joint workflow --------------

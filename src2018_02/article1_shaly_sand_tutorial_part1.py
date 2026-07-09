@@ -26,12 +26,19 @@ DOI is the authoritative SPWLA/CrossRef value for this issue (the older
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Archie --------------
 
 def formation_factor(phi, a=1.0, m=2.0):
     """Archie formation factor  F = a/phi^m."""
-    return a / np.asarray(phi, float) ** m
+    return petrolib.saturation_resistivity.formation_factor(phi, a=a, m=m)
 
 
 def archie_water_saturation(rw, rt, phi, a=1.0, m=2.0, n=2.0):
@@ -40,8 +47,9 @@ def archie_water_saturation(rw, rt, phi, a=1.0, m=2.0, n=2.0):
     Valid when the rock is homogeneous and brine is the only conductor - the two
     conditions the tutorial says clay violates.
     """
-    sw = (a * rw / (np.asarray(phi, float) ** m * rt)) ** (1.0 / n)
-    return np.clip(sw, 0.0, 1.0)
+    # HAZARD (LIBRARY_MERGE_PLAN.md section 9): this article's argument order
+    # is (rw, rt) — the canonical order is (rt, rw).  Mapped explicitly.
+    return petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, a=a, m=m, n=n, clip=(0.0, 1.0))
 
 
 # ---------------------------------------------- shaly-sand --------------

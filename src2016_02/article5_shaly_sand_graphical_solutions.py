@@ -28,6 +28,13 @@ Resistivities in ohm-m, Qv in meq/cm^3, CEC in meq/g, density in g/cm^3.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Archie --------------
 
@@ -36,7 +43,7 @@ def archie_sw(rt, rw, phi, m=2.0, n=2.0, a=1.0):
 
         Sw = (a*Rw/(phi^m * Rt))^(1/n).
     """
-    return (a * rw / (phi ** m * rt)) ** (1.0 / n)
+    return petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, a=a, m=m, n=n)
 
 
 # ---------------------------------------------- Waxman-Smits / Juhasz --------------
@@ -48,7 +55,7 @@ def juhasz_qv(cec, rho_dry_clay, vcl, phi):
 
     the effective clay-counterion concentration per unit pore volume.
     """
-    return cec * rho_dry_clay * vcl / phi
+    return petrolib.saturation_resistivity.qv_juhasz(vcl, rho_clay=rho_dry_clay, cec_clay=cec, phit=phi)
 
 
 def variable_exponent(base, clay_coeff, vcl):
@@ -66,8 +73,8 @@ def waxman_smits_ct(sw, rw, phi, qv, m_star, n_star, b, a=1.0):
 
     the Archie term plus the clay term Rw*B*Qv (here as conductivity).
     """
-    f_star_inv = phi ** m_star / a
-    return f_star_inv * (sw ** n_star / rw + b * qv * sw ** (n_star - 1.0))
+    return petrolib.saturation_resistivity.waxman_smits_conductivity(
+        sw, cw=1.0 / rw, qv=qv, b=b, phi=phi, m_star=m_star, n_star=n_star) / a
 
 
 def waxman_smits_sw(rt, rw, phi, qv, m_star, n_star, b, a=1.0, tol=1e-10):

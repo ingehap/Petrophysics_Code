@@ -33,6 +33,13 @@ al., 1984).  Conductivities in mho/m (S/m), porosities and volumes as fractions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- bound water & porosity --------------
 
@@ -82,8 +89,8 @@ def waxman_smits_conductivity(sw, cw, phit, m, n, b, qv):
     capacity per unit pore volume (meq/ml).  The Sw^(n-1) factor means this is
     not a pure parallel-conductor model.
     """
-    sw = np.asarray(sw, float)
-    return sw ** n * cw * phit ** m + b * qv * phit ** m * sw ** (n - 1)
+    return petrolib.saturation_resistivity.waxman_smits_conductivity(
+        sw, cw=cw, qv=qv, b=b, phi=phit, m_star=m, n_star=n)
 
 
 def juhasz_qv(vcldry, rho_cldry, cec_cl, phit):
@@ -94,7 +101,7 @@ def juhasz_qv(vcldry, rho_cldry, cec_cl, phit):
     with the dry-clay volume Vcldry, dry-clay density rho_cldry (g/cm^3) and the
     clay CEC in meq/g.
     """
-    return vcldry * rho_cldry * cec_cl / phit
+    return petrolib.saturation_resistivity.qv_juhasz(vcldry, rho_clay=rho_cldry, cec_clay=cec_cl, phit=phit)
 
 
 # ---------------------------------------------- difference (dry-clay) method --------------
@@ -136,8 +143,7 @@ def dual_water_conductivity(sw, cw, cb, sb, phit, m, n):
 
     with the bound-water saturation Sb and bound-water conductivity Cb.
     """
-    sw = np.asarray(sw, float)
-    return sw ** n * phit ** m * cw + sw ** (n - 1) * sb * phit ** m * (cb - cw)
+    return petrolib.saturation_resistivity.dual_water_conductivity(sw, cw=cw, cb=cb, swb=sb, phi=phit, m=m, n=n)
 
 
 def bound_water_conductivity(csh, phitsh):

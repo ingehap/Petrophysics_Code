@@ -29,6 +29,13 @@ six-step image workflow.  Conductivities in S/m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- geometry --------------
 
@@ -73,8 +80,8 @@ def archie_saturation(sigma_r, sigma_w, phi, m=2.0, n=2.0):
 
     clipped to [0, 1].
     """
-    sw = (np.asarray(sigma_r, float) / (sigma_w * phi ** m)) ** (1.0 / n)
-    return np.clip(sw, 0.0, 1.0)
+    return petrolib.saturation_resistivity.archie_sw_from_conductivity(
+        sigma_r, sigma_w, phi=phi, m=m, n=n, clip=(0.0, 1.0))
 
 
 # ---------------------------------------------- tests --------------
