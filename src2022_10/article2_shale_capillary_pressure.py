@@ -19,6 +19,13 @@ the slope (alpha1) and curvature (alpha2) separately tunable.
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from scipy.optimize import curve_fit
 
 
@@ -62,9 +69,11 @@ def mse(y_pred, y_obs):
 
 
 def r2(y_pred, y_obs):
-    ss_res = float(np.sum((y_obs - y_pred) ** 2))
-    ss_tot = float(np.sum((y_obs - y_obs.mean()) ** 2))
-    return 1.0 - ss_res / ss_tot
+    # HAZARD (LIBRARY_MERGE_PLAN.md section 9): this article's historical
+    # argument order takes the PREDICTIONS first.  The canonical r2_score
+    # takes (y_true, y_pred), so the arguments are mapped explicitly here —
+    # a positional migration would compute ss_tot from the predictions.
+    return petrolib.ml_stats.r2_score(y_obs, y_pred)
 
 
 # ------------------------------------------------ fit helpers ----------
