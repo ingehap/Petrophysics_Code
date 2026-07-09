@@ -29,6 +29,13 @@ from dataclasses import dataclass
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # CO2 properties (very simple correlations sufficient for screening)
@@ -80,7 +87,11 @@ def capillary_entry_pressure(ift_Nm: float,
 
         Pc = 2 * sigma * cos(theta) / r
     """
-    return 2.0 * ift_Nm * math.cos(math.radians(contact_angle_deg)) / pore_throat_radius_m
+    return float(
+        petrolib.capillary_pressure.young_laplace_pc(
+            pore_throat_radius_m, sigma=ift_Nm, theta_deg=contact_angle_deg, absolute=False
+        )
+    )
 
 
 def max_co2_column_height(pc_caprock_Pa: float,
@@ -91,7 +102,9 @@ def max_co2_column_height(pc_caprock_Pa: float,
     drho = rho_brine - rho_co2
     if drho <= 0:
         return 0.0
-    return pc_caprock_Pa / (drho * g)
+    return float(
+        petrolib.capillary_pressure.height_above_fwl(pc_caprock_Pa, delta_rho=drho, g=g)
+    )
 
 
 # ---------------------------------------------------------------------------

@@ -68,6 +68,12 @@ def _original_washburn_diameter_2018_02(pc, sigma=0.485, theta_deg=140.0):
     return -4.0 * sigma * np.cos(np.radians(theta_deg)) / np.asarray(pc, float)
 
 
+def _original_young_laplace_diameter_2022_10(d_m, gamma, theta_deg):
+    # src2022_10/article2 young_laplace: Pc = 4*gamma*cos(theta)/d (diameter form,
+    # signed cos) == 2*gamma*cos/r with r = d/2.
+    return 4.0 * gamma * np.cos(np.deg2rad(theta_deg)) / np.asarray(d_m, float)
+
+
 def test_equivalence_washburn_variants() -> None:
     assert_matches_original(
         _original_pore_throat_radius_2014_02,
@@ -98,6 +104,13 @@ def test_equivalence_washburn_variants() -> None:
         lambda pc, s, th: cap.washburn_diameter(pc, sigma=s, theta_deg=th, absolute=True),
         [(PC, 0.485, 140.0), (PC, 0.485, 120.0), (PC, 0.485, 160.0)],
     )
+    # src2022_10/article2: Pc = 4*gamma*cos/d (diameter) == young_laplace_pc(r=d/2)
+    d_m = RNG.uniform(1e-8, 1e-5, size=30)
+    assert_matches_original(
+        _original_young_laplace_diameter_2022_10,
+        lambda d, g_, th: cap.young_laplace_pc(d / 2.0, sigma=g_, theta_deg=th, absolute=False),
+        [(d_m, 0.072, 180.0), (d_m, 0.485, 140.0)],
+    )
 
 
 # --- Leverett J ---------------------------------------------------------------
@@ -115,6 +128,12 @@ def _original_leverett_omitcos_2016_02(pc, sigma, k, phi):
 def _original_pc_from_j_2016_02(j, sigma, k, phi):
     # src2016_02/article1 inverse: Pc = J*sigma*sqrt(phi/k)
     return j * sigma * np.sqrt(phi / k)
+
+
+def _original_leverett_abscos_2022_10(pc, k, phi, sigma, theta_deg):
+    # src2022_10/article4 leverett_J: J = Pc*sqrt(k/phi)/(sigma*|cos(theta)|),
+    # the |cos| convention (mercury theta=180 keeps J positive).
+    return pc * np.sqrt(k / phi) / (sigma * abs(np.cos(np.deg2rad(theta_deg))))
 
 
 def test_leverett_round_trip_and_equivalence() -> None:
@@ -143,6 +162,14 @@ def test_leverett_round_trip_and_equivalence() -> None:
         lambda j_, s, k, phi: cap.pc_from_leverett_j(j_, sigma=s, theta_deg=0.0, k=k, phi=phi),
         [(jvals, 0.03, 1e-14, 0.2)],
     )  # sqrt(phi/k) vs 1/sqrt(k/phi): float reassociation within rtol 1e-12
+    # src2022_10/article4: |cos| Leverett (mercury theta=180)
+    assert_matches_original(
+        _original_leverett_abscos_2022_10,
+        lambda pc, k, phi, s, th: cap.leverett_j(
+            pc, sigma=s, theta_deg=th, k=k, phi=phi, absolute=True
+        ),
+        [(PC, 1e-15, 0.1, 0.072, 180.0)],
+    )
 
 
 def _original_pc_convert_mercury_2016_10(pc_am, ift_ab, theta_ab, ift_am, theta_am):
