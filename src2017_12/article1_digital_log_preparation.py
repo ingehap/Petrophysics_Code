@@ -28,6 +28,13 @@ Densities in g/cm^3, resistivities in ohm.m, fractions dimensionless.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- porosity --------------
 
@@ -37,7 +44,7 @@ def density_porosity(rho_b, rho_ma=2.65, rho_fl=1.0):
     rho_ma defaults to sandstone (2.65; use 2.71 for carbonate); a gas-bearing
     zone lowers rho_b and so inflates the computed porosity.
     """
-    return (rho_ma - np.asarray(rho_b, float)) / (rho_ma - rho_fl)
+    return petrolib.porosity_lithology.density_porosity(rho_b, rho_ma, rho_fl)
 
 
 def flushed_zone_saturation(rmf, rxo, phi, a=1.0, m=2.0, n=2.0):

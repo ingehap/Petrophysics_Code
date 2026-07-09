@@ -25,6 +25,13 @@ Porosities fractional, densities g/cm^3, S1 in mg HC/g rock.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 R_GAS = 8.314                # J/(mol K)
 
 
@@ -32,7 +39,7 @@ R_GAS = 8.314                # J/(mol K)
 
 def hydrocarbon_pore_volume(phi_t, sw_t):
     """Hydrocarbon pore volume  HPV = phi_t*(1 - Sw_t)  (Eq. 1)."""
-    return phi_t * (1.0 - np.asarray(sw_t, float))
+    return petrolib.porosity_lithology.hydrocarbon_pore_volume(phi_t, sw_t)
 
 
 def formation_volume_factor(s_oil, s_gas):

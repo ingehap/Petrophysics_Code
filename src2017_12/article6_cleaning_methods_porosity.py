@@ -26,6 +26,13 @@ BET surface area by ~450%.  Weights in g, densities in g/cm^3.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 SOLVENT_EFFICIENCY = {"toluene": 1.0, "DCM": 0.98, "chloroform": 0.95, "n-heptane": 0.6}
 
 
@@ -43,7 +50,7 @@ def grain_volume(weight, grain_density):
 
 def helium_porosity(bv, gv):
     """Helium porosity on a crushed sample  phi = (BV - GV)/BV  (Eq. 1)."""
-    return (np.asarray(bv, float) - gv) / bv
+    return petrolib.porosity_lithology.porosity_from_volumes(bv, gv)
 
 
 def porosity_after_cleaning(weight_before, weight_after, bulk_density, grain_density):

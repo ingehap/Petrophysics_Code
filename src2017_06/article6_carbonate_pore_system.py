@@ -29,6 +29,13 @@ transcribed from the paper.  Porosities fractional, density in g/cm^3.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 PEF_LIMESTONE = 5.08
 PEF_DOLOMITE = 3.14
 
@@ -37,7 +44,7 @@ PEF_DOLOMITE = 3.14
 
 def density_porosity(rho_b, rho_ma=2.71, rho_fl=1.0):
     """Density porosity  phi = (rho_ma - rho_b)/(rho_ma - rho_fl)  (limestone matrix default)."""
-    return (rho_ma - np.asarray(rho_b, float)) / (rho_ma - rho_fl)
+    return petrolib.porosity_lithology.density_porosity(rho_b, rho_ma, rho_fl)
 
 
 def rock_type(pef):

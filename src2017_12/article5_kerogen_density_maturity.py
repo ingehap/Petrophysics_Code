@@ -55,12 +55,12 @@ def corrected_kerogen_density(rho_total, c_pyrite, c_fe, c_kerogen,
 
 def matrix_density(concentrations, densities):
     """Multimineral matrix density  rho_ma = sum_i C_i*rho_i  (volume-weighted)."""
-    return float(np.sum(np.asarray(concentrations, float) * np.asarray(densities, float)))
+    return float(petrolib.porosity_lithology.matrix_density_from_volumes(concentrations, densities))
 
 
 def total_porosity(rho_matrix, rho_b, rho_fluid=1.0):
     """Total porosity  phi = (rho_ma - rho_b)/(rho_ma - rho_fluid)  (Eq. 2)."""
-    return (rho_matrix - np.asarray(rho_b, float)) / (rho_matrix - rho_fluid)
+    return petrolib.porosity_lithology.density_porosity(rho_b, rho_matrix, rho_fluid)
 
 
 def archie_sw(rw, rt, phi, m=2.0, n=1.5):
