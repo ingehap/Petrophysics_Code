@@ -26,17 +26,24 @@ and the modeling example (phi_Sd=0.3, Vsh=0.3, phi_Sh=0.2).  Fractions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- shale distribution --------------
 
 def dispersed_clay_porosity(phi_sd, vsh, phi_sh):
     """Dispersed-clay effective porosity  phi_e = phi_Sd - Vsh*phi_Sh  (Eq. 1)."""
-    return phi_sd - vsh * phi_sh
+    return petrolib.porosity_lithology.effective_porosity(phi_sd, vsh, phi_sh, clip=None)
 
 
 def laminated_shale_porosity(phi_sd, vsh, phi_sh):
     """Laminated-shale effective porosity  phi_e = phi_Sd - Vsh*phi_Sd + Vsh*phi_Sh."""
-    return phi_sd - vsh * phi_sd + vsh * phi_sh
+    return petrolib.porosity_lithology.thomas_stieber_phit(vsh, phi_sd, phi_sh)
 
 
 def total_porosity(phi_sd, vsh, phi_sh):
@@ -46,7 +53,7 @@ def total_porosity(phi_sd, vsh, phi_sh):
 
 def structural_shale_porosity(phi_t, vsh, phi_sh):
     """Structural-shale effective porosity  phi_e = phi_T - Vsh*phi_Sh  (Eq. 4)."""
-    return phi_t - vsh * phi_sh
+    return petrolib.porosity_lithology.effective_porosity(phi_t, vsh, phi_sh, clip=None)
 
 
 # ---------------------------------------------- thomas-stieber --------------
@@ -59,7 +66,7 @@ def thomas_stieber_sand_porosity(phi_bulk, vlam, phi_tsh):
     Redistributing the bulk porosity over the laminar shale fraction Vlam: a
     larger Vlam boosts the recovered clean-sand porosity.
     """
-    return (phi_bulk - vlam * phi_tsh) / (1.0 - vlam)
+    return petrolib.porosity_lithology.thomas_stieber_sand_porosity(phi_bulk, vlam, phi_tsh)
 
 
 def anisotropy_ratio(rv, rh):

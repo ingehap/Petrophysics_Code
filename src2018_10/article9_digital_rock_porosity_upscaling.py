@@ -26,12 +26,19 @@ paper's title describes.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- CT porosity -------------
 
 def ct_porosity(mu, mu_grain, mu_fluid):
     """Porosity from CT attenuation  phi = (mu_grain - mu)/(mu_grain - mu_fluid)."""
-    return (mu_grain - np.asarray(mu, float)) / (mu_grain - mu_fluid)
+    return petrolib.porosity_lithology.ct_porosity(mu, mu_grain, mu_fluid)
 
 
 def running_porosity(phi_voxels):
