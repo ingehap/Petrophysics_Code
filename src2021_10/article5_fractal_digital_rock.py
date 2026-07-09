@@ -25,6 +25,13 @@ percentage; fractal dimension as a decimal).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Eq. 3: box counting -----
 
@@ -87,12 +94,12 @@ def permeability_from_succolarity(Su):
 
 def formation_factor(phi, m, a=1.0):
     """Archie formation factor  F = a * phi^(-m)  (Eq. 13)."""
-    return a * np.asarray(phi, float) ** (-m)
+    return petrolib.saturation_resistivity.formation_factor(phi, a=a, m=m)
 
 
 def cementation_exponent(F, phi, a=1.0):
     """Invert Archie for m  =  -log(F/a) / log(phi)."""
-    return -np.log(np.asarray(F, float) / a) / np.log(phi)
+    return petrolib.saturation_resistivity.cementation_exponent_at_point(phi, F, a=a)
 
 
 # ---------------------------------------------- Eq. 5: lacunarity -------

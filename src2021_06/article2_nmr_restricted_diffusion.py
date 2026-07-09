@@ -26,6 +26,13 @@ um, tau dimensionless, permeability in consistent units (report mD).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Bulk self-diffusion coefficients (um^2/ms) at the paper's conditions
 D0_WATER = 2.3
 D0_METHANE = 250.0
@@ -64,7 +71,7 @@ def electrical_tortuosity(formation_factor, phi):
 
 def archie_formation_factor(phi, m):
     """Archie's law  F_R = phi^(-m)  (Eq. 5)."""
-    return phi ** (-m)
+    return petrolib.saturation_resistivity.formation_factor(phi, m=m)
 
 
 def diffusive_tortuosity(D0, D_inf):

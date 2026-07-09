@@ -27,12 +27,19 @@ conductivity 1,500 S/m and HS weighting constant w = 0.03.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Eq. 1: Archie -----------
 
 def archie_sigma_t(sigma_w, phi, Sw, m=2.0, n=2.0):
     """sigma_t = sigma_w * phi^m * Sw^n   (Eq. 1)."""
-    return sigma_w * phi ** m * Sw ** n
+    return petrolib.saturation_resistivity.archie_conductivity(Sw, sigma_w, phi=phi, m=m, n=n)
 
 
 # ---------------------------------------------- Eqs. 2-3: Wiener bounds -
@@ -73,7 +80,7 @@ def hs_weighted(f1, sigma1, f2, sigma2, weight=0.50):
 
 def archie_with_extra(sigma_w, sigma_extra, phi, Sw, m=2.0, n=2.0):
     """sigma_o = (sigma_w + sigma_extra) * phi^m * Sw^n  (Eq. 6)."""
-    return (sigma_w + sigma_extra) * phi ** m * Sw ** n
+    return petrolib.saturation_resistivity.archie_conductivity(Sw, sigma_w + sigma_extra, phi=phi, m=m, n=n)
 
 
 def waxman_smits_extra(beta, Qv):

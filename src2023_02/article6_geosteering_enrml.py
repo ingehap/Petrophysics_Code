@@ -29,12 +29,20 @@ schedule that increases lambda after a rejected step.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ------------------------------------------------ forward operators ---------
 
 def archie_rt(phi, sw, Rw=0.05, m=2.0, n=2.0, a=1.0):
     """Archie's law for true resistivity."""
-    return a * Rw / (phi ** m * sw ** n)
+    # NOTE the historical argument order (phi, sw); canonical is (sw, rw, phi=).
+    return petrolib.saturation_resistivity.archie_rt(sw, Rw, phi=phi, a=a, m=m, n=n)
 
 
 def bulk_density(phi, sw, rho_q=2.65, rho_w=1.0, rho_h=0.8):

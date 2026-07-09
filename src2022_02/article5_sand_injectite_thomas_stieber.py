@@ -28,6 +28,13 @@ Cutoffs from the paper: Fsd >= 0.30, Swt <= 0.65, PHIT >= 0.15.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Endpoints / cutoffs from the paper
 PHIT_SAND = 0.38            # clean-sand total porosity
 PHIT_SHALE = 0.27          # shale total porosity
@@ -99,8 +106,8 @@ def poupon_invert_rt_sand(rt, vsh, rsh, a, m, rw, phit_sand):
 
 def archie_saturation(rt_sand, phit_sand, a=1.0, m=2.0, n=2.0, rw=0.03):
     """SwtSand = (a*Rw / (PHITSand^m * RtSand))^(1/n)  (Archie)."""
-    sw = (a * rw / (phit_sand ** m * np.asarray(rt_sand, float))) ** (1.0 / n)
-    return np.clip(sw, 0.0, 1.0)
+    return petrolib.saturation_resistivity.archie_sw(rt_sand, rw, phi=phit_sand, a=a, m=m, n=n,
+                           clip=(0.0, 1.0))
 
 
 # ---------------------------------------------- Thomas-Stieber ----------

@@ -27,6 +27,13 @@ replace with the paper's calibrated parameters when its body is available.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- clay volume -------------
 
@@ -53,8 +60,10 @@ def density_porosity(rhob, rho_ma=2.65, rho_fl=1.0):
 
 def archie_sw(rt, phi, rw, a=1.0, m=2.0, n=2.0):
     """Archie  Sw = (a*Rw / (phi^m * Rt))^(1/n)."""
-    sw = (a * rw / (np.asarray(phi, float) ** m * np.asarray(rt, float))) ** (1.0 / n)
-    return np.clip(sw, 0.0, 1.0)
+    # HAZARD (LIBRARY_MERGE_PLAN.md section 9): this article's argument order
+    # is (rt, phi, rw) — the canonical order is (rt, rw, phi=).  Mapped
+    # explicitly.
+    return petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, a=a, m=m, n=n, clip=(0.0, 1.0))
 
 
 def simandoux_sw(rt, phi, rw, vsh, rsh, a=1.0, m=2.0):
@@ -62,12 +71,8 @@ def simandoux_sw(rt, phi, rw, vsh, rsh, a=1.0, m=2.0):
 
     Solves  1/Rt = Vsh*Sw/Rsh + phi^m * Sw^2 / (a*Rw)  for Sw.
     """
-    phi = np.asarray(phi, float); rt = np.asarray(rt, float)
-    vsh = np.asarray(vsh, float)
-    A = phi ** m / (a * rw)
-    B = vsh / rsh
-    sw = (-B + np.sqrt(B ** 2 + 4.0 * A / rt)) / (2.0 * A)
-    return np.clip(sw, 0.0, 1.0)
+    return petrolib.saturation_resistivity.simandoux_sw(rt, rw, phi=phi, vsh=vsh, rsh=rsh, a=a, m=m,
+                              clip=(0.0, 1.0))
 
 
 # ---------------------------------------------- pore-throat radius ------

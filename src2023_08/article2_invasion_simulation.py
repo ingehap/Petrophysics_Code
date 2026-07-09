@@ -36,6 +36,13 @@ from __future__ import annotations
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Equation 1 - initial Sw from a porosity regression
@@ -140,16 +147,15 @@ def mudcake_thickness(t_array, fs, kmc0, mu_f, dp, v=0.5):
 # ---------------------------------------------------------------------------
 def archie_rt(phi, sw, rw, a=1.0, m=2.0, n=2.0):
     """Rt = a*Rw / (phi^m * Sw^n)."""
-    phi = np.asarray(phi, dtype=float)
-    sw  = np.clip(np.asarray(sw, dtype=float), 1e-3, 1.0)
-    return a * rw / (np.power(phi, m) * np.power(sw, n))
+    # NOTE the historical argument order (phi, sw, rw) and input clip on Sw.
+    sw = np.clip(np.asarray(sw, dtype=float), 1e-3, 1.0)
+    return petrolib.saturation_resistivity.archie_rt(sw, rw, phi=phi, a=a, m=m, n=n)
 
 
 def archie_sw(rt, phi, rw, a=1.0, m=2.0, n=2.0):
     """Inverse Archie  ->  Sw."""
-    phi = np.asarray(phi, dtype=float)
-    rt  = np.asarray(rt,  dtype=float)
-    return np.clip(np.power(a * rw / (rt * np.power(phi, m)), 1.0 / n), 0.0, 1.0)
+    # HAZARD: historical argument order (rt, phi, rw); canonical (rt, rw, phi=).
+    return petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, a=a, m=m, n=n, clip=(0.0, 1.0))
 
 
 # ---------------------------------------------------------------------------
