@@ -26,12 +26,19 @@ LBM study parameterizes.  Berea micro-CT at 2.6 um/voxel.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- capillary number --------
 
 def capillary_number(mu, v, sigma):
     """Capillary number  N_c = mu*v/sigma  (viscous / capillary forces)  (Eq. 1)."""
-    return mu * np.asarray(v, float) / sigma
+    return petrolib.relperm_wettability.capillary_number(mu=mu, v=v, sigma=sigma)
 
 
 # ---------------------------------------------- rate effect -------------
@@ -51,16 +58,17 @@ def krg_vs_capillary_number(nc, krg_low=0.3, krg_high=1.0, nc50=1e-5, a=1.0):
 
 def corey_krg(sg, sgc, sor, ng=2.0, krg_max=1.0):
     """Corey gas relative permeability  krg = krg_max*Sg*^ng."""
-    sg = np.asarray(sg, float)
-    sge = np.clip((sg - sgc) / (1.0 - sgc - sor), 0.0, 1.0)
-    return krg_max * sge ** ng
+    # Sg* = (Sg - Sgc)/(1 - Sgc - Sor): 2-endpoint gas (swc=0, sorg=Sor).
+    return petrolib.relperm_wettability.corey_krg(
+        sg, sgc=sgc, swc=0.0, sorg=sor, krg_max=krg_max, ng=ng)
 
 
 def corey_kro(sg, sgc, sor, no=2.0, kro_max=1.0):
     """Corey condensate (oil) relative permeability  kro = kro_max*(1-Sg*)^no."""
-    sg = np.asarray(sg, float)
-    sge = np.clip((sg - sgc) / (1.0 - sgc - sor), 0.0, 1.0)
-    return kro_max * (1.0 - sge) ** no
+    # kro_max*(1-Sg*)^no on the gas-saturation normalization (Sg* = (Sg-Sgc)/
+    # (1-Sgc-Sor)) is the library's (1-Se) form with the saturation = Sg.
+    return petrolib.relperm_wettability.corey_kro(
+        sg, swr=sgc, sor=sor, kro_max=kro_max, no=no)
 
 
 # ---------------------------------------------- tests --------------

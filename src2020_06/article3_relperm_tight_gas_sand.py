@@ -57,10 +57,10 @@ def corey_brooks_krg(sw, swr, sgc, ng, krg_max=1.0):
         krg = krg_max * [(1 - Sw - Sgc)/(1 - Swr - Sgc)]^ng
     Clipped to [0, krg_max]; zero once gas is immobile (Sw >= 1 - Sgc).
     """
-    sw = np.asarray(sw, float)
-    num = np.clip(1.0 - sw - sgc, 0.0, None)
-    krg = krg_max * (num / (1.0 - swr - sgc)) ** ng
-    return np.clip(krg, 0.0, krg_max)
+    # Sw-framework gas maps to the library's Sg = 1 - Sw form (swc=Swr, sorg=0);
+    # the library's Se clip [0,1] reproduces this article's num + output clips.
+    return petrolib.relperm_wettability.corey_krg(
+        1.0 - np.asarray(sw, float), sgc=sgc, swc=swr, sorg=0.0, krg_max=krg_max, ng=ng)
 
 
 # ---------------------------------------------- SDR brine kr ------------

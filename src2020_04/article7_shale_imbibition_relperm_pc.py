@@ -52,14 +52,14 @@ def brooks_corey_pc(sw, swr, pe, lam):
 
 def brooks_corey_krw(sw, swr, lam, snwr=0.0):
     """Brooks-Corey wetting (water) rel-perm  krw = Se^((2+3*lambda)/lambda)."""
-    se = effective_saturation(sw, swr, snwr)
-    return se ** ((2.0 + 3.0 * lam) / lam)
+    return petrolib.relperm_wettability.brooks_corey_burdine_kr(
+        sw, swr=swr, lam=lam, snwr=snwr)[0]
 
 
 def brooks_corey_krg(sw, swr, lam, snwr=0.0):
     """Brooks-Corey nonwetting (gas) rel-perm  krg = (1-Se)^2*(1-Se^((2+lambda)/lambda))."""
-    se = effective_saturation(sw, swr, snwr)
-    return (1.0 - se) ** 2 * (1.0 - se ** ((2.0 + lam) / lam))
+    return petrolib.relperm_wettability.brooks_corey_burdine_kr(
+        sw, swr=swr, lam=lam, snwr=snwr)[1]
 
 
 # ---------------------------------------------- injection-pressure -----

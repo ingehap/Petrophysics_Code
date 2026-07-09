@@ -71,14 +71,15 @@ def resistivity_index(sw, n=2.0):
 
 def bc_krw(swe, lam):
     """Brooks-Corey wetting-phase rel-perm  krw = Swe^((2+3*lam)/lam)  (Eq. 22)."""
-    swe = np.asarray(swe, float)
-    return swe ** ((2.0 + 3.0 * lam) / lam)
+    # swe is already normalized; swr=0 and clip=None make Se = swe unchanged.
+    return petrolib.relperm_wettability.brooks_corey_burdine_kr(
+        swe, swr=0.0, lam=lam, clip=None)[0]
 
 
 def bc_krnw(swe, lam):
     """Brooks-Corey nonwetting rel-perm  krnw = (1-Swe)^2*(1-Swe^((2+lam)/lam))  (Eq. 24)."""
-    swe = np.asarray(swe, float)
-    return (1.0 - swe) ** 2 * (1.0 - swe ** ((2.0 + lam) / lam))
+    return petrolib.relperm_wettability.brooks_corey_burdine_kr(
+        swe, swr=0.0, lam=lam, clip=None)[1]
 
 
 def krw_from_resistivity_index(I, n, swr, lam):
