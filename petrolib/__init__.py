@@ -24,6 +24,7 @@ _SUBMODULES = frozenset(
         "capillary_pressure",
         "constants",
         "flow_transport",
+        "geochem_fluids",
         "ml_stats",
         "nmr",
         "porosity_lithology",
