@@ -133,6 +133,20 @@ def test_leverett_round_trip_and_equivalence() -> None:
     )  # sqrt(phi/k) vs 1/sqrt(k/phi): float reassociation within rtol 1e-12
 
 
+def _original_pc_convert_mercury_2016_10(pc_am, ift_ab, theta_ab, ift_am, theta_am):
+    # src2016_10/article2 pc_air_brine_from_mercury (|cos| convention)
+    return pc_am * (
+        ift_ab * abs(np.cos(np.radians(theta_ab))) / (ift_am * abs(np.cos(np.radians(theta_am))))
+    )
+
+
+def _original_pc_convert_signed_2016_10(pc_lab, ift_res, theta_res, ift_lab, theta_lab):
+    # src2016_10/article2 pc_lab_to_reservoir (signed cos)
+    return pc_lab * (
+        ift_res * np.cos(np.radians(theta_res)) / (ift_lab * np.cos(np.radians(theta_lab)))
+    )
+
+
 def test_pc_convert_system() -> None:
     # air-mercury (485 mN/m, 140 deg) to gas-brine (72 mN/m, 0 deg)
     pc_res = cap.pc_convert_system(
@@ -141,6 +155,32 @@ def test_pc_convert_system() -> None:
     ratio = 0.072 / (0.485 * abs(np.cos(np.radians(140.0))))
     np.testing.assert_allclose(pc_res, PC * ratio, rtol=1e-12)
     assert np.all(pc_res > 0)
+    # src2016_10: |cos| mercury->air-brine (from = mercury, to = air-brine)
+    assert_matches_original(
+        _original_pc_convert_mercury_2016_10,
+        lambda pc, ift_ab, th_ab, ift_am, th_am: cap.pc_convert_system(
+            pc,
+            sigma_from=ift_am,
+            theta_from_deg=th_am,
+            sigma_to=ift_ab,
+            theta_to_deg=th_ab,
+            absolute=True,
+        ),
+        [(PC, 72.0, 0.0, 480.0, 140.0)],
+    )
+    # src2016_10: signed lab->reservoir (from = lab, to = reservoir)
+    assert_matches_original(
+        _original_pc_convert_signed_2016_10,
+        lambda pc, ift_res, th_res, ift_lab, th_lab: cap.pc_convert_system(
+            pc,
+            sigma_from=ift_lab,
+            theta_from_deg=th_lab,
+            sigma_to=ift_res,
+            theta_to_deg=th_res,
+            absolute=False,
+        ),
+        [(PC, 47.0, 0.0, 72.0, 0.0)],
+    )
 
 
 # --- Brooks-Corey -------------------------------------------------------------
@@ -204,6 +244,26 @@ def _original_thomeer_log10_2021_04(Pc, Bv, G, Pd):
 def _original_thomeer_ln_2021_08(Pc, Binf, G, Pd):
     Pc = np.asarray(Pc, float)
     return np.where(Pc > Pd, Binf * np.exp(-G / np.log(Pc / Pd)), 0.0)
+
+
+def _original_thomeer_sw_2016_10(pc, pe, g, swirr):
+    # src2016_10/article2 thomeer_sw: Sw = 1 - (1-Swirr)*exp(-G/log10(Pc/Pe)),
+    # i.e. the water-saturation complement of thomeer_shg with ceiling (1-Swirr)
+    pc = np.asarray(pc, float)
+    snw = np.where(pc > pe, (1.0 - swirr) * np.exp(-g / np.log10(pc / pe)), 0.0)
+    return 1.0 - snw
+
+
+def test_thomeer_sw_complement_2016_10() -> None:
+    pe, g, swirr = 50.0, 0.35, 0.15
+    assert_matches_original(
+        _original_thomeer_sw_2016_10,
+        lambda pc, pe_, g_, sw_: (
+            1.0 - cap.thomeer_shg(pc, bv_inf=1.0 - sw_, g=g_, pd=pe_, log_base=10.0)
+        ),
+        [(PC, pe, g, swirr)],
+        rtol=1e-9,  # log10(Pc/Pe) vs log10(Pc)-log10(Pe): float reassociation
+    )
 
 
 def test_thomeer_log_base_hazard() -> None:
