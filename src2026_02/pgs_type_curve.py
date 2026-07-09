@@ -25,6 +25,13 @@ Permadi and Wibowo (2013); Amaefule et al. (1993).
 import numpy as np
 from typing import Optional
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 def pore_geometry(k: np.ndarray, phi: np.ndarray) -> np.ndarray:
     """Compute pore geometry parameter (k/φ)^0.5.
@@ -194,10 +201,10 @@ def leverett_j_function(pc: np.ndarray,
     np.ndarray
         J-Function values.
     """
-    cos_theta = np.cos(np.radians(theta))
-    hydraulic_radius = np.sqrt(k / (phi + 1e-30))
-    j = pc * hydraulic_radius / (sigma * cos_theta + 1e-30)
-    return j
+    # Signed Leverett J; the article's +1e-30 divide-by-zero guards vanish for
+    # any realistic phi and sigma*cos(theta), so the library form is equivalent.
+    return petrolib.capillary_pressure.leverett_j(
+        pc, sigma=sigma, theta_deg=theta, k=k, phi=phi, absolute=False)
 
 
 def flow_zone_indicator(k: np.ndarray, phi: np.ndarray) -> np.ndarray:

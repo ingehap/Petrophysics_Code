@@ -136,6 +136,14 @@ def _original_leverett_abscos_2022_10(pc, k, phi, sigma, theta_deg):
     return pc * np.sqrt(k / phi) / (sigma * abs(np.cos(np.deg2rad(theta_deg))))
 
 
+def _original_leverett_guarded_2026_02(pc, k, phi, sigma, theta):
+    # src2026_02/pgs_type_curve leverett_j_function: signed J with +1e-30
+    # divide-by-zero guards that vanish for realistic phi and sigma*cos.
+    cos_theta = np.cos(np.radians(theta))
+    hydraulic_radius = np.sqrt(k / (phi + 1e-30))
+    return pc * hydraulic_radius / (sigma * cos_theta + 1e-30)
+
+
 def test_leverett_round_trip_and_equivalence() -> None:
     j = cap.leverett_j(PC, sigma=0.03, theta_deg=20.0, k=1e-14, phi=0.2)
     np.testing.assert_allclose(
@@ -169,6 +177,16 @@ def test_leverett_round_trip_and_equivalence() -> None:
             pc, sigma=s, theta_deg=th, k=k, phi=phi, absolute=True
         ),
         [(PC, 1e-15, 0.1, 0.072, 180.0)],
+    )
+    # src2026_02: signed J with vanishing +1e-30 guards (not golden-exercised,
+    # so this contract is its equivalence proof); grouping differs by ~1 ULP.
+    assert_matches_original(
+        _original_leverett_guarded_2026_02,
+        lambda pc, k, phi, s, th: cap.leverett_j(
+            pc, sigma=s, theta_deg=th, k=k, phi=phi, absolute=False
+        ),
+        [(PC, 1e-13, 0.2, 0.048, 0.0), (PC, 5e-15, 0.08, 0.048, 20.0)],
+        rtol=1e-9,
     )
 
 
