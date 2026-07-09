@@ -26,6 +26,13 @@ Cole-Cole reconstruction.  Resistivity in ohm.m, frequency in Hz.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Cole-Cole --------------
 
@@ -37,7 +44,9 @@ def cole_cole(omega, rho0, eta, tau, c):
     rho0 = DC resistivity, eta = chargeability (0-1), tau = relaxation time,
     c = frequency exponent (0-1).
     """
-    return rho0 * (1.0 - eta * (1.0 - 1.0 / (1.0 + (1j * np.asarray(omega, float) * tau) ** c)))
+    return petrolib.em_dielectric.cole_cole_resistivity(
+        omega / (2.0 * np.pi), rho0=rho0, chargeability=eta, tau=tau, c=c
+    )
 
 
 def characteristic_frequency(tau):

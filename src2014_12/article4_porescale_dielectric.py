@@ -29,6 +29,13 @@ reconstructed / left as inputs.  Permittivities relative, sigma in S/m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 EPS0 = 8.854e-12  # vacuum permittivity, F/m
 
 
@@ -79,9 +86,9 @@ def crim_general(eps_components, concentrations):
 
     with volumetric concentrations C_i summing to one.
     """
-    eps = np.asarray(eps_components, complex)
-    c = np.asarray(concentrations, float)
-    return (np.sum(c * np.sqrt(eps))) ** 2
+    return petrolib.em_dielectric.mix_power_law(
+        concentrations, np.asarray(eps_components, complex), alpha=0.5
+    )
 
 
 def crim_reservoir(sw, phi, eps_w, eps_hc, eps_matrix):
@@ -90,16 +97,16 @@ def crim_reservoir(sw, phi, eps_w, eps_hc, eps_matrix):
         sqrt(eps) = Sw*phi*sqrt(eps_w) + (1-Sw)*phi*sqrt(eps_hc)
                     + (1-phi)*sqrt(eps_matrix).
     """
-    root = (sw * phi * np.sqrt(eps_w) + (1 - sw) * phi * np.sqrt(eps_hc)
-            + (1 - phi) * np.sqrt(eps_matrix))
-    return root ** 2
+    return petrolib.em_dielectric.crim(
+        phi, sw, eps_w=eps_w, eps_hc=eps_hc, eps_matrix=eps_matrix
+    )
 
 
 def crim_water_saturation(eps, phi, eps_w, eps_hc, eps_matrix):
     """Water saturation from reservoir CRIM (Eq. 16)."""
-    num = np.sqrt(eps) - (1 - phi) * np.sqrt(eps_matrix) - phi * np.sqrt(eps_hc)
-    den = phi * (np.sqrt(eps_w) - np.sqrt(eps_hc))
-    return num / den
+    return petrolib.em_dielectric.sw_from_permittivity(
+        eps, phi, eps_w=eps_w, eps_hc=eps_hc, eps_matrix=eps_matrix, clip=False
+    )
 
 
 # ---------------------------------------------- directional model --------------

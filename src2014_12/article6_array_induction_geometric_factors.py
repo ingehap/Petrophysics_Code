@@ -31,6 +31,13 @@ that the described workflow rests on.  Conductivities in S/m, depths/radii in m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- radial geometric factor --------------
 
@@ -43,8 +50,7 @@ def radial_geometric_factor(r, spacing):
     a monotone form rising from 0 on the axis to 1 far from the borehole, with
     the half-spacing setting the radial depth of investigation.
     """
-    r = np.asarray(r, float)
-    return r ** 2 / (r ** 2 + (spacing / 2.0) ** 2)
+    return petrolib.em_dielectric.doll_radial_geometric_factor(r, spacing)
 
 
 def apparent_conductivity(sigma_xo, sigma_t, r_invasion, spacing):
@@ -55,8 +61,9 @@ def apparent_conductivity(sigma_xo, sigma_t, r_invasion, spacing):
 
     with G the cumulative radial geometric factor out to the invasion radius.
     """
-    g = radial_geometric_factor(r_invasion, spacing)
-    return g * sigma_xo + (1.0 - g) * sigma_t
+    return petrolib.em_dielectric.apparent_conductivity_two_zone(
+        sigma_xo, sigma_t, r_invasion, spacing
+    )
 
 
 # ---------------------------------------------- weighted combination --------------

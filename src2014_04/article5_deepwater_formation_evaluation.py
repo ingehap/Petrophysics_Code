@@ -89,7 +89,7 @@ def eaton_pore_pressure(overburden, hydrostatic, observed, normal, exponent=1.2)
 
 def anisotropy_ratio(r_v, r_h):
     """Resistivity anisotropy coefficient  lambda = sqrt(Rv/Rh)."""
-    return np.sqrt(r_v / r_h)
+    return petrolib.em_dielectric.anisotropy_coefficient(r_h, r_v)
 
 
 def laminated_resistivity(r_sand, r_shale, sand_fraction):

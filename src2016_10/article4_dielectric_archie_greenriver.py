@@ -51,8 +51,7 @@ def skin_depth(rho, freq, mu_r=1.0):
     with omega = 2*pi*freq and mu = mu_r*mu0 (Jordan & Balmain, 1968).  The Lower
     Green River carries a relative magnetic permeability around 10.
     """
-    omega = 2.0 * np.pi * np.asarray(freq, float)
-    return np.sqrt(2.0 * rho / (omega * mu_r * MU0))
+    return petrolib.em_dielectric.skin_depth(rho, freq, mu_r=mu_r)
 
 
 # ---------------------------------------------- CRIM dielectric --------------
@@ -65,10 +64,9 @@ def crim_permittivity(phi, sw, eps_water=EPS_WATER, eps_matrix=EPS_MATRIX, eps_h
 
     returning the effective relative permittivity of the rock.
     """
-    root = ((1.0 - phi) * np.sqrt(eps_matrix)
-            + phi * sw * np.sqrt(eps_water)
-            + phi * (1.0 - sw) * np.sqrt(eps_hc))
-    return root ** 2
+    return petrolib.em_dielectric.crim(
+        phi, sw, eps_w=eps_water, eps_hc=eps_hc, eps_matrix=eps_matrix
+    )
 
 
 def crim_bvw(eps_measured, phi, eps_water=EPS_WATER, eps_matrix=EPS_MATRIX, eps_hc=EPS_HC):
@@ -79,9 +77,9 @@ def crim_bvw(eps_measured, phi, eps_water=EPS_WATER, eps_matrix=EPS_MATRIX, eps_
 
     the salinity-independent water volume the dielectric tool resolves.
     """
-    num = (np.sqrt(eps_measured) - (1.0 - phi) * np.sqrt(eps_matrix)
-           - phi * np.sqrt(eps_hc))
-    return num / (np.sqrt(eps_water) - np.sqrt(eps_hc))
+    return petrolib.em_dielectric.bvw_from_permittivity(
+        eps_measured, phi, eps_w=eps_water, eps_hc=eps_hc, eps_matrix=eps_matrix
+    )
 
 
 # ---------------------------------------------- Archie / Pickett --------------
