@@ -12,6 +12,13 @@ Implements contamination monitoring and salinity estimation:
   4. Pressure gradient-based fluid density estimation.
 """
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from typing import Dict, Tuple
 
 def compute_contamination_d2o(d_sample, d_mud, d_formation=0.000156):
@@ -35,9 +42,7 @@ def density_porosity(bulk_density, matrix_density=2.67, fluid_density=1.03):
 def compute_rwa(resistivity, porosity, a=1.0, m=1.776):
     """Compute apparent water resistivity from Archie equation (Eq. A1.2).
     Rwa = Rt * phi^m / a (assuming Sw=1)."""
-    phi = np.asarray(porosity, dtype=float)
-    rt = np.asarray(resistivity, dtype=float)
-    return rt * (phi ** m) / a
+    return petrolib.saturation_resistivity.apparent_water_resistivity(resistivity, porosity, a=a, m=m)
 
 def rwa_to_salinity(rwa, temperature_c):
     """Convert Rwa to NaCl-equivalent salinity using chartbook relationship.

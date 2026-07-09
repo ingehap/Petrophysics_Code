@@ -32,6 +32,13 @@ from typing import Dict, List, Sequence, Tuple
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # 1. Archie with dielectric textural exponent MN
@@ -59,8 +66,9 @@ def archie_sw(Rw: float, Rt: float, phi: float,
     """
     if phi <= 0.0 or Rt <= 0.0:
         return float("nan")
-    sw = (a * Rw / (phi ** MN * Rt)) ** (1.0 / MN)
-    return float(min(max(sw, 0.0), 1.0))
+    # HAZARD (LIBRARY_MERGE_PLAN.md section 9): argument order (Rw, Rt) — the
+    # canonical order is (rt, rw); the textural exponent MN doubles as m and n.
+    return float(petrolib.saturation_resistivity.archie_sw(Rt, Rw, phi=phi, a=a, m=MN, n=MN, clip=(0.0, 1.0)))
 
 
 def rw_from_salinity(salinity_ppm: float, temp_c: float = 75.0) -> float:

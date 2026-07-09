@@ -23,6 +23,13 @@ Key ideas
 from __future__ import annotations
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from typing import Tuple
 
 
@@ -221,7 +228,7 @@ def resistivity_index(Rt: np.ndarray, R0: float) -> np.ndarray:
     R0 : float
         Resistivity at 100 % water saturation.
     """
-    return np.asarray(Rt, float) / R0
+    return petrolib.saturation_resistivity.resistivity_index(Rt, R0)
 
 
 def archie_n_exponent(

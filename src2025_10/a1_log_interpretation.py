@@ -18,6 +18,13 @@ Implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Kozeny permeability model (Eqs. 1-3)
@@ -79,7 +86,7 @@ def skz_from_archie_m(m):
 
 def archie_formation_factor(porosity, m):
     """Classic Archie formation factor F = phi^{-m} (Eq. 4)."""
-    return np.asarray(porosity, dtype=float) ** (-np.asarray(m, dtype=float))
+    return petrolib.saturation_resistivity.formation_factor(porosity, m=np.asarray(m, dtype=float))
 
 
 def free_water_porosity(porosity, sigma_o, sigma_w, p=1.5):

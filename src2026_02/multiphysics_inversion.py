@@ -23,6 +23,13 @@ Hayden et al. (2009); Johnson et al. (2024).
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from typing import Optional
 
 
@@ -54,8 +61,7 @@ def archie_sw(rt: float, rw: float, phi: float,
     """
     if phi <= 0 or rt <= 0 or rw <= 0:
         return 1.0
-    sw = (a * rw / (phi**m * rt))**(1.0 / n)
-    return float(np.clip(sw, 0.0, 1.0))
+    return float(petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, a=a, m=m, n=n, clip=(0.0, 1.0)))
 
 
 def density_porosity(rhob: float, rho_matrix: float = 2.65,

@@ -17,6 +17,13 @@ Implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Archie's laws (Eqs. 3-4 in article, classical form)
@@ -25,13 +32,13 @@ import numpy as np
 def formation_factor(porosity, a=1.0, m=2.0):
     """Archie's first law: F = a * phi^{-m} (Eq. 3)."""
     phi = np.maximum(np.asarray(porosity, dtype=float), 1e-6)
-    return a * phi ** (-m)
+    return petrolib.saturation_resistivity.formation_factor(phi, a=a, m=m)
 
 
 def resistivity_index(sw, n=2.0):
     """Archie's second law: I = Sw^{-n} (Eq. 4)."""
     sw = np.clip(np.asarray(sw, dtype=float), 0.01, 1.0)
-    return sw ** (-n)
+    return petrolib.saturation_resistivity.resistivity_index_from_sw(sw, n=n)
 
 
 def true_resistivity(rw, F, I):

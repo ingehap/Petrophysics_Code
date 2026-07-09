@@ -20,6 +20,13 @@ Implements:
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple, Callable
 import math
@@ -52,9 +59,9 @@ def archie_water_saturation(Rw: float, Rt: float,
     """
     if phi <= 0 or Rt <= 0 or Rw <= 0:
         return float("nan")
-    Sw_n = (a * Rw) / (phi**m * Rt)
-    Sw   = Sw_n ** (1.0 / n)
-    return float(np.clip(Sw, 0.0, 1.0))
+    # HAZARD (LIBRARY_MERGE_PLAN.md section 9): this article's argument order
+    # is (Rw, Rt) — the canonical order is (rt, rw).  Mapped explicitly.
+    return float(petrolib.saturation_resistivity.archie_sw(Rt, Rw, phi=phi, a=a, m=m, n=n, clip=(0.0, 1.0)))
 
 
 def timur_permeability(phi: float, Swi: float,
