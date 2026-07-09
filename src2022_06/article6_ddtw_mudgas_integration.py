@@ -19,11 +19,18 @@ workflows and implements the paper's Density + DTW (DDTW) integration:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- NMR DTW (Eq. 1) ----------
 
 def dtw_polarisation(TW_s, T1_s):
-    return 1.0 - np.exp(-TW_s / T1_s)
+    return petrolib.nmr.t1_saturation_recovery(TW_s, 1.0, T1_s)
 
 
 def dtw_porosity_correction(phi_apparent, TW_short_s, TW_long_s,

@@ -23,15 +23,23 @@ Implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- baselines ----------------
 
 def timur_coates(phi, FFV, BFV, C=10.0, m=4.0, n=2.0):
-    return C * phi ** m * (FFV / np.maximum(BFV, 1e-9)) ** n
+    return petrolib.nmr.timur_coates(
+        phi, FFV, np.maximum(BFV, 1e-9), C=C, m=m, n=n, form="prefactor")
 
 
 def sdr(phi, T2_lm_ms, a=4.6, m=4.0, n=2.0):
-    return a * phi ** m * T2_lm_ms ** n
+    return petrolib.nmr.sdr(phi, T2_lm_ms, a=a, m=m, n=n)
 
 
 def log_mean_T2(A, T2_axis):

@@ -14,16 +14,19 @@ Core procedures implemented:
 import numpy as np
 from scipy.optimize import nnls
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 def cpmg_echoes(t, amplitudes, T2s, noise=0.0, rng=None):
     """Forward model: build a CPMG echo train from a discrete T2 distribution."""
-    a = np.asarray(amplitudes)[None, :]
-    T = np.asarray(T2s)[None, :]
-    sig = (a * np.exp(-t[:, None] / T)).sum(axis=1)
     if noise:
-        rng = rng or np.random.default_rng(0)
-        sig = sig + rng.normal(0, noise, sig.shape)
-    return sig
+        rng = rng or np.random.default_rng(0)   # historical default seed
+    return petrolib.nmr.multiexp_decay(t, amplitudes, T2s, noise=noise, rng=rng)
 
 
 def t2_inversion(t, echoes, T2_grid, alpha=0.1):
@@ -37,9 +40,7 @@ def t2_inversion(t, echoes, T2_grid, alpha=0.1):
 
 def bound_free_fluid(T2_grid, dist, T2_cutoff=33e-3):
     """Partition T2 distribution into bound (< cutoff) and free (>= cutoff) fluid."""
-    bound = dist[T2_grid < T2_cutoff].sum()
-    free = dist[T2_grid >= T2_cutoff].sum()
-    return bound, free
+    return petrolib.nmr.bvi_ffi(T2_grid, dist, cutoff_ms=T2_cutoff)
 
 
 def pore_radius_from_T2(T2, rho2=10e-6, geom=2):

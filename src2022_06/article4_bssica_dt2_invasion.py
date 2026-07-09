@@ -20,15 +20,22 @@ Burgan Field, Kuwait.  Implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Eqs. 1-2: relaxation rates --
 
 def T1_total(T1_bulk, T1_surface):
-    return 1.0 / (1.0 / T1_bulk + 1.0 / T1_surface)
+    return petrolib.nmr.combine_relaxation_times(T1_bulk, T1_surface)
 
 
 def T2_total(T2_bulk, T2_diffusion, T2_surface):
-    return 1.0 / (1.0 / T2_bulk + 1.0 / T2_diffusion + 1.0 / T2_surface)
+    return petrolib.nmr.combine_relaxation_times(T2_bulk, T2_diffusion, T2_surface)
 
 
 # ---------------------------------------------- Eq. 3: porosity undercall --
@@ -41,7 +48,8 @@ def porosity_undercall(phi_open, phi_NMR):
 
 def timur_coates(phi, FFV, BFV, C=10.0, m=4.0, n=2.0):
     """K = C * phi^m * (FFV / BFV)^n   (Eq. 4)."""
-    return float(C * phi ** m * (FFV / max(BFV, 1e-9)) ** n)
+    return float(petrolib.nmr.timur_coates(
+        phi, FFV, max(BFV, 1e-9), C=C, m=m, n=n, form="prefactor"))
 
 
 # ---------------------------------------------- Eq. 5: KRI -------------

@@ -28,6 +28,13 @@ This module implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- DTE diffusion (Table 1) ---
 
@@ -37,8 +44,8 @@ def t2_effective_dte(T2_intrinsic, D_m2_s, gamma_rad_s_T=2.675e8,
 
         1/T2_eff = 1/T2_int + (1/12) * (gamma G TE)^2 * D
     """
-    diff_term = (1.0 / 12.0) * (gamma_rad_s_T * G_T_m * TE_s) ** 2 * D_m2_s
-    return 1.0 / (1.0 / T2_intrinsic + diff_term)
+    return petrolib.nmr.t2_apparent(
+        t2_bulk=T2_intrinsic, D=D_m2_s, G=G_T_m, TE=TE_s, gamma=gamma_rad_s_T)
 
 
 # ---------------------------------------------- fuzzy classifier ---------

@@ -26,6 +26,13 @@ themes:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ----------------------------------------------- VST tau schedule -------
 
@@ -36,8 +43,9 @@ def vst_schedule(n_echoes=64, tau_min_us=200.0, tau_max_us=4000.0):
 
 def vst_decay_curve(T2_dist, T2_axis_ms, tau_axis_us):
     """Synthesise the multi-tau echo train from a T2 distribution."""
+    # us -> s and ms -> s adapters kept local; the CPMG kernel delegates.
     tau_s = tau_axis_us * 1e-6
-    K = np.exp(-tau_s[:, None] / (T2_axis_ms[None, :] * 1e-3))
+    K = petrolib.nmr.cpmg_kernel(tau_s, T2_axis_ms * 1e-3)
     return K @ T2_dist
 
 

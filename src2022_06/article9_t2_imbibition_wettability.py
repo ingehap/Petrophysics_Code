@@ -29,6 +29,13 @@ Implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- synthetic T2 spectra -----
 
@@ -60,8 +67,8 @@ def simulate_imbibition(T2_axis_ms, initial_amps, final_long_amp,
 
 def long_t2_area(T2_axis_ms, spectrum, cutoff_ms=100.0):
     """Area integral of the T2 distribution beyond a long-T2 cutoff."""
-    mask = T2_axis_ms >= cutoff_ms
-    return float(spectrum[mask].sum())
+    # FFI band (T2 >= cutoff) of the BVI/FFI split.
+    return petrolib.nmr.bvi_ffi(T2_axis_ms, spectrum, cutoff_ms=cutoff_ms)[1]
 
 
 def wettability_index(area_water_long, area_oil_long):
