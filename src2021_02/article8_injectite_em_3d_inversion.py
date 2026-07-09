@@ -29,6 +29,13 @@ ill-posed inverse and its regularization).  Resistivity in ohm-m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 MU0 = 4.0e-7 * np.pi      # H/m
 
 
@@ -36,8 +43,7 @@ MU0 = 4.0e-7 * np.pi      # H/m
 
 def skin_depth(rho_ohm_m, freq_hz):
     """EM skin depth  delta = sqrt(2 rho / (w mu0)) = 503 sqrt(rho/f)  (m)."""
-    w = 2.0 * np.pi * freq_hz
-    return np.sqrt(2.0 * np.asarray(rho_ohm_m, float) / (w * MU0))
+    return petrolib.em_dielectric.skin_depth(rho_ohm_m, freq_hz)
 
 
 # ---------------------------------------------- forward operator --------

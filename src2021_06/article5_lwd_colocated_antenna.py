@@ -26,6 +26,13 @@ Resistivity in ohm-m, frequency in Hz, lengths in metres, angles in degrees.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 MU0 = 4e-7 * np.pi
 
 
@@ -59,25 +66,22 @@ def assemble_tensor(Hxx, Hyy, Hzz, Hxy=0.0, Hxz=0.0, Hyz=0.0,
 
 def skin_depth(rho, freq_hz):
     """EM skin depth  delta = sqrt(2*rho/(omega*mu0))  (metres)."""
-    omega = 2 * np.pi * freq_hz
-    return np.sqrt(2.0 * rho / (omega * MU0))
+    return petrolib.em_dielectric.skin_depth(rho, freq_hz)
 
 
 def phase_shift_deg(rho, freq_hz, spacing_m):
     """Phase shift across the receiver spacing  = spacing/delta  (degrees)."""
-    return np.degrees(spacing_m / skin_depth(rho, freq_hz))
+    return petrolib.em_dielectric.phase_shift_deg(rho, freq_hz, spacing_m)
 
 
 def attenuation_db(rho, freq_hz, spacing_m):
     """Amplitude attenuation across the spacing  = 8.686*spacing/delta  (dB)."""
-    return 8.686 * spacing_m / skin_depth(rho, freq_hz)
+    return petrolib.em_dielectric.attenuation_db(rho, freq_hz, spacing_m)
 
 
 def resistivity_from_phase(phase_deg, freq_hz, spacing_m):
     """Invert the phase shift for apparent resistivity (ohm-m)."""
-    omega = 2 * np.pi * freq_hz
-    delta = spacing_m / np.radians(phase_deg)
-    return delta ** 2 * omega * MU0 / 2.0
+    return petrolib.em_dielectric.resistivity_from_phase(phase_deg, freq_hz, spacing_m)
 
 
 # ---------------------------------------------- tests --------------

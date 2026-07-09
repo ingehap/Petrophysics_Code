@@ -61,16 +61,7 @@ def depolarization_spheroid(aspect):
     factor Lz; prolate needles (aspect > 1) lower it.  Closed-form integrals;
     the three factors always sum to 1.
     """
-    if abs(aspect - 1.0) < 1e-9:                        # sphere
-        return (1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0)
-    if aspect < 1.0:                                    # oblate (Osborn 1945)
-        e = np.sqrt(1.0 - aspect ** 2)
-        lz = (1.0 / e ** 2) * (1.0 - np.sqrt(1.0 - e ** 2) / e * np.arcsin(e))
-    else:                                               # prolate
-        e = np.sqrt(1.0 - 1.0 / aspect ** 2)
-        lz = ((1.0 - e ** 2) / e ** 2) * (-1.0 + (1.0 / (2.0 * e)) * np.log((1.0 + e) / (1.0 - e)))
-    lx = (1.0 - lz) / 2.0
-    return (lx, lx, lz)
+    return petrolib.em_dielectric.depolarization_spheroid(aspect)
 
 
 # ---------------------------------------------- effective medium --------------

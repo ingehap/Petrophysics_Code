@@ -27,6 +27,13 @@ mu = 1, dielectric effect significant for Ra > 10 ohm-m, k_wi = 12.5.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 MU0 = 4e-7 * np.pi
 EPS0 = 8.854e-12
 C_LIGHT = 1.0 / np.sqrt(MU0 * EPS0)
@@ -70,16 +77,16 @@ def wavelength(k_r):
 def crim_permittivity(phi, sw, eps_w=78.0, eps_hc=2.0, eps_m=5.0):
     """CRIM effective permittivity  sqrt(eps) = phi*Sw*sqrt(ew) + phi*(1-Sw)*sqrt(ehc)
     + (1-phi)*sqrt(em)  (Eq. 14, high-frequency form)."""
-    root = (phi * sw * np.sqrt(eps_w) + phi * (1.0 - sw) * np.sqrt(eps_hc)
-            + (1.0 - phi) * np.sqrt(eps_m))
-    return root ** 2
+    return petrolib.em_dielectric.crim(
+        phi, sw, eps_w=eps_w, eps_hc=eps_hc, eps_matrix=eps_m
+    )
 
 
 def water_saturation_crim(eps_eff, phi, eps_w=78.0, eps_hc=2.0, eps_m=5.0):
     """Invert CRIM for water saturation."""
-    root = np.sqrt(eps_eff)
-    num = root - phi * np.sqrt(eps_hc) - (1.0 - phi) * np.sqrt(eps_m)
-    return num / (phi * (np.sqrt(eps_w) - np.sqrt(eps_hc)))
+    return petrolib.em_dielectric.sw_from_permittivity(
+        eps_eff, phi, eps_w=eps_w, eps_hc=eps_hc, eps_matrix=eps_m, clip=False
+    )
 
 
 # ---------------------------------------------- tests --------------

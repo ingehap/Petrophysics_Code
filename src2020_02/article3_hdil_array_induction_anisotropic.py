@@ -27,12 +27,19 @@ small for dip <= 40 deg, significant for dip >= 60 deg.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- anisotropy --------------
 
 def anisotropy_coefficient(rh, rv):
     """Anisotropy coefficient  lambda = sqrt(Rh/Rv)  (paper's convention)."""
-    return np.sqrt(rh / rv)
+    return petrolib.em_dielectric.anisotropy_coefficient(rv, rh)
 
 
 # ---------------------------------------------- focusing ----------------
@@ -75,8 +82,7 @@ def anisotropic_apparent_resistivity(rh, rv, dip_deg):
         rho_a = rh*sqrt(cos^2(dip) + (rv/rh)*sin^2(dip))
     Reads Rh at dip = 0 and rises toward sqrt(Rh*Rv) at 90 deg.
     """
-    th = np.radians(dip_deg)
-    return rh * np.sqrt(np.cos(th) ** 2 + (rv / rh) * np.sin(th) ** 2)
+    return petrolib.em_dielectric.apparent_resistivity_dip(rh, rv, dip_deg)
 
 
 def anisotropy_effect_significant(rh, rv, dip_deg, tol=0.05):

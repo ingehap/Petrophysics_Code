@@ -27,6 +27,13 @@ itself is graphical in the paper.  Permittivities are relative (dimensionless).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- CRIM --------------
 
@@ -36,9 +43,7 @@ def crim_matrix_permittivity(fractions, eps_minerals):
     fractions = volumetric mineral fractions (summing to 1, kerogen included as
     a matrix component), eps_minerals = their dielectric constants.
     """
-    psi = np.asarray(fractions, float)
-    eps = np.asarray(eps_minerals, float)
-    return (psi * np.sqrt(eps)).sum() ** 2
+    return petrolib.em_dielectric.mix_power_law(fractions, eps_minerals, alpha=0.5)
 
 
 def crim_permittivity(phi, eps_mat, eps_w, sw=1.0, eps_hc=2.2):
@@ -46,8 +51,9 @@ def crim_permittivity(phi, eps_mat, eps_w, sw=1.0, eps_hc=2.2):
 
         sqrt(eps) = (1-phi)*sqrt(eps_mat) + phi*Sw*sqrt(eps_w) + phi*(1-Sw)*sqrt(eps_hc).
     """
-    root = (1 - phi) * np.sqrt(eps_mat) + phi * sw * np.sqrt(eps_w) + phi * (1 - sw) * np.sqrt(eps_hc)
-    return root ** 2
+    return petrolib.em_dielectric.crim(
+        phi, sw, eps_w=eps_w, eps_hc=eps_hc, eps_matrix=eps_mat
+    )
 
 
 def water_filled_porosity(eps_meas, eps_mat, eps_w):
@@ -55,7 +61,9 @@ def water_filled_porosity(eps_meas, eps_mat, eps_w):
 
         phi_w = (sqrt(eps_meas) - sqrt(eps_mat))/(sqrt(eps_w) - sqrt(eps_mat)).
     """
-    return (np.sqrt(eps_meas) - np.sqrt(eps_mat)) / (np.sqrt(eps_w) - np.sqrt(eps_mat))
+    return petrolib.em_dielectric.water_filled_porosity(
+        eps_meas, eps_matrix=eps_mat, eps_w=eps_w, clip=False
+    )
 
 
 def matrix_sensitivity(eps_meas, eps_mat, eps_w, d_eps_mat=1.0):

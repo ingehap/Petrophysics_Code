@@ -27,6 +27,13 @@ standard-form reconstructions from the surviving variable definitions.  alpha in
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 EPS0 = 8.8541878128e-12      # vacuum permittivity (F/m)
 
 
@@ -40,14 +47,16 @@ def lichtenecker_rother(phi, sw, eps_m, eps_w, eps_o=2.2, alpha=0.5):
     alpha = geometrical/homogeneity index: 0.5 -> homogeneous CRI model, +1 ->
     layers parallel to the field, -1 -> perpendicular.
     """
-    mix = ((1 - phi) * eps_m ** alpha + phi * sw * eps_w ** alpha
-           + phi * (1 - sw) * eps_o ** alpha)
-    return mix ** (1.0 / alpha)
+    return petrolib.em_dielectric.crim(
+        phi, sw, eps_w=eps_w, eps_hc=eps_o, eps_matrix=eps_m, alpha=alpha
+    )
 
 
 def complex_water_permittivity(eps_w_real, cw, omega):
     """Complex water permittivity  eps*_w = eps_w' - i*Cw/(omega*eps0)  (Eq. 3)."""
-    return eps_w_real - 1j * cw / (omega * EPS0)
+    return petrolib.em_dielectric.complex_permittivity(
+        eps_w_real, sigma=cw, freq_hz=omega / (2.0 * np.pi)
+    )
 
 
 def water_saturation(eps_meas, phi, eps_m, eps_w, eps_o=2.2, alpha=0.5):
@@ -57,9 +66,9 @@ def water_saturation(eps_meas, phi, eps_m, eps_w, eps_o=2.2, alpha=0.5):
 
     clipped to [0, 1].
     """
-    num = eps_meas ** alpha - (1 - phi) * eps_m ** alpha - phi * eps_o ** alpha
-    den = phi * (eps_w ** alpha - eps_o ** alpha)
-    return np.clip(num / den, 0.0, 1.0)
+    return petrolib.em_dielectric.sw_from_permittivity(
+        eps_meas, phi, eps_w=eps_w, eps_hc=eps_o, eps_matrix=eps_m, alpha=alpha, clip=True
+    )
 
 
 # ---------------------------------------------- tests --------------

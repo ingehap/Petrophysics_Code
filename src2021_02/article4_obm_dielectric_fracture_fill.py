@@ -28,6 +28,13 @@ in Hz; permittivities relative (to vacuum); conductivity in S/m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 EPS0 = 8.854e-12         # F/m
 
 # Reference relative permittivities of candidate fracture fills
@@ -45,9 +52,7 @@ def crim_permittivity(volumes, perms):
         sqrt(eps_eff) = sum_i phi_i sqrt(eps_i)
     volumes are volume fractions (sum to 1); perms the component permittivities.
     """
-    v = np.asarray(volumes, float)
-    e = np.asarray(perms, float)
-    return float((np.sum(v * np.sqrt(e))) ** 2)
+    return float(petrolib.em_dielectric.mix_power_law(volumes, perms, alpha=0.5))
 
 
 # ---------------------------------------------- complex permittivity ----
