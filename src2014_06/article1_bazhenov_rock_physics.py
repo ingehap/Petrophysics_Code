@@ -29,6 +29,13 @@ reconstructed in standard form (Kuster & Toksoz, 1974; Wendelstein & Rezvanov,
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- multimineral inversion --------------
 
@@ -41,14 +48,8 @@ def multimineral_inversion(log_readings, response_matrix, closure_weight=100.0):
     row.  ``response_matrix`` has shape (n_logs, n_minerals); returns the
     mineral volume fractions V_j.
     """
-    e = np.asarray(response_matrix, float)
-    f = np.asarray(log_readings, float)
-    n_min = e.shape[1]
-    # append the closure equation sum(V) = 1, strongly weighted
-    a = np.vstack([e, closure_weight * np.ones(n_min)])
-    b = np.concatenate([f, [closure_weight]])
-    v, *_ = np.linalg.lstsq(a, b, rcond=None)
-    return v
+    return petrolib.porosity_lithology.multimineral_solve(
+        log_readings, response_matrix, closure_weight=closure_weight, method="lstsq")
 
 
 # ---------------------------------------------- porosity --------------

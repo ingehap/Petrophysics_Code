@@ -107,7 +107,7 @@ def fit_event_exponent(event_volumes, pore_volume, counts):
 
 def imaged_porosity(pore_voxels, total_voxels):
     """Porosity from segmented voxel counts  phi = pore_voxels/total_voxels."""
-    return pore_voxels / total_voxels
+    return petrolib.porosity_lithology.porosity_from_voxel_count(pore_voxels, total_voxels)
 
 
 def imaged_saturation(phase_voxels, pore_voxels):

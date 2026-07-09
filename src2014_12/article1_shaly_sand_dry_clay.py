@@ -66,7 +66,7 @@ def effective_porosity(phit, vsh, phitsh):
 
         phieff = phit - Vsh*phitsh.
     """
-    return phit - vsh * phitsh
+    return petrolib.porosity_lithology.effective_porosity(phit, vsh, phitsh, clip=None)
 
 
 def co_from_salinity(salinity_ppm):
@@ -111,7 +111,7 @@ def shale_volume_difference(phin, phid, phin_sh, phid_sh):
 
         Vsh = (phiN - phiD)/(phiN_sh - phiD_sh).
     """
-    return (phin - phid) / (phin_sh - phid_sh)
+    return petrolib.porosity_lithology.vshale_neutron_density(phin, phid, phin_sh, phid_sh)
 
 
 def dry_clay_volume_difference(phin, phid, phin_cldry, phid_cldry):
@@ -119,7 +119,7 @@ def dry_clay_volume_difference(phin, phid, phin_cldry, phid_cldry):
 
         Vcldry = (phiN - phiD)/(phiN_cldry - phiD_cldry).
     """
-    return (phin - phid) / (phin_cldry - phid_cldry)
+    return petrolib.porosity_lithology.vshale_neutron_density(phin, phid, phin_cldry, phid_cldry)
 
 
 def qv_dry_clay_method(phin, phid, phin_cldry, phid_cldry, rho_cldry, cec_cl, phit):
