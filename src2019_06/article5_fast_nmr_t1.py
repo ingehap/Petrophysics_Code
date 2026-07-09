@@ -25,17 +25,24 @@ methods the paper applies.  T1 and times in seconds.
 import numpy as np
 from scipy.optimize import curve_fit
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- recovery models ---------
 
 def inversion_recovery(t, M0, T1):
     """Inversion-recovery magnetization  M(t) = M0*(1 - 2*exp(-t/T1))."""
-    return M0 * (1.0 - 2.0 * np.exp(-np.asarray(t, float) / T1))
+    return petrolib.nmr.t1_inversion_recovery(t, M0, T1)
 
 
 def saturation_recovery(t, M0, T1):
     """Saturation-recovery magnetization  M(t) = M0*(1 - exp(-t/T1))."""
-    return M0 * (1.0 - np.exp(-np.asarray(t, float) / T1))
+    return petrolib.nmr.t1_saturation_recovery(t, M0, T1)
 
 
 # ---------------------------------------------- T1 fitting --------------
@@ -45,10 +52,9 @@ def fit_t1_saturation(t, M):
 
     Jointly fits M(t) = M0*(1 - exp(-t/T1)); returns (T1, M0).
     """
-    t = np.asarray(t, float); M = np.asarray(M, float)
-    popt, _ = curve_fit(lambda tt, M0, T1: M0 * (1.0 - np.exp(-tt / T1)),
-                        t, M, p0=[M.max(), 1.0], maxfev=10000)
-    return float(popt[1]), float(popt[0])
+    # library fit_t1 returns (M0, T1); this article's convention is (T1, M0).
+    m0, t1 = petrolib.nmr.fit_t1(t, M, model="saturation")
+    return t1, m0
 
 
 def fast_t1_two_point(t1_delay, M1, t2_delay, M2, M0):

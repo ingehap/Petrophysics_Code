@@ -23,6 +23,13 @@ the NMR-wettability relations the review surveys.  T2 in ms; rho in um/ms.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- surface relaxation ------
 
@@ -31,7 +38,7 @@ def surface_relaxation_t2(rho, s_over_v, t2_bulk=3000.0):
 
     rho in um/ms, S/V in 1/um -> rho*(S/V) in 1/ms.
     """
-    return 1.0 / (1.0 / t2_bulk + rho * s_over_v)
+    return petrolib.nmr.t2_apparent(t2_bulk=t2_bulk, rho=rho, s_over_v=s_over_v)
 
 
 def effective_relaxivity(rho_strong, contact_angle_deg):
@@ -45,8 +52,7 @@ def effective_relaxivity(rho_strong, contact_angle_deg):
 
 def t2_logmean(t2, amplitude):
     """Log-mean T2 of a distribution."""
-    t2 = np.asarray(t2, float); a = np.asarray(amplitude, float)
-    return float(np.exp(np.sum(a * np.log(t2)) / a.sum()))
+    return petrolib.nmr.t2_logmean(t2, amplitude)
 
 
 # ---------------------------------------------- wettability index -------

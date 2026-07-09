@@ -38,7 +38,8 @@ except ImportError:  # bare clone, not installed
 
 def timur_coates(phi, ffi, bvi, C=10.0):
     """Timur-Coates permeability  k = (phi/C)^4*(FFI/BVI)^2  (mD)."""
-    return (np.asarray(phi, float) / C) ** 4 * (ffi / bvi) ** 2 * 1e6
+    # This copy reports in mD scaled by 1e6 (the unit adapter stays local).
+    return petrolib.nmr.timur_coates(phi, ffi, bvi, C=C) * 1e6
 
 
 def formation_factor(phi, a=1.0, m=2.0):

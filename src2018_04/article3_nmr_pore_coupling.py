@@ -27,6 +27,13 @@ in the paper: T in s, S/V in 1/m, gradient in T/m, gamma in rad/s/T.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 GAMMA_H = 2.675e8            # proton gyromagnetic ratio (rad/s/T)
 
 
@@ -38,20 +45,17 @@ def surface_relaxation_t2(rho2, s_over_v):
     rho2 = T2 surface relaxivity (m/s), S/V = surface-to-volume ratio (1/m).
     Larger pores (smaller S/V) relax more slowly (longer T2).
     """
-    return 1.0 / (rho2 * np.asarray(s_over_v, float))
+    return petrolib.nmr.t2_apparent(rho=rho2, s_over_v=s_over_v)
 
 
 def surface_to_volume(rho2, t2):
     """Invert the surface relaxation for the pore S/V  =  1/(rho2*T2)."""
-    return 1.0 / (rho2 * np.asarray(t2, float))
+    return petrolib.nmr.surface_to_volume(t2, rho=rho2)
 
 
 def multiexponential_decay(t, amplitudes, t2s):
     """Total transverse magnetization decay  Mz(t) = sum_i M_i*exp(-t/T2_i) (Eq. 2)."""
-    t = np.asarray(t, float)[:, None]
-    a = np.asarray(amplitudes, float)[None, :]
-    t2 = np.asarray(t2s, float)[None, :]
-    return (a * np.exp(-t / t2)).sum(axis=1)
+    return petrolib.nmr.multiexp_decay(t, amplitudes, t2s)
 
 
 def diffusion_relaxation_rate(diffusivity, gradient, te, gamma=GAMMA_H):
@@ -61,7 +65,7 @@ def diffusion_relaxation_rate(diffusivity, gradient, te, gamma=GAMMA_H):
 
     D = molecular diffusion coefficient, G = field gradient, TE = interecho time.
     """
-    return diffusivity * gamma ** 2 * gradient ** 2 * te ** 2 / 12.0
+    return petrolib.nmr.diffusion_relaxation_rate(diffusivity, G=gradient, TE=te, gamma=gamma)
 
 
 # ---------------------------------------------- tests --------------

@@ -27,6 +27,13 @@ gamma/2pi = 42.58 MHz/T; example Pade fit gives r_p ~ 4.6 um, tortuosity ~ 85.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 GAMMA_H = 2.0 * np.pi * 42.58e6      # rad/s/T (gamma/2pi = 42.58 MHz/T)
 
 
@@ -42,31 +49,30 @@ def diffusion_relaxation(D, G, TE, gamma=GAMMA_H):
 
     D in m^2/s, G (gradient) in T/m, TE (echo spacing) in s -> 1/s.
     """
-    return (gamma * G * TE) ** 2 * D / 12.0
+    return petrolib.nmr.diffusion_relaxation_rate(D, G=G, TE=TE, gamma=gamma)
 
 
 def t2_apparent(T2, D, G, TE, gamma=GAMMA_H):
     """Apparent (downhole) T2  1/T2app = 1/T2 + 1/T2D  (Eq. 2).  T2 in s."""
-    inv = 1.0 / T2 + diffusion_relaxation(D, G, TE, gamma)
-    return 1.0 / inv
+    return petrolib.nmr.t2_apparent(t2_bulk=T2, D=D, G=G, TE=TE, gamma=gamma)
 
 
 def surface_relaxation(T2_bulk, rho, s_over_v, D=0.0, G=0.0, TE=0.0, gamma=GAMMA_H):
     """Total T2 from bulk + surface + diffusion  1/T2 = 1/T2B + rho*(S/V) + 1/T2D."""
-    inv = 1.0 / T2_bulk + rho * s_over_v + diffusion_relaxation(D, G, TE, gamma)
-    return 1.0 / inv
+    return petrolib.nmr.t2_apparent(
+        t2_bulk=T2_bulk, rho=rho, s_over_v=s_over_v, D=D, G=G, TE=TE, gamma=gamma)
 
 
 # ---------------------------------------------- restricted diffusion ----
 
 def diffusion_length(D0, delta):
     """Diffusion length  L_D = sqrt(D0*Delta)  (Eq. 5)."""
-    return np.sqrt(D0 * delta)
+    return petrolib.flow_transport.diffusion_length(D0, delta)
 
 
 def pade_short_time(D0, s_over_v, delta):
     """Short-time Pade restricted-diffusion ratio  D/D0 = 1 - (4/(9*sqrt(pi)))*(S/V)*sqrt(D0*Delta)  (Eq. 6)."""
-    return 1.0 - (4.0 / (9.0 * np.sqrt(np.pi))) * s_over_v * np.sqrt(D0 * delta)
+    return petrolib.nmr.mitra_short_time(D0, delta, s_over_v, normalized=True)
 
 
 def pore_radius_from_sv(s_over_v):
@@ -76,7 +82,8 @@ def pore_radius_from_sv(s_over_v):
 
 def tortuosity(D_inf, D0):
     """Tortuosity  tau = D0/D(inf)  (Eq. 7)."""
-    return D0 / D_inf
+    # library tortuosity(d0, d_inf) = d0/d_inf; this article's arg order is reversed.
+    return petrolib.nmr.tortuosity(D0, D_inf)
 
 
 # ---------------------------------------------- tests --------------
