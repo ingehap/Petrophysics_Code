@@ -30,6 +30,13 @@ in m^2, pressure in Pa, viscosity in Pa*s, length/area in m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 R_GAS = 8.314                 # J/(mol*K)
 
 
@@ -43,7 +50,7 @@ def klinkenberg_apparent_k(kl, b, pm):
     with kl the intrinsic (liquid-equivalent) permeability, b the gas-slippage
     coefficient and Pm the mean pore pressure.
     """
-    return kl * (1.0 + b / np.asarray(pm, float))
+    return petrolib.flow_transport.klinkenberg_apparent(kl, b=b, p_mean=pm)
 
 
 def darcy_gas_permeability(q, viscosity, length, area, p0, p1, p_ref):
@@ -54,12 +61,14 @@ def darcy_gas_permeability(q, viscosity, length, area, p0, p1, p_ref):
     the isothermal integration of Darcy's law for a compressible gas (q measured
     at reference pressure P_ref, e.g. the outlet/atmospheric pressure).
     """
-    return 2.0 * q * viscosity * length * p_ref / (area * (p0 ** 2 - p1 ** 2))
+    return petrolib.flow_transport.darcy_gas_permeability(
+        q, mu=viscosity, length=length, area=area, p_up=p0, p_down=p1, p_ref=p_ref)
 
 
 def darcy_liquid_permeability(q, viscosity, length, area, dp):
     """Incompressible (liquid) Darcy permeability  k = q*mu*L/(A*dP)  (Eq. 3)."""
-    return q * viscosity * length / (area * dp)
+    return petrolib.flow_transport.darcy_permeability(
+        q, mu=viscosity, length=length, area=area, dp=dp)
 
 
 # ---------------------------------------------- gas flow regime --------------
@@ -71,7 +80,8 @@ def mean_free_path(viscosity, pressure, temperature, molar_mass):
 
     from kinetic theory; mu viscosity, P pressure, M molar mass (kg/mol).
     """
-    return (viscosity / pressure) * np.sqrt(np.pi * R_GAS * temperature / (2.0 * molar_mass))
+    return petrolib.flow_transport.mean_free_path(
+        pressure=pressure, temperature=temperature, mu=viscosity, molar_mass=molar_mass)
 
 
 def knudsen_number(mean_free_path_value, pore_radius):
@@ -79,7 +89,7 @@ def knudsen_number(mean_free_path_value, pore_radius):
 
     Kn < 0.01 continuum (Darcy), 0.01-0.1 slip flow, 0.1-10 transition flow.
     """
-    return mean_free_path_value / pore_radius
+    return petrolib.flow_transport.knudsen_number(mean_free_path_value, pore_radius)
 
 
 # ---------------------------------------------- fitting / comparison --------------
@@ -91,10 +101,7 @@ def klinkenberg_fit(pm, k_apparent):
 
     Returns (kl, b).
     """
-    inv_pm = 1.0 / np.asarray(pm, float)
-    slope, intercept = np.polyfit(inv_pm, np.asarray(k_apparent, float), 1)
-    kl = intercept
-    return kl, slope / kl
+    return petrolib.flow_transport.fit_klinkenberg(pm, k_apparent)
 
 
 def deviation_indicator(x1, x2):

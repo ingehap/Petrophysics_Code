@@ -61,7 +61,8 @@ def fractional_flow_derivative(sw, swc, sor, krw_max, kro_max, nw, no, mu_w=1e-3
 
 def darcy_pressure_drop(q, mu, kr, k, area, length):
     """Darcy pressure drop across the plug  dP = q*mu*L/(k*kr*A)."""
-    return q * mu * length / (k * kr * area)
+    return petrolib.flow_transport.darcy_pressure_drop(
+        q, mu=mu, k=k, area=area, length=length, kr=kr)
 
 
 # ---------------------------------------------- tests --------------
