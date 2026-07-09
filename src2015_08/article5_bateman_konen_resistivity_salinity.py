@@ -61,8 +61,7 @@ def rw_from_salinity(salinity_ppm, temperature_f):
     the standard chart fit (the Bateman-Konen transform represents this
     salinity-resistivity-temperature relationship analytically).
     """
-    rw_75 = 0.0123 + 3647.5 / np.asarray(salinity_ppm, float) ** 0.955
-    return rw_75 * 81.77 / (temperature_f + ARPS_C_FAHRENHEIT)
+    return petrolib.geochem_fluids.brine.rw_from_salinity(salinity_ppm, temperature_f, unit="F")
 
 
 def salinity_from_rw(rw, temperature_f):
@@ -71,8 +70,7 @@ def salinity_from_rw(rw, temperature_f):
         Rw75 = Rw*(T + 6.77)/81.77,
         C    = (3647.5/(Rw75 - 0.0123))^(1/0.955)   [ppm].
     """
-    rw_75 = rw * (temperature_f + ARPS_C_FAHRENHEIT) / 81.77
-    return (3647.5 / (rw_75 - 0.0123)) ** (1.0 / 0.955)
+    return petrolib.geochem_fluids.brine.salinity_from_rw(rw, temperature_f, unit="F")
 
 
 # ---------------------------------------------- Archie use --------------

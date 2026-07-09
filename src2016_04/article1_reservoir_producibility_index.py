@@ -30,6 +30,13 @@ porosities/saturations as fractions, densities in g/cm^3, S1 in mg/g.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 T2_CUTOFF_MS = 3.0            # bitumen / clay-bound water cutoff
 CARBON_PER_CH2 = 12.0 / 14.0  # carbon mass fraction of a CH2 unit
 
@@ -45,7 +52,7 @@ def osi(s1, toc):
     carbon (weight fractions or consistent units).  OSI > 100 indicates a
     productive tight-oil target.
     """
-    return 100.0 * np.asarray(s1, float) / toc
+    return petrolib.geochem_fluids.core_geochem.osi(s1, toc)
 
 
 def rpi(wc_oil, wc_org):

@@ -29,6 +29,13 @@ properties in their own units.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- mixing rules --------------
 
@@ -40,7 +47,7 @@ def mixing_rule(p_virgin, p_filtrate, eta):
     with eta the OBM-filtrate contamination volume fraction (OD, density and
     shrinkage factor all follow this ideal-mixing rule).
     """
-    return (1.0 - eta) * p_virgin + eta * p_filtrate
+    return petrolib.geochem_fluids.contamination.mix_linear(p_virgin, p_filtrate, eta)
 
 
 def f_function(shrinkage_factor, gor):
@@ -59,7 +66,7 @@ def contamination_fraction(p_measured, p_virgin, p_filtrate):
     Computable independently from OD, density or the f-function; the estimates
     should agree.
     """
-    return (p_measured - p_virgin) / (p_filtrate - p_virgin)
+    return petrolib.geochem_fluids.contamination.contamination_fraction(p_measured, p_virgin, p_filtrate)
 
 
 # ---------------------------------------------- power-law cleanup --------------
