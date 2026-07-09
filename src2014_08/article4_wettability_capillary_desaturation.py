@@ -29,6 +29,13 @@ and irreducible residual oil saturations.  SI units; saturations as fractions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- dimensionless numbers --------------
 
@@ -40,7 +47,8 @@ def capillary_number(brine_velocity, brine_viscosity, ift):
     with the in-pore brine velocity v_b, brine viscosity mu_b and brine-oil
     interfacial tension gamma.
     """
-    return brine_velocity * brine_viscosity / ift
+    return petrolib.relperm_wettability.capillary_number(
+        mu=brine_viscosity, v=brine_velocity, sigma=ift)
 
 
 def bond_number(delta_density, acceleration, permeability, ift):
@@ -51,13 +59,14 @@ def bond_number(delta_density, acceleration, permeability, ift):
     with the brine-oil density difference drho, gravitational acceleration a,
     brine permeability k and interfacial tension gamma.
     """
-    return delta_density * acceleration * permeability / ift
+    return petrolib.relperm_wettability.bond_number(
+        drho=delta_density, k=permeability, sigma=ift, g=acceleration)
 
 
 def trapping_number(n_ca, n_bo):
     """Total trapping number  N_T = N_Ca + N_Bo, combining viscous and
     gravitational mobilization of the trapped phase."""
-    return n_ca + n_bo
+    return petrolib.relperm_wettability.trapping_number(n_ca, n_bo)
 
 
 def dimensionless_imbibition_time(t, k, phi, ift, mu_w, mu_o, l_c):
@@ -81,9 +90,10 @@ def capillary_desaturation(n_trap, sor_initial, sor_irreducible, n_critical,
     a smooth transition that stays at the plateau Sor_init below the critical
     (onset) number N_crit and falls toward Sor_irr as N rises above it.
     """
-    n = np.asarray(n_trap, float)
-    drop = 1.0 / (1.0 + (n / n_critical) ** (1.0 / width))
-    return sor_irreducible + (sor_initial - sor_irreducible) * drop
+    # The library exponent is 1/width; sor_max=plateau, sor_min=irreducible floor.
+    return petrolib.relperm_wettability.capillary_desaturation(
+        n_trap, sor_max=sor_initial, sor_min=sor_irreducible,
+        n_crit=n_critical, exponent=1.0 / width)
 
 
 # ---------------------------------------------- tests --------------

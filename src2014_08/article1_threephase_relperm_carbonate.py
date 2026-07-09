@@ -28,6 +28,13 @@ fractions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- two-phase Corey --------------
 
@@ -36,8 +43,7 @@ def corey_water(sw, swc, sor, krw_max=1.0, nw=2.0):
 
         krw = krw_max*Sw*^nw,   Sw* = (Sw - Swc)/(1 - Swc - Sor).
     """
-    sw_star = np.clip((np.asarray(sw, float) - swc) / (1 - swc - sor), 0, 1)
-    return krw_max * sw_star ** nw
+    return petrolib.relperm_wettability.corey_krw(sw, swr=swc, sor=sor, krw_max=krw_max, nw=nw)
 
 
 def corey_oil_water(sw, swc, sor, kro_max=1.0, no=2.0):
@@ -45,8 +51,7 @@ def corey_oil_water(sw, swc, sor, kro_max=1.0, no=2.0):
 
         krow = kro_max*(1 - Sw*)^no,   Sw* = (Sw - Swc)/(1 - Swc - Sor).
     """
-    sw_star = np.clip((np.asarray(sw, float) - swc) / (1 - swc - sor), 0, 1)
-    return kro_max * (1 - sw_star) ** no
+    return petrolib.relperm_wettability.corey_kro(sw, swr=swc, sor=sor, kro_max=kro_max, no=no)
 
 
 def corey_oil_gas(sg, swc, sgc, sorg, kro_max=1.0, no=2.0):
@@ -64,8 +69,8 @@ def corey_gas(sg, swc, sgc, sorg, krg_max=1.0, ng=2.0):
 
         krg = krg_max*Sg*^ng,   Sg* = (Sg - Sgc)/(1 - Swc - Sgc - Sorg).
     """
-    sg_star = np.clip((np.asarray(sg, float) - sgc) / (1 - swc - sgc - sorg), 0, 1)
-    return krg_max * sg_star ** ng
+    return petrolib.relperm_wettability.corey_krg(
+        sg, sgc=sgc, swc=swc, sorg=sorg, krg_max=krg_max, ng=ng)
 
 
 # ---------------------------------------------- three-phase models --------------
