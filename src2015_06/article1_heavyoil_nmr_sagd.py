@@ -29,6 +29,13 @@ in g/cm^3, porosity/volumes/saturation as fractions, T2 in ms.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 T2_CUTOFF_BITUMEN_MS = 4.0    # upper limit of shale/bitumen signal
 RHO_BITUMEN = 1.0123          # g/cm^3, Long Lake produced-bitumen average
 
@@ -37,12 +44,12 @@ RHO_BITUMEN = 1.0123          # g/cm^3, Long Lake produced-bitumen average
 
 def density_porosity(rho_b, rho_ma=2.65, rho_fl=1.0):
     """Density total porosity  phi = (rho_ma - rho_b)/(rho_ma - rho_fl)."""
-    return (rho_ma - rho_b) / (rho_ma - rho_fl)
+    return petrolib.porosity_lithology.density_porosity(rho_b, rho_ma, rho_fl)
 
 
 def gamma_ray_index(gr, gr_clean, gr_shale):
     """Gamma-ray index  IGR = (GR - GR_clean)/(GR_shale - GR_clean)."""
-    return (gr - gr_clean) / (gr_shale - gr_clean)
+    return petrolib.porosity_lithology.gamma_ray_index(gr, gr_clean, gr_shale, clip=None)
 
 
 def vsh_clavier(igr):
@@ -52,8 +59,8 @@ def vsh_clavier(igr):
 
     clipped to [0, 1].
     """
-    vsh = 1.7 - np.sqrt(3.38 - (np.asarray(igr, float) + 0.7) ** 2)
-    return np.clip(vsh, 0.0, 1.0)
+    return petrolib.porosity_lithology.vshale_from_gr(
+        igr, 0.0, 1.0, method="clavier", clip=(0.0, 1.0))
 
 
 # ---------------------------------------------- bitumen --------------

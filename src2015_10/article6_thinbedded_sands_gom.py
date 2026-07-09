@@ -46,7 +46,7 @@ def thomas_stieber_laminated(vlam, phi_sand, phi_shale):
 
     where Vlam is the laminar-shale volume fraction.
     """
-    return phi_sand * (1.0 - vlam) + phi_shale * vlam
+    return petrolib.porosity_lithology.thomas_stieber_phit(vlam, phi_sand, phi_shale)
 
 
 def thomas_stieber_dispersed(vdisp, phi_sand):
@@ -69,8 +69,9 @@ def laminar_shale_volume(phi_total, vsh_total, phi_sand, phi_shale):
         phi_sand_eff = (phi_total - phi_shale*Vlam)/(1 - Vlam).
     Returns (Vlam, phi_sand_eff).
     """
-    vlam = (phi_sand - phi_total) / (phi_sand - phi_shale)
-    phi_sand_eff = (phi_total - phi_shale * vlam) / (1.0 - vlam)
+    vlam = petrolib.porosity_lithology.thomas_stieber_vlam(phi_total, phi_sand, phi_shale)
+    phi_sand_eff = petrolib.porosity_lithology.thomas_stieber_sand_porosity(
+        phi_total, vlam, phi_shale)
     return vlam, phi_sand_eff
 
 

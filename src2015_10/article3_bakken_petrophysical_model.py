@@ -40,7 +40,7 @@ except ImportError:  # bare clone, not installed
 
 def log_response(volumes, response_params):
     """Linear volumetric log response  Mi = sum_j Vj*Rj  (Eqs. 1-2)."""
-    return float(np.sum(np.asarray(volumes, float) * np.asarray(response_params, float)))
+    return float(petrolib.porosity_lithology.matrix_density_from_volumes(volumes, response_params))
 
 
 def multimineral_inversion(measurements, endpoints):
@@ -50,13 +50,7 @@ def multimineral_inversion(measurements, endpoints):
     sum(volumes) = 1 (added as a high-weight equation), least squares.
     `endpoints` is (n_logs, n_minerals) of pure-component tool responses.
     """
-    a = np.asarray(endpoints, float)
-    b = np.asarray(measurements, float)
-    w = 1e3
-    a_aug = np.vstack([a, w * np.ones(a.shape[1])])
-    b_aug = np.concatenate([b, [w]])
-    vols, *_ = np.linalg.lstsq(a_aug, b_aug, rcond=None)
-    return vols
+    return petrolib.porosity_lithology.multimineral_solve(measurements, endpoints, method="lstsq")
 
 
 # ---------------------------------------------- NMR --------------
