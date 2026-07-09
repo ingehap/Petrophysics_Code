@@ -12,14 +12,21 @@ synthetic pore-network "digital rock" represented by a pore-size distribution.
 """
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 def corey_relperm(Sw, Swi=0.2, Sor=0.15, krw_max=0.4, kro_max=1.0, nw=2.5, no=2.0):
     """Brooks-Corey two-phase relative permeabilities."""
+    # This article clips Sw (not Se); clip Sw here, then clip=None so the
+    # library's Se = (Sw-Swi)/(1-Swi-Sor) is left unclipped (bit-exact).
     Sw = np.clip(Sw, Swi, 1 - Sor)
-    Swn = (Sw - Swi) / (1 - Swi - Sor)
-    krw = krw_max * Swn ** nw
-    kro = kro_max * (1 - Swn) ** no
-    return krw, kro
+    return petrolib.relperm_wettability.corey_kr(
+        Sw, swr=Swi, sor=Sor, krw_max=krw_max, kro_max=kro_max, nw=nw, no=no, clip=None)
 
 
 def digital_rock_endpoints(pore_radii, wettability="water-wet"):
@@ -40,7 +47,7 @@ def digital_rock_endpoints(pore_radii, wettability="water-wet"):
 
 def fractional_flow(Sw, mu_w=1.0, mu_o=2.0, **kw):
     krw, kro = corey_relperm(Sw, **kw)
-    return krw / mu_w / (krw / mu_w + kro / mu_o + 1e-30)
+    return petrolib.relperm_wettability.fractional_flow(krw, kro, mu_w=mu_w, mu_nw=mu_o)
 
 
 def test_all():
