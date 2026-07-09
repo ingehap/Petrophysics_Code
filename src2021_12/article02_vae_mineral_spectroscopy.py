@@ -30,6 +30,13 @@ runs with numpy alone while demonstrating the same forward physics and loss.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Elements (rows) and minerals (columns) of the sensitivity matrix
 ELEMENTS = ["Si", "Al", "Ca", "Fe", "Mg", "K", "Na", "Ti", "S"]
 MINERALS = ["Quartz", "K-Feldspar", "Plagioclase", "Illite", "Kaolinite",
@@ -113,7 +120,7 @@ def invert_minerals(e, A=_A, iters=6000):
 
 def matrix_density(m, rho_grain=_RHO_GRAIN):
     """Mass-weighted matrix grain density  rho = sum(m_k * rho_k)."""
-    return float(np.dot(np.asarray(m, float), rho_grain))
+    return float(petrolib.porosity_lithology.matrix_density_from_volumes(m, rho_grain))
 
 
 # ---------------------------------------------- tests --------------

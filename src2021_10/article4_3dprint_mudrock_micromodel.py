@@ -26,6 +26,13 @@ theta = 140 deg.  Pressures in Pa, lengths in metres unless noted.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 HG_SURFACE_TENSION = 0.480      # N/m (480 erg/cm^2)
 HG_CONTACT_ANGLE = 140.0        # degrees
 PSI_TO_PA = 6894.76
@@ -47,14 +54,14 @@ def washburn_diameter(pressure_pa, gamma=HG_SURFACE_TENSION,
 
 def boyle_grain_volume(v_cell, v_expansion, p1, p2):
     """Grain volume from helium expansion  V_grain = V_cell - V_exp/(P1/P2 - 1)."""
-    return v_cell - v_expansion / (p1 / p2 - 1.0)
+    return petrolib.porosity_lithology.boyle_grain_volume(v_cell, v_expansion, p1, p2)
 
 
 # ---------------------------------------------- porosity ----------------
 
 def porosity(v_bulk, v_grain):
     """Porosity  phi = (V_bulk - V_grain) / V_bulk."""
-    return (v_bulk - v_grain) / v_bulk
+    return petrolib.porosity_lithology.porosity_from_volumes(v_bulk, v_grain)
 
 
 def cylinder_volume(diameter, height):
