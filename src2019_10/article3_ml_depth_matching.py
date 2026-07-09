@@ -24,13 +24,19 @@ the same similarity measures used to train / evaluate the matcher).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- similarity --------------
 
 def pearson(a, b):
     """Pearson product-moment correlation coefficient."""
-    a = np.asarray(a, float); b = np.asarray(b, float)
-    return float(np.corrcoef(a, b)[0, 1])
+    return petrolib.ml_stats.pearson_r(a, b)
 
 
 def cross_correlation_lag(reference, shifted, max_lag=50):

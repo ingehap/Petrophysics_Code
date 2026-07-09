@@ -25,6 +25,13 @@ numpy net reaches comparable accuracy on synthetic data.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 DRILLING_INPUTS = ["ROP", "WOB", "RPM", "Torque", "GPM", "SPP"]
 
 
@@ -32,14 +39,12 @@ DRILLING_INPUTS = ["ROP", "WOB", "RPM", "Torque", "GPM", "SPP"]
 
 def correlation_coefficient(y, yhat):
     """Pearson correlation coefficient R between actual and predicted."""
-    y = np.asarray(y, float); yhat = np.asarray(yhat, float)
-    return float(np.corrcoef(y, yhat)[0, 1])
+    return petrolib.ml_stats.pearson_r(y, yhat)
 
 
 def rmse(y, yhat):
     """Root-mean-square error  sqrt(mean((y-yhat)^2))."""
-    y = np.asarray(y, float); yhat = np.asarray(yhat, float)
-    return float(np.sqrt(np.mean((y - yhat) ** 2)))
+    return petrolib.ml_stats.rmse(y, yhat)
 
 
 # ---------------------------------------------- ANN ---------------------

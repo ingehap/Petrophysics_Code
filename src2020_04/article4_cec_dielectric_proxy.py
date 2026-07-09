@@ -25,6 +25,13 @@ correction C ~ 4 meq/100 g.  Permittivity reported at 120 MHz, 21 C.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 QUARTZ_EPS = 2.5         # pure-quartz permittivity anchor (CEC = 0)
 CORRECTION_C = 4.0       # meq/100 g constant correction
 
@@ -55,10 +62,8 @@ def cec_from_permittivity(eps_real, rh_pct, correction=CORRECTION_C):
 
 def r_squared(y, yhat):
     """Coefficient of determination R^2."""
-    y = np.asarray(y, float); yhat = np.asarray(yhat, float)
-    ss_res = np.sum((y - yhat) ** 2)
-    ss_tot = np.sum((y - y.mean()) ** 2)
-    return 1.0 - ss_res / ss_tot if ss_tot > 0 else 0.0
+    r2 = petrolib.ml_stats.r2_score(y, yhat)
+    return r2 if np.isfinite(r2) else 0.0  # historical zero-variance fallback
 
 
 # ---------------------------------------------- tests --------------

@@ -35,6 +35,13 @@ from typing import Optional, Tuple
 import numpy as np
 
 try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
+try:
     import torch
     import torch.nn as nn
     import torch.nn.functional as F
@@ -47,17 +54,15 @@ except ImportError:
 # ──────────────────────────────────────────────────────────────────────
 def r2_score(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     """Coefficient of determination (R²)."""
-    y_true, y_pred = np.asarray(y_true), np.asarray(y_pred)
-    ss_res = np.sum((y_true - y_pred) ** 2)
-    ss_tot = np.sum((y_true - y_true.mean()) ** 2)
-    return 1.0 - ss_res / ss_tot if ss_tot > 0 else 0.0
+    r2 = petrolib.ml_stats.r2_score(y_true, y_pred)
+    return r2 if np.isfinite(r2) else 0.0  # historical zero-variance fallback
 
 
 def mape(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     """Mean Absolute Percentage Error (%)."""
     y_true, y_pred = np.asarray(y_true, float), np.asarray(y_pred, float)
-    mask = y_true != 0
-    return float(np.mean(np.abs((y_true[mask] - y_pred[mask]) / y_true[mask])) * 100)
+    mask = y_true != 0  # historical: zero observations are dropped, not inf
+    return petrolib.ml_stats.mape(y_true[mask], y_pred[mask])
 
 
 def coefficient_of_variation(y_true: np.ndarray, y_pred: np.ndarray) -> float:

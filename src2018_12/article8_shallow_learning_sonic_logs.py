@@ -24,6 +24,13 @@ the shallow-learning sonic-prediction comparison the paper performs.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- models ------------------
 
@@ -56,8 +63,7 @@ def correlation(y, yhat):
 
 
 def rmse(y, yhat):
-    y = np.asarray(y, float); yhat = np.asarray(yhat, float)
-    return float(np.sqrt(np.mean((y - yhat) ** 2)))
+    return petrolib.ml_stats.rmse(y, yhat)
 
 
 # ---------------------------------------------- tests --------------

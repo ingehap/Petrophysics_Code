@@ -24,6 +24,13 @@ Gardner et al. (1974) for DEN-Vp transform.
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from typing import Optional
 
 
@@ -40,12 +47,8 @@ def pearson_correlation(f: np.ndarray, g: np.ndarray) -> float:
     float
         Pearson correlation coefficient in [-1, 1].
     """
-    f_c = f - np.mean(f)
-    g_c = g - np.mean(g)
-    denom = np.sqrt(np.sum(f_c**2) * np.sum(g_c**2))
-    if denom < 1e-30:
-        return 0.0
-    return np.sum(f_c * g_c) / denom
+    r = petrolib.ml_stats.pearson_r(f, g)
+    return 0.0 if not np.isfinite(r) else r  # historical zero-variance fallback
 
 
 def gardner_transform(vp_km_s: np.ndarray) -> np.ndarray:

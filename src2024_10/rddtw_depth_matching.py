@@ -19,6 +19,13 @@ Reference: DOI:10.30632/PJV65N5-2024a10
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from typing import Tuple, Optional, List
 
 
@@ -365,13 +372,11 @@ def pso_depth_shift(core: np.ndarray, log: np.ndarray,
 # 7. Evaluation Metrics
 # -----------------------------------------------------------------------
 def rmse(y_true: np.ndarray, y_pred: np.ndarray) -> float:
-    return float(np.sqrt(np.mean((y_true - y_pred) ** 2)))
+    return petrolib.ml_stats.rmse(y_true, y_pred)
 
 
 def r_squared(y_true: np.ndarray, y_pred: np.ndarray) -> float:
-    ss_res = np.sum((y_true - y_pred) ** 2)
-    ss_tot = np.sum((y_true - np.mean(y_true)) ** 2)
-    return float(1.0 - ss_res / (ss_tot + 1e-12))
+    return petrolib.ml_stats.r2_score(y_true, y_pred, eps=1e-12)
 
 
 # -----------------------------------------------------------------------

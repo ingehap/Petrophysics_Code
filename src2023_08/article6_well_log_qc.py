@@ -42,6 +42,13 @@ from typing import Dict, List, Sequence, Tuple
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # 1. Validation rules
@@ -129,10 +136,7 @@ def pearson_correlation(x, y):
     x, y = x[mask], y[mask]
     if x.size < 2:
         return float("nan")
-    xbar, ybar = x.mean(), y.mean()
-    num = np.sum((x - xbar) * (y - ybar))
-    den = np.sqrt(np.sum((x - xbar) ** 2) * np.sum((y - ybar) ** 2))
-    return float(num / den) if den > 0 else float("nan")
+    return petrolib.ml_stats.pearson_r(x, y)
 
 
 # ---------------------------------------------------------------------------
