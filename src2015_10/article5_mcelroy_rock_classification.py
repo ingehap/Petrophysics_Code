@@ -28,6 +28,13 @@ fraction (Winland uses percent internally), r35 in microns.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- pore-geometry indices --------------
 
@@ -39,24 +46,22 @@ def winland_r35(k, phi):
     with k in mD and porosity in percent; r35 (um) is the pore-throat radius at
     35% mercury saturation, a strong permeability/rock-quality discriminator.
     """
-    phi_pct = np.asarray(phi, float) * 100.0
-    return 10.0 ** (0.732 + 0.588 * np.log10(k) - 0.864 * np.log10(phi_pct))
+    return petrolib.flow_transport.winland_r35(k, phi)
 
 
 def rqi(k, phi):
     """Reservoir quality index  RQI = 0.0314*sqrt(k/phi)  [um], k in mD."""
-    return 0.0314 * np.sqrt(np.asarray(k, float) / phi)
+    return petrolib.flow_transport.rqi(k, phi)
 
 
 def normalized_porosity(phi):
     """Normalized porosity index  phi_z = phi/(1 - phi)."""
-    phi = np.asarray(phi, float)
-    return phi / (1.0 - phi)
+    return petrolib.flow_transport.phi_z(phi)
 
 
 def flow_zone_indicator(k, phi):
     """Flow zone indicator  FZI = RQI/phi_z."""
-    return rqi(k, phi) / normalized_porosity(phi)
+    return petrolib.flow_transport.fzi(k, phi)
 
 
 # ---------------------------------------------- electrofacies --------------

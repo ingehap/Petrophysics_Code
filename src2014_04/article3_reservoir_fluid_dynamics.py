@@ -36,6 +36,13 @@ relative.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 KB = 1.380649e-23  # Boltzmann constant, J/K
 G = 9.81           # m/s^2
 
@@ -50,7 +57,7 @@ def diffusion_length(diffusion, time):
 
         x = sqrt(2*D*t).
     """
-    return np.sqrt(2.0 * diffusion * np.asarray(time, float))
+    return petrolib.flow_transport.diffusion_length(diffusion, time, geometry_factor=2.0)
 
 
 def diffusion_time(distance, diffusion):
@@ -58,7 +65,7 @@ def diffusion_time(distance, diffusion):
 
         t = x^2/(2*D).
     """
-    return np.asarray(distance, float) ** 2 / (2.0 * diffusion)
+    return petrolib.flow_transport.diffusion_time(distance, diffusion, geometry_factor=2.0)
 
 
 # ---------------------------------------------- gravity current --------------
