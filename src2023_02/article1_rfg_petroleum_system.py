@@ -26,6 +26,13 @@ qualitative story:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ------------------------------------------------ FHZ asphaltene gradient ---
 
@@ -43,10 +50,8 @@ def fhz_asphaltene_ratio(h_above_m, phi_ref=0.10, T_K=290.0,
     we drop it -- consistent with the linearised form usually quoted in
     the SPWLA RFG literature.
     """
-    R = 8.314         # J / (mol K)
-    g = 9.81          # m / s^2
-    grav = -Va_m3_mol * g * (rho_a - rho_o) * np.asarray(h_above_m) / (R * T_K)
-    return np.exp(grav)
+    return petrolib.geochem_fluids.asphaltene.fhz_ratio(
+        -np.asarray(h_above_m, float), Va_m3_mol, rho_a - rho_o, T_K)
 
 
 # ------------------------------------------------ biodegradation kinetics --

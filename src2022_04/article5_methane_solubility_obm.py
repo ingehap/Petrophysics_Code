@@ -24,13 +24,20 @@ Implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Henry's-law form --------
 
 def henry_solubility(P_MPa, T_K, a=0.10, b=0.85, dH_J_mol=-5000.0,
                     R=8.314):
     """ln(x_CH4) = a + b * ln(P) - dH/(R T)."""
-    return a + b * np.log(P_MPa) - dH_J_mol / (R * T_K)
+    return petrolib.geochem_fluids.solubility.henry_solubility_ln(P_MPa, T_K, a, b, dH_J_mol)
 
 
 # ---------------------------------------------- multivariate regression -
