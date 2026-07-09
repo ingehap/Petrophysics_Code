@@ -29,6 +29,13 @@ reproduced.  SI units (lambda in m, P in Pa, k in m^2).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 KB = 1.380649e-23            # Boltzmann constant (J/K)
 
 
@@ -36,7 +43,7 @@ KB = 1.380649e-23            # Boltzmann constant (J/K)
 
 def darcy_rate(k, area, dp, mu, length):
     """Darcy flow rate  Q = k*A*dP/(mu*L)  (Eq. 1)."""
-    return k * area * dp / (mu * length)
+    return petrolib.flow_transport.darcy_rate(k, area=area, dp=dp, mu=mu, length=length)
 
 
 def mean_free_path(temperature, pressure, collision_diameter):
@@ -44,12 +51,13 @@ def mean_free_path(temperature, pressure, collision_diameter):
 
     delta = gas collision diameter (He ~ 0.25 nm, N2 ~ 0.36 nm).
     """
-    return KB * temperature / (np.sqrt(2.0) * np.pi * collision_diameter ** 2 * pressure)
+    return petrolib.flow_transport.mean_free_path(
+        pressure=pressure, temperature=temperature, d_collision=collision_diameter)
 
 
 def knudsen_number(lmbda, pore_diameter):
     """Knudsen number  Kn = lambda/d  (Eq. 2)."""
-    return np.asarray(lmbda, float) / pore_diameter
+    return petrolib.flow_transport.knudsen_number(lmbda, pore_diameter)
 
 
 def flow_regime(kn):
@@ -65,7 +73,7 @@ def flow_regime(kn):
 
 def klinkenberg(k_inf, b, pressure):
     """Klinkenberg apparent permeability  ka = k_inf*(1 + b/P)  (Eq. 4)."""
-    return k_inf * (1.0 + b / np.asarray(pressure, float))
+    return petrolib.flow_transport.klinkenberg_apparent(k_inf, b=b, p_mean=pressure)
 
 
 # ---------------------------------------------- lambda plot --------------

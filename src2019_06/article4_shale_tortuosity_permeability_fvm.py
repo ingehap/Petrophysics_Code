@@ -25,6 +25,13 @@ method the paper applies (a 2D FVM stands in for the 3D solve).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- FVM Laplace -------------
 
@@ -79,7 +86,8 @@ def tortuosity(porosity, sigma_eff, sigma_fluid=1.0):
 
 def kozeny_carman(porosity, tau, surface_area, c=2.0):
     """Kozeny-Carman permeability  k = phi^3 / (c*tau^2*Sv^2)."""
-    return porosity ** 3 / (c * tau ** 2 * surface_area ** 2)
+    return petrolib.flow_transport.kozeny_carman(
+        porosity, specific_surface=surface_area, tau=tau, c=c, grain_term=False)
 
 
 # ---------------------------------------------- tests --------------

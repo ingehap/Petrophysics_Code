@@ -52,15 +52,13 @@ def washburn_diameter(pc_psi, sigma=0.485, theta_deg=140.0):
 
 def micp_apex(shg_pct, pc_psi):
     """Apex of the MICP curve: max of SHg/Pc (Pittman 1992).  Returns the ratio."""
-    ratio = np.asarray(shg_pct, float) / np.asarray(pc_psi, float)
-    i = int(np.argmax(ratio))
-    return ratio[i], i
+    return petrolib.flow_transport.micp_apex(shg_pct, pc_psi)
 
 
 def swanson_permeability(shg_pct, pc_psi, a=339.0, b=1.691):
     """Swanson permeability from the MICP apex  k = A*(SHg/Pc)_apex^B  (Eq. 1, mD)."""
     apex, _ = micp_apex(shg_pct, pc_psi)
-    return a * apex ** b
+    return petrolib.flow_transport.swanson_permeability(apex, c=a, d=b)
 
 
 def threshold_pressure(shg_pct, pc_psi, shg_cut=5.0):
