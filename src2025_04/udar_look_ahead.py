@@ -15,6 +15,13 @@ Reference: https://doi.org/10.30632/PJV66N2-2025a2 (SPWLA)
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass, field
 from typing import List, Tuple, Optional
 
@@ -55,9 +62,7 @@ def skin_depth(frequency_hz: float, resistivity_ohm_m: float, mu_r: float = 1.0)
     float
         Skin depth in metres.
     """
-    mu_0 = 4.0 * np.pi * 1e-7
-    omega = 2.0 * np.pi * frequency_hz
-    return np.sqrt(2.0 * resistivity_ohm_m / (omega * mu_0 * mu_r))
+    return petrolib.em_dielectric.skin_depth(resistivity_ohm_m, frequency_hz, mu_r=mu_r)
 
 
 def estimate_snr(tool: UDARToolConfig,

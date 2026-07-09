@@ -38,6 +38,13 @@ from typing import Sequence, Tuple
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 EPS0 = 8.8541878128e-12  # vacuum permittivity, F/m
 
 
@@ -75,9 +82,9 @@ def cole_cole_permittivity(freq_hz, eps_inf: float, d_eps: float,
     -------
     complex ndarray (or scalar) of e*(w).
     """
-    w = 2.0 * math.pi * np.asarray(freq_hz, dtype=float)
-    jwt = 1j * w * tau
-    return eps_inf + d_eps / (1.0 + jwt ** (1.0 - alpha))
+    return petrolib.em_dielectric.cole_cole(
+        freq_hz, eps_inf=eps_inf, eps_s=eps_inf + d_eps, tau=tau, alpha=alpha
+    )
 
 
 def effective_conductivity(freq_hz, eps_imag) -> np.ndarray:
@@ -88,8 +95,7 @@ def effective_conductivity(freq_hz, eps_imag) -> np.ndarray:
 
     Returns conductivity in S/m.
     """
-    w = 2.0 * math.pi * np.asarray(freq_hz, dtype=float)
-    return w * EPS0 * np.asarray(eps_imag, dtype=float)
+    return petrolib.em_dielectric.sigma_from_imag_permittivity(eps_imag, freq_hz)
 
 
 def relaxation_regime(freq_hz: float, tau: float) -> str:
