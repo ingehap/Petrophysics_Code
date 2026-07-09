@@ -199,6 +199,17 @@ def _original_fractional_flow_analog_2025_12(kr_w, mu_w, kr_nw, mu_nw):
     return np.where(denom > 0, lam_w / denom, 0.0)
 
 
+def _original_fractional_flow_co2_reciprocal_2025_02(krw, krc, mu_b, mu_c):
+    # src2025_02/co2_brine_relperm reciprocal form with an in-denominator
+    # 1e-30 stabilizer; agrees with lam_w/(lam_w+lam_nw) to ~1 ULP where krw > 0
+    return 1.0 / (1.0 + krc * mu_b / (krw * mu_c + 1e-30))
+
+
+def _original_total_mobility_analog_2025_12(kr_nw, mu_nw, kr_w, mu_w):
+    # src2025_12/analog_kr: lambda_nw + lambda_w
+    return np.asarray(kr_nw, float) / mu_nw + np.asarray(kr_w, float) / mu_w
+
+
 def test_mobility_and_fractional_flow() -> None:
     np.testing.assert_allclose(rp.phase_mobility(0.3, 2e-3), 150.0)
     krw = rp.corey_krw(SW, swr=0.15, sor=0.2, nw=2.0)
@@ -209,11 +220,23 @@ def test_mobility_and_fractional_flow() -> None:
         lambda kw, mw, kn, mn: rp.fractional_flow(kw, kn, mu_w=mw, mu_nw=mn),
         [(krw, 1e-3, kro, 2e-3)],
     )
+    # analog_kr total mobility (commutative sum) is bit-exact
+    assert_matches_original(
+        _original_total_mobility_analog_2025_12,
+        lambda kn, mn, kw, mw: rp.total_mobility(kw, kn, mu_w=mw, mu_nw=mn),
+        [(kro, 2e-3, krw, 1e-3)],
+    )
     # reciprocal formulation agrees where krw > 0 (~1 ULP)
     mask = krw > 0
     np.testing.assert_allclose(
         _original_fractional_flow_reciprocal_2019_02(krw[mask], kro[mask], 1e-3, 2e-3),
         rp.fractional_flow(krw[mask], kro[mask], mu_w=1e-3, mu_nw=2e-3),
+        rtol=1e-12,
+    )
+    # co2_brine_relperm reciprocal (with 1e-30 stabilizer) agrees where krw > 0
+    np.testing.assert_allclose(
+        _original_fractional_flow_co2_reciprocal_2025_02(krw[mask], kro[mask], 7e-4, 5e-5),
+        rp.fractional_flow(krw[mask], kro[mask], mu_w=7e-4, mu_nw=5e-5),
         rtol=1e-12,
     )
     # endpoint mobility ratio

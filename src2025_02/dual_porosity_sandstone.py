@@ -57,7 +57,7 @@ def imbibition_Pc_from_drainage(Pc_dra, Sw_dra, Swirr, Swt, Sot,
 
 def land_trapped_oil(Soi, C):
     """Trapped oil from Land correlation (Eq. 6): Sot = Soi/(1+C·Soi)."""
-    return np.asarray(Soi, float) / (1 + C*np.asarray(Soi, float))
+    return petrolib.relperm_wettability.land_trapped(Soi, C=C)
 
 def Sot_max_from_Swdra(Sot_max_global, Sw_dra, Swirr):
     """Max trapped oil scales linearly with drainage saturation (Eq. 5).
@@ -91,10 +91,12 @@ def nmr_gaussian_deconvolution(T2, amplitude, n_peaks=2):
 def corey_kr_dual(Sw, phi_M, phi_m, Swir_M, Swir_m, kro_max, krw_max, no, nw):
     """Dual-porosity Corey kr with weighted contribution."""
     phi_t = phi_M + phi_m
-    Se_M = np.clip((Sw-Swir_M)/(1-Swir_M), 0, 1)
-    Se_m = np.clip((Sw-Swir_m)/(1-Swir_m), 0, 1)
-    kro_M = kro_max*(1-Se_M)**no; krw_M = krw_max*Se_M**nw
-    kro_m = kro_max*(1-Se_m)**no; krw_m = krw_max*Se_m**nw
+    # Each pore system is a single-endpoint Corey pair (Sor=0); porosity-weight
+    # the two systems.
+    krw_M, kro_M = petrolib.relperm_wettability.corey_kr(
+        Sw, swr=Swir_M, sor=0.0, krw_max=krw_max, kro_max=kro_max, nw=nw, no=no)
+    krw_m, kro_m = petrolib.relperm_wettability.corey_kr(
+        Sw, swr=Swir_m, sor=0.0, krw_max=krw_max, kro_max=kro_max, nw=nw, no=no)
     kro = (phi_M*kro_M + phi_m*kro_m)/phi_t
     krw = (phi_M*krw_M + phi_m*krw_m)/phi_t
     return krw, kro

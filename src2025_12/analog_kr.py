@@ -25,6 +25,13 @@ from __future__ import annotations
 import numpy as np
 from typing import Tuple
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ──────────────────────────────────────────────────────────────────────
 # 1. Capillary Number  (Eq. 1, Saffman & Taylor 1958)
@@ -50,7 +57,7 @@ def capillary_number(
     float
         Capillary number (dimensionless).
     """
-    return mu * v / sigma
+    return float(petrolib.relperm_wettability.capillary_number(mu=mu, v=v, sigma=sigma))
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -66,7 +73,7 @@ def phase_mobility(kr: np.ndarray, mu: float) -> np.ndarray:
     mu : float
         Dynamic viscosity of the phase (Pa·s).
     """
-    return np.asarray(kr, float) / mu
+    return petrolib.relperm_wettability.phase_mobility(kr, mu)
 
 
 def total_mobility(
@@ -87,7 +94,8 @@ def total_mobility(
     np.ndarray
         Total mobility at each saturation point.
     """
-    return phase_mobility(kr_nw, mu_nw) + phase_mobility(kr_w, mu_w)
+    return petrolib.relperm_wettability.total_mobility(
+        kr_w, kr_nw, mu_w=mu_w, mu_nw=mu_nw)
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -116,11 +124,8 @@ def fractional_flow(
     np.ndarray
         Fractional flow of the injected phase.
     """
-    lam_inj = phase_mobility(kr_inj, mu_inj)
-    lam_disp = phase_mobility(kr_disp, mu_disp)
-    denom = lam_inj + lam_disp
-    # Avoid division by zero at endpoints
-    return np.where(denom > 0, lam_inj / denom, 0.0)
+    return petrolib.relperm_wettability.fractional_flow(
+        kr_inj, kr_disp, mu_w=mu_inj, mu_nw=mu_disp)
 
 
 # ──────────────────────────────────────────────────────────────────────

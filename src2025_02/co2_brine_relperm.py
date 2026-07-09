@@ -16,6 +16,13 @@ import numpy as np
 from scipy.optimize import curve_fit
 from dataclasses import dataclass
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 @dataclass
 class CoreFluidProps:
     core_L: float = 0.020;  core_D: float = 0.010;  phi: float = 0.10
@@ -29,12 +36,12 @@ class CoreFluidProps:
     def mobility_ratio(self): return self.mu_brine/self.mu_co2
 
 def corey_relperm(Sw, Swir, Sor, krw_max, krco2_max, nw, nco2):
-    Se = np.clip((Sw-Swir)/(1-Swir-Sor), 0, 1)
-    return krw_max*Se**nw, krco2_max*(1-Se)**nco2
+    return petrolib.relperm_wettability.corey_kr(
+        Sw, swr=Swir, sor=Sor, krw_max=krw_max, kro_max=krco2_max, nw=nw, no=nco2)
 
 def fractional_flow(Sw, Swir, Sor, krw_max, krco2_max, nw, nco2, mu_b, mu_c):
     krw, krc = corey_relperm(Sw, Swir, Sor, krw_max, krco2_max, nw, nco2)
-    return 1.0/(1.0 + krc*mu_b/(krw*mu_c+1e-30))
+    return petrolib.relperm_wettability.fractional_flow(krw, krc, mu_w=mu_b, mu_nw=mu_c)
 
 def ss_analytical_kr(fw, Q, dP, props: CoreFluidProps):
     dP = max(dP, 1e-10)
@@ -45,7 +52,7 @@ def capillary_end_effect_length(Pc_entry, dP, L):
     return min(Pc_entry/(max(dP,1e-10))*L, L)
 
 def capillary_number(Q, mu, ift, A):
-    return Q*mu/(A*ift)
+    return float(petrolib.relperm_wettability.capillary_number(mu=mu, v=Q/A, sigma=ift))
 
 def fit_corey(Sw, krw_data, krco2_data, Swir=0.15, Sor=0.0):
     Se = np.clip((Sw-Swir)/(1-Swir-Sor), 1e-6, 1-1e-6)

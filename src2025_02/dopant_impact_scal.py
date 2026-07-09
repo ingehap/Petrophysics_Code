@@ -13,6 +13,13 @@ Implements:
 """
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 def xray_attenuation(fluid, nai_mol=0.0):
     base = {'brine': 0.0208, 'oil': 0.0165, 'doped_brine': 0.058}
     if fluid=='brine' and nai_mol>0: return 0.0208+(0.058-0.0208)*min(nai_mol/0.4, 1)
@@ -22,9 +29,7 @@ def contrast_ratio(att_brine, att_oil):
     return abs(att_brine-att_oil)/att_oil
 
 def amott_index(Vw_sp, Vw_fo, Vo_sp, Vo_fo):
-    Iw = Vw_sp/(Vw_sp+Vw_fo) if Vw_sp+Vw_fo>0 else 0
-    Io = Vo_sp/(Vo_sp+Vo_fo) if Vo_sp+Vo_fo>0 else 0
-    IAH = Iw-Io
+    Iw, Io, IAH = petrolib.relperm_wettability.amott_indices(Vw_sp, Vw_fo, Vo_sp, Vo_fo)
     if IAH>0.3: c="water-wet"
     elif IAH>0.1: c="weakly water-wet"
     elif IAH>-0.1: c="intermediate"

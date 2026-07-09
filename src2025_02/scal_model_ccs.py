@@ -16,6 +16,13 @@ import numpy as np
 from dataclasses import dataclass, field
 from typing import Tuple
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 @dataclass
 class LETRelPermParams:
     """LET relative-permeability parameters (Lomeland et al., 2005, 2008)."""
@@ -31,15 +38,19 @@ class LETCapPresParams:
 
 def normalized_water_saturation(Sw, Swr):
     """Swn = (Sw - Swr) / (1 - Swr)  [Eq. 3]."""
-    return np.clip((np.asarray(Sw, float) - Swr) / (1.0 - Swr), 0, 1)
+    return petrolib.relperm_wettability.normalized_saturation(Sw, Swr)
 
 def let_relative_permeability(Sw, params: LETRelPermParams):
     """LET relative permeability (Eq. 1). Returns (krg, krw)."""
-    Swn = normalized_water_saturation(Sw, params.Swr)
-    ng = (1-Swn)**params.Lg;  dg = ng + params.Eg * Swn**params.Tg
-    nw = Swn**params.Lw;      dw = nw + params.Ew * (1-Swn)**params.Tw
-    dg = np.where(dg==0, 1e-30, dg); dw = np.where(dw==0, 1e-30, dw)
-    return np.clip(params.krg_max*ng/dg, 0, 1), np.clip(params.krw_max*nw/dw, 0, 1)
+    # Gas is the non-wetting phase, water the wetting phase; the article clips
+    # each LET curve to [0, 1] (petrolib.let_kr leaves the output unclipped).
+    krg = np.clip(petrolib.relperm_wettability.let_kr(
+        Sw, swr=params.Swr, L=params.Lg, E=params.Eg, T=params.Tg,
+        kr_max=params.krg_max, phase="nonwetting"), 0, 1)
+    krw = np.clip(petrolib.relperm_wettability.let_kr(
+        Sw, swr=params.Swr, L=params.Lw, E=params.Ew, T=params.Tw,
+        kr_max=params.krw_max, phase="wetting"), 0, 1)
+    return krg, krw
 
 def let_capillary_pressure(Sw, params: LETCapPresParams):
     """LET capillary pressure (Eq. 2)."""
@@ -57,11 +68,11 @@ def leverett_j_scaling(Pc, ift_orig, ift_target, k_orig=None, k_tgt=None, phi_or
 
 def land_trapping(Sgi, C):
     """Land (1968) trapping: Sgt = Sgi / (1 + C·Sgi)."""
-    return np.asarray(Sgi, float) / (1.0 + C * np.asarray(Sgi, float))
+    return petrolib.relperm_wettability.land_trapped(Sgi, C=C)
 
 def land_coefficient(Sgi_max, Sgt_max):
     """C = 1/Sgt_max - 1/Sgi_max."""
-    return 1.0/Sgt_max - 1.0/Sgi_max
+    return petrolib.relperm_wettability.land_c(s_i_max=Sgi_max, s_r_max=Sgt_max)
 
 def co2_storage_capacity(pore_volume, Swr, Sgt, rho_co2=700.0):
     """Structural and residual CO2 storage [tonnes]."""

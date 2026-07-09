@@ -34,6 +34,13 @@ from typing import List, Optional, Tuple
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ──────────────────────────────────────────────────────────────────────
 # 1.  PGS Rock-Type Classification  (Eqs. 1-3, Akbar et al.)
@@ -145,12 +152,13 @@ def corey_kro(Sw: np.ndarray, Swir: float, Sorw: float,
     np.ndarray
         Oil relative permeability.
     """
+    # Guard the degenerate window locally; oil normalized independently as
+    # (1-Sw-Sorw)/denom agrees with the library's (1-Se) form to ~1 ULP.
     Sw = np.asarray(Sw, float)
-    denom = 1.0 - Swir - Sorw
-    if denom <= 0:
+    if 1.0 - Swir - Sorw <= 0:
         return np.zeros_like(Sw)
-    Sn = np.clip((1.0 - Sw - Sorw) / denom, 0.0, 1.0)
-    return kro0 * Sn**no
+    return petrolib.relperm_wettability.corey_kro(
+        Sw, swr=Swir, sor=Sorw, kro_max=kro0, no=no)
 
 
 def corey_krw(Sw: np.ndarray, Swir: float, Sorw: float,
@@ -178,11 +186,10 @@ def corey_krw(Sw: np.ndarray, Swir: float, Sorw: float,
         Water relative permeability.
     """
     Sw = np.asarray(Sw, float)
-    denom = 1.0 - Swir - Sorw
-    if denom <= 0:
+    if 1.0 - Swir - Sorw <= 0:
         return np.zeros_like(Sw)
-    Sn = np.clip((Sw - Swir) / denom, 0.0, 1.0)
-    return krw0 * Sn**nw
+    return petrolib.relperm_wettability.corey_krw(
+        Sw, swr=Swir, sor=Sorw, krw_max=krw0, nw=nw)
 
 
 def corey_curves(Swir: float, Sorw: float,
