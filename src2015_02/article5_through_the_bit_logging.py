@@ -52,7 +52,7 @@ def electron_density_index(z, a, rho_m):
 
     with Z the atomic number, A the atomic mass and rho_m the true mass density.
     """
-    return (2.0 * z / a) * rho_m
+    return petrolib.nuclear.electron_density_index(z, a, rho_m)
 
 
 def electron_density_mixture(z_list, a_list, mass_fractions, rho_m):
@@ -60,10 +60,7 @@ def electron_density_mixture(z_list, a_list, mass_fractions, rho_m):
 
         rho_e = 2*sum_i(w_i*Z_i/A_i)*rho_m.
     """
-    z = np.asarray(z_list, float)
-    a = np.asarray(a_list, float)
-    w = np.asarray(mass_fractions, float)
-    return 2.0 * np.sum(w * z / a) * rho_m
+    return petrolib.nuclear.electron_density_mixture(z_list, a_list, mass_fractions, rho_m)
 
 
 # ---------------------------------------------- spine-and-ribs --------------

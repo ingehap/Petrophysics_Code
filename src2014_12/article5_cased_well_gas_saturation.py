@@ -32,6 +32,13 @@ interpolation between the gas and liquid envelope limits.  Energies in MeV.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- elastic scattering --------------
 
@@ -42,8 +49,7 @@ def collision_parameter(mass_number):
 
     with the target mass number A.  a -> 0 for hydrogen (A=1).
     """
-    a = mass_number
-    return ((a - 1.0) / (a + 1.0)) ** 2
+    return petrolib.nuclear.collision_parameter(mass_number)
 
 
 def elastic_energy_ratio(mass_number, theta_cm):
@@ -74,10 +80,7 @@ def average_lethargy_gain(mass_number):
 
     independent of the incident energy.  xi -> 1.0 for hydrogen.
     """
-    a = collision_parameter(mass_number)
-    if np.isclose(a, 0.0):
-        return 1.0
-    return 1.0 + a / (1.0 - a) * np.log(a)
+    return petrolib.nuclear.average_lethargy_gain(mass_number)
 
 
 def moderating_power(mass_number, sigma_s):
@@ -87,7 +90,7 @@ def moderating_power(mass_number, sigma_s):
 
     with the macroscopic scattering cross-section Sigma_s (1/cm).
     """
-    return average_lethargy_gain(mass_number) * sigma_s
+    return petrolib.nuclear.moderating_power(mass_number, sigma_s)
 
 
 # ---------------------------------------------- count ratios --------------

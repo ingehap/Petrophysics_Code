@@ -73,7 +73,7 @@ def classify_component(t1t2, t2_s=None, diffusion=None):
 
 def hi_corrected_porosity(apparent_porosity, hydrogen_index):
     """Correct apparent NMR porosity for the fluid hydrogen index  phi = phi_app/HI."""
-    return np.asarray(apparent_porosity, float) / hydrogen_index
+    return petrolib.nuclear.phi_hi_correction(apparent_porosity, hydrogen_index)
 
 
 # ---------------------------------------------- tests --------------

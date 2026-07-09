@@ -29,6 +29,13 @@ Density in g/cm^3, lengths in cm.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- gamma count --------------
 
@@ -38,12 +45,12 @@ def gamma_count(rho, n0, mu, spacing):
     mu = mass attenuation coefficient (cm^2/g), spacing d (cm); denser formation
     scatters more gamma rays away, lowering the count.
     """
-    return n0 * np.exp(-mu * np.asarray(rho, float) * spacing)
+    return petrolib.nuclear.gamma_count(rho, n0=n0, mu_mass=mu, spacing_cm=spacing)
 
 
 def density_from_count(n, n0, mu, spacing):
     """Formation density inverted from the gamma count  rho = -ln(N/N0)/(mu*d)."""
-    return -np.log(np.asarray(n, float) / n0) / (mu * spacing)
+    return petrolib.nuclear.density_from_count(n, n0=n0, mu_mass=mu, spacing_cm=spacing)
 
 
 # ---------------------------------------------- compensated --------------
@@ -54,7 +61,7 @@ def two_detector_density(near_count, far_count, a, b):
     The near/far ratio cancels source-strength drift; a, b are calibration
     constants.
     """
-    return a + b * np.log(np.asarray(near_count, float) / np.asarray(far_count, float))
+    return petrolib.nuclear.dual_detector_density(near_count, far_count, a=a, b=b)
 
 
 def spine_ribs_correction(rho_apparent, drho):
