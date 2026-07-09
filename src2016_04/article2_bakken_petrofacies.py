@@ -32,17 +32,24 @@ g/cm^3, volumes/fractions dimensionless.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- log transforms --------------
 
 def toc_schmoker(rho_b):
     """Schmoker-Hester (1983) density TOC  TOC = 154.497/rho_b - 57.261  [wt%]."""
-    return 154.497 / np.asarray(rho_b, float) - 57.261
+    return petrolib.porosity_lithology.toc_schmoker(rho_b)
 
 
 def clay_volume(vclay_nd, vclay_cgr):
     """Averaged clay volume  Vclay = (Vclay_ND + Vclay_CGR)/2  (Eq. 2)."""
-    return 0.5 * (np.asarray(vclay_nd, float) + np.asarray(vclay_cgr, float))
+    return petrolib.porosity_lithology.combine_clay_indicators(vclay_nd, vclay_cgr, how="mean")
 
 
 # ---------------------------------------------- multimineral inversion --------------
@@ -55,15 +62,7 @@ def multimineral_inversion(log_responses, endpoints):
     n_minerals) of the pure-mineral tool responses.  Returns the mineral
     volume fractions.
     """
-    a = np.asarray(endpoints, float)
-    b = np.asarray(log_responses, float)
-    n_min = a.shape[1]
-    # append the unity (closure) equation with a large weight
-    w = 1e3
-    a_aug = np.vstack([a, w * np.ones(n_min)])
-    b_aug = np.concatenate([b, [w * 1.0]])
-    vols, *_ = np.linalg.lstsq(a_aug, b_aug, rcond=None)
-    return vols
+    return petrolib.porosity_lithology.multimineral_solve(log_responses, endpoints, method="lstsq")
 
 
 # ---------------------------------------------- petrofacies --------------
