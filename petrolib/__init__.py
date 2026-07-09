@@ -28,6 +28,7 @@ _SUBMODULES = frozenset(
         "geochem_fluids",
         "ml_stats",
         "nmr",
+        "nuclear",
         "porosity_lithology",
         "relperm_wettability",
         "saturation_resistivity",
