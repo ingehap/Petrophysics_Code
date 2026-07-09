@@ -24,12 +24,19 @@ teaches.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Archie ------------------
 
 def formation_factor(phi, a=1.0, m=2.0):
     """Archie formation factor  F = a/phi^m."""
-    return a / np.asarray(phi, float) ** m
+    return petrolib.saturation_resistivity.formation_factor(phi, a=a, m=m)
 
 
 def r_zero(Rw, phi, a=1.0, m=2.0):
@@ -39,28 +46,25 @@ def r_zero(Rw, phi, a=1.0, m=2.0):
 
 def resistivity_index(Rt, R0):
     """Resistivity index  I = Rt/R0 = Sw^(-n)."""
-    return np.asarray(Rt, float) / np.asarray(R0, float)
+    return petrolib.saturation_resistivity.resistivity_index(Rt, R0)
 
 
 def archie_sw(Rt, Rw, phi, a=1.0, m=2.0, n=2.0):
     """Archie water saturation  Sw = (a*Rw/(phi^m*Rt))^(1/n)."""
-    return (a * Rw / (np.asarray(phi, float) ** m * Rt)) ** (1.0 / n)
+    return petrolib.saturation_resistivity.archie_sw(Rt, Rw, phi=phi, a=a, m=m, n=n)
 
 
 # ---------------------------------------------- exponent fitting --------
 
 def fit_m(phi, F, a=1.0):
     """Cementation exponent from F vs phi  m = -slope of log F vs log phi."""
-    slope, _ = np.polyfit(np.log10(np.asarray(phi, float)),
-                          np.log10(np.asarray(F, float) / a), 1)
-    return -slope
+    m, _ = petrolib.saturation_resistivity.fit_cementation_exponent(phi, np.asarray(F, float) / a)
+    return m
 
 
 def fit_n(sw, I):
     """Saturation exponent from I vs Sw  n = -slope of log I vs log Sw."""
-    slope, _ = np.polyfit(np.log10(np.asarray(sw, float)),
-                          np.log10(np.asarray(I, float)), 1)
-    return -slope
+    return petrolib.saturation_resistivity.fit_saturation_exponent(sw, I)
 
 
 # ---------------------------------------------- tests --------------

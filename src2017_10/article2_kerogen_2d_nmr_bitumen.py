@@ -27,6 +27,13 @@ m, S/V in 1/m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 T_BULK_HEPTANE = 1.918       # bulk heptane T1 = T2 (s)
 D0_HEPTANE = 3.43e-9         # bulk diffusivity (m^2/s = 3.43 um^2/ms)
 
@@ -69,7 +76,7 @@ def fast_diffusion_ratio(d, rho, d0=D0_HEPTANE):
 
 def formation_factor(phi_micro, m):
     """Archie formation factor of the microporosity  F = phi_micro^(-m)  (Eq. 14)."""
-    return np.asarray(phi_micro, float) ** (-m)
+    return petrolib.saturation_resistivity.formation_factor(phi_micro, m=m)
 
 
 # ---------------------------------------------- tests --------------

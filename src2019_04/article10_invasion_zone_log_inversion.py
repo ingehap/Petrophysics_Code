@@ -25,12 +25,19 @@ the paper analyzes.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Archie ------------------
 
 def archie_sw(Rt, Rw, phi, a=1.0, m=2.0, n=2.0):
     """Archie water saturation  Sw = (a*Rw/(phi^m*Rt))^(1/n)."""
-    return (a * Rw / (np.asarray(phi, float) ** m * Rt)) ** (1.0 / n)
+    return petrolib.saturation_resistivity.archie_sw(Rt, Rw, phi=phi, a=a, m=m, n=n)
 
 
 def two_zone_apparent_resistivity(Rxo, Rt, ri, doi):

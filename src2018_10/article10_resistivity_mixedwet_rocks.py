@@ -26,12 +26,21 @@ paper's title describes.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Archie ------------------
 
 def resistivity_index(sw, n=2.0):
     """Archie resistivity index  I = Rt/R0 = Sw^(-n)."""
-    return np.asarray(sw, float) ** (-n)
+    # NOTE: despite the name this is the power law in Sw, not the Rt/Ro
+    # definition — it maps to resistivity_index_from_sw.
+    return petrolib.saturation_resistivity.resistivity_index_from_sw(sw, n=n)
 
 
 def saturation_exponent(oil_wet_fraction, n_ww=1.8, dn=2.0):

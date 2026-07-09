@@ -276,3 +276,36 @@ def test_equivalence_exponent_fits_2014_02() -> None:
     assert sat.fit_saturation_exponent(SW, ri) == pytest.approx(
         _original_fit_saturation_2014_02(SW, ri), rel=1e-14
     )
+
+
+# --- Saturation-train B2 hazards and variants -------------------------------
+
+
+def _original_archie_sw_swapped_2018_02(rw, rt, phi, a=1.0, m=2.0, n=2.0):
+    # src2018_02/article9 (and src2017_12/article5): argument order (rw, rt)
+    return np.clip((a * rw / (phi**m * np.asarray(rt, float))) ** (1.0 / n), 0.0, 1.0)
+
+
+def test_hazard_swapped_rw_rt_order() -> None:
+    rt = np.asarray(sat.archie_rt(SW, RW, phi=PHI))
+    correct = _original_archie_sw_swapped_2018_02(RW, rt, PHI)
+    facade = sat.archie_sw(rt, RW, phi=PHI, clip=(0.0, 1.0))
+    np.testing.assert_allclose(facade, correct, rtol=1e-12, atol=0.0)
+    # the trap: passing the article's positional order into the canonical
+    # signature swaps rt and rw and produces garbage
+    naive = sat.archie_sw(RW, rt, phi=PHI, clip=(0.0, 1.0))
+    assert not np.allclose(naive, correct, rtol=1e-3)
+
+
+def _original_ff_negative_power(phi, m=2.0):
+    # src2017_10/article2, src2018_06/article5, src2020_08/article2 spell the
+    # formation factor as phi**(-m) (or a*phi**(-m)) rather than a/phi**m
+    return np.asarray(phi, float) ** (-m)
+
+
+def test_formation_factor_negative_power_spelling() -> None:
+    # different float path (pow(phi, -m) vs 1/pow(phi, m)): agrees within
+    # 1 ULP, far inside the 1e-12 gate
+    assert_matches_original(
+        _original_ff_negative_power, lambda p, m=2.0: sat.formation_factor(p, m=m), [(PHI,)]
+    )

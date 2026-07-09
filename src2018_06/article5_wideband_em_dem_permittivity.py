@@ -27,6 +27,13 @@ reconstructions.  SI units; eps0 = vacuum permittivity.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 EPS0 = 8.8541878128e-12      # vacuum permittivity (F/m)
 
 
@@ -85,7 +92,7 @@ def bruggeman_two_phase(eps1, eps2, frac1):
 
 def archie_formation_factor(phi, m=2.0):
     """Archie formation factor  F = phi^(-m)  (Eq. 17)."""
-    return np.asarray(phi, float) ** (-m)
+    return petrolib.saturation_resistivity.formation_factor(phi, m=m)
 
 
 def archie_tortuosity(phi, m=2.0):

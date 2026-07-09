@@ -27,6 +27,13 @@ SPWLA/CrossRef value for this issue.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- resistivity --------------
 
@@ -45,7 +52,9 @@ def correct_resistivity(rt_measured, d_stress, c=1.0e-5):
 
 def archie_sw(rw, rt, phi, a=1.0, m=2.0, n=2.0):
     """Archie water saturation  Sw = (a*Rw/(phi^m*Rt))^(1/n), clipped to [0,1]."""
-    return np.clip((a * rw / (phi ** m * np.asarray(rt, float))) ** (1.0 / n), 0.0, 1.0)
+    # HAZARD (LIBRARY_MERGE_PLAN.md section 9): this article's argument order
+    # is (rw, rt) — the canonical order is (rt, rw).  Mapped explicitly.
+    return petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, a=a, m=m, n=n, clip=(0.0, 1.0))
 
 
 def saturation_bias(rw, rt0, d_stress, phi, c=1.0e-5, **archie):

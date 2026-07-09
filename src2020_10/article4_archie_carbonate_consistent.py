@@ -27,6 +27,13 @@ best-fit m = 1.7, and the vuggy resistivity index whose slope stays near 1.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 SIGMA_W = 10.0           # S/m, brine conductivity
 
 
@@ -34,8 +41,7 @@ SIGMA_W = 10.0           # S/m, brine conductivity
 
 def archie_sw(Rt, Rw, phi, a=1.0, m=2.0, n=2.0):
     """Archie water saturation  Sw = (a*Rw/(phi^m*Rt))^(1/n)  (Eq. 1a)."""
-    phi = np.asarray(phi, float)
-    return (a * Rw / (phi ** m * np.asarray(Rt, float))) ** (1.0 / n)
+    return petrolib.saturation_resistivity.archie_sw(Rt, Rw, phi=phi, a=a, m=m, n=n)
 
 
 def r_zero(Rw, phi, a=1.0, m=2.0):
@@ -45,17 +51,17 @@ def r_zero(Rw, phi, a=1.0, m=2.0):
 
 def resistivity_index(Rt, R0):
     """Resistivity index  RI = Rt/R0 = Sw^(-n)  (Eq. 1c)."""
-    return np.asarray(Rt, float) / np.asarray(R0, float)
+    return petrolib.saturation_resistivity.resistivity_index(Rt, R0)
 
 
 def formation_factor(phi, a=1.0, m=2.0):
     """Archie formation factor  F = a/phi^m."""
-    return a / np.asarray(phi, float) ** m
+    return petrolib.saturation_resistivity.formation_factor(phi, a=a, m=m)
 
 
 def effective_cementation_exponent(F, phi, a=1.0):
     """Effective m back-computed from F and phi  (Eq. 6)  m = ln(F/a)/ln(1/phi)."""
-    return np.log(F / a) / np.log(1.0 / np.asarray(phi, float))
+    return petrolib.saturation_resistivity.cementation_exponent_at_point(phi, F, a=a)
 
 
 # ---------------------------------------------- Bruggeman ---------------
