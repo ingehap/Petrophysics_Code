@@ -25,6 +25,13 @@ and 10/65 wt% clay thresholds are transcribed from the paper's findings.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 TOC_PERCOLATION = 5.0        # wt% TOC for connected oil-wet pathway
 CLAY_OILWET = 10.0           # wt% clay below which oil-wet
 CLAY_WATERWET = 65.0         # wt% clay above which water-wet
@@ -38,9 +45,7 @@ def nmr_wettability_index(nmr_water, nmr_dodecane):
     NMR_w / NMR_do = incremental porosity imbibed as brine / as dodecane.
     Iw = +1 fully water-wet, -1 fully oil-wet, 0 neutral.
     """
-    w = np.asarray(nmr_water, float)
-    do = np.asarray(nmr_dodecane, float)
-    return (w - do) / (w + do)
+    return petrolib.relperm_wettability.nmr_wettability_index(nmr_water, nmr_dodecane)
 
 
 def average_wettability(iw_seq1, iw_seq2):

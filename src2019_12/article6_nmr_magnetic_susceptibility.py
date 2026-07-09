@@ -25,6 +25,13 @@ reported internal gradients 72-510 Gauss/cm.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 GAMMA_H = 2.675e8        # rad/s/T
 GAUSS_PER_CM_TO_T_PER_M = 1e-2      # 1 Gauss/cm = 1e-2 T/m
 
@@ -33,13 +40,13 @@ GAUSS_PER_CM_TO_T_PER_M = 1e-2      # 1 Gauss/cm = 1e-2 T/m
 
 def diffusion_term(G_T_per_m, TE, D, gamma=GAMMA_H):
     """Carr-Purcell diffusion relaxation rate  (gamma*G*TE)^2*D/12  (Eq. 2)."""
-    return (gamma * G_T_per_m * TE) ** 2 * D / 12.0
+    return petrolib.nmr.diffusion_relaxation_rate(D, G=G_T_per_m, TE=TE, gamma=gamma)
 
 
 def t2_total(T2_bulk, rho, s_over_v, G_T_per_m, TE, D, gamma=GAMMA_H):
     """Total T2 from bulk + surface + diffusion  (Eq. 1).  Returns T2 in s."""
-    inv = 1.0 / T2_bulk + rho * s_over_v + diffusion_term(G_T_per_m, TE, D, gamma)
-    return 1.0 / inv
+    return petrolib.nmr.t2_apparent(
+        t2_bulk=T2_bulk, rho=rho, s_over_v=s_over_v, D=D, G=G_T_per_m, TE=TE, gamma=gamma)
 
 
 # ---------------------------------------------- gradient inversion ------
@@ -66,7 +73,7 @@ def structural_length(volume, surface):
 
 def diffusion_length(D, tau):
     """Diffusion length  L_d = sqrt(D*tau),  tau = TE/2."""
-    return np.sqrt(D * tau)
+    return petrolib.flow_transport.diffusion_length(D, tau)
 
 
 def dephasing_length(D, G_T_per_m, gamma=GAMMA_H):

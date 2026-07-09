@@ -28,6 +28,13 @@ unit concentration.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- relaxation --------------
 
@@ -37,7 +44,7 @@ def surface_relaxation_t2(rho2, s_over_v):
     rho2 = surface relaxivity (m/s), S/V = pore surface-to-volume ratio (1/m).
     A higher S/V (smaller pores / more particle surface) shortens T2.
     """
-    return 1.0 / (rho2 * np.asarray(s_over_v, float))
+    return petrolib.nmr.t2_apparent(rho=rho2, s_over_v=s_over_v)
 
 
 def relaxation_rate(t0, relaxivity, concentration):
