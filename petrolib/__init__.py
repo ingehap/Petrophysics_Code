@@ -22,6 +22,7 @@ _SUBMODULES = frozenset(
     {
         "constants",
         "ml_stats",
+        "saturation_resistivity",
         "testing",
         "units",
     }
