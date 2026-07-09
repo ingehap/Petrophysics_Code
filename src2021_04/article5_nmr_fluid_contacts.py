@@ -27,6 +27,13 @@ echo spacing TE in s, surface relaxivity in m/s.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 GAMMA_H = 2.675e8        # rad/s/T
 T2_CLAY_MS = 3.0         # clay-bound / capillary split
 T2_FREE_MS = 60.0        # capillary / free-fluid split
@@ -36,13 +43,13 @@ T2_FREE_MS = 60.0        # capillary / free-fluid split
 
 def t2_relaxation(t2bulk, rho2, s_over_v, D, G, TE, gamma=GAMMA_H):
     """1/T2 = 1/T2bulk + rho2*(S/V) + (gamma*G*TE)^2*D/12.  Returns T2 (s)."""
-    inv = 1.0 / t2bulk + rho2 * s_over_v + (gamma * G * TE) ** 2 * D / 12.0
-    return 1.0 / inv
+    return petrolib.nmr.t2_apparent(
+        t2_bulk=t2bulk, rho=rho2, s_over_v=s_over_v, D=D, G=G, TE=TE, gamma=gamma)
 
 
 def t1_relaxation(t1bulk, rho1, s_over_v):
     """1/T1 = 1/T1bulk + rho1*(S/V).  Returns T1 (s)."""
-    return 1.0 / (1.0 / t1bulk + rho1 * s_over_v)
+    return petrolib.nmr.t2_apparent(t2_bulk=t1bulk, rho=rho1, s_over_v=s_over_v)
 
 
 # ---------------------------------------------- HI correction -----------
@@ -53,18 +60,14 @@ def hi_correction(phi_apparent, HI):
     HI < 1 in hydrocarbon zones boosts apparent porosity (the paper reports a
     ~11% uplift, i.e. HI ~ 0.9).
     """
-    return np.asarray(phi_apparent, float) / HI
+    return petrolib.nmr.porosity_hi_correction(phi_apparent, HI)
 
 
 # ---------------------------------------------- cutoff partition --------
 
 def t2_partition(T2_ms, amplitude, clay=T2_CLAY_MS, free=T2_FREE_MS):
     """Partition a T2 distribution into (clay-bound, capillary, free) volumes."""
-    T2 = np.asarray(T2_ms, float); a = np.asarray(amplitude, float)
-    clay_bound = float(a[T2 < clay].sum())
-    capillary = float(a[(T2 >= clay) & (T2 < free)].sum())
-    free_fluid = float(a[T2 >= free].sum())
-    return clay_bound, capillary, free_fluid
+    return petrolib.nmr.t2_partition(T2_ms, amplitude, cutoffs_ms=(clay, free))
 
 
 # ---------------------------------------------- fluid typing ------------

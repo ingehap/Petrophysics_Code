@@ -24,6 +24,13 @@ Equations transcribed from the rendered article.  SI units internally
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 GAMMA_H = 2.675e8        # rad/s/T, hydrogen gyromagnetic ratio
 T2_LARGE_CUTOFF_MS = 847.0
 
@@ -32,7 +39,7 @@ T2_LARGE_CUTOFF_MS = 847.0
 
 def surface_rate(rho2_m_s, s_over_v):
     """Surface relaxation rate  1/T2surf = rho2 * (S/V)  (1/s).  rho2 in m/s."""
-    return rho2_m_s * s_over_v
+    return petrolib.nmr.relaxation_rate(rho=rho2_m_s, s_over_v=s_over_v)
 
 
 def diffusion_rate(D, g_T_per_m, TE_s, gamma=GAMMA_H):
@@ -40,7 +47,7 @@ def diffusion_rate(D, g_T_per_m, TE_s, gamma=GAMMA_H):
 
     D in m^2/s, g (gradient) in T/m, TE (echo spacing) in s -> 1/s.
     """
-    return D * gamma ** 2 * g_T_per_m ** 2 * TE_s ** 2 / 12.0
+    return petrolib.nmr.diffusion_relaxation_rate(D, G=g_T_per_m, TE=TE_s, gamma=gamma)
 
 
 def t2_single_pore(radius_m, rho2_m_s, T2bulk_s, D, g_T_per_m, TE_s):
@@ -48,9 +55,9 @@ def t2_single_pore(radius_m, rho2_m_s, T2bulk_s, D, g_T_per_m, TE_s):
 
     Returns T2 in seconds.
     """
-    inv = (1.0 / T2bulk_s + surface_rate(rho2_m_s, 3.0 / radius_m)
-           + diffusion_rate(D, g_T_per_m, TE_s))
-    return 1.0 / inv
+    return petrolib.nmr.t2_apparent(
+        t2_bulk=T2bulk_s, rho=rho2_m_s, s_over_v=3.0 / radius_m,
+        D=D, G=g_T_per_m, TE=TE_s, gamma=GAMMA_H)
 
 
 # ---------------------------------------------- Eq. 3: porosity corr ----
@@ -70,12 +77,13 @@ def large_pore_volume(T2_ms, amplitude, cutoff_ms=T2_LARGE_CUTOFF_MS):
 
 def timur_coates(phi, ffi, bvi, C=10.0):
     """Timur-Coates permeability  k = (phi/C)^4 * (FFI/BVI)^2  (mD)."""
-    return (phi / C) ** 4 * (ffi / bvi) ** 2 * 1e6
+    # This copy reports in mD scaled by 1e6 (the unit adapter stays local).
+    return petrolib.nmr.timur_coates(phi, ffi, bvi, C=C) * 1e6
 
 
 def sdr(phi, t2lm_ms, a=4.0, m=4.0, n=2.0):
     """SDR permeability  k = a*phi^m*T2LM^n  (mD).  T2LM in ms."""
-    return a * phi ** m * np.asarray(t2lm_ms, float) ** n
+    return petrolib.nmr.sdr(phi, t2lm_ms, a=a, m=m, n=n)
 
 
 # ---------------------------------------------- tests --------------

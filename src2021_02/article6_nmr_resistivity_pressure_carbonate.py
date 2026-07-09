@@ -52,13 +52,13 @@ def formation_factor(phi, a=1.0, m=2.0):
 
 def timur_coates(phi, ffi, bvi, C=10.0):
     """Timur-Coates permeability  k = (phi/C)^4 (FFI/BVI)^2  (mD)."""
-    return (np.asarray(phi, float) / C) ** 4 * (np.asarray(ffi, float)
-                                                / np.asarray(bvi, float)) ** 2 * 1e6
+    # This copy reports in mD scaled by 1e6 (the unit adapter stays local).
+    return petrolib.nmr.timur_coates(phi, ffi, bvi, C=C) * 1e6
 
 
 def sdr(phi, t2lm_ms, a=4.0, m=4.0, n=2.0):
     """SDR permeability  k = a phi^m T2LM^n  (mD).  T2LM in ms."""
-    return a * np.asarray(phi, float) ** m * np.asarray(t2lm_ms, float) ** n
+    return petrolib.nmr.sdr(phi, t2lm_ms, a=a, m=m, n=n)
 
 
 def bulk_volume_water(phi, sw):
