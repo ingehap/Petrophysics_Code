@@ -92,10 +92,9 @@ def pickett_m_rw(bvw, rt):
     A least-squares line through (log BVW, log Rt) gives slope -m and
     intercept log10(Rw).  Returns (m, Rw).
     """
-    x = np.log10(np.asarray(bvw, float))
-    y = np.log10(np.asarray(rt, float))
-    slope, intercept = np.polyfit(x, y, 1)
-    return -slope, 10.0 ** intercept
+    lf = petrolib.inversion_numerics.fitting.fit_line(
+        bvw, rt, xform="log10", yform="log10")
+    return -lf.slope, 10.0 ** lf.intercept
 
 
 def archie_sw(rt, rw, phi, m=2.0, n=2.0):

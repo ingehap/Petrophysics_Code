@@ -25,6 +25,13 @@ reported optimal ridge lambda = 0.90 is the default.  Elements/minerals in wt%.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- preprocessing --------------
 
@@ -54,15 +61,13 @@ def fit_svd(elements, minerals, n_drop=0):
 
 def fit_ridge(elements, minerals, lam=0.90):
     """Ridge (L2) solution  x = (E^T E + lambda I)^-1 E^T M  (Eqs. 4-5)."""
-    e = np.asarray(elements, float)
-    m = np.asarray(minerals, float)
-    return np.linalg.solve(e.T @ e + lam * np.eye(e.shape[1]), e.T @ m)
+    return petrolib.inversion_numerics.linear.tikhonov_solve(
+        elements, minerals, lam)
 
 
 def condition_number(elements):
     """Condition number of the elemental matrix  = sigma_max/sigma_min."""
-    s = np.linalg.svd(np.asarray(elements, float), compute_uv=False)
-    return float(s[0] / s[-1])
+    return petrolib.inversion_numerics.linear.condition_number(elements)
 
 
 def predict(elements, x):

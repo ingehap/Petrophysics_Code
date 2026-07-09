@@ -26,6 +26,13 @@ reconstructions.  Pressure in psi, depth in ft, gradient in psi/ft.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- model --------------
 
@@ -36,7 +43,7 @@ def pressure_depth(p0, gamma, d, d0=0.0):
 
 def ols_slope(x, y):
     """Ordinary-least-squares slope of y on x  (Eqs. 2-3)."""
-    return float(np.polyfit(np.asarray(x, float), np.asarray(y, float), 1)[0])
+    return float(petrolib.inversion_numerics.fitting.fit_line(x, y).slope)
 
 
 def gradient_bracket(depth, pressure):

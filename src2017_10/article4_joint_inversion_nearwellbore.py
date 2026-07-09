@@ -72,9 +72,7 @@ def density_mix(matrix_fraction, matrix_density, phi, sw, so, sg,
 
 def relative_misfit(data, sim):
     """Relative-L2 data misfit  sum(((d - s)/d)^2)  (the data term of the cost)."""
-    d = np.asarray(data, float)
-    s = np.asarray(sim, float)
-    return float(np.sum(((d - s) / d) ** 2))
+    return petrolib.inversion_numerics.costs.misfit(sim, data, kind="rel_data")
 
 
 # ---------------------------------------------- tests --------------

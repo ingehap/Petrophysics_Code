@@ -80,14 +80,17 @@ def tikhonov_solve(
         w = 1.0 / _arr(sigma)
         a_arr = a_arr * w[:, None]
         b_arr = b_arr * w
-    xref = np.zeros(n) if x_ref is None else _arr(x_ref)
+    xref = None if x_ref is None else _arr(x_ref)
     if nonneg:
+        ref_rhs = np.zeros(n) if xref is None else ell @ xref
         aug_a = np.vstack([a_arr, np.sqrt(lam) * ell])
-        aug_b = np.concatenate([b_arr, np.sqrt(lam) * (ell @ xref)])
+        aug_b = np.concatenate([b_arr, np.sqrt(lam) * ref_rhs])
         return nnls_solve(aug_a, aug_b)
     ltl = ell.T @ ell
     lhs = a_arr.T @ a_arr + lam * ltl
-    rhs = a_arr.T @ b_arr + lam * (ltl @ xref)
+    rhs = a_arr.T @ b_arr
+    if xref is not None:
+        rhs = rhs + lam * (ltl @ xref)
     return np.asarray(np.linalg.solve(lhs, rhs))
 
 

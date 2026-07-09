@@ -109,10 +109,8 @@ def gfunction_closure(g_time, pressure):
     straight-line-fit pressure at G = 0 (the closure-pressure estimate) from the
     early, linear portion of (G, P).
     """
-    g = np.asarray(g_time, float)
-    p = np.asarray(pressure, float)
-    slope, intercept = np.polyfit(g, p, 1)
-    return float(intercept)
+    return float(
+        petrolib.inversion_numerics.fitting.fit_line(g_time, pressure).intercept)
 
 
 # ---------------------------------------------- tests --------------

@@ -55,8 +55,8 @@ def mean_t1t2(ratios, weights):
 
 def calibrate_wettability(t1t2=CALIB_T1T2, usbm=CALIB_USBM):
     """Fit the linear oil-phase T1/T2 -> USBM* calibration (slope, intercept)."""
-    slope, intercept = np.polyfit(t1t2, usbm, 1)
-    return slope, intercept
+    lf = petrolib.inversion_numerics.fitting.fit_line(t1t2, usbm)
+    return lf.slope, lf.intercept
 
 
 def wettability_index(t1t2_oil, slope=None, intercept=None):

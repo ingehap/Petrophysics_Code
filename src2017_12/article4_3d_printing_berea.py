@@ -29,6 +29,13 @@ do not print) is reproduced.  Sizes in micrometres unless noted.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 MIN_PRINTABLE_DESIGN_UM = 160.0     # smallest design gap that prints
 
 
@@ -46,9 +53,8 @@ def magnify(feature_size, factor):
 
 def calibrate_gap_test(design_gaps, printed_gaps):
     """Fit the printer's design->printed size calibration (slope, intercept)."""
-    slope, intercept = np.polyfit(np.asarray(design_gaps, float),
-                                  np.asarray(printed_gaps, float), 1)
-    return slope, intercept
+    lf = petrolib.inversion_numerics.fitting.fit_line(design_gaps, printed_gaps)
+    return lf.slope, lf.intercept
 
 
 def printed_size(design_gap, slope, intercept):

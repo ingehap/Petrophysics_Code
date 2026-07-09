@@ -98,7 +98,8 @@ def pressure_derivative_slope(times, pressures):
     p = np.asarray(pressures, float)
     dpdlnt = np.gradient(p, np.log(t))
     good = dpdlnt > 0
-    slope, _ = np.polyfit(np.log10(t[good]), np.log10(dpdlnt[good]), 1)
+    slope = petrolib.inversion_numerics.fitting.fit_line(
+        t[good], dpdlnt[good], xform="log10", yform="log10").slope
     return float(slope)
 
 

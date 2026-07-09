@@ -78,13 +78,7 @@ def relative_contributions(c, sigma):
 def numerical_jacobian(func, x, eps=1e-6):
     """Partial-derivative vector c = [df/dx_i] of a scalar function (Eq. 12),
     by central finite differences (for nonlinear f, e.g. Archie)."""
-    x = np.asarray(x, float)
-    c = np.zeros_like(x)
-    for i in range(x.size):
-        dx = np.zeros_like(x)
-        dx[i] = eps * max(abs(x[i]), 1.0)
-        c[i] = (func(x + dx) - func(x - dx)) / (2.0 * dx[i])
-    return c
+    return petrolib.inversion_numerics.nonlinear.fd_gradient(func, x, eps=eps)
 
 
 # ---------------------------------------------- petrophysics --------------

@@ -27,6 +27,13 @@ mass fractions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- mass balance --------------
 
@@ -67,9 +74,8 @@ def organic_density_regression(toc, inv_rho_gt, k):
         slope     = (1/K)*(1/rho_gk - 1/rho_gm).
     Returns (rho_mineral, rho_kerogen).
     """
-    toc = np.asarray(toc, float)
-    y = np.asarray(inv_rho_gt, float)
-    slope, intercept = np.polyfit(toc, y, 1)
+    lf = petrolib.inversion_numerics.fitting.fit_line(toc, inv_rho_gt)
+    slope, intercept = lf.slope, lf.intercept
     rho_gm = 1.0 / intercept
     inv_rho_gk = intercept + k * slope
     return rho_gm, 1.0 / inv_rho_gk
