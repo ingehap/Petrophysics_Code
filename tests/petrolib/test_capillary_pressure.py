@@ -50,6 +50,18 @@ def _original_pc_radius_2018_08(sigma, theta_deg, r):
     return 2.0 * sigma * abs(np.cos(np.radians(theta_deg))) / np.asarray(r, float)
 
 
+def _original_young_laplace_signed_2014_02(sigma_wo, contact_angle_deg, pore_radius):
+    # src2014_02/article3 capillary_pressure (signed cos: oil-wet Pc < 0)
+    return 2.0 * sigma_wo * np.cos(np.radians(contact_angle_deg)) / pore_radius
+
+
+def _original_washburn_mercury_2014_12(pc, sigma=0.480, theta_deg=140.0):
+    # src2014_12/article3 washburn_radius: -2*sigma*cos(theta)/Pc.  The leading
+    # minus folds the obtuse mercury angle to a positive radius, which equals the
+    # |cos| (absolute=True) convention for theta in [90, 180] deg.
+    return -2.0 * sigma * np.cos(np.radians(theta_deg)) / np.asarray(pc, float)
+
+
 def test_equivalence_washburn_variants() -> None:
     assert_matches_original(
         _original_pore_throat_radius_2014_02,
@@ -61,6 +73,18 @@ def test_equivalence_washburn_variants() -> None:
         _original_pc_radius_2018_08,
         lambda s, th, r_: cap.young_laplace_pc(r_, sigma=s, theta_deg=th),
         [(0.485, 140.0, r)],
+    )
+    # src2014_02/article3: signed Young-Laplace (water-wet positive, oil-wet negative)
+    assert_matches_original(
+        _original_young_laplace_signed_2014_02,
+        lambda s, th, r_: cap.young_laplace_pc(r_, sigma=s, theta_deg=th, absolute=False),
+        [(0.00921, 32.0, r), (0.00265, 134.0, r)],
+    )
+    # src2014_12/article3: the mercury -2*sigma*cos/Pc form == absolute=True for theta>=90
+    assert_matches_original(
+        _original_washburn_mercury_2014_12,
+        lambda pc, s, th: cap.washburn_radius(pc, sigma=s, theta_deg=th, absolute=True),
+        [(PC, 0.480, 140.0), (PC, 0.480, 120.0), (PC, 0.480, 160.0)],
     )
 
 

@@ -37,6 +37,13 @@ water-wet), and lifts final recovery above ~50% IOIP (brine ~4.3%, surfactant
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Optimum SiO2-nanoparticle concentration (in 1 wt% C12TAB) for the strongest
 # wettability alteration and highest recovery (Roustaei, 2014).
 OPTIMUM_NANOPARTICLE_CONC_GL = 3.0  # g/L
@@ -126,7 +133,8 @@ def capillary_pressure(sigma_wo, contact_angle_deg, pore_radius):
     water; Pc < 0 (oil-wet, theta > 90 deg) opposes it.  sigma_wo in N/m (or
     mN/m), r in m (or mm) consistently; returns Pc in the matching pressure unit.
     """
-    return 2.0 * sigma_wo * np.cos(np.radians(contact_angle_deg)) / pore_radius
+    return petrolib.capillary_pressure.young_laplace_pc(
+        pore_radius, sigma=sigma_wo, theta_deg=contact_angle_deg, absolute=False)
 
 
 def imbibition_mechanism(recovery, atol=0.02):

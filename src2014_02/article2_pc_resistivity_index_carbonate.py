@@ -195,8 +195,8 @@ def leverett_j_function(pc, sigma, contact_angle_deg, k, phi):
     Use consistent units: Pc and sigma in pressure / (force per length), k as an
     area (e.g. m^2); J is dimensionless.
     """
-    return (np.asarray(pc, float) / (sigma * np.cos(np.radians(contact_angle_deg)))
-            * np.sqrt(k / phi))
+    return petrolib.capillary_pressure.leverett_j(
+        pc, sigma=sigma, theta_deg=contact_angle_deg, k=k, phi=phi, absolute=False)
 
 
 def pore_throat_radius(pc, sigma, contact_angle_deg):
@@ -210,7 +210,8 @@ def pore_throat_radius(pc, sigma, contact_angle_deg):
     mismatch (high-perm RRT 1-5) flags large pores "shielded" behind small pore
     throats.  Consistent units (sigma in N/m, Pc in Pa) give r in metres.
     """
-    return 2.0 * sigma * np.cos(np.radians(contact_angle_deg)) / np.asarray(pc, float)
+    return petrolib.capillary_pressure.washburn_radius(
+        pc, sigma=sigma, theta_deg=contact_angle_deg, absolute=False)
 
 
 # ---------------------------------------------- formation factor --------------
