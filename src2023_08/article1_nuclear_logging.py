@@ -42,6 +42,13 @@ from __future__ import annotations
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # PNC capture-cross-section mixing law  (Fitz, Eq. 4)
@@ -120,8 +127,7 @@ def water_salinity_to_sigma_w(salinity_ppm_nacl, temperature_C=75.0):
 # ---------------------------------------------------------------------------
 def gamma_ray_index(gr, gr_min, gr_max):
     """GR index in [0, 1]."""
-    return np.clip((np.asarray(gr, dtype=float) - gr_min) / (gr_max - gr_min),
-                   0.0, 1.0)
+    return petrolib.porosity_lithology.gamma_ray_index(gr, gr_min, gr_max)
 
 
 def vshale_larionov_tertiary(igr):

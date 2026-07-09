@@ -49,7 +49,7 @@ PHIT_CUT = 0.15            # porosity cutoff
 
 def effective_porosity(phit, vsh, phit_sh=PHIT_SHALE):
     """PHIE = PHIT - Vsh * PHITsh  (Eq. 1)."""
-    return np.asarray(phit, float) - np.asarray(vsh, float) * phit_sh
+    return petrolib.porosity_lithology.effective_porosity(phit, vsh, phit_sh, clip=None)
 
 
 # ---------------------------------------------- Eq. 2: Herron K ---------
@@ -120,8 +120,8 @@ def thomas_stieber_fntg(phit, vsh, phi_sand=PHIT_SAND, phi_shale=PHIT_SHALE):
         PHIT = (1 - Vlam)*phi_sand + Vlam*phi_shale
     so  Vlam = (phi_sand - PHIT)/(phi_sand - phi_shale)  and FNTG = 1 - Vlam.
     """
-    vlam = (phi_sand - np.asarray(phit, float)) / (phi_sand - phi_shale)
-    vlam = np.clip(vlam, 0.0, 1.0)
+    vlam = petrolib.porosity_lithology.thomas_stieber_vlam(
+        phit, phi_sand, phi_shale, clip=(0.0, 1.0))
     return 1.0 - vlam
 
 

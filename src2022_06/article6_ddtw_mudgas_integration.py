@@ -51,7 +51,7 @@ def dtw_porosity_correction(phi_apparent, TW_short_s, TW_long_s,
 # ---------------------------------------------- density porosity --------
 
 def density_porosity(rho_b, rho_ma, rho_fl=1.0):
-    return float((rho_ma - rho_b) / (rho_ma - rho_fl))
+    return float(petrolib.porosity_lithology.density_porosity(rho_b, rho_ma, rho_fl))
 
 
 def variable_matrix_density(v_sand=0.7, v_shale=0.3,

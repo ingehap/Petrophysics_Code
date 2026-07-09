@@ -28,6 +28,13 @@ Implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- digital-core builder ----
 
@@ -40,7 +47,7 @@ def build_voxel_core(size=48, frac_quartz=0.75, seed=0):
 
 
 def voxel_porosity(cube):
-    return float((cube == 0).sum() / cube.size)
+    return float(petrolib.porosity_lithology.porosity_from_voxel_count((cube == 0).sum(), cube.size))
 
 
 def vrh_solid(frac_q, K_q=37.0, G_q=44.0, K_c=21.0, G_c=7.0):
