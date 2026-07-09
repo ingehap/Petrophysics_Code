@@ -38,6 +38,13 @@ from __future__ import annotations
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # 1. Washburn pore-throat radius --------------------------------------------
@@ -58,11 +65,10 @@ def washburn_radius_um(pressure_psi: float | np.ndarray) -> np.ndarray:
     (for sigma = 480 dynes/cm, theta = 140 deg)
     """
     p = np.asarray(pressure_psi, dtype=float)
-    # 2*sigma*|cos(theta)| in dyne/cm; 1 psi = 68947.6 dyne/cm^2
-    # r [cm] = 2*sigma*|cos(theta)| / (P * 68947.6)
-    # r [micron] = r[cm] * 1e4
-    factor_cm = 2.0 * SIGMA_HG_DYNES_PER_CM * abs(np.cos(np.radians(THETA_HG_DEG)))
-    r_cm = factor_cm / (p * 68947.6)
+    # Delegate the pure |cos| Washburn kernel; the field-unit adapters (psi ->
+    # dyne/cm^2 on P, cm -> micron on r) stay here in the facade.
+    r_cm = petrolib.capillary_pressure.washburn_radius(
+        p * 68947.6, sigma=SIGMA_HG_DYNES_PER_CM, theta_deg=THETA_HG_DEG, absolute=True)
     return r_cm * 1.0e4
 
 

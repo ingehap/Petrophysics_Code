@@ -14,10 +14,18 @@ Implements:
 """
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 def brooks_corey_Pc(Sw, Swir, Pd, lam):
     """Brooks-Corey Pc = Pd * Se^(-1/λ)."""
+    # Normalize+clip Se locally, then delegate the Pd*Se^(-1/lam) kernel (swirr=0).
     Se = np.clip((Sw-Swir)/(1-Swir), 1e-6, 1)
-    return Pd * Se**(-1.0/lam)
+    return petrolib.capillary_pressure.brooks_corey_pc(Se, pc_entry=Pd, lam=lam, swirr=0.0)
 
 def dual_porosity_Pc(Sw, phi_macro, phi_meso, Swir_M, Swir_m,
                      Pd_M, Pd_m, lam_M, lam_m):

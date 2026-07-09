@@ -27,6 +27,13 @@ from typing import Tuple
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ──────────────────────────────────────────────────────────────────────
 # 1. Contact-Angle Distribution Models
@@ -111,8 +118,11 @@ def _young_laplace(r: float, theta_deg: float, sigma: float) -> float:
 
     Pc = 2 σ cos(θ) / r
     """
-    theta_rad = math.radians(theta_deg)
-    return 2.0 * sigma * math.cos(theta_rad) / r
+    return float(
+        petrolib.capillary_pressure.young_laplace_pc(
+            r, sigma=sigma, theta_deg=theta_deg, absolute=False
+        )
+    )
 
 
 @dataclass

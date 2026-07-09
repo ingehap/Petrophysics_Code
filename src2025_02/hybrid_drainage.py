@@ -14,6 +14,13 @@ Implements:
 import numpy as np
 from dataclasses import dataclass
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 @dataclass
 class BimodalPores:
     phi_macro: float = 0.18; phi_meso: float = 0.10
@@ -22,7 +29,9 @@ class BimodalPores:
     def phi_total(self): return self.phi_macro + self.phi_meso
 
 def Pc_entry(r_um, ift_mNm, theta_deg=0):
-    return 2*ift_mNm*1e-3*np.cos(np.radians(theta_deg))/(r_um*1e-6)
+    # Young-Laplace (signed); mN/m -> N/m and um -> m adapters kept in the facade.
+    return petrolib.capillary_pressure.young_laplace_pc(
+        r_um * 1e-6, sigma=ift_mNm * 1e-3, theta_deg=theta_deg, absolute=False)
 
 def bimodal_t2(pores: BimodalPores, rho_s=10.0, n=200):
     T2 = np.logspace(-1, 4, n)
