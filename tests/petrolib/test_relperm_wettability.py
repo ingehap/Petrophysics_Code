@@ -289,3 +289,159 @@ def test_fit_corey_recovers_parameters() -> None:
     assert fit["nw"] == pytest.approx(nw, rel=1e-4)
     assert fit["krnw_max"] == pytest.approx(kro_max, rel=1e-4)
     assert fit["nnw"] == pytest.approx(no, rel=1e-4)
+
+
+# --- dimensionless numbers & desaturation -------------------------------------
+
+
+def _original_capillary_number_velocity_first_2014_08(v, mu, sigma):
+    # src2014_08/article4: velocity-first positional order (section 9 hazard)
+    return v * mu / sigma
+
+
+def _original_bond_number_rsq_2022_10(drho, R, sigma, g=9.81):
+    # src2022_10/article4: R**2 (length-squared) form
+    return drho * g * R**2 / sigma
+
+
+def _original_capillary_desaturation_2019_04(Nc, sor_low, sor_high, nc_crit, p):
+    Nc = np.asarray(Nc, float)
+    return sor_low + (sor_high - sor_low) / (1.0 + (Nc / nc_crit) ** p)
+
+
+def test_dimensionless_numbers() -> None:
+    v = np.array([1e-6, 1e-5, 1e-4])
+    # keyword-only mapping recovers the velocity-first article body
+    assert_matches_original(
+        _original_capillary_number_velocity_first_2014_08,
+        lambda v_, mu, sig: rp.capillary_number(mu=mu, v=v_, sigma=sig),
+        [(v, 1e-3, 0.03)],
+    )
+    # Bond number R**2 form maps by passing k = R**2
+    assert_matches_original(
+        _original_bond_number_rsq_2022_10,
+        lambda drho, R, sig, g=9.81: rp.bond_number(drho=drho, k=R**2, sigma=sig, g=g),
+        [(300.0, 1e-4, 0.03)],
+    )
+    assert rp.trapping_number(2.0, 3.0) == pytest.approx(5.0)
+    # desaturation sigmoid (2019_04 exponent p; 2014_08 passes exponent=1/width)
+    nc = np.array([1e-7, 1e-5, 1e-3])
+    assert_matches_original(
+        _original_capillary_desaturation_2019_04,
+        lambda n, lo, hi, ncr, p: rp.capillary_desaturation(
+            n, sor_max=hi, sor_min=lo, n_crit=ncr, exponent=p
+        ),
+        [(nc, 0.05, 0.35, 1e-5, 0.8)],
+    )
+
+
+# --- Land trapping ------------------------------------------------------------
+
+
+def _original_land_trapped_gas_reduced_2016_10(sgi, sgt_max):
+    c = 1.0 / sgt_max - 1.0
+    return sgi / (1.0 + c * sgi)
+
+
+def test_land_trapping() -> None:
+    # two-endpoint coefficient
+    assert rp.land_c(0.9, 0.3) == pytest.approx(1.0 / 0.3 - 1.0 / 0.9)
+    # reduced single-endpoint form via s_r_max (Si_max = 1)
+    sgi = np.array([0.2, 0.5, 0.8])
+    assert_matches_original(
+        _original_land_trapped_gas_reduced_2016_10,
+        lambda sgi_, sgt_max: rp.land_trapped(sgi_, s_r_max=sgt_max),
+        [(sgi, 0.35)],
+    )
+    # C form matches the reduced form when C = 1/Sgt_max - 1
+    np.testing.assert_allclose(
+        rp.land_trapped(sgi, C=rp.land_c(1.0, 0.35)),
+        rp.land_trapped(sgi, s_r_max=0.35),
+        rtol=1e-12,
+    )
+    with pytest.raises(ValueError):
+        rp.land_trapped(0.5)
+
+
+# --- wettability indices ------------------------------------------------------
+
+
+def _original_amott_harvey_2016_02(v_sp_water, v_total_water, v_sp_oil, v_total_oil):
+    iw = v_sp_water / v_total_water
+    io = v_sp_oil / v_total_oil
+    return iw - io
+
+
+def _original_nmr_wi_2018_06(w, o):
+    w = np.asarray(w, float)
+    o = np.asarray(o, float)
+    return (w - o) / (w + o)
+
+
+def test_wettability_indices() -> None:
+    # Amott: article gives Iw-Io with (v_sp/v_total); amott_indices takes
+    # (spont, forced) so v_total = spont + forced.
+    iw, io, iah = rp.amott_indices(0.4, 0.5, 0.1, 0.4)
+    assert iah == pytest.approx(_original_amott_harvey_2016_02(0.4, 0.9, 0.1, 0.5))
+    assert (iw, io) == pytest.approx((0.4 / 0.9, 0.1 / 0.5))
+    # USBM
+    assert rp.usbm_index(2.5, 1.0) == pytest.approx(np.log10(2.5))
+    # NMR (w-o)/(w+o)
+    assert_matches_original(
+        _original_nmr_wi_2018_06,
+        lambda w, o: rp.nmr_wettability_index(w, o),
+        [(np.array([3.0, 5.0, 8.0]), np.array([1.0, 4.0, 2.0]))],
+    )
+
+
+# --- contact angle ------------------------------------------------------------
+
+
+def _original_young_2014_02(sigma_so, sigma_sw, sigma_wo):
+    cos_t = (sigma_so - sigma_sw) / sigma_wo
+    return np.degrees(np.arccos(np.clip(cos_t, -1.0, 1.0)))
+
+
+def _original_wenzel_2020_04(theta_young_deg, roughness):
+    c = roughness * np.cos(np.radians(theta_young_deg))
+    c = np.clip(c, -1.0, 1.0)
+    return np.degrees(np.arccos(c))
+
+
+def _original_work_of_adhesion_2014_02(sigma_wo, contact_angle_deg):
+    return sigma_wo * (1.0 + np.cos(np.radians(contact_angle_deg)))
+
+
+def test_contact_angle() -> None:
+    assert_matches_original(
+        _original_young_2014_02,
+        lambda so, sw, wo: rp.young_contact_angle(so, sw, wo),
+        [(0.03, 0.025, 0.02)],
+    )
+    assert_matches_original(
+        _original_wenzel_2020_04,
+        lambda th, r: rp.wenzel_angle(th, r),
+        [(np.array([40.0, 95.0, 130.0]), 1.4)],
+    )
+    assert_matches_original(
+        _original_work_of_adhesion_2014_02,
+        lambda wo, th: rp.work_of_adhesion(wo, th),
+        [(0.02, np.array([20.0, 90.0, 134.0]))],
+    )
+
+
+# --- classification & displacement efficiency ---------------------------------
+
+
+def test_classification_and_efficiency() -> None:
+    assert rp.classify_wettability_angle(30.0) == "water-wet"
+    assert rp.classify_wettability_angle(90.0) == "intermediate"
+    assert rp.classify_wettability_angle(140.0) == "oil-wet"
+    assert rp.classify_wettability_index(0.5) == "water-wet"
+    assert rp.classify_wettability_index(0.0) == "mixed-wet"
+    assert rp.classify_wettability_index(0.2, scheme="5class") == "weakly water-wet"
+    assert rp.classify_wettability_index(-0.5, scheme="5class") == "oil-wet"
+    with pytest.raises(ValueError):
+        rp.classify_wettability_index(0.0, scheme="bogus")
+    # displacement efficiency (Soi - Sor)/Soi
+    np.testing.assert_allclose(rp.displacement_efficiency(0.7, 0.3), (0.7 - 0.3) / 0.7)
