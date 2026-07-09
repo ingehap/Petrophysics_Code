@@ -26,6 +26,13 @@ variable definitions.  Densities in g/cm^3, mass fractions dimensionless.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Fixed mineral grain densities used in the paper (g/cm^3)
 RHO_GRAIN = {"quartz": 2.65, "calcite": 2.71, "illite": 2.78, "pyrite": 5.00}
 
@@ -34,7 +41,7 @@ RHO_GRAIN = {"quartz": 2.65, "calcite": 2.71, "illite": 2.78, "pyrite": 5.00}
 
 def electron_to_bulk_density(rho_e):
     """Bulk density from logged electron density  rho_b = 1.0704*rho_e - 0.1883 (Eq. 5)."""
-    return 1.0704 * np.asarray(rho_e, float) - 0.1883
+    return petrolib.porosity_lithology.electron_density_to_bulk(rho_e)
 
 
 def matrix_density(mass_fracs, grain_densities, w_ker=0.0, rho_ker=1.43):
@@ -46,20 +53,18 @@ def matrix_density(mass_fracs, grain_densities, w_ker=0.0, rho_ker=1.43):
     fractions and grain densities; w_ker, rho_ker are the kerogen mass fraction
     and (skeletal) density.
     """
-    w = np.asarray(mass_fracs, float)
-    rg = np.asarray(grain_densities, float)
-    inv = (w / rg).sum() + (w_ker / rho_ker if w_ker else 0.0)
-    return 1.0 / inv
+    return petrolib.porosity_lithology.matrix_density_from_masses(
+        mass_fracs, grain_densities, w_kerogen=w_ker, rho_kerogen=rho_ker)
 
 
 def density_porosity(rho_b, rho_ma, rho_fl=1.0):
     """Total density porosity  phi = (rho_ma - rho_b)/(rho_ma - rho_fl)  (Eq. 1)."""
-    return (rho_ma - np.asarray(rho_b, float)) / (rho_ma - rho_fl)
+    return petrolib.porosity_lithology.density_porosity(rho_b, rho_ma, rho_fl)
 
 
 def kerogen_mass_fraction(toc):
     """Kerogen mass fraction from total organic carbon  w_ker ~ 1.2*TOC."""
-    return 1.2 * np.asarray(toc, float)
+    return petrolib.porosity_lithology.kerogen_mass_fraction(toc, k=1.2)
 
 
 # ---------------------------------------------- tests --------------

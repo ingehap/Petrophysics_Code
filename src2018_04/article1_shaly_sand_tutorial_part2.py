@@ -28,6 +28,13 @@ Hydrogen index and porosity are fractional.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Representative clay hydrogen indices; 1:1 clays ~ 2x the 2:1 clays
 CLAY_HI = {"kaolinite": 0.55, "chlorite": 0.50, "illite": 0.45, "smectite": 0.45}
 
@@ -65,7 +72,7 @@ def vsh_from_gr(gr, gr_clean, gr_shale):
     This Vsh is a *shale* indicator and overstates the true clay volume (Vsh !=
     Vclay), per the tutorial's caution.
     """
-    return np.clip((gr - gr_clean) / (gr_shale - gr_clean), 0.0, 1.0)
+    return petrolib.porosity_lithology.gamma_ray_index(gr, gr_clean, gr_shale)
 
 
 # ---------------------------------------------- tests --------------
