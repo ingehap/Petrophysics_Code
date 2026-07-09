@@ -18,6 +18,13 @@ Cretaceous Sola / Tuxen marly chalks (Well Boje-2C).  Implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Eq. 1: Kozeny ----------
 
@@ -40,7 +47,7 @@ def porosity_from_density(rho_b, mass_calc, mass_sil, mass_py,
                           rho_fluid=1.0):
     """Ternary mineral density + bulk-mixing law for porosity (Eqs. 3-4)."""
     rho_g = mass_calc * rho_calc + mass_sil * rho_sil + mass_py * rho_py
-    return float((rho_g - rho_b) / (rho_g - rho_fluid))
+    return float(petrolib.porosity_lithology.density_porosity(rho_b, rho_g, rho_fluid))
 
 
 # ---------------------------------------------- Eq. 5: pore SSA ----

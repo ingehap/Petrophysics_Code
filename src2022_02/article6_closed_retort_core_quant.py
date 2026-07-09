@@ -31,6 +31,13 @@ Implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 T2_FREE_CUTOFF_MS = 10.0     # NMR T2 free-water cutoff
 RETORT_HOT_C = 300.0         # thermal-extraction hold temperature
 FREE_WATER_C = 105.0         # >= 105 C accumulates as free water
@@ -43,12 +50,12 @@ BV_OIL_PRONE = 0.01          # v/v threshold above which a sample is oil-prone
 
 def boyles_law_porosity(rho_bulk, rho_grain):
     """Total porosity from bulk and grain density:  phi = 1 - rho_b/rho_g."""
-    return 1.0 - np.asarray(rho_bulk, float) / np.asarray(rho_grain, float)
+    return petrolib.porosity_lithology.boyle_porosity(rho_bulk, rho_grain)
 
 
 def fluid_summation_porosity(bv_oil, bv_water):
     """Total porosity from summed fluid volumes per bulk volume (v/v)."""
-    return np.asarray(bv_oil, float) + np.asarray(bv_water, float)
+    return petrolib.porosity_lithology.fluid_summation_porosity(bv_oil, bv_water)
 
 
 # ---------------------------------------------- crushing fluid loss -----
@@ -101,7 +108,7 @@ def schmoker_toc(rho_bulk, a=154.5, b=57.26):
     polynomial ratio-of-density relation (Schmoker's law) without publishing
     coefficients, so these defaults are placeholders to be recalibrated.
     """
-    return a / np.asarray(rho_bulk, float) - b
+    return petrolib.porosity_lithology.toc_schmoker(rho_bulk, a=a, b=b)
 
 
 # ---------------------------------------------- retort efficiency -------

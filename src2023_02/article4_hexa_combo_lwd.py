@@ -79,16 +79,16 @@ def generate_marrat_logs(depth_top=8000.0, depth_bot=8400.0, step=0.5,
 # --------------------------------------------- standard log interpretation --
 
 def gr_to_vsh(gr, gr_clean=15.0, gr_shale=120.0):
-    return np.clip((gr - gr_clean) / (gr_shale - gr_clean), 0.0, 1.0)
+    return petrolib.porosity_lithology.gamma_ray_index(gr, gr_clean, gr_shale)
 
 
 def density_porosity(rhob, rho_ma=2.71, rho_f=1.0):
-    return np.clip((rho_ma - rhob) / (rho_ma - rho_f), 0.0, 1.0)
+    return petrolib.porosity_lithology.density_porosity(rhob, rho_ma, rho_f, clip=(0.0, 1.0))
 
 
 def effective_porosity(phi_d, nphi, vsh, phi_sh=0.30):
-    phi_t = 0.5 * (phi_d + nphi)
-    return np.clip(phi_t - vsh * phi_sh, 0.0, 1.0)
+    phi_t = petrolib.porosity_lithology.neutron_density_porosity(nphi, phi_d, method="mean")
+    return petrolib.porosity_lithology.effective_porosity(phi_t, vsh, phi_sh, clip=(0.0, 1.0))
 
 
 def archie_sw(phi, rt, Rw=0.04, m=2.0, n=2.0, a=1.0):

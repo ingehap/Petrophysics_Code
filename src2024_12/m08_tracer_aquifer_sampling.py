@@ -37,7 +37,7 @@ def correct_salinity_for_contamination(measured_salinity_ppm, contamination, mud
 
 def density_porosity(bulk_density, matrix_density=2.67, fluid_density=1.03):
     """Porosity from bulk density log (Eq. A1.1 in paper)."""
-    return (matrix_density - np.asarray(bulk_density, dtype=float)) / (matrix_density - fluid_density)
+    return petrolib.porosity_lithology.density_porosity(bulk_density, matrix_density, fluid_density)
 
 def compute_rwa(resistivity, porosity, a=1.0, m=1.776):
     """Compute apparent water resistivity from Archie equation (Eq. A1.2).
