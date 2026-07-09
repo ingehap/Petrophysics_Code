@@ -25,6 +25,13 @@ relations the case study applies.  Sigma in capture units (c.u.).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- C/O saturation ----------
 
@@ -35,8 +42,7 @@ def co_oil_saturation(cor, cor_water, cor_oil):
     COR_water / COR_oil are the wet and oil-filled response lines (porosity and
     lithology dependent, salinity independent).  Clipped to [0, 1].
     """
-    so = (np.asarray(cor, float) - cor_water) / (cor_oil - cor_water)
-    return np.clip(so, 0.0, 1.0)
+    return petrolib.nuclear.so_from_co(cor, cor_water, cor_oil)
 
 
 # ---------------------------------------------- sigma saturation --------
@@ -48,10 +54,9 @@ def sigma_water_saturation(sigma_log, phi, sigma_ma, sigma_w, sigma_hc):
              / (phi*(Sigma_w - Sigma_hc))
     Clipped to [0, 1].
     """
-    phi = np.asarray(phi, float)
-    num = np.asarray(sigma_log, float) - sigma_ma * (1.0 - phi) - phi * sigma_hc
-    sw = num / (phi * (sigma_w - sigma_hc))
-    return np.clip(sw, 0.0, 1.0)
+    return petrolib.nuclear.sw_from_sigma(
+        sigma_log, phi, sigma_ma=sigma_ma, sigma_w=sigma_w, sigma_hc=sigma_hc
+    )
 
 
 # ---------------------------------------------- multidetector -----------

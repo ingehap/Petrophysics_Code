@@ -47,12 +47,12 @@ def molar_fractions(mass_fracs, atomic_masses):
 
 def electron_density(rho, sum_Z, sum_A):
     """Electron density  rho_e = 2*rho*(sum Z)/(sum A)  (Eq. 3)."""
-    return 2.0 * rho * sum_Z / sum_A
+    return petrolib.nuclear.electron_density_index(sum_Z, sum_A, rho)
 
 
 def apparent_density(rho_e):
     """Apparent log density from electron density  rho_a = 1.0704*rho_e - 0.1883  (Eq. 4)."""
-    return 1.0704 * rho_e - 0.1883
+    return petrolib.nuclear.rhob_from_rhoe(rho_e)
 
 
 # ---------------------------------------------- kerogen -----------------
@@ -97,8 +97,9 @@ def density_porosity(rho_b, rho_ma, rho_f):
 
 def sigma_water_saturation(sigma_b, sigma_ma, sigma_w, sigma_hc, phi):
     """Sigma water saturation (degenerate at low salinity)  (Eq. 16)."""
-    num = np.asarray(sigma_b, float) - sigma_ma * (1.0 - phi) - phi * sigma_hc
-    return np.clip(num / (phi * (sigma_w - sigma_hc)), 0.0, 1.0)
+    return petrolib.nuclear.sw_from_sigma(
+        sigma_b, phi, sigma_ma=sigma_ma, sigma_w=sigma_w, sigma_hc=sigma_hc
+    )
 
 
 # ---------------------------------------------- tests --------------

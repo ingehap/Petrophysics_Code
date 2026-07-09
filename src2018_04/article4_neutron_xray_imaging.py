@@ -26,12 +26,19 @@ Consistent units (mu in 1/cm, d in cm, cross section x number density -> 1/cm).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- attenuation --------------
 
 def lambert_beer(i0, mu, d):
     """Transmitted intensity  It = I0*exp(-mu*d)  (Eq. 1)."""
-    return i0 * np.exp(-np.asarray(mu, float) * d)
+    return petrolib.nuclear.beer_lambert(i0, mu, d)
 
 
 def attenuation_coefficient(cross_sections, number_densities):
@@ -41,7 +48,7 @@ def attenuation_coefficient(cross_sections, number_densities):
 
 def optical_density(i0, it):
     """Optical density (absorbance)  OD = -ln(It/I0) = mu*d."""
-    return -np.log(np.asarray(it, float) / i0)
+    return petrolib.nuclear.attenuation_map(it, i0)
 
 
 def segment_voxel(neutron_atten, xray_atten, hi_thresh, z_thresh):

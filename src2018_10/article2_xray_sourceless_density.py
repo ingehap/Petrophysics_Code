@@ -24,17 +24,24 @@ the density-logging physics the tool is built on.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- density response --------
 
 def detector_count(rho, spacing, mu_mass=0.06, n0=1e6):
     """Compton detector count  N = N0*exp(-mu_mass*rho*spacing)."""
-    return n0 * np.exp(-mu_mass * np.asarray(rho, float) * spacing)
+    return petrolib.nuclear.gamma_count(rho, n0=n0, mu_mass=mu_mass, spacing_cm=spacing)
 
 
 def density_from_count(count, spacing, mu_mass=0.06, n0=1e6):
     """Invert the Compton response for bulk density."""
-    return np.log(n0 / np.asarray(count, float)) / (mu_mass * spacing)
+    return petrolib.nuclear.density_from_count(count, n0=n0, mu_mass=mu_mass, spacing_cm=spacing)
 
 
 def spine_ribs_correction(rho_long, rho_short):
@@ -43,9 +50,7 @@ def spine_ribs_correction(rho_long, rho_short):
     The corrected density follows the "rib": rho = rho_long + alpha*(rho_long -
     rho_short); DRHO = rho - rho_long is the correction (positive for mudcake).
     """
-    alpha = 1.0
-    rho = rho_long + alpha * (rho_long - rho_short)
-    return rho, rho - rho_long
+    return petrolib.nuclear.spine_ribs(rho_long, rho_short, rib_coeffs=(0.0, 1.0, 0.0))
 
 
 def photoelectric_factor(soft_count, hard_count, k=1.0):

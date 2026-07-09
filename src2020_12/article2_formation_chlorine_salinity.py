@@ -29,6 +29,13 @@ hydrocarbon / fresh-water sigma 22 c.u., shale sigma 29.4 c.u.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 MOLAR_RATIO_NACL_CL = 1.649      # M_NaCl / M_Cl = 58.44 / 35.45
 CL_FRAC_OF_NACL = 1.0 / MOLAR_RATIO_NACL_CL   # = 0.6064
 SIGMA_PER_G_CL = 567.0           # c.u. per (g/cc) of chlorine
@@ -40,12 +47,12 @@ SIGMA_SHALE = 29.4               # c.u.
 
 def yield_to_weight(fy2w, S, Y):
     """Dry-weight element from yield  W = FY2W * S * Y  (Eq. 6)."""
-    return fy2w * S * Y
+    return petrolib.nuclear.yields_to_weights(fy2w, S, Y)
 
 
 def weight_to_yield(fy2w, S, W):
     """Inverse of Eq. 6: expected yield from a known weight  Y = W/(FY2W*S)."""
-    return W / (fy2w * S)
+    return petrolib.nuclear.weights_to_yields(fy2w, S, W)
 
 
 # ---------------------------------------------- borehole subtraction ----

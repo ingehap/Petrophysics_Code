@@ -26,6 +26,13 @@ Sigma_water = 24, Sigma_gas = 3 c.u.; porosity ~12 p.u.; 5 kppm NaCl water.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 SIGMA_MA = 7.5           # c.u., matrix
 SIGMA_SH = 27.0          # c.u., shale
 SIGMA_W = 24.0           # c.u., formation water (5 kppm NaCl)
@@ -36,16 +43,17 @@ SIGMA_G = 3.0            # c.u., gas
 
 def sigma_log_clean(phi, sg, sigma_ma=SIGMA_MA, sigma_w=SIGMA_W, sigma_g=SIGMA_G):
     """Forward sigma from the clean porosity balance."""
-    sw = 1.0 - sg
-    return (1.0 - phi) * sigma_ma + phi * (sw * sigma_w + sg * sigma_g)
+    return petrolib.nuclear.sigma_forward(
+        phi, 1.0 - sg, sigma_ma=sigma_ma, sigma_w=sigma_w, sigma_hc=sigma_g
+    )
 
 
 def gas_saturation_clean(sigma_log, phi, sigma_ma=SIGMA_MA, sigma_w=SIGMA_W,
                          sigma_g=SIGMA_G):
     """Clean (shale-free) gas saturation from sigma  (Eq. 1)."""
-    phi = np.asarray(phi, float)
-    num = np.asarray(sigma_log, float) - sigma_ma * (1.0 - phi) - sigma_w * phi
-    return np.clip(num / (phi * (sigma_g - sigma_w)), 0.0, 1.0)
+    return petrolib.nuclear.sw_from_sigma(
+        sigma_log, phi, sigma_ma=sigma_ma, sigma_w=sigma_g, sigma_hc=sigma_w
+    )
 
 
 # ---------------------------------------------- shaly Sg ----------------
@@ -53,19 +61,17 @@ def gas_saturation_clean(sigma_log, phi, sigma_ma=SIGMA_MA, sigma_w=SIGMA_W,
 def sigma_log_shaly(phi, vsh, sg, sigma_ma=SIGMA_MA, sigma_sh=SIGMA_SH,
                     sigma_w=SIGMA_W, sigma_g=SIGMA_G):
     """Forward sigma including a shale term."""
-    sw = 1.0 - sg
-    return ((1.0 - phi - vsh) * sigma_ma + vsh * sigma_sh
-            + phi * (sw * sigma_w + sg * sigma_g))
+    return petrolib.nuclear.sigma_forward(
+        phi, 1.0 - sg, sigma_ma=sigma_ma, sigma_w=sigma_w, sigma_hc=sigma_g, vsh=vsh, sigma_sh=sigma_sh
+    )
 
 
 def gas_saturation_shaly(sigma_log, phi, vsh, sigma_ma=SIGMA_MA, sigma_sh=SIGMA_SH,
                          sigma_w=SIGMA_W, sigma_g=SIGMA_G):
     """Shaly gas saturation from sigma with a linear shale correction  (Eq. 2)."""
-    phi = np.asarray(phi, float)
-    vsh = np.asarray(vsh, float)
-    num = (np.asarray(sigma_log, float) - sigma_ma * (1.0 - phi - vsh)
-           - sigma_sh * vsh - sigma_w * phi)
-    return np.clip(num / (phi * (sigma_g - sigma_w)), 0.0, 1.0)
+    return petrolib.nuclear.sw_from_sigma(
+        sigma_log, phi, sigma_ma=sigma_ma, sigma_w=sigma_g, sigma_hc=sigma_w, vsh=vsh, sigma_sh=sigma_sh
+    )
 
 
 def saturation_sensitivity(phi, sigma_w=SIGMA_W, sigma_g=SIGMA_G):
@@ -74,7 +80,7 @@ def saturation_sensitivity(phi, sigma_w=SIGMA_W, sigma_g=SIGMA_G):
     Small in low-porosity / low-contrast rock, so a given sigma error maps to a
     large saturation error - the paper's central caveat.
     """
-    return phi * (sigma_w - sigma_g)
+    return petrolib.nuclear.sigma_sensitivity(phi, sigma_w, sigma_g)
 
 
 # ---------------------------------------------- tests --------------
