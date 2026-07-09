@@ -46,7 +46,8 @@ def bet_surface_area(p_rel, v_ads, cross_nm2=N2_CROSS_NM2):
     """
     x = np.asarray(p_rel, float); v = np.asarray(v_ads, float)
     y = x / (v * (1.0 - x))
-    slope, intercept = np.polyfit(x, y, 1)
+    lf = petrolib.inversion_numerics.fitting.fit_line(x, y)
+    slope, intercept = lf.slope, lf.intercept
     vm = 1.0 / (slope + intercept)
     c = slope / intercept + 1.0
     ssa = (vm / V_MOLAR_STP) * NA * (cross_nm2 * 1e-18)
@@ -63,7 +64,7 @@ def fhh_fractal_dimension(p_rel, v_ads):
     x = np.asarray(p_rel, float); v = np.asarray(v_ads, float)
     X = np.log(np.log(1.0 / x))
     Y = np.log(v)
-    A, _ = np.polyfit(X, Y, 1)
+    A = petrolib.inversion_numerics.fitting.fit_line(X, Y).slope
     return 3.0 + A
 
 

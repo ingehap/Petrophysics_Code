@@ -27,6 +27,13 @@ Slowness in us/ft.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- kernels -----------------
 
@@ -68,7 +75,7 @@ def blur(slowness, kernel):
 
 def deconvolve(D_stack, G_stack):
     """High-resolution slowness  S = G^+ @ D  (Eq. 13, Moore-Penrose)."""
-    return np.linalg.pinv(G_stack) @ D_stack
+    return petrolib.inversion_numerics.linear.deconvolve(D_stack, G_stack)
 
 
 def qc_mismatch(G_N, S, D_N):

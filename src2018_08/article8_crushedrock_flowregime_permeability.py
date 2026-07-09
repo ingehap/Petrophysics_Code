@@ -84,8 +84,8 @@ def lambda_plot_fit(lambdas, ka):
     Returns (intercept B, slope M) of the line through several gases/pressures;
     apparent permeability is log-linear in the gas mean free path.
     """
-    m, b = np.polyfit(np.asarray(lambdas, float), np.log(np.asarray(ka, float)), 1)
-    return b, m
+    lf = petrolib.inversion_numerics.fitting.fit_line(lambdas, ka, yform="log")
+    return lf.intercept, lf.slope
 
 
 def k_one_lambda(intercept_b, slope_m, lambda_ref=1e-9):

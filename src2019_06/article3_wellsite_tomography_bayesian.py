@@ -25,6 +25,13 @@ applies.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- forward -----------------
 
@@ -67,7 +74,7 @@ def posterior_covariance(G, L, noise_var, prior_strength):
 
 def least_squares(G, d):
     """Unregularized least-squares (minimum-norm) reconstruction."""
-    return np.linalg.pinv(np.asarray(G, float)) @ np.asarray(d, float)
+    return petrolib.inversion_numerics.linear.deconvolve(d, G)
 
 
 # ---------------------------------------------- tests --------------

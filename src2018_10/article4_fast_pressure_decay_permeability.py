@@ -53,7 +53,7 @@ def fit_permeability(t, dp, A, L, mu, beta, Vu, Vd):
     Fits ln(dP) = ln(dP0) - rate*t, then inverts the decay-rate relation for k.
     """
     t = np.asarray(t, float); dp = np.asarray(dp, float)
-    slope, _ = np.polyfit(t, np.log(dp), 1)
+    slope = petrolib.inversion_numerics.fitting.fit_line(t, dp, yform="log").slope
     rate = -slope
     geom = (A / (mu * L * beta)) * (1.0 / Vu + 1.0 / Vd)
     return rate / geom
