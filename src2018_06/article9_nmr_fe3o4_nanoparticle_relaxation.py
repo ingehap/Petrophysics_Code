@@ -54,9 +54,8 @@ def relaxation_rate(t0, relaxivity, concentration):
 
 def fit_relaxivity(concentrations, rates):
     """Recover (relaxivity r, intercept 1/T0) from 1/T vs concentration data."""
-    r, intercept = np.polyfit(np.asarray(concentrations, float),
-                              np.asarray(rates, float), 1)
-    return r, intercept
+    lf = petrolib.inversion_numerics.fitting.fit_line(concentrations, rates)
+    return lf.slope, lf.intercept
 
 
 def relaxivity_ratio(r2, r1):

@@ -26,6 +26,13 @@ choked nozzle and the monopole-dipole-quadrupole Mach scaling).  SI units.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- leak kinematics --------------
 
@@ -83,9 +90,8 @@ def calibrate_liquid_inversion(amplitude, rate):
     that is monotonic in Q; a short calibration (here ~1/3 of points would train
     it) gives the two constants used to predict rate from measured amplitude.
     """
-    a = np.asarray(amplitude, float)
-    alpha, beta = np.polyfit(a, np.asarray(rate, float), 1)
-    return alpha, beta
+    lf = petrolib.inversion_numerics.fitting.fit_line(amplitude, rate)
+    return lf.slope, lf.intercept
 
 
 def liquid_rate_from_amplitude(amplitude, alpha, beta):

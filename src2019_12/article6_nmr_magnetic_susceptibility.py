@@ -59,7 +59,7 @@ def internal_gradient_from_slope(TE_array, inv_T2, D, gamma=GAMMA_H):
     Returns G in Gauss/cm.
     """
     TE2 = np.asarray(TE_array, float) ** 2
-    slope, _ = np.polyfit(TE2, np.asarray(inv_T2, float), 1)
+    slope = petrolib.inversion_numerics.fitting.fit_line(TE2, inv_T2).slope
     G_T_per_m = np.sqrt(slope * 12.0 / (gamma ** 2 * D))
     return G_T_per_m / GAUSS_PER_CM_TO_T_PER_M
 

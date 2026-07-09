@@ -24,6 +24,13 @@ paper reviews.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Darcy kr ----------------
 
@@ -49,9 +56,8 @@ def intercept_correction(q, kr_app):
 
     Returns kr_true (the reciprocal of the intercept).
     """
-    x = 1.0 / np.asarray(q, float)
-    y = 1.0 / np.asarray(kr_app, float)
-    slope, intercept = np.polyfit(x, y, 1)
+    intercept = petrolib.inversion_numerics.fitting.fit_line(
+        q, kr_app, xform="inv", yform="inv").intercept
     return 1.0 / intercept
 
 
