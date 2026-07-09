@@ -90,16 +90,20 @@ def szabo_linear(Pc, a, b):
 
 def toledo_capillary(sw_star, pew, D):
     """Fractal capillary pressure  Pc = Pew * Sw*^(-1/lambda), lambda=3-D (Eq. 18)."""
+    # Fractal Brooks-Corey Pc: lambda = 3 - D (fractal dimension); Sw* is already
+    # normalized (swirr=0).  The library's exponent is -1/lam.
     lam = 3.0 - D
-    return pew * np.asarray(sw_star, float) ** (-1.0 / lam)
+    return petrolib.capillary_pressure.brooks_corey_pc(
+        sw_star, pc_entry=pew, lam=lam, swirr=0.0)
 
 
 # ---------------------------------------------- Washburn ----------------
 
 def washburn_radius(Pc_mpa, sigma=0.072, theta_deg=0.0):
     """Pore-throat radius  r = 2*sigma*cos(theta)/Pc.  Pc in MPa -> r in um."""
-    Pc_pa = np.asarray(Pc_mpa, float) * 1e6
-    r_m = 2.0 * sigma * np.cos(np.radians(theta_deg)) / Pc_pa
+    # Signed cos; MPa->Pa on Pc and m->um on r are kept here in the facade.
+    r_m = petrolib.capillary_pressure.washburn_radius(
+        np.asarray(Pc_mpa, float) * 1e6, sigma=sigma, theta_deg=theta_deg, absolute=False)
     return r_m * 1e6
 
 

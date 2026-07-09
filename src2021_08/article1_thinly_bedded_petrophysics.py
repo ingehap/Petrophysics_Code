@@ -27,6 +27,13 @@ Rss=10; Rv=5.5 -> Rss=10).  Resistivities in ohm-m, dips in degrees.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Eqs. 2-3: laminated R ---
 
@@ -84,8 +91,10 @@ def sand_resistivity_from_series(Rv, Vshl, Rv_sh):
 
 def thomeer_bulk_volume(Pc, Binf, G, Pd):
     """Thomeer mercury-injection bulk volume  Bv = Binf*exp(-G/ln(Pc/Pd)) (Eq. 4)."""
-    Pc = np.asarray(Pc, float)
-    return np.where(Pc > Pd, Binf * np.exp(-G / np.log(Pc / Pd)), 0.0)
+    # Natural-log Thomeer (G defined on ln); pass log_base=e (NOT 10 -- section 9
+    # log-base hazard: the same G gives materially different curves under ln vs log10).
+    return petrolib.capillary_pressure.thomeer_shg(
+        Pc, bv_inf=Binf, g=G, pd=Pd, log_base=np.e)
 
 
 # ---------------------------------------------- tests --------------

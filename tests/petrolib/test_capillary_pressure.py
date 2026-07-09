@@ -222,6 +222,13 @@ def _original_drainage_pc_offset_2018_02(swn, pc_threshold, a, b):
     return pc_threshold + a * np.asarray(swn, float) ** (-b)
 
 
+def _original_toledo_capillary_2021_08(sw_star, pew, D):
+    # src2021_08/article8: fractal Pc = Pew*Sw*^(-1/lambda) with lambda = 3 - D ->
+    # brooks_corey_pc with lam = 3 - D and pre-normalized Sw* (swirr=0).
+    lam = 3.0 - D
+    return pew * np.asarray(sw_star, float) ** (-1.0 / lam)
+
+
 def test_brooks_corey_conventions_and_round_trip() -> None:
     # lam-convention article (clip form is value-equal to the where form)
     assert_matches_original(
@@ -251,6 +258,12 @@ def test_brooks_corey_conventions_and_round_trip() -> None:
             pcth + cap.brooks_corey_pc(swn_, pc_entry=a, lam=1.0 / b, swirr=0.0)
         ),
         [(swn, 1e4, 3e4, 2.0)],
+    )
+    # src2021_08/article8: Toledo fractal Pc, lam = 3 - D (fractal dimension)
+    assert_matches_original(
+        _original_toledo_capillary_2021_08,
+        lambda sw_, pew, d_: cap.brooks_corey_pc(sw_, pc_entry=pew, lam=3.0 - d_, swirr=0.0),
+        [(swn, 5e4, 2.5)],
     )
     # forward/inverse round trip above the entry pressure
     pc = cap.brooks_corey_pc(SW, pc_entry=5e4, lam=1.8, swirr=0.1)
