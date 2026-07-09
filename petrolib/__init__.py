@@ -24,6 +24,7 @@ _SUBMODULES = frozenset(
         "constants",
         "flow_transport",
         "ml_stats",
+        "nmr",
         "relperm_wettability",
         "saturation_resistivity",
         "testing",
