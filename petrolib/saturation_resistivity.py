@@ -130,6 +130,27 @@ def archie_conductivity(
     return np.asarray(cw_arr * porosity**m * sw_arr**n)
 
 
+def archie_sw_from_conductivity(
+    ct: ArrayLike,
+    cw: ArrayLike,
+    *,
+    phi: ArrayLike,
+    m: float = 2.0,
+    n: float = 2.0,
+    clip: tuple[float, float] | None = None,
+) -> _Float:
+    """Invert conductivity-domain Archie: ``Sw = (Ct/(Cw*phi**m))**(1/n)``.
+
+    The closed-form inverse of :func:`archie_conductivity`.  Sources:
+    src2018_06/article4 (clay-network model saturation).
+    """
+    ct_arr = np.asarray(ct, np.float64)
+    cw_arr = np.asarray(cw, np.float64)
+    porosity = np.asarray(phi, np.float64)
+    sw = (ct_arr / (cw_arr * porosity**m)) ** (1.0 / n)
+    return _clip(np.asarray(sw), clip)
+
+
 def resistivity_index(rt: ArrayLike, ro: ArrayLike) -> _Float:
     """Resistivity index by definition, ``RI = Rt/Ro``.
 
@@ -414,6 +435,51 @@ def dual_water_sw(
         )
 
     broadcast = np.broadcast_arrays(ct_arr, cw_arr, cb_arr, swb_arr, porosity)[0]
+    target = np.asarray(np.broadcast_to(ct_arr, broadcast.shape), np.float64)
+    sw = _bisect_increasing(forward, target, lo=lo, hi=hi, n_iter=n_iter, tol=tol)
+    return _clip(sw, clip)
+
+
+def dual_water_sw_qv(
+    ct: ArrayLike,
+    *,
+    cw: ArrayLike,
+    qv: ArrayLike,
+    alpha_vqh: float,
+    beta: float,
+    phi: ArrayLike,
+    m0: float = 2.0,
+    n: float = 2.0,
+    lo: float = 1e-6,
+    hi: float = 1.0,
+    n_iter: int = 100,
+    tol: float = 1e-12,
+    clip: tuple[float, float] | None = None,
+) -> _Float:
+    """Invert the Qv-form :func:`dual_water_conductivity_qv` for Sw.
+
+    Same bisection contract as :func:`waxman_smits_sw` — the bracket and
+    iteration controls are explicit so facades reproduce their article's
+    solver exactly (src2014_02/article1 uses lo=1e-4, tol=1e-10).
+    """
+    ct_arr = np.asarray(ct, np.float64)
+    cw_arr = np.asarray(cw, np.float64)
+    qv_arr = np.asarray(qv, np.float64)
+    porosity = np.asarray(phi, np.float64)
+
+    def forward(sw: _Float) -> _Float:
+        return dual_water_conductivity_qv(
+            sw,
+            cw=cw_arr,
+            qv=qv_arr,
+            alpha_vqh=alpha_vqh,
+            beta=beta,
+            phi=porosity,
+            m0=m0,
+            n=n,
+        )
+
+    broadcast = np.broadcast_arrays(ct_arr, cw_arr, qv_arr, porosity)[0]
     target = np.asarray(np.broadcast_to(ct_arr, broadcast.shape), np.float64)
     sw = _bisect_increasing(forward, target, lo=lo, hi=hi, n_iter=n_iter, tol=tol)
     return _clip(sw, clip)

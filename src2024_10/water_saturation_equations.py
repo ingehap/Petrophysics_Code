@@ -23,6 +23,13 @@ Reference: DOI:10.30632/PJV65N5-2024a5
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from typing import Optional
 
 
@@ -43,11 +50,8 @@ def archie_sw(Rt: np.ndarray, Rw: float, phi: np.ndarray,
     Archie's water-saturation equation:
         Sw = (a * Rw / (Rt * phi^m))^(1/n)
     """
-    Rt = np.asarray(Rt, dtype=float)
-    phi = np.asarray(phi, dtype=float)
-    F = a / (phi ** m)
-    Sw = (F * Rw / Rt) ** (1.0 / n)
-    return np.clip(Sw, 0, 1)
+    return petrolib.saturation_resistivity.archie_sw(
+        Rt, Rw, phi=phi, a=a, m=m, n=n, clip=(0.0, 1.0))
 
 
 # -----------------------------------------------------------------------

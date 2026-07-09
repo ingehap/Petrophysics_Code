@@ -28,6 +28,13 @@ Conductivities in S/m (or mho/cm consistently); Qv in equiv/L.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- conductivity space --------------
 
@@ -59,7 +66,9 @@ def shaly_sand_c0(cw, formation_factor_star, cxtra):
 
 def formation_factor_star(phi_t, m_star):
     """Shaly-sand formation factor  F* = phi_t^(-m*)  (Eq. 4)."""
-    return np.asarray(phi_t, float) ** (-m_star)
+    # F* uses the shaly-rock exponent m* — same formula as the Archie F,
+    # different calibration (see petrolib.saturation_resistivity docstring).
+    return petrolib.saturation_resistivity.formation_factor(phi_t, m=m_star)
 
 
 def waxman_smits_ct(cw, formation_factor_star, b, qv, sw, n_star=2.0):
