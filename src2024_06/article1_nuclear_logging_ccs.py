@@ -39,6 +39,13 @@ from __future__ import annotations
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # 1. PNC sigma technique ----------------------------------------------------
@@ -63,10 +70,7 @@ def pnc_decay(time_us: np.ndarray, n0: float, sigma_cu: float,
     -------
     Array of counts N(t) = N0 * exp(-Sigma * v * t) + background.
     """
-    sigma_cm_inv = sigma_cu * 1e-3                      # c.u. -> cm^-1
-    decay_rate = sigma_cm_inv * THERMAL_NEUTRON_VELOCITY_CM_S  # s^-1
-    t_s = np.asarray(time_us) * 1e-6
-    return n0 * np.exp(-decay_rate * t_s) + background
+    return petrolib.nuclear.pnc_decay(time_us, n0, sigma_cu, background=background)
 
 
 def sigma_from_decay(time_us: np.ndarray, counts: np.ndarray,
