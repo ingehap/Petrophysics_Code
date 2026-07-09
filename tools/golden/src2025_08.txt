@@ -1,0 +1,76 @@
+======================================================================
+  Petrophysics August 2025 — Full Test Suite
+  (Special Issue on Well Integrity)
+======================================================================
+
+────────────────────────────────────────────────────────────
+  Article  1 — GenAI P&A Extraction
+  Module: pa_genai_extraction
+────────────────────────────────────────────────────────────
+[PASS] pa_genai_extraction — all tests passed
+
+────────────────────────────────────────────────────────────
+  Article  2 — Fiber-Optic DTS/DAS Sensing
+  Module: fiber_optics_sensing
+────────────────────────────────────────────────────────────
+[PASS] fiber_optics_sensing — all tests passed
+
+────────────────────────────────────────────────────────────
+  Article  3 — Seven-Pipe EM Corrosion Evaluation
+  Module: seven_pipe_em_corrosion
+────────────────────────────────────────────────────────────
+[PASS] seven_pipe_em_corrosion — all tests passed
+
+────────────────────────────────────────────────────────────
+  Article  4 — Sectorial EM Scanning
+  Module: sectorial_em_scanning
+────────────────────────────────────────────────────────────
+[PASS] sectorial_em_scanning — all tests passed
+
+────────────────────────────────────────────────────────────
+  Article  5 — FBE Cement Bond Evaluation
+  Module: fbe_cement_evaluation
+────────────────────────────────────────────────────────────
+[PASS] fbe_cement_evaluation — all tests passed
+
+────────────────────────────────────────────────────────────
+  Article  6 — High-Res Acoustic Imaging
+  Module: acoustic_imaging
+────────────────────────────────────────────────────────────
+[PASS] acoustic_imaging — all tests passed
+
+────────────────────────────────────────────────────────────
+  Article  7 — Pulsed Eddy Current Break Detection
+  Module: pulsed_eddy_current
+────────────────────────────────────────────────────────────
+[PASS] pulsed_eddy_current — all tests passed
+
+────────────────────────────────────────────────────────────
+  Article  8 — Anomaly Detection (HMVMD + Bayes)
+  Module: anomaly_detection_vmd
+────────────────────────────────────────────────────────────
+[PASS] anomaly_detection_vmd — all tests passed
+
+────────────────────────────────────────────────────────────
+  Article  9 — Koopman + EnKF Deformation
+  Module: koopman_enkf_deformation
+────────────────────────────────────────────────────────────
+[PASS] koopman_enkf_deformation — all tests passed
+
+────────────────────────────────────────────────────────────
+  Article 10 — SNHR / EMI Cement Evaluation
+  Module: cement_snhr_emi
+────────────────────────────────────────────────────────────
+[PASS] cement_snhr_emi — all tests passed
+
+────────────────────────────────────────────────────────────
+  Article 11 — Time-Variant Wave Separation
+  Module: wave_separation_slowness
+────────────────────────────────────────────────────────────
+[PASS] wave_separation_slowness — all tests passed
+
+======================================================================
+  RESULTS: 11 passed, 0 failed  (#.## s)
+======================================================================
+
+  All 11 modules passed successfully!

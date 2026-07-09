@@ -1,0 +1,85 @@
+
+######################################################################
+# Article 1 - Inversion-Based LWD Resistivity & Nuclear
+######################################################################
+============================================================
+Article 1: Inversion-Based LWD Resistivity & Nuclear
+============================================================
+  sigma_h=0.7872 S/m  Rv=2.716  lambda=1.462
+  net-sand Sw = 0.373
+  recovered sigma_sd = 0.2538 S/m  (true 0.2538)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Elemental Spectroscopy Core Data QC
+######################################################################
+============================================================
+Article 2: Elemental Spectroscopy Core Data QC
+============================================================
+  closure factor F = 1.2500
+  reconstructed [Si, Ca] = [0.282 0.16 ]
+  QCMIN score = 1.70
+  grain density = 2.418 g/cm3
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Nuclear Alternatives to Cs-137 Density
+######################################################################
+============================================================
+Article 3: Nuclear Alternatives to Cs-137 Density
+============================================================
+  I(water)=5.555e+04  I(quartz)=4.713e+02
+  recovered density = 2.650 g/cm3
+  capture fraction = 0.388
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - DRIFTS Kerogen, Mineralogy & Clay Typing
+######################################################################
+============================================================
+Article 4: DRIFTS Kerogen, Mineralogy & Clay Typing
+============================================================
+  recovered mineralogy = [0.7 0.3]
+  organic signal = 22.152
+  TOC(Ro=0.5)=11.076  TOC(Ro=1.35)=29.905
+  CEC = 5.60 meq/100g
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Near-Wellbore Nanoparticle Transport
+######################################################################
+============================================================
+Article 5: Nanoparticle Transport in Near-Wellbore
+============================================================
+  Dd(1nm)=4.39e-10  Dd(100nm)=4.39e-12 m2/s
+  D* = 7.01e-08 m2/s  (dispersion >> diffusion)
+  near-well C=0.960  front max=0.960  far C=0.000e+00
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - Dielectric Oil-Movability Quicklook
+######################################################################
+============================================================
+Article 6: Dielectric Oil-Movability Quicklook
+============================================================
+  eps_app=8.89  phi_water=0.180  Sw=0.450
+  So profile = [0.12 0.3  0.5  0.55]  dSo = 0.430
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_lwd_inversion_anisotropy  (#.##s)
+  PASS   article2_elemental_spectroscopy_qc  (#.##s)
+  PASS   article3_nuclear_density_alternatives  (#.##s)
+  PASS   article4_drifts_kerogen_mineralogy  (#.##s)
+  PASS   article5_nanoparticle_transport  (#.##s)
+  PASS   article6_dielectric_oil_movability  (#.##s)
+
+  6/6 modules passed

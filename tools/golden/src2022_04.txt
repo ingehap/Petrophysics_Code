@@ -1,0 +1,127 @@
+
+######################################################################
+# Article 1 - DEC Tool Bayesian-GPR Inversion
+######################################################################
+============================================================
+Article 1: DEC Tool Bayesian-GPR Inversion
+============================================================
+  Transfer-function output (Eq. 1) = 0.350
+  Eccentricity ratio (Eq. 4)       = 0.167
+  Deformation factor (Eq. 5)       = 1.069
+  GPR test RMSE (averaged across 4 parameters) = 0.007
+  Recovered (Ecc, theta, Def, gamma) = (0.398, 59.9, 1.052, 25.9)
+  True       (Ecc, theta, Def, gamma) = (0.400, 60.0, 1.050, 30.0)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Kozeny Permeability in Clay-Rich Chalk
+######################################################################
+============================================================
+Article 2: Kozeny Permeability for Clay-Rich Chalk
+============================================================
+  phi (Eqs. 3-4)            = 0.369
+  c(phi)  Mortensen (Eq. 2) = 1.716
+  S_phi  mineralogy      = 1.51e+04 1/m
+  S_phi  spectral GR     = 5.73e-01 (relative units)
+  S_phi  pwft  10 nm     = 1.48e+07 1/m
+  S_phi  NMR T2 = 20 ms  = 1.43e+07 1/m
+  Kozeny k (NMR + ro_BET) =   0.429 mD
+  FZI (Eqs. 11-12)         = 1.0403
+  FZI from Vp = 3000 m/s   = 0.5477
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Pyrite-Aware Sw with HS Bounds
+######################################################################
+============================================================
+Article 3: Pyrite-Aware Sw with HS-Bounded Mineral Mixing
+============================================================
+  sigma_we (Clavier, Eqs. 10-13)     = 24.52 S/m
+  Wiener bounds water/pyrite         = [25.01, 54.03] S/m
+  HS bounds water/pyrite             = [25.94, 44.48] S/m
+  HS-weighted (w = 0.03)              = 26.50 S/m
+  sigma_extra (silicate CEC, Eq. 32) = 0.331 S/m
+  sigma_t  pure Archie               = 0.265 S/m
+  sigma_t  with extras (Eq. 6)       = 0.272 S/m
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - Micro-CT Filter-Cake Deposition (proxy)
+######################################################################
+============================================================
+Article 4: Time-Lapse Micro-CT of Mudcake Deposition (proxy)
+============================================================
+  t =   1 min   mudcake thickness =   2.65 mm
+  t =  10 min   mudcake thickness =   8.37 mm
+  t =  60 min   mudcake thickness =  20.49 mm
+  Time  phi_mc    k_mc (mD)
+     1   0.398      0.4960
+     5   0.391      0.4586
+    30   0.361      0.3265
+   120   0.314      0.1880
+  Detected mudcake thickness (synthetic slice) = 6.35 px
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Methane Solubility in OBM (proxy)
+######################################################################
+============================================================
+Article 5: Methane Solubility in OBM (proxy)
+============================================================
+  ln(x_CH4)  P = 30 MPa, T = 350 K = 4.709
+  ln(x_CH4)  P = 80 MPa, T = 350 K = 5.543
+  Regression RMSE on test set        = 0.0153
+  Recovered coefficients             = [np.float64(-0.4892), np.float64(0.025), np.float64(-0.005), np.float64(1.1833), np.float64(-0.0099)]
+  Truth                              = [np.float64(-0.5), np.float64(0.025), np.float64(-0.005), np.float64(1.2), np.float64(-0.01)]
+  Coefficient relative error         = 1.53 %
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - Gas-Hydrate Rock Physics (proxy)
+######################################################################
+============================================================
+Article 6: Gas-Hydrate Rock-Physics Modeling (proxy)
+============================================================
+  Hydrate-bearing shaly sand:
+    Vp = 3197 m/s   Vs = 1594 m/s   Vp/Vs = 2.01   class = hydrate_sand
+  Water-saturated shaly sand:
+    Vp = 2830 m/s   Vs = 1585 m/s   Vp/Vs = 1.78   class = sand
+  Calcite (15 % porosity):
+    Vp = 5356 m/s   Vs = 2719 m/s   class = calcite
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 7 - Digital-Core Wellbore Stability (proxy)
+######################################################################
+============================================================
+Article 7: Digital-Core Wellbore Stability (proxy)
+============================================================
+  Voxel-core porosity                = 0.182
+  VRH solid moduli  K = 33.0 GPa,  G = 29.0 GPa,  E = 67.3 GPa
+  E_dry (Krief soften)               = 36.85 GPa
+  UCS dry                            = 88.49 MPa
+  UCS after  3 days water immersion  = 76.54 MPa
+  UCS after  7 days water immersion  = 64.11 MPa
+  UCS after 14 days water immersion  = 49.33 MPa
+  Critical mud pressure (Kirsch + MC) = 0.00 MPa
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_dec_tool_bayesian_gpr  (#.##s)
+  PASS   article2_kozeny_permeability_chalk  (#.##s)
+  PASS   article3_pyrite_saturation_hs_bounds  (#.##s)
+  PASS   article4_microct_filtercake  (#.##s)
+  PASS   article5_methane_solubility_obm  (#.##s)
+  PASS   article6_gas_hydrate_rock_physics  (#.##s)
+  PASS   article7_digital_core_wellbore_stability  (#.##s)
+
+  7/7 modules passed

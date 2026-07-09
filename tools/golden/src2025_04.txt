@@ -1,0 +1,161 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║  Petrophysics Vol. 66, No. 2 (April 2025) — Test Suite               ║
+║  SPWLA Journal of Petrophysicists and Well Log Analysts              ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+[1/9] udar_look_ahead  (Cuadros et al., pp. 190–211)
+======================================================================
+Testing: udar_look_ahead (Cuadros et al., 2025)
+======================================================================
+  Skin depth at 2 kHz, 100 Ohm·m: 112.5 m
+  SNR at 1000 Ohm·m (halite): [97.54227005 97.31354451 97.08938439 96.77237409 96.29249049]
+  Calibrated signal (2° tilt error): [1.0024419  2.0048838  3.00732569]
+  Detected 10 conductive anomaly points
+  Background resistivity: 98.3 Ohm·m
+  Optimal freq for 500 Ohm·m at 20m: 2 kHz, SNR=93.3 dB
+  Forward model voltage: |V|=4.6776e+00, phase=-0.2°
+  All tests PASSED.
+
+[2/9] stochastic_inversion  (Sviridov et al., pp. 212–236)
+======================================================================
+Testing: stochastic_inversion (Sviridov et al., 2025)
+======================================================================
+  True model: 5 layers
+  Data shape: (50, 6)
+  Best model: 11 layers
+  Best log-posterior: -4244.5
+  Acceptance rate: 28.99%
+  Ensemble size: 27
+  P50 resistivity range: [9.17, 48.09] Ohm·m
+  All tests PASSED.
+
+[3/9] gip_porosity  (Jiang et al., pp. 237–249)
+======================================================================
+Testing: gip_porosity (Jiang et al., 2025)
+======================================================================
+  Sample bulk volume: 24.54 cm³
+  True porosity: 8.0%
+  Pressure range: 69.99 – 70.44 psi
+  Saturation time: 15.0 min
+  Predicted Pe: 69.89 psi
+  Computed porosity: 0.0756 (7.56%)
+  Fit RMS residual: 0.0102 psi
+  Porosity error: 0.0044 (target < 0.01)
+  Traditional GIP (using last P): 0.0691 (6.91%)
+  All tests PASSED.
+
+[4/9] unconventional_porosity  (Cheng et al., pp. 250–266)
+======================================================================
+Testing: unconventional_porosity (Cheng et al., 2025)
+======================================================================
+  CRA porosity: 0.087 (8.8%)
+  CRA So=0.504, Sw=0.150, Sg=0.346
+  Retort porosity: 0.080 (8.0%)
+  Retort Sfw=0.250, Sbw=0.156, So=0.094
+  NMR total porosity: 0.088
+  NMR bound porosity: 0.042, free porosity: 0.045
+  Porosity comparison: {'CRA': 0.0875, 'Retort': 0.08000000000000007, 'NMR': np.float64(0.0881205722411542)}
+  Porosity range: 0.008
+  All tests PASSED.
+
+[5/9] ultrasonic_pore_characterization  (Chen et al., pp. 267–282)
+======================================================================
+Testing: ultrasonic_pore_characterization (Chen et al., 2025)
+======================================================================
+  Z_water = 1.48 MRayl
+  Z_limestone = 17.34 MRayl
+  Reflection coefficient (water→limestone): 0.843
+  Otsu threshold: 123
+  Segmented pore fraction: 0.526
+  Elliptical pore: area=627.9, perimeter=96.9
+    XZ=0.917, BP=0.016, JZ=0.826, TD=24.951
+  Fourier descriptors (first 4): [1.75564617e+16 6.01808575e-01 7.64041668e-01 5.31967108e-01]
+  3D bulk porosity: 0.101
+  All tests PASSED.
+
+[6/9] overpressure_isotope  (Hu et al., pp. 283–293)
+======================================================================
+Testing: overpressure_isotope (Hu et al., 2025)
+======================================================================
+  Depth range: 2000 – 5000 m
+  Eaton Pp range: 0.465 – 0.756 psi/ft
+  Bowers Pp range: -85056 – -3029 psi
+  Classification: 30 loading, 0 unloading points
+  Isotope diagnosis: {'normal_pressure': 5, 'near_source': 75, 'mixed': 15, 'pressure_conduction': 5}
+  Pressure coefficient range: -11.15 – -0.99
+  All tests PASSED.
+
+[7/9] neutron_porosity_sensitivity  (Varignier et al., pp. 294–317)
+======================================================================
+Testing: neutron_porosity_sensitivity (Varignier et al., 2025)
+======================================================================
+  Mesh cells: 12000, volume shape: (25, 40, 12)
+  FSF (WW) sum: 1.000000
+  FSF (PT) sum: 1.000000
+  ISF sum: 1.000000
+  FSF from ISF sum: 1.000000
+  Porosity=5 p.u.: near=1783, far=672, compensated=13.6 p.u.
+  Porosity=15 p.u.: near=1416, far=473, compensated=21.2 p.u.
+  Porosity=30 p.u.: near=1003, far=280, compensated=35.0 p.u.
+  Casedhole correction: 20.0 → 19.6 p.u.
+  FFM prediction at 20 p.u.: near=852, far=256, porosity=28.9 p.u.
+  All tests PASSED.
+
+[8/9] filter_cake_isolation  (Yang et al., pp. 318–330)
+======================================================================
+Testing: filter_cake_isolation (Yang et al., 2025)
+======================================================================
+  Residue 100% (4.0 mm) → virtual
+  Residue 50% (2.0 mm) → underpressure
+  Residue 15% (0.6 mm) → dense
+  Shear strength: 15% residue = 2.61 MPa, 100% residue = 0.20 MPa, ratio = 13x
+  Channeling pressure: 15% = 8.87 MPa, 100% = 0.45 MPa
+  Shear strengths: [4.08998507 2.60788962 1.66286384 0.91259902 0.20362837]
+  Channeling pressures: [15.          8.87333047  5.24906624  2.60660915  0.45296075]
+  Curing days: [ 1  3  7 15 30 60]
+  Shear strength evolution: [2.14455284 2.37622123 2.60788962 2.83955801 3.06061513 3.06061513]
+  Channeling pressure peaks at day 7
+  Structural force at 0.5 mm: 2.02 N
+  Structural force at 2.0 mm: 0.96 N
+  Structural force at 4.0 mm: 0.35 N
+  Removal efficiency (4.0→0.6 mm): 85.0%
+  All tests PASSED.
+
+[9/9] microannuli_leak_rate  (Machicote et al., pp. 331–347)
+======================================================================
+Testing: microannuli_leak_rate (Machicote et al., 2025)
+======================================================================
+  AI=5.0 MRayl → τ=0 µm
+  AI=3.5 MRayl → τ=0 µm
+  AI=2.0 MRayl → τ=179 µm
+  AI=1.5 MRayl → τ=400 µm
+  Geometric mean thickness: 93.6 µm
+  Ω(R=0.122m, τ=100µm) = 1.631e-13 m⁴
+  Water leak rate (100µm, 20bar, 100m): 0.1107 m³/d
+  Methane leak rate (100µm, ΔP=100bar, 100m): 75.4462 m³/d
+  Bond index (CBL=15mV): 0.45
+  Sensitivity analysis (leak rate in m³/d):
+    water: [1.10685561e-04 1.38289823e-02 1.10654458e-01 8.85597489e-01
+ 2.99011294e+00 7.09057090e+00]
+    methane: [5.97160309e-02 7.46088222e+00 5.96992503e+01 4.77789211e+02
+ 1.61319756e+03 3.82543799e+03]
+    oil: [2.21371123e-05 2.76579647e-03 2.21308916e-02 1.77119498e-01
+ 5.98022589e-01 1.41811418e+00]
+  All tests PASSED.
+
+
+╔══════════════════════════════════════════════════════════════════════╗
+║  TEST SUMMARY                                                        ║
+╠══════════════════════════════════════════════════════════════════════╣
+║  ✓  udar_look_ahead                                                  ║
+║  ✓  stochastic_inversion                                             ║
+║  ✓  gip_porosity                                                     ║
+║  ✓  unconventional_porosity                                          ║
+║  ✓  ultrasonic_pore_characterization                                 ║
+║  ✓  overpressure_isotope                                             ║
+║  ✓  neutron_porosity_sensitivity                                     ║
+║  ✓  filter_cake_isolation                                            ║
+║  ✓  microannuli_leak_rate                                            ║
+╠══════════════════════════════════════════════════════════════════════╣
+║  9 passed, 0 failed  (#.##s)                                         ║
+╚══════════════════════════════════════════════════════════════════════╝

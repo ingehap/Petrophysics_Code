@@ -1,0 +1,111 @@
+
+######################################################################
+# Article 1 - Deepwater GoM Overview
+######################################################################
+============================================================
+Article 1: Deepwater GoM - Challenges & Opportunities
+============================================================
+  seawater head at 5,000 ft = 2219 psi
+  overburden gradient (5,000 ft water + 10,000 ft sed) = 0.812 psi/ft
+  permeability spread = 3.0 orders of magnitude
+  Wilcox: depth (10000, 30000) ft, porosity (0.15, 0.25), k (0.1, 10.0) md
+  mud-line pressure  dual=2219 psi  single=3464 psi
+  deepwater share of incremental demand = 37%
+  $100 spend at 9% CAGR over 10 yr = $237
+  deepest structure: Na Kika (2003) at 7745 ft = 2361 m
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Turbidite Sediments
+######################################################################
+============================================================
+Article 2: Turbidite Sediments (Bouma Sequence)
+============================================================
+  Bouma divisions: ['Ta', 'Tb', 'Tc', 'Td', 'Te']
+  layered:    N/G=0.45  pore contact=0.03
+  amalgamated: N/G=0.90  pore contact=0.67
+  recovery proxy: layered=0.03  amalgamated=0.67
+  fan facies: ['inner_fan', 'middle_fan', 'outer_fan', 'mtd']
+  MTD ranks: {'slide': 4, 'slump': 3, 'debris_flow': 1, 'turbidity_current': 5}
+  amalgamated/layered pore-contact ratio = 22x
+  deepwater giants: 31 discoveries, 177 Tcf, 51 BBOE
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Dynamics of Reservoir Fluids
+######################################################################
+============================================================
+Article 3: Dynamics of Reservoir Fluids
+============================================================
+  diffusion time over 15 m = 3.56e+05 yr
+  gravity-current velocity = 8.41e-09 m/s
+  A(20 m)/A(0) = 0.967
+  half-height: cluster=26.1 m  nanoaggregate=408 m
+  over 3.3 Ma: diffusion=45.6 m  displacement=99.0 m  -> displacement-dominated
+  reservoir length (100 m TVD, 10 deg dip) = 576 m
+  half-height ratio for a 10x aggregate = 0.10
+  oil consumed to go 3% -> 30% asphaltene = 90%
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - Asphaltene Fault-Block Migration
+######################################################################
+============================================================
+Article 4: Fault-Block Migration from Asphaltene Gradients
+============================================================
+  phi_a(100 m deeper)/phi_a(top) = 1.048
+  recovered particle diameter = 2.00 nm
+  nearest Yen-Mullins form = nanoaggregate (2.0 nm), agrees=True
+  fault-block offset = 30.0 m
+  connectivity test: equilibrated pair connected, reversed-gradient pair not
+  tar flag at 40 wt% = 'tar likely'
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Deepwater Formation Evaluation
+######################################################################
+============================================================
+Article 5: Deepwater Formation-Evaluation
+============================================================
+  ECD margin = 1000 psi
+  Rh=1.905  Rv=10.500  lambda=2.348
+  Sw(sand)=0.167  Sw(bulk Rh)=0.540
+  Eaton Pp: normal=8000  undercompacted=9129 psi
+  anisotropic shale: Rv 10.50 -> 11.00
+  hydrogen index = 0.33
+  Coates k: bound-rich=3.2  free-rich=2025.0 md
+  differential-T1 wait times = (8.0, 1.0) s
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - Kerogen Effect on Resistivity
+######################################################################
+============================================================
+Article 6: Kerogen Effect on Resistivity
+============================================================
+  kerogen concentration (TOC=5%) = 11.0 vol%
+  kerogen affects R: 100 Ohm*m=True, 1e7 Ohm*m=False
+  R_effK(phi=0.1)=116.2  R_effK(phi=0.5)=211.7 Ohm*m
+  homogeneous sigma_eff = 0.5000 S/m (true 0.5)
+  with conductive kerogen: sigma_eff = 0.3250 S/m
+  Sw(true)=0.447  Sw(ignoring kerogen)=0.806  (+80%)
+  Case 2: resistivity drop = 38.9%, Sw overestimation = 28%
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_deepwater_gom_overview  (#.##s)
+  PASS   article2_turbidite_sediments  (#.##s)
+  PASS   article3_reservoir_fluid_dynamics  (#.##s)
+  PASS   article4_asphaltene_fault_block_migration  (#.##s)
+  PASS   article5_deepwater_formation_evaluation  (#.##s)
+  PASS   article6_kerogen_resistivity_mudrocks  (#.##s)
+
+  6/6 modules passed

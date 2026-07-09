@@ -1,0 +1,72 @@
+========================================================================
+  Fitz: Casedhole Nuclear Logging   [article1_nuclear_logging.py]
+========================================================================
+[1] PNC forward/inverse round-trip OK  (max |dSw| = 4.72e-16)
+[2] Time-lapse Sw recovery OK         (max |dSw| = 1.67e-15)
+[3] Sigma_w(salinity) monotonic       (range 22.8-209.5 c.u.)
+[4] GR index + Larionov shale OK      (Vsh_tert(IGR=1)=0.996, Vsh_older(IGR=1)=0.990)
+[5] Fitz 'Bad' case dSigma            = +0.07 c.u. (small => low PNC sensitivity)
+
+All article-1 tests passed.
+
+========================================================================
+  Merletti et al. (1): Mud-Filtrate Invasion   [article2_invasion_simulation.py]
+========================================================================
+[1] Swin(phi) monotonic   (0.45 @ phi=0.05 -> 0.08 @ phi=0.20)
+[2] Jerauld Sgt OK        (Sgt(Sgi=1)=0.500, monotonic)
+[3] Brooks-Corey Kr OK    (Krg(Swcg)=1.000, Krw(1-Sgc)=0.813)
+[4] Brooks-Corey Pc OK    (Pc(Sw=0.85)=5.51 psi)
+[5] Mudcake props OK      (Kmc 0->10d : 6.60e-05 -> 3.98e-07 mD)
+[6] Chin mudcake build OK (Rmc(10d) = 948.78 mm)
+[7] Archie round-trip OK  (max |dSw| = 1.11e-16)
+[8] Radial Rt(r) profile  (Rxo=3.95 -> Rt=56.13 ohm.m)
+
+All article-2 tests passed.
+
+========================================================================
+  Jacomo et al.: Mineralogical Modelling   [article3_mineralogical_inversion.py]
+========================================================================
+[1] U-PEF helper OK             (calcite U=13.77 b/cm3)
+[2] Larionov clay OK            (younger(IGR=0.5)=0.216, older=0.330)
+[3] NMR clay OK                 (V_NR = [0.3 0.5])
+[4] Hybrid clay OK              (Vcl_hyb = 0.750)
+[5] Forward log OK              (pure-calcite RHOB=2.71)
+[6] Mineral inversion OK        (mean |dV| = 0.011, sum(V) ~ 1 within 1e-3)
+[7] Error metric OK             (mean eps = 0.003)
+
+All article-3 tests passed.
+
+========================================================================
+  Chen et al.: HD OBM Imager Inversion   [article4_obm_imager_inversion.py]
+========================================================================
+[1] Mud angle OK              (F1=-79.9 deg, F2=-43.3 deg)
+[2] Inversion round-trip OK   (R rel err 2.8e-07, standoff rel err 9.6e-07, 3 iters)
+[3] Noisy inversion OK        (R = 30.00 vs 30.00 ohm.m)
+[4] Fracture standoff trend OK (width 5 mm => stdf 6.34 mm @ Rt=1000)
+[5] Multi-Rt inversion OK     (5..500 ohm.m, all < 0.5% err)
+
+All article-4 tests passed.
+
+========================================================================
+  Merletti et al. (2): Iterative Rt Inversion   [article5_iterative_resistivity.py]
+========================================================================
+[1] Bed-boundary detection OK    (2 boundaries)
+[2] Sw envelope OK              (@phi=0.10: Sw P5/P50/P95 = 0.28/0.20/0.12)
+[3] Forward model OK             (arrays = [ 1.05  7.31 49.89 50.  ])
+[4] MCMC inversion OK            (Rt = 52.4 vs 50.0 ohm.m, acc = 20.90%)
+[5] Iterative workflow OK        (median |Rt rel err| = 2.14%)
+
+All article-5 tests passed.
+
+========================================================================
+  Jin et al.: Python Dash Well-Log QC   [article6_well_log_qc.py]
+========================================================================
+[1] Validation OK             (missing=['DT'], redundant=['EXTRA'], flagged=['GR', 'NPHI'])
+[2] Summary table OK          (4 rows)
+[3] Diff + Pearson OK         (r = 0.9997, mean |diff| = 0.396)
+[4] Repeatability metrics OK  (best shift = -2.00 ft, peak r = 1.000)
+
+All article-6 tests passed.
+
+========================================================================
+ALL ARTICLE MODULES PASSED

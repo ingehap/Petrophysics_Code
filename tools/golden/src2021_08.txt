@@ -1,0 +1,116 @@
+
+######################################################################
+# Article 1 - Tutorial: Thinly Bedded Formations
+######################################################################
+============================================================
+Article 1: Tutorial - Petrophysics of Thinly Bedded Formations
+============================================================
+  Rh (parallel)          = 1.818 ohm-m  (paper rounds to 1.8)
+  Rv (series)            = 5.500 ohm-m  (expect 5.5)
+  anisotropy lambda      = 1.739
+  Ra at 90 deg dip       = 3.162  (= geometric mean)
+  Rss from parallel/series = 10.00 / 10.00
+  Rss at Vshl=0.55       = inf (par) / 11.0 (ser)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Depth Matching via Deep Q-Learning
+######################################################################
+============================================================
+Article 2: Well-Log Depth Matching via Deep Q-Learning
+============================================================
+  match point            = 73
+  max |pos-match| (10 starts) = 0
+  stop action triggered  = 10/10
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - NMR Fluid Substitution of T2
+######################################################################
+============================================================
+Article 3: NMR Fluid Substitution of T2 Distributions
+============================================================
+  pore radii (1/10/100 ms) = [0.03 0.3  3.  ] um
+  total porosity (Sw=1)  = 1.2859
+  partial BVI / BVM      = 0.2582 / 0.3083
+  reconstructed porosity = 1.2859  (target 1.2859)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - Sonic Dispersion (Differential-Phase)
+######################################################################
+============================================================
+Article 4: Sonic Dispersion via Differential-Phase Semblance
+============================================================
+  true slowness          = 120.0 us/ft
+  estimated (3 freqs)    = [119. 120. 120.]
+  recovered group delay  = 2.500 ms (expect 2.5)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Synthetic Sonic Log ML Contest
+######################################################################
+============================================================
+Article 5: Synthetic Sonic Log Generation (ML Contest)
+============================================================
+  RMSE DTC / DTS         = 1.92 / 4.26 us/ft
+  pooled RMSE (Eq. 1)    = 3.31 us/ft
+  R^2 (DTC)              = 0.981
+  constant-mean baseline = 21.14 us/ft
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - Oil-Based-Mud Resistivity Imager
+######################################################################
+============================================================
+Article 6: Oil-Based-Mud Resistivity Imager
+============================================================
+  rho=5 ohm-m: Re(xi) @1MHz = 5.000 ohm-m
+  rho=1000: Re(xi) lo/hi f = 763.7 / 8.0
+  mud impedance phase    = -69.5 deg
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 7 - Volcanic Saturation Model (acoustic)
+######################################################################
+============================================================
+Article 7: Volcanic-Rock Saturation Model (acoustic)
+============================================================
+  Kfl(0.5) Reuss/Brie/Voigt = 0.0003 / 0.0087 / 1.1001 GPa
+  Vp uniform/patchy @Sw=0.5 = 4751 / 4919 m/s
+  Vp at Sw=0 / Sw=1      = 4795 / 5061 m/s
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 8 - Capillary Pressure vs Resistivity Index
+######################################################################
+============================================================
+Article 8: Capillary Pressure vs Resistivity Index
+============================================================
+  Archie I at Sw=0.5     = 2.255
+  I Archie / Waxman-Smits @Sw=0.5 = 3.218 / 3.155
+  fractal Pc range       = 0.0150 .. 28.416 MPa
+  throat radius @0.1/5 MPa = 1.440 / 0.0288 um
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_thinly_bedded_petrophysics  (#.##s)
+  PASS   article2_depth_matching_deep_q  (#.##s)
+  PASS   article3_nmr_fluid_substitution  (#.##s)
+  PASS   article4_sonic_dispersion_dpsm  (#.##s)
+  PASS   article5_synthetic_sonic_ml_contest  (#.##s)
+  PASS   article6_obm_resistivity_imager  (#.##s)
+  PASS   article7_volcanic_saturation_gassmann  (#.##s)
+  PASS   article8_capillary_resistivity_index  (#.##s)
+
+  8/8 modules passed

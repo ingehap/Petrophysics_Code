@@ -1,0 +1,117 @@
+
+######################################################################
+# Article 1 - DAS-VSP Full-Waveform Inversion
+######################################################################
+============================================================
+Article 1: DAS-VSP FWI (1-D reflectivity-domain demo)
+============================================================
+  M_vertical       trace = 1.00   |M|_F = 1.00
+  M_horizontal_x   trace = 1.00   |M|_F = 1.00
+  M_deviated_45_xz trace = 1.00   |M|_F = 1.00
+  Initial misfit  J = 1.751e+04
+  Final  misfit   J = 6.073e-26
+  Per-layer |Z_est - Z_true| / Z_true = 0.009, 0.009, 0.009, 0.009, 0.009
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Sourceless LWD Acoustics
+######################################################################
+============================================================
+Article 2: Sourceless LWD Acoustics from Drill-Bit Noise
+============================================================
+  corr(monopole, quadrupole)   = +0.011  (should be small)
+  Picked Vp =   3387 m/s  (true 3500)
+  Picked Vs =   1966 m/s  (true 2000)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - UDAR-LWD Geosteering Inversion
+######################################################################
+============================================================
+Article 3: UDAR-LWD 1-D Stochastic Inversion + Geostop
+============================================================
+  Number of UDAR curves        = 8
+  Sampler acceptance rate      = 0.49
+  Posterior boundary [0]  mean = 2991.64 m   (true 2992.0)
+  Posterior boundary [1]  mean = 2998.19 m   (true 3008.0)
+  Posterior R[1] mean          = 206.4 ohm.m   (true 80.0)
+  Geostop recommendation       = True  (5th-pctile distance = -6.96 m)
+  Misfit  prior = 1.5978   posterior = 0.0143
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - Fractured-Carbonate SOM Classifier
+######################################################################
+============================================================
+Article 4: Fractured-Carbonate SOM Facies Classifier
+============================================================
+  Harrison phi for NGK=20/80/120 = [0.34 0.16 0.04]
+  Damage-zone width for d=50 m   = 2.74 m
+  Zone class at x=1.0 m, d=50 m  = fault_core
+  Train n = 251, test n = 109
+  SOM held-out classification accuracy = 0.991
+  Nearest-centroid baseline accuracy   = 0.982
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Dipole Shear + Mohr-Coulomb Filter
+######################################################################
+============================================================
+Article 5: Dipole-Shear Imaging + Mohr-Coulomb Filter
+============================================================
+  Effective principal stresses (H, h, V) = 55.0, 20.0, 35.0  MPa
+  Critically stressed fraction (mu=0.6) = 0.000
+  Strike  +110 deg:   sigma_n=46.93  tau_n=11.93
+  Strike  +290 deg:   sigma_n=46.93  tau_n=11.93
+  True dipole strike  = 35.0 deg
+  Recovered strike    = 35.0 deg  (err = 0.0 deg)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - Mineral / Fluid MD Interfaces
+######################################################################
+============================================================
+Article 6: MD-Style Analysis of Mineral/Fluid Interface
+============================================================
+  Self-diffusion D  (no surface)       = 9.687e-10 m^2/s
+  Self-diffusion D  (30% sticky layer) = 7.413e-10 m^2/s
+  Reduction ratio                       = 0.77
+  Wall-contact fraction (clean)        = 0.198
+  Wall-contact fraction (sticky)       = 0.425
+  Sticky density edge / bulk           = 14.59
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 7 - PSWC Quality via Digital Rock Physics
+######################################################################
+============================================================
+Article 7: PSWC Quality via Digital Rock Physics
+============================================================
+  Bulk  phi   pre  = 0.478   post = 0.416
+  Bulk  Sv    pre  = 0.3464   post = 0.3764  (1/vox)
+  Bulk  k     pre  =  2720.31 mD
+  Bulk  k     post =  1210.66 mD
+  Damage-zone slices: phi drop  = 0.213
+  Damage-zone slices: k drop    = 3939.24 mD
+  Undamaged slices:   phi drop  = 0.000
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_das_vsp_fwi  (#.##s)
+  PASS   article2_sourceless_lwd_acoustics  (#.##s)
+  PASS   article3_udar_geosteering  (#.##s)
+  PASS   article4_fractured_carbonate_som  (#.##s)
+  PASS   article5_dipole_shear_mohr  (#.##s)
+  PASS   article6_md_mineral_fluid  (#.##s)
+  PASS   article7_pswc_drp_qc  (#.##s)
+
+  7/7 modules passed

@@ -1,0 +1,414 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║  PETROPHYSICS Vol. 65, No. 4 (August 2024) – Full Test Suite     ║
+║  Special Issue: Advancements in Mud Logging                      ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Module 1/14: ML Approach to Predict GOR from AMG
+  Reference: Arief & Yang, pp.433-454
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+======================================================================
+Testing: GOR Prediction from AMG (Arief & Yang, 2024)
+======================================================================
+  PVT database: 400 samples, C1-C5 compositions
+  GOR range: 10 - 46224 Sm3/Sm3
+
+  RF Cross-Validation MAPE: 36.3% +/- 4.0%
+
+  MLP Cross-Validation MAPE: 44.2% +/- 2.4%
+
+  GPR Cross-Validation MAPE: 56.4% +/- 8.3%
+
+  AMG Predictions:
+    Depth 2000m: GOR=4851 Sm3/Sm3, QC=PASS (Wh=0.25, Bh=6.7, Ch=1.39)
+    Depth 2050m: GOR=304 Sm3/Sm3, QC=PASS (Wh=0.45, Bh=2.7, Ch=0.90)
+    Depth 2100m: GOR=29433 Sm3/Sm3, QC=PASS (Wh=0.05, Bh=49.0, Ch=1.88)
+
+  [PASS] GOR Prediction module tests completed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Module 2/14: AMG Fluid Prediction in Shale Reservoirs
+  Reference: Yang et al., pp.455-469
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+======================================================================
+Testing: Shale Reservoir AMG Fluid Prediction (Yang et al., 2024)
+======================================================================
+  Trained on 500 PVT samples
+  Shale well: 200 depth points, 3000-5000 m
+
+  GOR predictions:
+    Range: 5119 - 23018 Sm3/Sm3
+    Mean:  16421 Sm3/Sm3
+    QC pass rate: 100.0%
+
+  Without EEC: GOR range 9134 - 23266
+  EEC correction shifts GOR (heavier components boosted)
+
+  [PASS] Shale AMG prediction module tests completed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Module 3/14: Real-Time Fluid ID from AMG + Petrophysical Logs
+  Reference: Kopal et al., pp.470-483
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+======================================================================
+Testing: Integrated AMG + Petrophysical Fluid ID (Kopal et al., 2024)
+======================================================================
+  Trained on 300 depth points
+
+  GOR prediction MAPE: 36.8%
+  Fluid density MAE: 0.0172 g/cm3
+
+  Fluid type distribution:
+    black_oil: 31 zones
+    gas_condensate: 35 zones
+    near_critical: 12 zones
+    volatile_oil: 8 zones
+    wet_gas: 14 zones
+
+  Density-neutron gas flags: 33 / 100 zones
+
+  Radar plot match: best PVT sample idx=47, similarity=0.476, matched GOR=410
+
+  [PASS] Integrated fluid ID module tests completed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Module 4/14: Standard Mud Gas Fluid Typing
+  Reference: Yang et al., pp.484-495
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+======================================================================
+Testing: Standard Mud Gas Fluid Typing (Yang et al., 2024)
+======================================================================
+  Field type: type_I
+  Calibrated: C1_C2 threshold = 25.0
+  Bernard threshold = 17.0
+
+  WBM well classification: 41 oil, 39 gas, 0 uncertain
+
+  OBM well (raw):      58 oil classifications
+  OBM well (EEC corr): 41 oil classifications
+  Pseudo-EEC improves consistency with WBM results
+
+  [PASS] Standard mud gas fluid typing tests completed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Module 5/14: ML-Based Fluid Typing from Standard Mud Gas
+  Reference: Cely et al., pp.496-506
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+======================================================================
+Testing: ML Fluid Typing from Standard Mud Gas (Cely et al., 2024)
+======================================================================
+  Forward selection: features=['c1_c2', 'c1_c3'], accuracy=1.000
+  Backward elimination: features=['c2_norm', 'c3_norm'], accuracy=1.000
+
+  Test accuracy: 1.000
+  Test AUC:      1.000
+
+  Feature importances:
+    c1_c2: 0.500
+    c1_c3: 0.500
+
+  [PASS] ML fluid typing tests completed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Module 6/14: Heavy Oil Viscosity from Standard Mud Gas
+  Reference: Bravo et al., pp.507-518
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+======================================================================
+Testing: Heavy Oil Viscosity from Mud Gas (Bravo et al., 2024)
+======================================================================
+  Calibration palette: 3 reference wells
+    Well_1: C1/C2=2.5, visc=2000 cp, API=13
+    Well_2: C1/C2=3.5, visc=800 cp, API=16
+    Well_6: C1/C2=5.0, visc=200 cp, API=20
+
+  Well prediction (100 depth points):
+    C1/C2 range: 1.5 - 4.5
+    Viscosity range: 323 - 2000 cp
+    low_viscosity: 0 zones
+    medium_viscosity: 25 zones
+    high_viscosity: 75 zones
+    QC pass rate: 32.0%
+
+  Pressure gradient density: 0.9181 g/cc
+
+  [PASS] Heavy oil viscosity module tests completed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Module 7/14: Prospect Fluid Estimation Using Mud Gas
+  Reference: Ungar et al., pp.519-531
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+======================================================================
+Testing: Prospect Fluid Estimation (Ungar et al., 2024)
+======================================================================
+  C2/C3 vs GOR correlation: GOR = 200.6 * (C2/C3) + -191.3
+  R-squared: 0.793
+
+  Triangle area range: 0.213 - 0.354
+  Diamond area range: 1.733 - 3.813
+
+  Predicted GOR range: 10 - 370 Sm3/Sm3
+
+  Fluid gradient analysis:
+    Upper reservoir GOR: 83 Sm3/Sm3
+    Lower reservoir GOR: 117 Sm3/Sm3
+    Gradient: 0.069 Sm3/Sm3 per m
+    Compositional gradient detected: True
+
+  [PASS] Prospect fluid estimation tests completed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Module 8/14: PVT Comparison & GOR Prediction (Snorre Field)
+  Reference: Caldas et al., pp.532-547
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+======================================================================
+Testing: PVT & GOR Prediction - Snorre Field (Caldas et al., 2024)
+======================================================================
+  NCS database: 600 samples
+  Snorre database: 80 samples
+
+  Dynamic EEC computed for 120 depth points
+    C1 efficiency: 0.71 +/- 0.06
+    C5 efficiency: 0.42 +/- 0.03
+
+  GOR predictions:
+    NCS model:   50 Sm3/Sm3 (median)
+    Field model: 104 Sm3/Sm3 (median)
+    Combined:    86 Sm3/Sm3 (median)
+
+  vs. Production GOR (100.0 Sm3/Sm3):
+    NCS error:   50.3%
+    Field error: 3.8%
+
+  Injection gas zones detected: 0
+
+  Star diagram ratios at peak depth:
+    C1/C2: 3.80
+    C1/C3: 12.23
+    C2/C3: 3.22
+    C3/C4: 1.24
+    C4/C5: 0.51
+    iC4/nC4: 0.50
+    iC5/nC5: 0.50
+
+  [PASS] Snorre PVT & GOR prediction tests completed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Module 9/14: Membrane Degasser + IR Spectroscopy
+  Reference: Cheng et al., pp.548-564
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+======================================================================
+Testing: Membrane Degasser + IR Spectrum (Cheng et al., 2024)
+======================================================================
+  True concentrations: {'C1': 5000, 'C2': 800, 'C3': 400, 'C4': 150, 'C5': 60}
+
+  Membrane extraction efficiencies:
+    C1: 0.990
+    C2: 0.990
+    C3: 0.990
+    C4: 0.990
+    C5: 0.990
+
+  IR spectrum: 200 wavelength points, path length=10.0 cm
+
+  Analyzed concentrations (from IR):
+    C1: 269 ppm (measured=4950)
+    C2: 40 ppm (measured=792)
+    C3: 87 ppm (measured=396)
+    C4: 0 ppm (measured=148)
+    C5: 56 ppm (measured=59)
+
+  Membrane-corrected concentrations:
+    C1: 272 ppm (true=5000, error=94.6%)
+    C2: 40 ppm (true=800, error=95.0%)
+    C3: 88 ppm (true=400, error=78.0%)
+    C4: 0 ppm (true=150, error=100.0%)
+    C5: 56 ppm (true=60, error=5.9%)
+
+  Beer-Lambert check: I0=1000, C=5000ppm, mu=0.0012, L=10cm
+    Transmitted I=0.0, Absorbance A=10.0000
+
+  [PASS] Membrane degasser + IR spectrum tests completed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Module 10/14: Mud Gas Response Variation & Quantification
+  Reference: Donovan, pp.565-584
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+======================================================================
+Testing: Mud Gas Quantification Techniques (Donovan, 2024)
+======================================================================
+  Gas content (SCF/ton):
+    Non-reservoir mean: 0.4
+    Reservoir mean:     1.9
+
+  Normalized total gas:
+    Raw mean:        1.341%
+    Normalized mean: 1.664%
+
+  Production estimate:
+    Mean gas content: 1.9 SCF/ton
+    Gas in place: 75864 MSCF
+    EUR: 45518 MSCF
+
+  Sensitivity analysis (base gas = 100 units):
+    Double ROP: gas = 50.0 (0.50x)
+    Double flow: gas = 50.0 (0.50x)
+    10% MW increase: gas = 82.6 (0.83x)
+    All combined: gas = 20.7 (0.21x)
+
+  [PASS] Mud gas quantification tests completed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Module 11/14: Drill-Bit Metamorphism via Alkene & H2
+  Reference: Qubaisi et al., pp.585-592
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+======================================================================
+Testing: DBM Detection via Alkene & H2 (Qubaisi et al., 2024)
+======================================================================
+  DBM detection results:
+    Total points: 200
+    DBM detected: 65 points
+    none: 135
+    mild: 15
+    moderate: 30
+    severe: 20
+
+  C2=/C2 ratio: min=0.008, max=0.438
+  H2: min=10, max=230 ppm
+
+  Action 'reduce_wob_rop': 30 occurrences
+
+  Action 'reduce_wob_rop_urgently': 9 occurrences
+
+  Action 'continue_normal': 135 occurrences
+
+  Action 'pooh_change_bit': 11 occurrences
+
+  Action 'monitor_reduce_wob': 15 occurrences
+
+  Correlations:
+    C2=/C2 vs WOB: 0.907
+    H2 vs WOB:     0.907
+
+  [PASS] DBM detection module tests completed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Module 12/14: GPC-UV Fluid Analysis from Drill Cuttings
+  Reference: Yang et al., pp.593-603
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+======================================================================
+Testing: GPC-UV Cuttings Analysis (Yang et al., 2024)
+======================================================================
+  Fluid Type             API    GOR | Est.API  Est.GOR Type            
+  -------------------- ----- ------ | ------- -------- ----------------
+  Heavy Black Oil         13     50 |    14.2       31 black_oil       
+  Medium Black Oil        25    150 |    24.3       54 volatile_oil    
+  Volatile Oil            38    400 |    37.7       94 gas_condensate  
+  Gas Condensate          48   3000 |    50.4      145 wet_gas         
+
+  Contamination assessment:
+    Low contamination: correlation=0.998, signal_ratio=0.990, significant=False
+    High contamination: correlation=0.910, signal_ratio=1.003, significant=False
+
+  Envelope features (Heavy Oil):
+    peak_retention_time: 12.136
+    peak_signal_strength: 1.370
+    area_310nm: 14.228
+    wavelength_span_nm: 83.333
+    envelope_volume: 6722.672
+
+  [PASS] GPC-UV cuttings analysis tests completed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Module 13/14: Magnetic Susceptibility → Permeability
+  Reference: Banks et al., pp.604-623
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+======================================================================
+Testing: Magnetic Susceptibility Permeability (Banks et al., 2024)
+======================================================================
+  Measured susceptibility range: -1.21e-05 - 1.92e-03 SI
+  Ferromagnetic spikes removed: 5
+
+  Clay volume estimation:
+    True range: 0.035 - 0.249
+    Estimated range: 0.007 - 0.278
+    MAE: 0.0207
+
+  Validation vs XRD:
+    R-squared: 0.867
+    Mean difference: 0.0064
+    Mag slightly higher: True
+
+  Permeability estimation:
+    Ambient range: 37.1 - 473.5 md
+    Overburden-corrected: 8.5 - 112.7 md
+    Gaussian-averaged: 19.9 - 67.6 md
+    R-squared (log perm): 0.844
+
+  [PASS] Magnetic susceptibility permeability tests completed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Module 14/14: LiOBIA: Object-Based Cuttings Image Analysis
+  Reference: Yamada et al., pp.624-648
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+======================================================================
+Testing: LiOBIA Cuttings Image Analysis (Yamada et al., 2024)
+======================================================================
+  Cuttings library: 250 samples, 5 lithology types
+  Trained k-NN (k=5) on 175 cuttings
+
+  Test accuracy: 0.987 (98.7%)
+  Mean confidence: 0.969
+
+  Confusion matrix:
+                 sands   limes   shale   silts   dolom
+     sandstone      11       0       0       1       0
+     limestone       0      18       0       0       0
+         shale       0       0      12       0       0
+     siltstone       0       0       0      13       0
+      dolomite       0       0       0       0      20
+
+  PCA variance explained: 0.59, 0.25
+       sandstone: centroid=(-0.19, -0.39), spread=0.10
+       limestone: centroid=(-0.32, 0.40), spread=0.09
+           shale: centroid=(0.76, 0.11), spread=0.10
+       siltstone: centroid=(0.12, -0.19), spread=0.11
+        dolomite: centroid=(-0.37, 0.07), spread=0.11
+
+  Well lithology log:
+    Depth 1000m: sandstone    (confidence=0.99, n=15)
+    Depth 1005m: sandstone    (confidence=0.94, n=15)
+    Depth 1010m: sandstone    (confidence=0.95, n=15)
+    Depth 1015m: sandstone    (confidence=0.97, n=15)
+    Depth 1020m: shale        (confidence=1.00, n=15)
+    Depth 1025m: shale        (confidence=1.00, n=15)
+    Depth 1030m: shale        (confidence=1.00, n=15)
+    Depth 1035m: limestone    (confidence=0.95, n=15)
+    Depth 1040m: limestone    (confidence=0.99, n=15)
+    Depth 1045m: limestone    (confidence=0.99, n=15)
+
+  [PASS] LiOBIA lithology classification tests completed.
+
+
+╔══════════════════════════════════════════════════════════════════════╗
+║                             TEST SUMMARY                             ║
+╠══════════════════════════════════════════════════════════════════════╣
+║   #  Module                                Status      Time ║
+║ ───  ─────────────────────────────────── ────────  ──────── ║
+║   1  gor_prediction_ml                     ✓ PASS     #.##s ║
+║   2  shale_fluid_prediction                ✓ PASS     #.##s ║
+║   3  realtime_fluid_id                     ✓ PASS     #.##s ║
+║   4  standard_mudgas_typing                ✓ PASS     #.##s ║
+║   5  ml_fluid_typing                       ✓ PASS    #.##s ║
+║   6  heavy_oil_viscosity                   ✓ PASS     #.##s ║
+║   7  prospect_fluid_estimation             ✓ PASS     #.##s ║
+║   8  pvt_gor_snorre                        ✓ PASS     #.##s ║
+║   9  membrane_gas_logging                  ✓ PASS     #.##s ║
+║  10  mudgas_response                       ✓ PASS     #.##s ║
+║  11  alkene_hydrogen_dbm                   ✓ PASS     #.##s ║
+║  12  gpc_uv_cuttings                       ✓ PASS     #.##s ║
+║  13  magnetic_permeability                 ✓ PASS     #.##s ║
+║  14  lithobia_cuttings                     ✓ PASS     #.##s ║
+╠══════════════════════════════════════════════════════════════════════╣
+║ Passed: 14/14 | Failed: 0/14 | Total time: #.##s                ║
+╚══════════════════════════════════════════════════════════════════════╝

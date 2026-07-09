@@ -1,0 +1,9 @@
+article1 OK | WS sample: [0.034 0.342 0.601 0.86  1.119]
+article2 OK | fit: {'eta_inf': np.float64(0.023), 'A': np.float64(0.5988), 'b': np.float64(0.5597)} | V@5%: 253.5
+article3 OK | M = 26.95 Mt CO2 | structural = 16.17 Mt
+article4 OK | OLS=2.69 RMA=3.09 REV=3.54 (true=3.00)
+article5 OK | k(600C, N=10) = 1.59e-16 | fit: {'k0': 1.0138432109866983e-19, 'alpha': 0.012000000000000215, 'beta_approx': 0.19595287708920986}
+article6 OK | RMSE phi=0.0009  Sw=0.0011
+article7 OK | predicted UCS = 65.4 MPa (true ≈ 65)
+
+== 7 / 7 modules passed ==

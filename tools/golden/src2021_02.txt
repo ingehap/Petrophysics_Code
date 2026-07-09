@@ -1,0 +1,133 @@
+
+######################################################################
+# Article 1 - Mudlogs Net Pay (Tutorial)
+######################################################################
+============================================================
+Article 1: Maximizing Value From Mudlogs (Net Pay)
+============================================================
+  GN slow / fast         = 273152.3 / 273152.3
+  Wh = 15.79%  Bh = 13.57  Ch = 0.75 -> gas-condensate
+  oil-case Wh            = 25.00% -> oil
+  Pixler C1/Cn           = [10. 20. 40. 80.]
+  reservoir samples      = 10  pay samples = 8
+  net pay                = 8.0 m   N/G = 0.80
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - DFA Lateral Gradients & Mixing
+######################################################################
+============================================================
+Article 2: DFA Lateral Fluid Gradients & Mixing
+============================================================
+  OD vs depth            = [0.3    0.4092 0.5582 0.7615]
+  front c at interface   = 0.500  (expect 0.5)
+  mixing time 10m / 20m  = 1.01e+10 / 4.05e+10 s
+  50 m column mixing time = 2.53e+11 s
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Marcellus Weak Bedding Planes
+######################################################################
+============================================================
+Article 3: Weak Bedding Planes in the Marcellus Shale
+============================================================
+  weakest angle  pred / obs = 58.3 / 58.0 deg
+  intact strength        = 149.8 MPa
+  min (bedding) strength = 48.5 MPa @ 58 deg
+  bedding strength s3=10 / 30 = 32.4 / 64.7 MPa
+  required mud density   = 222 kg/m^3
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - Fracture Fill From Dielectric Imaging
+######################################################################
+============================================================
+Article 4: Fracture Fill From Dielectric Imaging (OBM)
+============================================================
+  eps  open / calcite / wet = 4.66 / 6.43 / 19.05
+  loss tangent oil / calcite / wet = 0.000 / 0.000 / 0.922
+  classes: open (oil/mud) | calcite-cemented | conductive (clay/brine)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Formation-Tester CO2 Sampling
+######################################################################
+============================================================
+Article 5: Formation-Tester Sampling for CO2
+============================================================
+  contamination vs vol   = [0.5   0.422 0.297 0.184]
+  CO2 @ 300 bar / 90 C   = supercritical
+  CO2 solubility fresh / brine = 1.490 / 0.697 mol/kg
+  sampled 10% CO2 -> true = 13.7%
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - NMR/Resistivity/Pressure Carbonate
+######################################################################
+============================================================
+Article 6: NMR + Resistivity + Pressure (Carbonate)
+============================================================
+  Sw oil / water leg     = 0.144 / 0.719
+  k Timur-Coates / SDR   = 1.7 / 134.9 mD
+  bulk volume water      = 0.032
+  density oil / water    = 700 / 1000 kg/m^3
+  recovered OWC          = 3120.0 m  (true 3120)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 7 - LWD Dual Ultrasonic Slowness
+######################################################################
+============================================================
+Article 7: LWD Dual Ultrasonic Slowness & Imaging
+============================================================
+  picked slowness        = 80 us/ft  (true 80)
+  picked t0 / coherence  = 90 us / 0.999
+  |R| hard / soft        = 0.810 / 0.541
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 8 - Multiwell EM 3D Inversion
+######################################################################
+============================================================
+Article 8: Multiwell EM 3D Inversion (Injectites)
+============================================================
+  skin depth shale / sand = 22.5 / 112.5 m
+  G shape (paths x cells) = (288, 144)
+  recovered body / background sigma = 0.013 / 0.050
+  model-truth correlation = 0.988
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 9 - Dual NN Permeability & Uncertainty
+######################################################################
+============================================================
+Article 9: Dual NN Permeability + Uncertainty
+============================================================
+  NLL start / end        = 0.501 / -1.295
+  mean-head RMSE vs truth = 0.060 log10(mD)
+  mean sigma low-phi / high-phi = 0.228 / 0.107
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_mudlog_net_pay_tutorial  (#.##s)
+  PASS   article2_dfa_lateral_gradients_mixing  (#.##s)
+  PASS   article3_marcellus_weak_bedding_planes  (#.##s)
+  PASS   article4_obm_dielectric_fracture_fill  (#.##s)
+  PASS   article5_formation_tester_co2_sampling  (#.##s)
+  PASS   article6_nmr_resistivity_pressure_carbonate  (#.##s)
+  PASS   article7_lwd_dual_ultrasonic_slowness  (#.##s)
+  PASS   article8_injectite_em_3d_inversion  (#.##s)
+  PASS   article9_dual_nn_permeability_uncertainty  (#.##s)
+
+  9/9 modules passed

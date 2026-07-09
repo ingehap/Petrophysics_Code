@@ -1,0 +1,134 @@
+========================================================================
+  Petrophysics Vol. 66, No. 1 (Feb 2025) — Module Test Suite
+========================================================================
+
+[1] scal_model_ccs — LET RelPerm, Pc, Land trapping
+    ✓ krg at Swr > 0.5
+    ✓ krw at Sw=1 ≈ 1
+    ✓ krg at Sw=1 ≈ 0
+    ✓ krw at Swr ≈ 0
+    ✓ krg monotonically decreasing
+    ✓ krw monotonically increasing
+    ✓ Pc decreasing with Sw
+    ✓ Pc → Pcgw_tp at Sw=1
+    ✓ Swn normalization correct
+    ✓ Leverett J-scaling correct
+    ✓ Land coefficient positive
+    ✓ Land trapping reproduces Sgt_max
+    ✓ Sgt=0 when Sgi=0
+    ✓ Structural > residual storage
+    ✓ Positive storage values
+    ✓ SCAL model 'base' valid
+    ✓ SCAL model 'optimistic' valid
+    ✓ SCAL model 'pessimistic' valid
+
+[2] co2_brine_relperm — Corey, fractional flow, SS/USS reconciliation
+    ✓ Corey endpoints near zero
+    ✓ krw endpoint > 0.5
+    ✓ fw ≈ 0 at low Sw
+    ✓ fw → 1 at high Sw
+    ✓ SS kr positive
+    ✓ Capillary number positive
+    ✓ CEE length within core
+    ✓ Fitted nw in range
+    ✓ Fitted nco2 in range
+    ✓ Reconciliation produces parameters
+
+[3] ss_co2_brine_relperm — pressure effects, hysteresis, wettability
+    ✓ Correct number of kr points
+    ✓ krw non-negative
+    ✓ Pressure effect computed
+    ✓ Hysteresis check computed
+    ✓ Material balance passes
+    ✓ Wettability classified correctly
+
+[4] enhanced_gas_recovery — Land, EGR efficiency, Burdine Pc
+    ✓ Land C > 0
+    ✓ Land reproduces endpoint
+    ✓ Sgt(0)=0
+    ✓ CO2 trapped 15% less than CH4
+    ✓ CO2 partial wetting detected
+    ✓ Burdine Pc decreasing
+    ✓ LET kr endpoint > 0.5
+    ✓ LET kr at Sw=1 ≈ 0
+    ✓ EGR complete recovery
+    ✓ ISSM Sw correct
+    ✓ Gravity stable at low rate
+
+[5] rev_two_phase_flow — energy dissipation, temporal REV, ergodicity
+    ✓ Energy dissipation positive
+    ✓ kr from energy in range
+    ✓ Optimal window >= 1
+    ✓ CV decreases with larger window
+    ✓ Ergodicity test returns result
+    ✓ Pressure CV computed
+    ✓ Recommended time positive
+    ✓ Duration guide positive
+
+[6] digital_rock_physics — pore network, wettability, ESRGAN
+    ✓ Mean pore radius reasonable
+    ✓ Contact angles in range
+    ✓ Some oil-wet pores exist
+    ✓ Correct number of steps
+    ✓ krw decreases during drainage
+    ✓ 4x linear enhancement
+    ✓ 64x volumetric enhancement
+    ✓ RMSE computed
+    ✓ Good correlation
+
+[7] hybrid_drainage — HDT vs VOF, NMR T2, homogeneity
+    ✓ Total porosity correct
+    ✓ Meso Pc > macro Pc
+    ✓ T2 distribution has 200 points
+    ✓ Amplitude non-negative
+    ✓ HDT achieves lower Swi
+    ✓ Uniform profile is homogeneous
+
+[8] pore_scale_drainage — PP vs OF, pore occupancy, artifacts
+    ✓ Volume fractions sum ~1
+    ✓ PP invades some pores
+    ✓ Occupancy computed
+    ✓ PP gives lower Swi (expected for non-WW)
+    ✓ keff in [0,1]
+    ✓ Both wettability groups found
+
+[9] dopant_impact_scal — X-ray contrast, Amott, recovery
+    ✓ Doped brine has higher attenuation
+    ✓ Doping improves contrast > 3x
+    ✓ Amott-Harvey in [-1,1]
+    ✓ Valid classification
+    ✓ Significant recovery difference detected
+    ✓ Imbibition rate computed
+    ✓ NaI increases Sor
+
+[10] dual_porosity_sandstone — dual Brooks-Corey, Land, dual kr
+    ✓ Brooks-Corey Pc decreasing
+    ✓ Pc positive everywhere
+    ✓ Meso Pc higher than macro Pc
+    ✓ Imbibition Pc computed
+    ✓ Trapped oil in valid range
+    ✓ Sot_max scaling valid
+    ✓ Dual kr non-negative
+    ✓ krw at Sw=1 > 0
+
+[11] mr_bulk_saturation — CPMG, 13C oil, 1H water, Dean-Stark
+    ✓ CPMG t=0 signal = sum of components
+    ✓ CPMG signal decays
+    ✓ Oil volume from 13C reasonable
+    ✓ Sw within 2%
+    ✓ So within 2%
+    ✓ MR agrees with Dean-Stark
+
+[12] mr_saturation_imaging — profiles, CEE detection, Dean-Stark
+    ✓ Profile has correct length
+    ✓ Sw in [0,1]
+    ✓ 13C signal non-negative
+    ✓ 1H signal > 13C signal
+    ✓ Water by subtraction correct
+    ✓ CEE detection returns result
+    ✓ MRI within 5 s.u. of Dean-Stark
+    ✓ Oil-wet CEE: oil accumulates at outlet
+
+========================================================================
+  RESULTS:  103 passed, 0 failed
+========================================================================

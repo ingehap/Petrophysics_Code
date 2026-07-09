@@ -1,0 +1,8 @@
+grader_digital_rock OK  Swi=0.005 Sor=0.325
+liu_ionic_capacitor OK  C1[0]=7.083e-15 F
+zhang_nmr_core OK  bound=0.391 free=0.654
+xiong_productivity_factors OK  top= ('dolomitization', 0.42522473654730614)
+lee_mwd_triple_combo OK  mean(phi)=0.040 mean(Sw)=0.950
+chen_sem_pore_segmentation OK  porosity=0.167 IoU=0.97 n_pores=23
+
+All 6 article modules passed.

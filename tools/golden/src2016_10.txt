@@ -1,0 +1,74 @@
+
+######################################################################
+# Article 1 - EMLA Look-Ahead Resistivity
+######################################################################
+============================================================
+Article 1: EMLA Look-Ahead Resistivity
+============================================================
+  skin depth 1 / 100 ohm-m = 5.03 / 50.33 m
+  UHRA / UHRP            = 6.02 dB / 11.46 deg
+  DOD span 5 / 15 m      = 10.61 / 18.37 m
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Tight-Gas Drainage/Imbibition Sw
+######################################################################
+============================================================
+Article 2: Tight-Gas Drainage/Imbibition Sw Models
+============================================================
+  Pc air-brine from 1000 psi Hg = 195.8 psi
+  Thomeer Sw @100/1000 psi = 0.407 / 0.311
+  Land Sgt (Sgi=0.8)     = 0.322
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - First-Order Error Propagation (FOEP)
+######################################################################
+============================================================
+Article 3: First-Order Error Propagation (FOEP)
+============================================================
+  porosity               = 0.1212
+  porosity error +/-     = 0.0214
+  contributions          = [0.723 0.248 0.029]
+  Archie Sw / error      = 0.413 +/- 0.092
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - Dielectric/CRIM Archie (Green River)
+######################################################################
+============================================================
+Article 4: Dielectric/CRIM Archie Parameters (Green River)
+============================================================
+  skin depth             = 3.56 cm
+  CRIM eps / BVW         = 6.36 / 0.0810
+  Pickett m / Rw         = 1.300 / 0.230
+  Sw (m=2 / m=1.3)       = 0.596 / 0.327
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Microfracturing In-Situ Stress
+######################################################################
+============================================================
+Article 5: Microfracturing In-Situ Stress
+============================================================
+  overburden @10000 ft   = 10002 psi
+  sigma_h                = 6000 psi
+  breakdown / reopening  = 7300 / 6500 psi
+  G-function closure     = 5800 psi
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_emla_lookahead_resistivity  (#.##s)
+  PASS   article2_tightgas_saturation_height  (#.##s)
+  PASS   article3_foep_error_propagation  (#.##s)
+  PASS   article4_dielectric_archie_greenriver  (#.##s)
+  PASS   article5_microfracturing_insitu_stress  (#.##s)
+
+  5/5 modules passed

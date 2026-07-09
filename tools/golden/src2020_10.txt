@@ -1,0 +1,106 @@
+
+######################################################################
+# Article 1 - Nanoindentation of Shale Cuttings
+######################################################################
+============================================================
+Article 1: Nanoindentation of Shale Cuttings
+============================================================
+  contact area           = 300.1 um^2
+  hardness               = 1.666 GPa
+  indentation modulus M  = 21.33 GPa
+  Young's modulus Es     = 20.00 GPa
+  Es sensitivity to nu   = 5.33 %
+  contact a / plastic c  = 9.8 / 105.0 um
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Adsorption Isotherm Classification
+######################################################################
+============================================================
+Article 2: Adsorption Isotherm Classification (Shale)
+============================================================
+  Vm = 5.000 (true 5.0)  C = 80.0 (true 80.0)
+  specific surface area  = 21.76 m^2/g
+  IUPAC types I/IV/III ok
+  sorting narrow / wide  = good / poor
+  curve type (cyl/meso/med) = 14 of 27
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Wellbore Cave-in Detection
+######################################################################
+============================================================
+Article 3: Wellbore Cave-in Detection (Clustering)
+============================================================
+  CV in cave / good      = 0.0726 / 0.0034
+  flagged samples        = 48..70 (23 of 120)
+  recall / false-flag    = 1.00 / 0.030
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - Consistent Archie for Carbonates
+######################################################################
+============================================================
+Article 4: Consistent Archie for Heterogeneous Carbonates
+============================================================
+  Sw = 0.250   RI = 16.00   Sw^-2 = 16.00
+  formation factor F     = 25.0   effective m = 2.000
+  Bruggeman sigma        = 2.261 S/m  (between 1 and 10)
+  effective m vs vug frac = [2.071 2.253 2.521]
+  vuggy effective n      = 0.375  (Archie n = 2)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Wettability & Water Blockage
+######################################################################
+============================================================
+Article 5: Wettability & Water Blockage (Tight Rocks)
+============================================================
+  Pc at 10 nm            = 1256 psi
+  pore types             = {'water_wet': 0.45, 'oil_wet': 0.35, 'mixed_unconnected': 0.20000000000000007}
+  blocking water sat     = 0.25
+  threshold / max press  = 1500 / 7000 psi
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - Sonic Transit Times (ANN)
+######################################################################
+============================================================
+Article 6: Sonic Transit Times From Drilling Params (ANN)
+============================================================
+  test R / AAPE          = 0.991 / 1.26 %
+  dynamic nu / E         = 0.301 / 69.3 GPa
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 7 - Multiphysics Rock Classification
+######################################################################
+============================================================
+Article 7: Multiphysics Rock Classification
+============================================================
+  contrast smooth/noisy  = 0.00 / 7.84
+  energy   smooth/noisy  = 0.156 / 0.029
+  silhouette (k=3)       = 0.884
+  cost vs k              = [4.03 1.62 1.62 1.62 1.62]
+  optimal classes        = 3
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_nanoindentation_shale  (#.##s)
+  PASS   article2_adsorption_isotherm_classification  (#.##s)
+  PASS   article3_cavein_clustering_detection  (#.##s)
+  PASS   article4_archie_carbonate_consistent  (#.##s)
+  PASS   article5_wettability_water_blockage  (#.##s)
+  PASS   article6_sonic_transit_drilling_nn  (#.##s)
+  PASS   article7_multiphysics_rock_classification  (#.##s)
+
+  7/7 modules passed

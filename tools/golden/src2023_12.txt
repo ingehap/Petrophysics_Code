@@ -1,0 +1,54 @@
+
+=== bennis_invasion_sw ===
+Bennis et al. inversion:
+  true     : {'r_invaded': 0.6, 'sw_virgin': 0.25, 'sw_invaded': 0.85}
+  recovered: {'r_invaded': np.float64(0.5939972932024291), 'sw_invaded': np.float64(0.8532864061218594), 'sw_virgin': np.float64(0.25002580061582), 'cost': np.float64(0.004907481789990051)}
+  PASS
+
+=== bradley_wellbore_format ===
+Bradley et al. universal format:
+  channels: ['GR', 'UDAR']
+  UDAR shape: (50, 16, 5)
+  PASS
+
+=== cely_mudgas_viscosity ===
+Cely et al. viscosity model:
+  beta: [ 0.584  0.038 -0.32   0.107]
+  mean |log10 error|: 0.041
+  PASS
+
+=== garcia_nmr_gaussian ===
+Garcia et al. 2D NMR Gaussian decomposition:
+  fitted means: [(np.float64(-1.0), np.float64(-1.0)), (np.float64(1.2), np.float64(0.5))]
+  pore volumes: [np.float64(1.005), np.float64(0.66)]
+  PASS
+
+=== khan_salt_creep ===
+Khan et al. salt-cavern creep model:
+  final strain    : 7.1468e-05
+  final damage    : 0.0000
+  cavern closure  : 0.01 %
+  PASS
+
+=== mcglynn_pulsed_neutron ===
+McGlynn et al. pulsed-neutron 3-phase solver:
+  truth    : {'s_oil': 0.35, 's_gas': 0.25, 's_water': 0.4}
+  recovered: {'s_oil': np.float64(0.35), 's_gas': np.float64(0.25), 's_water': np.float64(0.4)}
+  PASS
+
+=== trevizan_gan_image_log ===
+Trevizan & Menezes GAN super-resolution:
+  torch trained, output shape (32, 32), losses g=#.### d=#.###
+  PASS
+
+=== wang_co2_solubility ===
+Wang & Ehlig-Economides CO2 solubility:
+  P=   5 MPa  CO2 sol = 0.982  with CH4 = 0.755 mol/kg
+  P=  10 MPa  CO2 sol = 1.964  with CH4 = 1.511 mol/kg
+  P=  20 MPa  CO2 sol = 3.928  with CH4 = 3.022 mol/kg
+  P=  30 MPa  CO2 sol = 5.892  with CH4 = 4.533 mol/kg
+  trapping cap @20MPa: 29.04 kg/m^3
+  PASS
+
+========================================
+8/8 modules passed

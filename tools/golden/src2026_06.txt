@@ -1,0 +1,119 @@
+
+--------------------------------------------------------------
+  A01 – Carbonate Pore Type Dielectric
+--------------------------------------------------------------
+  [PASS] TestA01.test_aspect_ratio_bounds
+  [PASS] TestA01.test_classify_intercrystalline
+  [PASS] TestA01.test_classify_moldic
+  [PASS] TestA01.test_complex_permittivity_sign
+  [PASS] TestA01.test_dominant_pore_size_midpoint
+  [PASS] TestA01.test_imag_from_conductivity_positive
+  [PASS] TestA01.test_loss_tangent
+  [PASS] TestA01.test_normalized_permittivity
+  [PASS] TestA01.test_normalized_permittivity_bad_phi
+  [PASS] TestA01.test_perimeter_over_area
+
+--------------------------------------------------------------
+  A02 – MF Dielectric Fracture Sensitivity
+--------------------------------------------------------------
+  [PASS] TestA02.test_area_between_curves_positive
+  [PASS] TestA02.test_area_between_curves_zero
+  [PASS] TestA02.test_case_gain
+  [PASS] TestA02.test_conductivity_positive
+  [PASS] TestA02.test_debye_limits
+  [PASS] TestA02.test_orientation_rule
+  [PASS] TestA02.test_percent_increase
+  [PASS] TestA02.test_relaxation_regime
+
+--------------------------------------------------------------
+  A03 – Pore-Size Distribution & Flow
+--------------------------------------------------------------
+  [PASS] TestA03.test_archie_clipped
+  [PASS] TestA03.test_archie_monotonic
+  [PASS] TestA03.test_forward_model_porosity
+  [PASS] TestA03.test_gaussian_peak
+  [PASS] TestA03.test_partition_sums_to_one
+  [PASS] TestA03.test_rw_decreases_with_salinity
+  [PASS] TestA03.test_sdr_increases_with_porosity
+  [PASS] TestA03.test_t2_logmean
+  [PASS] TestA03.test_timur_coates
+
+--------------------------------------------------------------
+  A04 – Cretaceous Depositional Model
+--------------------------------------------------------------
+  [PASS] TestA04.test_dunham_grainstone
+  [PASS] TestA04.test_dunham_mudstone
+  [PASS] TestA04.test_dunham_rank_order
+  [PASS] TestA04.test_electrofacies_roundtrip
+  [PASS] TestA04.test_flag_unconformity
+  [PASS] TestA04.test_rank_eod
+  [PASS] TestA04.test_synthetic_resistivity_inverse
+  [PASS] TestA04.test_trend
+
+--------------------------------------------------------------
+  A05 – UDAR Anisotropy Sensitivity
+--------------------------------------------------------------
+  [PASS] TestA05.test_anisotropy_ratio
+  [PASS] TestA05.test_dominant_factor_resistivity
+  [PASS] TestA05.test_field_regime
+  [PASS] TestA05.test_induction_number
+  [PASS] TestA05.test_sensitivity_increases_with_frequency
+  [PASS] TestA05.test_sensitivity_increases_with_spacing
+  [PASS] TestA05.test_skin_depth_scaling
+
+--------------------------------------------------------------
+  A06 – Deterministic Inversion Uncertainty
+--------------------------------------------------------------
+  [PASS] TestA06.test_feasible_set_brackets
+  [PASS] TestA06.test_multistart_average
+  [PASS] TestA06.test_single_inversion_recovers
+
+--------------------------------------------------------------
+  A07 – 3D Look-Ahead EM Inversion
+--------------------------------------------------------------
+  [PASS] TestA07.test_boundary_azimuth
+  [PASS] TestA07.test_dtb_inverse
+  [PASS] TestA07.test_lookahead_limits
+  [PASS] TestA07.test_tracker_converges
+
+--------------------------------------------------------------
+  A08 – Mud Gas Ratio Fluid ID
+--------------------------------------------------------------
+  [PASS] TestA08.test_balance_ratio
+  [PASS] TestA08.test_character_ratio
+  [PASS] TestA08.test_density_index_monotonic
+  [PASS] TestA08.test_dry_gas
+  [PASS] TestA08.test_eight_types
+  [PASS] TestA08.test_heavy_oil
+  [PASS] TestA08.test_normalize_reading
+  [PASS] TestA08.test_wetness_ratio
+
+--------------------------------------------------------------
+  A09 – MF Dielectric Emulsion
+--------------------------------------------------------------
+  [PASS] TestA09.test_bruggeman_runs
+  [PASS] TestA09.test_droplet_radius_positive
+  [PASS] TestA09.test_emulsion_type_ow
+  [PASS] TestA09.test_emulsion_type_wo
+  [PASS] TestA09.test_inversion_proximity
+  [PASS] TestA09.test_maxwell_garnett_limit
+  [PASS] TestA09.test_mixing_increases_with_water
+  [PASS] TestA09.test_separation_monotonic
+
+--------------------------------------------------------------
+  A10 – Acoustic Emission Multiphase
+--------------------------------------------------------------
+  [PASS] TestA10.test_breakthrough_detection
+  [PASS] TestA10.test_classify_phase_gas
+  [PASS] TestA10.test_energy_rate_calibration
+  [PASS] TestA10.test_energy_scales_with_amplitude
+  [PASS] TestA10.test_extract_features
+  [PASS] TestA10.test_ring_down_count
+  [PASS] TestA10.test_rms
+  [PASS] TestA10.test_spectral_centroid
+
+==============================================================
+  RESULTS:  73/73 passed  |  0 failed
+==============================================================
+
+  All tests passed

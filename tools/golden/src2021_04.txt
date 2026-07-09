@@ -1,0 +1,78 @@
+
+######################################################################
+# Article 1 - NMR Pore-Structure of a Carbonate (Iraq)
+######################################################################
+============================================================
+Article 1: NMR Pore-Structure of a Complex Carbonate
+============================================================
+  diffusion rate V2/V1   = 20.25  (expect 20.25)
+  T2 at 80um  V1 / V2    = 3864 / 892 ms
+  corrected porosity     = 0.195  (expect 0.195)
+  large-pore volume      = 0.050
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Deepwater Turbidite Rock Typing
+######################################################################
+============================================================
+Article 2: Deepwater Turbidite Rock Typing (case study)
+============================================================
+  R35 (RHOB=2.0,PEF=3.0) = 20.4 um  (expect ~20.4)
+  rock types 8/3/1/0.2um = RT-1/RT-2/RT-3/RT-4 OK
+  Waxman-Smits Co        = 0.433 mho/m  (expect 0.433)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Thomeer & NMR Porosity Partitioning
+######################################################################
+============================================================
+Article 3: Thomeer & NMR Porosity Partitioning
+============================================================
+  Thomeer Shg            = [0.0738 0.1302 0.1482 0.1884]
+  Swanson Ka             = 0.008 mD
+  recovered G            = 0.3000  (true 0.3)
+  FZI (k=10mD, phi=0.2)  = 0.888 um
+  Pc at 0.3um / C        = 358.7 psia / 5021 ms*psia
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - Nonlinear Acoustics Wave Mixing
+######################################################################
+============================================================
+Article 4: Nonlinear Acoustics (noncollinear wave mixing)
+============================================================
+  freq-ratio valid       = True
+  convergence angle phi  = 47.6 deg  (expect ~47.5)
+  scattering angle gamma = -47.5 deg  (expect ~-47.5)
+  nonlinearity beta      = -41.7
+  W exact / approx       = 2.029e+01 / 2.038e+01
+  phi at Vp/Vs=1.601, r=0.66 = 30.3 deg (expect ~30)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - NMR Continuous/Stationary Fluid Contacts
+######################################################################
+============================================================
+Article 5: NMR Continuous + Stationary Fluid Contacts
+============================================================
+  T2 (TE=6ms / 1.2ms)    = 45.2 / 670.2 ms
+  HI-corrected porosity  = 0.333  (~11% uplift)
+  clay/cap/free          = 0.05 / 0.09 / 0.14
+  fluid typing gas/water/oil = OK
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_nmr_carbonate_porestructure  (#.##s)
+  PASS   article2_turbidite_rock_typing  (#.##s)
+  PASS   article3_thomeer_nmr_partitioning  (#.##s)
+  PASS   article4_nonlinear_acoustics_mixing  (#.##s)
+  PASS   article5_nmr_fluid_contacts  (#.##s)
+
+  5/5 modules passed

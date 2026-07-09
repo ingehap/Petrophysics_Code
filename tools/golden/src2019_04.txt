@@ -1,0 +1,161 @@
+
+######################################################################
+# Article 1 - Organic Mudstone Storage Pt.2 (Tutorial)
+######################################################################
+============================================================
+Article 1 (Tutorial): Organic Mudstone Storage, Part 2
+============================================================
+  CBW / capillary / free = 0.0250 / 0.0300 / 0.0450
+  water saturation       = 0.550
+  BVH                    = 0.0450
+  GIP / OIP              = 9.000 / 0.0375
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Resistivity Principles (Tutorial)
+######################################################################
+============================================================
+Article 2 (Tutorial): Resistivity Principles Primer
+============================================================
+  Sw = 0.227   I = 19.36   Sw^-2 = 19.36
+  fitted m               = 1.900  (true 1.9)
+  fitted n               = 1.800  (true 1.8)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Trapped Oil Capillary Desaturation
+######################################################################
+============================================================
+Article 3: Trapped Oil & Capillary Desaturation
+============================================================
+  Sor at low/high Nc     = 0.343 / 0.051
+  Sor_high water-wet / oil-wet = 0.4 / 0.15
+  trapping efficiency    = 0.46
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - Image-Segmentation Uncertainty
+######################################################################
+============================================================
+Article 4: Image-Segmentation Uncertainty (Shaly Sandstone)
+============================================================
+  Otsu threshold / porosity = 0.386 / 0.250
+  sigma_phi (thr std 0.01/0.05) = 0.0000 / 0.0005
+  pore/clay/grain        = 0.25 / 0.00 / 0.75
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - NMR Wettability Review
+######################################################################
+============================================================
+Article 5: A Review of 60 Years of NMR Wettability
+============================================================
+  T2 big/small pore      = 2308 / 750 ms
+  WI mixed-wet           = 0.00
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - Waterflood Init Wettability
+######################################################################
+============================================================
+Article 6: Waterflood Initialization With Wettability Alteration
+============================================================
+  Swi at Pc 5e4 / 2e5 Pa = 0.60 / 0.10
+  contact angle 0/aged   = 30.0 / 135 deg
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 7 - In-Situ Saturation Monitoring (ISSM)
+######################################################################
+============================================================
+Article 7: In-Situ Saturation Monitoring (ISSM)
+============================================================
+  Sw at mid attenuation  = 0.50
+  Sw series              = [0.05 0.4  0.75 0.95]
+  dual-energy fw / fo    = 0.60 / 0.40
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 8 - Intercept Method Rel-Perm
+######################################################################
+============================================================
+Article 8: Intercept Method for Rel-Perm Correction
+============================================================
+  kr_app vs rate         = [0.231 0.261 0.279 0.289]
+  corrected kr           = 0.300  (true 0.3)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 9 - Temperature-Array Monitoring
+######################################################################
+============================================================
+Article 9: High-Resolution Temperature-Array Monitoring
+============================================================
+  thermal diffusivity    = 9.66e-07 m^2/s
+  CFL number             = 0.40
+  max gradient before/after = 100.0 / 6.3
+  hot-spot cell          = 40  (source at 40)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 10 - Invasion Zone Log Inversion
+######################################################################
+============================================================
+Article 10: Invasion Zone in Log Inversion
+============================================================
+  Sw virgin / Sxo flushed = 0.18 / 0.97
+  Ra vs DOI              = [ 5.   5.   9.7 26.7]
+  recovered Rt/Rxo/ri    = 40.0 / 5.0 / 0.4
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 11 - Loading Effects on Gas Rel-Perm
+######################################################################
+============================================================
+Article 11: Loading Effects on Gas Relative Permeability
+============================================================
+  k at sigma_eff 10/40   = 0.607 / 0.135
+  k*krg at low/high load = 0.251 / 0.056
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 12 - Borehole Acoustic 3D STC & Ray Tracing
+######################################################################
+============================================================
+Article 12: Borehole Acoustic 3D STC & Ray Tracing
+============================================================
+  STC slowness / coherence = 95 us/ft / 0.999
+  reflector azimuth      = 110 deg  (true 110)
+  reflector distance     = 40 m
+  reflector dip          = 26.6 deg
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_organic_mudstone_storage_part2_tutorial  (#.##s)
+  PASS   article2_resistivity_principles_tutorial  (#.##s)
+  PASS   article3_trapped_oil_capillary_desaturation  (#.##s)
+  PASS   article4_image_segmentation_uncertainty  (#.##s)
+  PASS   article5_nmr_wettability_review  (#.##s)
+  PASS   article6_waterflood_init_wettability  (#.##s)
+  PASS   article7_issm_saturation_monitoring  (#.##s)
+  PASS   article8_intercept_method_relperm  (#.##s)
+  PASS   article9_temperature_array_monitoring  (#.##s)
+  PASS   article10_invasion_zone_log_inversion  (#.##s)
+  PASS   article11_loading_gas_relperm  (#.##s)
+  PASS   article12_borehole_acoustic_stc_raytracing  (#.##s)
+
+  12/12 modules passed

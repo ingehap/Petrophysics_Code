@@ -1,0 +1,76 @@
+
+######################################################################
+# Article 1 - Reservoir Producibility Index
+######################################################################
+============================================================
+Article 1: Reservoir Producibility Index
+============================================================
+  OSI (S1=2, TOC=1%)      = 200 mg/g
+  WC_org from dry         = 0.0490
+  WC_oil                  = 0.0143
+  RPI rich/lean           = 0.01500 / 0.00042
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Bakken Shale Petrofacies
+######################################################################
+============================================================
+Article 2: Bakken Shale Petrofacies
+============================================================
+  Schmoker TOC @2.35      = 8.48 wt%
+  inverted volumes        = [0.5 0.3 0.2]
+  facies (Q.7/C.1/cl.2)   = siliceous
+  chi-square / dof        = 180.4 / 4
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Measuring Organic Density
+######################################################################
+============================================================
+Article 3: A New Approach to Measuring Organic Density
+============================================================
+  bulk density            = 2.375 g/cm^3
+  total grain density     = 2.325 g/cm^3
+  fitted rho_mineral/kerogen = 2.700 / 1.300
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - Pore-Confinement Phase Equilibrium
+######################################################################
+============================================================
+Article 4: Pore-Confinement Phase Equilibrium
+============================================================
+  Wilson K-values        = [13.666  0.189]
+  vapor fraction beta    = 0.577
+  Pc 5nm / 1um           = 8.000e+06 / 4.000e+04 Pa
+  Macleod-Sugden IFT     = 45566240.04 dyne/cm
+  PR Z vapor/liquid      = 0.9523 / 0.1292
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Acoustic Anisotropy (No Stoneley)
+######################################################################
+============================================================
+Article 5: Acoustic Anisotropy When Stoneley Is Missing
+============================================================
+  VTI Ehorz/Evert        = 31.99 / 25.68
+  epsilon / gamma        = 0.167 / 0.250
+  M-ANNIE 2 C66          = 10.48
+  sigma_h                = 6000 psi
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_reservoir_producibility_index  (#.##s)
+  PASS   article2_bakken_petrofacies  (#.##s)
+  PASS   article3_organic_density  (#.##s)
+  PASS   article4_pore_confinement_phase_equilibrium  (#.##s)
+  PASS   article5_acoustic_anisotropy_no_stoneley  (#.##s)
+
+  5/5 modules passed

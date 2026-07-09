@@ -1,0 +1,279 @@
+======================================================================
+  PETROPHYSICS Vol. 66, No. 3 (June 2025)
+  Complete Module Test Suite
+======================================================================
+
+██████████████████████████████████████████████████████████████████████
+  Article 1: Core Scanner – Mirza et al.
+██████████████████████████████████████████████████████████████████████
+============================================================
+Testing core_scanner module (Mirza et al., 2025)
+============================================================
+
+1) Forward model – TOF and attenuation
+   Rt=   5.0 Ω·m  ε=20.0  →  TOF=1.4922 ns  Amp=-7.31 dB
+   Rt=  10.0 Ω·m  ε=15.0  →  TOF=1.2920 ns  Amp=-4.22 dB
+   Rt=  50.0 Ω·m  ε=10.0  →  TOF=1.0548 ns  Amp=-1.03 dB
+   Rt= 200.0 Ω·m  ε= 8.0  →  TOF=0.9435 ns  Amp=-0.29 dB
+   Rt= 500.0 Ω·m  ε= 6.0  →  TOF=0.8171 ns  Amp=-0.13 dB
+
+2) Lookup table built: 50 × 30 entries
+
+3) Inversion round-trip test
+   True: Rt=10.0  ε=18.0  |  Inv:  Rt=10.0  ε=17.8
+   True: Rt=50.0  ε=12.0  |  Inv:  Rt=51.1  ε=11.7
+   True: Rt=200.0  ε=7.0  |  Inv:  Rt=201.7  ε=7.1
+
+4) CRIM water-filled porosity
+   Sample 0: φ_w = 0.177
+   Sample 1: φ_w = 0.107
+   Sample 2: φ_w = 0.042
+
+5) Water complex permittivity at 3.8 GHz (Rw=0.05): 55.00-109.61j
+
+✓ All core_scanner tests passed.
+
+
+██████████████████████████████████████████████████████████████████████
+  Article 2: Thomas-Stieber-Tyurin Model – Tyurin & Davenport
+██████████████████████████████████████████████████████████████████████
+============================================================
+Testing thomas_stieber_tyurin module (Tyurin & Davenport, 2025)
+============================================================
+
+Endpoints: φ_clean=0.3, Vcl_max=0.4, Vnoncl_max=0.1, CBW=0.15, a=0.800
+
+1) T-S-T model results:
+   Vcl=0.05  PHIT=0.25  →  V_lam_sh=0.110  S_disp=0.007  φ_sd=0.294
+   Vcl=0.10  PHIT=0.22  →  V_lam_sh=0.193  S_disp=0.028  φ_sd=0.276
+   Vcl=0.20  PHIT=0.18  →  V_lam_sh=0.331  S_disp=0.101  φ_sd=0.214
+   Vcl=0.30  PHIT=0.12  →  V_lam_sh=0.497  S_disp=0.201  φ_sd=0.129
+   Vcl=0.40  PHIT=0.06  →  V_lam_sh=0.662  S_disp=0.300  φ_sd=0.045
+
+2) Crossplot: Point D at Vcl=0.30, PHIT=0.045
+
+3) Dispersed clay uncertainty at Vcl=0.15, PHIT=0.20: ±0.0249
+
+4) Permeability estimates:
+   K = 986.38 mD  (φ_sd=0.294)
+   K = 777.83 mD  (φ_sd=0.276)
+   K = 311.68 mD  (φ_sd=0.214)
+   K = 53.60 mD  (φ_sd=0.129)
+   K = 1.75 mD  (φ_sd=0.045)
+
+5) Structural clay case V_lam_sh: [0.         0.         0.11904762 0.55952381 1.        ]
+
+✓ All thomas_stieber_tyurin tests passed.
+
+
+██████████████████████████████████████████████████████████████████████
+  Article 3: T-S Diagram in Well-Log Domain – Eghbali & Torres-Verdín
+██████████████████████████████████████████████████████████████████████
+============================================================
+Testing thomas_stieber_welllog module (Eghbali & Torres-Verdín, 2025)
+============================================================
+
+1) Laminated-line forward model:
+   V_Lam=0.00  →  RHOB=2.175  NPHI=-0.020  GR=15.0
+   V_Lam=0.25  →  RHOB=2.256  NPHI=0.072  GR=41.2
+   V_Lam=0.50  →  RHOB=2.337  NPHI=0.165  GR=67.5
+   V_Lam=0.75  →  RHOB=2.419  NPHI=0.257  GR=93.8
+   V_Lam=1.00  →  RHOB=2.500  NPHI=0.350  GR=120.0
+
+2) Porosity (V_Lam=0.2, V_Disp=0.1): T-S=0.3250  Mass-bal=0.0000  Δ=0.3250
+
+3) Laminated line RHOB range: 2.175 – 2.500
+
+4) Generated 10 synthetic layers
+   RHOB range: 2.203 – 2.773
+   GR range:   25.0 – 114.8
+
+5) Rock classification labels: [0 0 0 0 0]
+
+✓ All thomas_stieber_welllog tests passed.
+
+
+██████████████████████████████████████████████████████████████████████
+  Article 4: TOC Prediction with ML – Dong et al.
+██████████████████████████████████████████████████████████████████████
+============================================================
+Testing toc_prediction module (Dong et al., 2025)
+============================================================
+
+1) ΔlogR-AC TOC: mean=1.23, std=3.75
+   LOM(Ro=0.8) = 9.52
+
+2) Dual-shale TOC: mean=0.01
+
+3) Core homing: best shift = 0.500
+
+4) Cook's distance: 50 → 49 samples after outlier removal
+
+5) Stacking model (train): R²=0.749, MAE=0.367, RMSE=0.470
+
+6) Hierarchical model selection: best = Stacking
+
+✓ All toc_prediction tests passed.
+
+
+██████████████████████████████████████████████████████████████████████
+  Article 5: Cross-Calibrated Permeabilities – Sifontes et al.
+██████████████████████████████████████████████████████████████████████
+============================================================
+Testing cross_calibrated_permeability module (Sifontes et al., 2025)
+============================================================
+
+1) Timur: K range = 0.05 – 258.7 mD
+   Coates: K range = 5.25 – 515.4 mD
+
+3) Step 1 calibration: C=395.2, φ_exp=0.99, K_exp=1.49, R²=0.949
+
+4) K/φ=161.8 → Macro
+
+4) K/φ=1504.1 → Macro
+
+4) K/φ=188.6 → Macro
+
+4) K/φ=49.1 → Meso
+
+5) SwXCal: Sw range = 0.016 – 0.128
+
+6) Optimised SwXCal: C_sw=0.022, K_sw=0.634
+
+7) Step 2 well-log calibration: R²=0.949
+
+8) Porosity partitioning: matrix=[0.05 0.08 0.08], secondary=[0.   0.04 0.17]
+
+✓ All cross_calibrated_permeability tests passed.
+
+
+██████████████████████████████████████████████████████████████████████
+  Article 6: Shale Micro-Parameter Calibration – Jiang et al.
+██████████████████████████████████████████████████████████████████████
+============================================================
+Testing shale_microparams module (Jiang et al., 2025)
+============================================================
+
+1) Orthogonal design: 36 experiments × 7 parameters
+
+2) Forward model results (first 3):
+   E=61.2 GPa, σ_c=70.9 MPa, ε=0.3546
+   E=23.2 GPa, σ_c=104.6 MPa, ε=0.4191
+   E=34.0 GPa, σ_c=103.8 MPa, ε=0.3097
+
+3) Correlation heat map (macro × micro):
+                      Ep       kp  sigma_p     mu_p  sigma_s       ks     mu_s
+   E_modulus       0.985   -0.187   -0.025    0.075   -0.109    0.015   -0.141
+   sigma_c         0.018   -0.032    0.915    0.160   -0.029    0.200   -0.299
+   epsilon_peak   -0.143   -0.220   -0.112    0.561   -0.165    0.249    0.354
+
+4) Stacking inverse prediction (first sample):
+   True:      [60.   2.5 20.   1.  15.   3.   0.1]
+   Predicted: [61.75624532  2.15123051 20.26944915  0.91100824 18.86252026  2.76940744
+  0.55701889]
+
+5) Inverse calibration for E=25, σ_c=80, ε=0.35:
+   Ep = 23.16
+   kp = 2.51
+   sigma_p = 30.40
+   mu_p = 0.93
+   sigma_s = 21.99
+   ks = 1.25
+   mu_s = 1.00
+
+6) Verification: E=25.0, σ_c=81.8, ε=0.4156
+
+✓ All shale_microparams tests passed.
+
+
+██████████████████████████████████████████████████████████████████████
+  Article 7: Fracturing Fluid Damage – Li et al.
+██████████████████████████████████████████████████████████████████████
+============================================================
+Testing fracturing_fluid_damage module (Li et al., 2025)
+============================================================
+
+1) Permeability damage: K1=0.5, K2=0.3 → D=40.0%
+
+2) NMR damage: free-volume reduction = 38.4%
+   bound-volume increase = 22.7%
+
+3) Hydrolock damage comparison:
+   Guanidine Gel Fracturing Fluid          : D_K=84.0%, Sw_final=0.457, intrusion=0.4 mm
+   Slickwater Fracturing Fluid             : D_K=79.1%, Sw_final=0.407, intrusion=2.2 mm
+   Active Water Fracturing Fluid           : D_K=79.6%, Sw_final=0.411, intrusion=1.4 mm
+
+4) Conductivity (guanidine_gel): [132.12901682  93.10974446  65.61332796  46.23693074  32.5826144 ]
+   Conductivity damage (low→high Pc): 75.3%
+
+4) Conductivity (slickwater): [171.76772187 121.0426678   85.29732635  60.10800996  42.35739872]
+   Conductivity damage (low→high Pc): 75.3%
+
+5) 1-year cumulative production comparison:
+   Guanidine Gel Fracturing Fluid          : cum = 322 m³
+   Slickwater Fracturing Fluid             : cum = 395 m³
+   Active Water Fracturing Fluid           : cum = 394 m³
+
+6) Porosity change rate: -6.3%
+
+✓ All fracturing_fluid_damage tests passed.
+
+
+██████████████████████████████████████████████████████████████████████
+  Article 8: Injection Fluid Optimization – Xiao et al.
+██████████████████████████████████████████████████████████████████████
+============================================================
+Testing injection_fluid_optimization module (Xiao et al., 2025)
+============================================================
+
+Reservoir: K=0.3 mD, φ=0.08, So=0.55, T=60.0°C
+
+1) Capillary pressure: 0.087 MPa
+
+2) Imbibition comparison (V_imb fraction):
+   Slickwater               : 0.430 1.000 1.000 1.000 1.000 1.000 1.000
+   Surfactant-enhanced      : 0.235 0.576 1.000 1.000 1.000 1.000 1.000
+   Nano-emulsion            : 0.152 0.372 0.744 1.000 1.000 1.000 1.000
+
+3) Oil recovery factor at 168 hr:
+   Slickwater               : RF = 0.3000
+   Surfactant-enhanced      : RF = 0.3667
+   Nano-emulsion            : RF = 0.4190
+   Active water             : RF = 0.3385
+   Optimised fluid          : RF = 0.3882
+
+4) Optimal shut-in times:
+   Slickwater               : t_opt = 16 hr, RF = 0.3000
+   Surfactant-enhanced      : t_opt = 30 hr, RF = 0.3667
+   Nano-emulsion            : t_opt = 52 hr, RF = 0.4190
+
+5) NMR T2 shift: [  0.5   2.   10.   50.  200. ] → [  0.5375   2.15    10.75    53.75   215.    ]
+
+6) K enhancement (φ: 0.08→0.085): 1.213x
+
+7) Fluid system ranking:
+   #1 Nano-emulsion            : score=0.4358, RF=0.4190, K_enh=1.168
+   #2 Optimised fluid          : score=0.4050, RF=0.3882, K_enh=1.168
+   #3 Surfactant-enhanced      : score=0.3834, RF=0.3667, K_enh=1.168
+   #4 Active water             : score=0.3552, RF=0.3385, K_enh=1.168
+   #5 Slickwater               : score=0.2568, RF=0.3000, K_enh=1.168
+
+8) Energy storage ΔP from 500 m³ injection: 30.00 MPa
+
+✓ All injection_fluid_optimization tests passed.
+
+
+======================================================================
+  TEST SUMMARY
+======================================================================
+  ✓ PASS  Article 1: Core Scanner – Mirza et al.
+  ✓ PASS  Article 2: Thomas-Stieber-Tyurin Model – Tyurin & Davenport
+  ✓ PASS  Article 3: T-S Diagram in Well-Log Domain – Eghbali & Torres-Verdín
+  ✓ PASS  Article 4: TOC Prediction with ML – Dong et al.
+  ✓ PASS  Article 5: Cross-Calibrated Permeabilities – Sifontes et al.
+  ✓ PASS  Article 6: Shale Micro-Parameter Calibration – Jiang et al.
+  ✓ PASS  Article 7: Fracturing Fluid Damage – Li et al.
+  ✓ PASS  Article 8: Injection Fluid Optimization – Xiao et al.
+
+  8/8 modules passed  (#.##s total)
+======================================================================

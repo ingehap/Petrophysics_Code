@@ -1,0 +1,75 @@
+
+######################################################################
+# Article 1 - Bazhenov Shale Rock Physics
+######################################################################
+============================================================
+Article 1: Bazhenov Shale Rock Physics
+============================================================
+  inverted volumes = [0.55 0.3  0.15]  sum=1.000
+  Rblock=388.15  phi_block=0.063  phi_sec=0.037
+  K*=31.83  mu*=35.69 GPa
+  Vp=5474 m/s  AI=14507
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Borehole Carbon Corrections for TOC
+######################################################################
+============================================================
+Article 2: Borehole Carbon Corrections for TOC
+============================================================
+  Y_TIC = 0.0490
+  Y_TOC = 0.0200
+  f_Borehole(8in)=0.01040  f_Borehole(16in)=0.01980
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Three-Magnet Array Unilateral MR
+######################################################################
+============================================================
+Article 3: Three-Magnet Array Unilateral MR
+============================================================
+  Larmor frequency = 2.25 MHz
+  T2eff(grad)=422.71 ms   T2eff(no grad)=2307.69 ms
+  porosity = 0.168
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - NMR Permeability of Carbonates
+######################################################################
+============================================================
+Article 4: NMR Permeability of Complex Carbonates
+============================================================
+  T2gm=57.0 ms  FFI=7.17  BVI=8.97
+  k_Coates=0.000 mD  k_SDR=20.760 mD
+  RBF prediction error = 1.042e+00
+  PCA variance fractions = [0.593 0.407]
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Shaly-Sand Porosity (Shale Line)
+######################################################################
+============================================================
+Article 5: Shaly-Sand Porosity (Shale-Line Method)
+============================================================
+  wet-shale slope kcl = 0.229
+  quartz-oil slope = 1.720
+  Vqu=0.679  Vcl=0.166  Vfl=0.155
+  dry-clay slope kdcl = -0.334
+  phi_e (N=0.7) = 0.222
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_bazhenov_rock_physics  (#.##s)
+  PASS   article2_borehole_carbon_toc  (#.##s)
+  PASS   article3_three_magnet_mr_coreplug  (#.##s)
+  PASS   article4_nmr_carbonate_permeability  (#.##s)
+  PASS   article5_shaly_sand_porosity_deepwater  (#.##s)
+
+  5/5 modules passed
