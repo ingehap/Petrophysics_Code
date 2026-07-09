@@ -56,17 +56,17 @@ def swelling_percent(bv_saturated, bv_dried):
 
 def combined_relaxation_time(t_bulk, t_surface, t_diffusion=np.inf):
     """Total relaxation time from parallel rates  1/T = 1/T_bulk + 1/T_surf + 1/T_diff."""
-    return 1.0 / (1.0 / t_bulk + 1.0 / t_surface + 1.0 / t_diffusion)
+    return petrolib.nmr.combine_relaxation_times(t_bulk, t_surface, t_diffusion)
 
 
 def surface_relaxation_time(rho, s_over_v):
     """Surface-dominated relaxation time  T = 1/(rho*(S/V))  (Eqs. 6-7)."""
-    return 1.0 / (rho * np.asarray(s_over_v, float))
+    return petrolib.nmr.t2_apparent(rho=rho, s_over_v=s_over_v)
 
 
 def pore_diameter(rho, t):
     """Spherical pore diameter  d = 6*rho*T  (S/V = 6/d)  (Eqs. 10-11)."""
-    return 6.0 * rho * np.asarray(t, float)
+    return petrolib.nmr.pore_radius_from_t2(t, rho=rho, shape_factor=6.0)
 
 
 def fast_diffusion_ratio(d, rho, d0=D0_HEPTANE):

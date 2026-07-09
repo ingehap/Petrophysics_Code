@@ -29,6 +29,13 @@ angular frequencies in rad/s, times in s.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 ELECTRON_PROTON_RATIO = 659.0     # omega_s / omega_I (electron / proton Larmor)
 
 
@@ -54,7 +61,7 @@ def partition_2d_map(t1t2_values, amplitudes, cutoff=2.0):
 
 def nmr_oil_saturation(v_oil, v_water):
     """Oil saturation from the partitioned NMR signal  So = V_oil/(V_oil + V_water)."""
-    return v_oil / (v_oil + v_water)
+    return petrolib.nmr.nmr_saturation(v_oil, v_oil + v_water)
 
 
 # ---------------------------------------------- NMRD dispersion --------------

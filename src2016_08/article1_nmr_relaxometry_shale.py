@@ -28,6 +28,13 @@ frequencies (Larmor) in rad/s, correlation times tau_c in s.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- additive rates --------------
 
@@ -47,7 +54,7 @@ def total_relaxation_rate(*rates):
 
 def spectral_density(omega, tau_c):
     """BPP spectral density  J(omega) = tau_c/(1 + (omega*tau_c)^2)."""
-    return tau_c / (1.0 + (np.asarray(omega, float) * tau_c) ** 2)
+    return petrolib.nmr.bpp_spectral_density(omega, tau_c)
 
 
 def bpp_rates(omega0, tau_c, dipolar_constant=1.0):
@@ -59,12 +66,7 @@ def bpp_rates(omega0, tau_c, dipolar_constant=1.0):
     with D2 the dipolar coupling constant (mu0/4pi)^2 * gamma^4 * hbar^2 *
     I(I+1)/r^6.  Returns (T1, T2).
     """
-    j0 = spectral_density(0.0, tau_c)
-    j1 = spectral_density(omega0, tau_c)
-    j2 = spectral_density(2.0 * omega0, tau_c)
-    inv_t1 = (3.0 / 10.0) * dipolar_constant * (j1 + 4.0 * j2)
-    inv_t2 = (3.0 / 20.0) * dipolar_constant * (3.0 * j0 + 5.0 * j1 + 2.0 * j2)
-    return 1.0 / inv_t1, 1.0 / inv_t2
+    return petrolib.nmr.bpp_t1_t2(omega0, tau_c, dipolar_constant=dipolar_constant)
 
 
 def t1_t2_ratio(omega0, tau_c):

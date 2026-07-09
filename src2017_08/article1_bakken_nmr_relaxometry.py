@@ -27,6 +27,13 @@ reconstruction; the classification cutoffs (kerogen T1/T2 ~ 1000s, bitumen
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 D_WATER = 2.5e-9             # bulk water self-diffusion (m^2/s)
 
 
@@ -37,12 +44,12 @@ def bpp_spectral_density(omega, tau_c):
 
     Peaks at omega = 0 (slow motion) and rolls off at high frequency.
     """
-    return tau_c / (1.0 + (np.asarray(omega, float) * tau_c) ** 2)
+    return petrolib.nmr.bpp_spectral_density(omega, tau_c)
 
 
 def t1_t2_ratio(t1, t2):
     """T1/T2 ratio (a mobility / surface-interaction discriminator)."""
-    return np.asarray(t1, float) / np.asarray(t2, float)
+    return petrolib.nmr.t1_t2_ratio(t1, t2)
 
 
 def classify_component(t1t2, t2_s=None, diffusion=None):

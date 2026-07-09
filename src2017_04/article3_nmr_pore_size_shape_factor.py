@@ -26,12 +26,19 @@ s, radius in m (alpha = 3 for a sphere).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- relaxation / pore size --------------
 
 def surface_relaxation_rate(rho, s_over_v):
     """Surface relaxation rate  1/T2 = rho*(S/V)  (Eq. 2)."""
-    return rho * np.asarray(s_over_v, float)
+    return petrolib.nmr.relaxation_rate(rho=rho, s_over_v=s_over_v)
 
 
 def shape_factor_sv(alpha, r):
@@ -41,6 +48,9 @@ def shape_factor_sv(alpha, r):
 
 def pore_radius(alpha, rho, t2):
     """Pore radius from T2  r = alpha*rho*T2  (Eq. 6)."""
+    # Kept as the direct alpha*rho*T2 product: the library's
+    # shape_factor/surface_to_volume form differs by 1 ULP, which flips this
+    # article's reported radius across a rounding boundary (36.75 um).
     return alpha * rho * np.asarray(t2, float)
 
 
@@ -51,10 +61,7 @@ def shape_factor(r_mean_log, rho, t2_mean_log):
 
 def multiexponential_decay(t, amplitudes, t2s):
     """Multiexponential magnetization decay  M(t) = sum_i A_i*exp(-t/T2_i)  (Eq. 3)."""
-    t = np.asarray(t, float)[:, None]
-    a = np.asarray(amplitudes, float)[None, :]
-    t2 = np.asarray(t2s, float)[None, :]
-    return (a * np.exp(-t / t2)).sum(axis=1)
+    return petrolib.nmr.multiexp_decay(t, amplitudes, t2s)
 
 
 # ---------------------------------------------- tests --------------

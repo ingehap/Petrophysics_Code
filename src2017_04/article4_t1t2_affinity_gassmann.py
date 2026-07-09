@@ -25,12 +25,19 @@ Pa, velocities in m/s, density in kg/m^3.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- affinity --------------
 
 def t1_t2_ratio(t1, t2):
     """T1/T2 ratio (rock-fluid affinity indicator)."""
-    return np.asarray(t1, float) / np.asarray(t2, float)
+    return petrolib.nmr.t1_t2_ratio(t1, t2)
 
 
 def affinity_class(t1t2, neutral=1.5):

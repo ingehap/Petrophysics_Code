@@ -25,6 +25,13 @@ The calibration points (oil-phase T1/T2 vs USBM*) are transcribed from the paper
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Reported calibration points: oil-phase T1/T2 -> renormalized USBM index
 CALIB_T1T2 = np.array([3.72, 1.68, 1.16])
 CALIB_USBM = np.array([-0.975, 0.237, 0.5])
@@ -34,7 +41,7 @@ CALIB_USBM = np.array([-0.975, 0.237, 0.5])
 
 def observed_relaxation_time(t_bulk, t_surface):
     """Observed relaxation time  1/T_obs = 1/T_bulk + 1/T_surface  (Eq. 1)."""
-    return 1.0 / (1.0 / t_bulk + 1.0 / t_surface)
+    return petrolib.nmr.combine_relaxation_times(t_bulk, t_surface)
 
 
 def mean_t1t2(ratios, weights):
