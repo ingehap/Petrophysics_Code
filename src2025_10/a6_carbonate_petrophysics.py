@@ -16,6 +16,13 @@ Implements a standard petrophysical evaluation workflow for carbonates:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Shale volume
@@ -104,7 +111,7 @@ def perm_timur(phi, swir):
     """
     phi = np.maximum(phi, 0.001)
     swir = np.maximum(swir, 0.01)
-    return 0.136 * (phi ** 4.4) / (swir ** 2) * 1e4  # md
+    return petrolib.nmr.timur(phi, swir, a=0.136, b=4.4, c=2.0) * 1e4  # md
 
 
 def perm_winland_r35(phi, k_md):

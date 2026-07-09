@@ -16,6 +16,13 @@ Implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Mineral volume magnetic susceptibilities (×10^-6 SI)
@@ -78,7 +85,7 @@ def t2_bulk(fluid='water'):
 
 def t2_surface(rho2, s_over_v):
     """Surface relaxation 1/T2S = rho2 * S/V (Eq. 1 contribution)."""
-    return 1.0 / (rho2 * s_over_v)
+    return petrolib.nmr.t2_apparent(rho=rho2, s_over_v=s_over_v)
 
 
 def internal_gradient(B0, dchi_val, r_pore):
@@ -97,7 +104,7 @@ def t2_diffusion(D, gamma, G, TE):
     D: diffusion coefficient (m^2/s), gamma: gyromagnetic ratio (rad/(s·T)),
     G: gradient (T/m), TE: echo interval (s)
     """
-    val = D * (gamma * G * TE) ** 2 / 12.0
+    val = petrolib.nmr.diffusion_relaxation_rate(D, G=G, TE=TE, gamma=gamma)
     if val < 1e-30:
         return 1e30
     return 1.0 / val
@@ -107,7 +114,8 @@ def t2_total(rho2, s_v, D, gamma, G, TE, T2B=2.5):
     """Total T2 (Eq. 1).
     1/T2 = 1/T2B + rho2*(S/V) + D*(gamma*G*TE)^2/12
     """
-    inv = 1.0 / T2B + rho2 * s_v + D * (gamma * G * TE) ** 2 / 12.0
+    inv = petrolib.nmr.relaxation_rate(
+        t2_bulk=T2B, rho=rho2, s_over_v=s_v, D=D, G=G, TE=TE, gamma=gamma)
     return 1.0 / np.maximum(inv, 1e-30)
 
 

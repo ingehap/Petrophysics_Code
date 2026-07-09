@@ -29,6 +29,13 @@ from typing import List, Tuple
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ──────────────────────────────────────────────────────────────────────
 # 1. Surface Relaxation Model
@@ -56,7 +63,7 @@ def surface_relaxation_T2(
     float
         Observed T₂ (same time unit as T2_bulk).
     """
-    return 1.0 / (1.0 / T2_bulk + rho2 * S_over_V)
+    return petrolib.nmr.t2_apparent(t2_bulk=T2_bulk, rho=rho2, s_over_v=S_over_V)
 
 
 def surface_relaxation_T1(
@@ -68,7 +75,7 @@ def surface_relaxation_T1(
 
     1/T₁_obs = 1/T₁_bulk + ρ₁ (S/V)
     """
-    return 1.0 / (1.0 / T1_bulk + rho1 * S_over_V)
+    return petrolib.nmr.t2_apparent(t2_bulk=T1_bulk, rho=rho1, s_over_v=S_over_V)
 
 
 def T1_over_T2(
@@ -145,10 +152,7 @@ def multi_exponential_decay(
     T2_values : array_like
         T₂ relaxation times for each component (ms).
     """
-    t = np.asarray(t, float)[:, np.newaxis]
-    A = np.asarray(amplitudes, float)
-    T2 = np.asarray(T2_values, float)
-    return np.sum(A * np.exp(-t / T2), axis=1)
+    return petrolib.nmr.multiexp_decay(t, amplitudes, T2_values)
 
 
 def log_mean_T2(amplitudes: np.ndarray, T2_values: np.ndarray) -> float:
@@ -156,9 +160,7 @@ def log_mean_T2(amplitudes: np.ndarray, T2_values: np.ndarray) -> float:
 
     T₂_LM = exp( Σ Aᵢ ln(T₂ᵢ) / Σ Aᵢ )
     """
-    A = np.asarray(amplitudes, float)
-    T2 = np.asarray(T2_values, float)
-    return float(np.exp(np.sum(A * np.log(T2)) / np.sum(A)))
+    return petrolib.nmr.t2_logmean(T2_values, amplitudes)
 
 
 # ──────────────────────────────────────────────────────────────────────

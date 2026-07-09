@@ -26,6 +26,13 @@ Ukkelberg et al. (2010); Sørland et al. (2022, 2024).
 import numpy as np
 from typing import Optional
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 def generate_t2_basis(t2_min: float = 0.1,
                       t2_max: float = 10000.0,
@@ -69,7 +76,7 @@ def build_kernel_matrix(echo_times: np.ndarray,
     np.ndarray
         Kernel matrix, shape (n_echoes, n_bins).
     """
-    return np.exp(-echo_times[:, None] / t2_basis[None, :])
+    return petrolib.nmr.cpmg_kernel(echo_times, t2_basis)
 
 
 def simulate_cpmg(t2_components: list,
@@ -100,11 +107,10 @@ def simulate_cpmg(t2_components: list,
         CPMG echo amplitudes.
     """
     echo_times = np.arange(1, n_echoes + 1) * echo_spacing
-    signal = np.zeros(n_echoes)
-    for t2, amp in zip(t2_components, amplitudes):
-        signal += amp * np.exp(-echo_times / t2)
+    signal = petrolib.nmr.multiexp_decay(echo_times, amplitudes, t2_components)
     if noise_std > 0:
-        signal += np.random.randn(n_echoes) * noise_std
+        # global-RNG noise kept local to preserve the article's exact draw
+        signal = signal + np.random.randn(n_echoes) * noise_std
     return echo_times, signal
 
 
@@ -353,13 +359,8 @@ def partition_fluids(t2_distribution: np.ndarray,
     if total < 1e-30:
         return {"CBW": 0, "BVI": 0, "FFI": 0, "total_porosity": 0, "T2_log_mean": 0}
 
-    cbw_mask = t2_basis < t2_cutoff_cbw
-    bvi_mask = (t2_basis >= t2_cutoff_cbw) & (t2_basis < t2_cutoff_bvi)
-    ffi_mask = t2_basis >= t2_cutoff_bvi
-
-    cbw = np.sum(t2_distribution[cbw_mask])
-    bvi = np.sum(t2_distribution[bvi_mask])
-    ffi = np.sum(t2_distribution[ffi_mask])
+    cbw, bvi, ffi = petrolib.nmr.t2_partition(
+        t2_basis, t2_distribution, cutoffs_ms=(t2_cutoff_cbw, t2_cutoff_bvi))
 
     # T2 log-mean
     positive = t2_distribution > 0
