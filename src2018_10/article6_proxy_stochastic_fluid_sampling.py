@@ -24,6 +24,13 @@ the cleanup proxy + stochastic-interpretation method the paper applies.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 EXPONENT = 5.0 / 12.0
 
 
@@ -31,12 +38,12 @@ EXPONENT = 5.0 / 12.0
 
 def cleanup(eta0, v_star, volume, exponent=EXPONENT):
     """Contamination vs pumped volume  eta(V) = eta0*(1 + V/V*)^(-5/12)."""
-    return eta0 * (1.0 + np.asarray(volume, float) / v_star) ** (-exponent)
+    return petrolib.geochem_fluids.contamination.cleanup_powerlaw(volume, eta0, v_star, exponent=exponent)
 
 
 def volume_to_target(eta0, v_star, eta_target, exponent=EXPONENT):
     """Pumped volume required to reach a target contamination."""
-    return v_star * ((eta0 / eta_target) ** (1.0 / exponent) - 1.0)
+    return petrolib.geochem_fluids.contamination.volume_to_target(eta0, v_star, eta_target, exponent=exponent)
 
 
 # ---------------------------------------------- stochastic --------------

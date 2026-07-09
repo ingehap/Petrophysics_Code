@@ -27,6 +27,13 @@ quantities the operational procedure controls.  P in bar, T in deg C.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 CO2_TC = 31.0          # deg C, critical temperature
 CO2_PC = 73.8          # bar, critical pressure
 
@@ -40,13 +47,12 @@ def cleanup_contamination(pumped_vol, eta0, v_star, exponent=5.0 / 12.0):
     The -5/12 exponent is the late-time formation-tester cleanup law for a
     spherical-then-radial cleanup.  Returns contamination fraction (0..eta0).
     """
-    v = np.asarray(pumped_vol, float)
-    return eta0 * (1.0 + v / v_star) ** (-exponent)
+    return petrolib.geochem_fluids.contamination.cleanup_powerlaw(pumped_vol, eta0, v_star, exponent=exponent)
 
 
 def volume_to_target(eta0, v_star, eta_target, exponent=5.0 / 12.0):
     """Pumped volume required to reach a target contamination fraction."""
-    return v_star * ((eta0 / eta_target) ** (1.0 / exponent) - 1.0)
+    return petrolib.geochem_fluids.contamination.volume_to_target(eta0, v_star, eta_target, exponent=exponent)
 
 
 # ---------------------------------------------- CO2 phase ---------------

@@ -24,6 +24,13 @@ critical-property shift) of the core-scale Z method the paper develops.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 R_GAS = 8.314            # J/mol/K
 
 
@@ -31,23 +38,17 @@ R_GAS = 8.314            # J/mol/K
 
 def pseudo_reduced(P, T, Ppc, Tpc):
     """Pseudo-reduced pressure and temperature  Ppr = P/Ppc, Tpr = T/Tpc."""
-    return P / Ppc, T / Tpc
+    return petrolib.geochem_fluids.pvt.pseudo_reduced(P, T, Ppc, Tpc)
 
 
 def z_beggs_brill(Ppr, Tpr):
     """Beggs & Brill (1973) explicit compressibility factor Z."""
-    A = 1.39 * (Tpr - 0.92) ** 0.5 - 0.36 * Tpr - 0.101
-    B = ((0.62 - 0.23 * Tpr) * Ppr
-         + (0.066 / (Tpr - 0.86) - 0.037) * Ppr ** 2
-         + 0.32 * Ppr ** 6 / (10 ** (9.0 * (Tpr - 1.0))))
-    C = 0.132 - 0.32 * np.log10(Tpr)
-    D = 10 ** (0.3106 - 0.49 * Tpr + 0.1824 * Tpr ** 2)
-    return A + (1.0 - A) / np.exp(B) + C * Ppr ** D
+    return petrolib.geochem_fluids.pvt.z_beggs_brill(Ppr, Tpr)
 
 
 def gas_density(P_pa, T_K, Z, M_kg_mol=0.016):
     """Real-gas density  rho = P*M/(Z*R*T)  (kg/m^3).  M default = methane."""
-    return P_pa * M_kg_mol / (Z * R_GAS * T_K)
+    return petrolib.geochem_fluids.pvt.gas_density(P_pa, T_K, m_kg_mol=M_kg_mol, z=Z)
 
 
 # ---------------------------------------------- confinement -------------

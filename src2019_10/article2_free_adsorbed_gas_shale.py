@@ -26,6 +26,13 @@ free-gas forms anchored to the recovered variable definitions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- free gas ----------------
 
@@ -34,7 +41,7 @@ def free_gas(phi, sw, Bg):
 
     Bg = gas formation volume factor (reservoir->surface volume ratio).
     """
-    return phi * (1.0 - np.asarray(sw, float)) / Bg
+    return petrolib.geochem_fluids.adsorption.free_gas(phi, sw, Bg)
 
 
 # ---------------------------------------------- adsorbed gas ------------
@@ -45,8 +52,7 @@ def langmuir(rho_b, VL, PL, P):
     VL = Langmuir volume (max capacity), PL = Langmuir pressure (half-capacity
     pressure), rho_b = bulk density.
     """
-    P = np.asarray(P, float)
-    return rho_b * VL * P / (PL + P)
+    return petrolib.geochem_fluids.adsorption.langmuir(P, VL, PL, rho_b=rho_b)
 
 
 def gibbs_correction(gc, rho_free_gas, rho_adsorbed):
@@ -55,7 +61,7 @@ def gibbs_correction(gc, rho_free_gas, rho_adsorbed):
     The adsorbed phase is denser than free gas, so the excess (Gibbs) adsorption
     measured is less than the absolute adsorption.
     """
-    return gc * (1.0 - rho_free_gas / rho_adsorbed)
+    return petrolib.geochem_fluids.adsorption.gibbs_excess(gc, rho_free_gas, rho_adsorbed)
 
 
 def monolayer_porosity_correction(phi, VL, rho_b, rho_adsorbed):

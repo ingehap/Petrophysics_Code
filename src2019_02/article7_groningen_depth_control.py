@@ -24,6 +24,13 @@ discusses (typeset glyphs were dropped in extraction).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- depth tie ---------------
 
@@ -52,7 +59,7 @@ def net_pay_error(true_top, true_base, shift):
 
 def gas_in_place(area, thickness, phi, sg, Bg):
     """Gas-in-place  GIIP = area*thickness*phi*Sg/Bg."""
-    return area * thickness * phi * sg / Bg
+    return petrolib.geochem_fluids.adsorption.gas_in_place(area, thickness, phi, sg, Bg)
 
 
 def giip_error_fraction(true_thickness, thickness_error):

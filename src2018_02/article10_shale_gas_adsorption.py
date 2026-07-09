@@ -27,6 +27,13 @@ SPWLA/CrossRef value for this issue.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- adsorption --------------
 
@@ -35,8 +42,7 @@ def langmuir_isotherm(pressure, vl, pl):
 
     VL = Langmuir volume (max adsorption), PL = Langmuir pressure (P at VL/2).
     """
-    p = np.asarray(pressure, float)
-    return vl * p / (pl + p)
+    return petrolib.geochem_fluids.adsorption.langmuir(pressure, vl, pl)
 
 
 def free_gas_in_place(phi, sw, bg):
@@ -44,7 +50,7 @@ def free_gas_in_place(phi, sw, bg):
 
     Bg = gas formation volume factor (reservoir/standard volume).
     """
-    return phi * (1.0 - sw) / bg
+    return petrolib.geochem_fluids.adsorption.free_gas(phi, sw, bg)
 
 
 def total_gas_in_place(phi, sw, bg, rho_rock, pressure, vl, pl):
