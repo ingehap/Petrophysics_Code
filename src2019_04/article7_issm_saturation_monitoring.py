@@ -24,17 +24,24 @@ the attenuation / saturation-monitoring relations the paper recommends.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Beer-Lambert ------------
 
 def beer_lambert(I0, mu, x):
     """Transmitted intensity  I = I0*exp(-mu*x)."""
-    return I0 * np.exp(-np.asarray(mu, float) * x)
+    return petrolib.nuclear.beer_lambert(I0, mu, x)
 
 
 def attenuation(I0, I, x):
     """Linear attenuation coefficient  mu = ln(I0/I)/x."""
-    return np.log(I0 / np.asarray(I, float)) / x
+    return petrolib.nuclear.mu_from_intensity(I0, I, x)
 
 
 # ---------------------------------------------- saturation --------------

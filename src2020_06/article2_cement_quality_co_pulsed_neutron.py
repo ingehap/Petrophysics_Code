@@ -28,6 +28,13 @@ saturation 30-40%, and the OBM-channel C/O bias (WBM negligible).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 CEMENT_CA_ATOMIC = 9.31          # % atomic calcium in cement
 
 
@@ -35,7 +42,7 @@ CEMENT_CA_ATOMIC = 9.31          # % atomic calcium in cement
 
 def carbon_oxygen_ratio(c_yield, o_yield):
     """Carbon/oxygen ratio  C/O = Y_C / Y_O (rises with oil)."""
-    return np.asarray(c_yield, float) / np.asarray(o_yield, float)
+    return petrolib.nuclear.co_ratio(c_yield, o_yield)
 
 
 def oil_saturation_from_co(cor, cor_water, cor_oil):
@@ -43,8 +50,7 @@ def oil_saturation_from_co(cor, cor_water, cor_oil):
 
         So = (C/O - C/O_water) / (C/O_oil - C/O_water),  clipped to [0, 1].
     """
-    so = (np.asarray(cor, float) - cor_water) / (cor_oil - cor_water)
-    return np.clip(so, 0.0, 1.0)
+    return petrolib.nuclear.so_from_co(cor, cor_water, cor_oil)
 
 
 # ---------------------------------------------- calcium correction ------
@@ -75,9 +81,9 @@ def co_channel_bias(cor_true, channel_volume, mud_type):
 
 def sigma_water_saturation(sigma_log, phi, sigma_ma, sigma_w, sigma_hc):
     """Water saturation from the sigma porosity balance (clipped to [0,1])."""
-    phi = np.asarray(phi, float)
-    num = np.asarray(sigma_log, float) - sigma_ma * (1.0 - phi) - phi * sigma_hc
-    return np.clip(num / (phi * (sigma_w - sigma_hc)), 0.0, 1.0)
+    return petrolib.nuclear.sw_from_sigma(
+        sigma_log, phi, sigma_ma=sigma_ma, sigma_w=sigma_w, sigma_hc=sigma_hc
+    )
 
 
 # ---------------------------------------------- tests --------------

@@ -27,12 +27,19 @@ near because of its deeper depth of investigation).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- yields-to-weights -------
 
 def yield_to_weight(fy2w, S, Y):
     """Dry-weight element from yield  W = FY2W * S * Y  (Eq. 1)."""
-    return fy2w * np.asarray(S, float) * np.asarray(Y, float)
+    return petrolib.nuclear.yields_to_weights(fy2w, S, Y)
 
 
 # ---------------------------------------------- predicted FY2W ----------

@@ -63,7 +63,7 @@ def gr_api(th_ppm, u_ppm, k_wt):
     Th and U are surface-adsorbed onto high-specific-surface clays and K is
     intrinsic to illite, so GR follows exchange capacity rather than clay volume.
     """
-    return 4.0 * th_ppm + 8.0 * u_ppm + 16.0 * k_wt
+    return petrolib.nuclear.gr_api(k_wt, u_ppm, th_ppm, coeff=(16.0, 8.0, 4.0))
 
 
 def vsh_from_gr(gr, gr_clean, gr_shale):

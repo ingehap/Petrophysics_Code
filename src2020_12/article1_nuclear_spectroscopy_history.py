@@ -26,6 +26,13 @@ Capture cross section in capture units (1 c.u. = 1e-3 cm^-1); tau in us.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 NA = 6.022e23            # Avogadro
 V_THERMAL_CONV = 4550.0  # Sigma[c.u.] = 4550 / tau[us]  (2200 m/s thermal neutron)
 
@@ -34,7 +41,7 @@ V_THERMAL_CONV = 4550.0  # Sigma[c.u.] = 4550 / tau[us]  (2200 m/s thermal neutr
 
 def number_density(rho_g_cc, weight_frac, atomic_mass):
     """Atomic number density  N = rho * NA * w / A  (atoms/cm^3)."""
-    return rho_g_cc * NA * np.asarray(weight_frac, float) / np.asarray(atomic_mass, float)
+    return petrolib.nuclear.number_density(rho_g_cc, weight_frac, atomic_mass)
 
 
 def macroscopic_sigma(number_densities, micro_sigma_barns):
@@ -44,26 +51,24 @@ def macroscopic_sigma(number_densities, micro_sigma_barns):
     N in atoms/cm^3, micro sigma in barns (1e-24 cm^2) -> Sigma in cm^-1, then
     x1000 to capture units (1 c.u. = 1e-3 cm^-1).
     """
-    N = np.asarray(number_densities, float)
-    s = np.asarray(micro_sigma_barns, float) * 1e-24
-    return float(np.sum(N * s) * 1e3)
+    return float(petrolib.nuclear.macroscopic_sigma(number_densities, micro_sigma_barns))
 
 
 def sigma_from_decay(tau_us):
     """Capture units from the thermal-neutron decay time  Sigma = 4550/tau."""
-    return V_THERMAL_CONV / np.asarray(tau_us, float)
+    return petrolib.nuclear.sigma_from_tau(tau_us)
 
 
 def decay_from_sigma(sigma_cu):
     """Inverse: thermal-neutron decay time (us) from sigma (c.u.)."""
-    return V_THERMAL_CONV / np.asarray(sigma_cu, float)
+    return petrolib.nuclear.tau_from_sigma(sigma_cu)
 
 
 # ---------------------------------------------- C/O and spectral GR -----
 
 def carbon_oxygen_ratio(c_yield, o_yield):
     """Carbon/oxygen ratio (oil rises, water falls)  COR = Y_C / Y_O."""
-    return np.asarray(c_yield, float) / np.asarray(o_yield, float)
+    return petrolib.nuclear.co_ratio(c_yield, o_yield)
 
 
 def spectral_gr(k_pct, u_ppm, th_ppm):
@@ -71,7 +76,7 @@ def spectral_gr(k_pct, u_ppm, th_ppm):
 
         GR = 16.32*K(%) + 8.09*U(ppm) + 3.93*Th(ppm)
     """
-    return 16.32 * k_pct + 8.09 * u_ppm + 3.93 * th_ppm
+    return petrolib.nuclear.gr_api(k_pct, u_ppm, th_ppm, coeff=(16.32, 8.09, 3.93))
 
 
 # ---------------------------------------------- tests --------------

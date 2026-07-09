@@ -42,7 +42,7 @@ AI_GAS_CUTOFF_MRAYL = 0.3        # paper's color-map gas flag
 
 def spectral_gr(th_ppm, u_ppm, k_wtpct):
     """Spectral gamma ray  gAPI = 4*Th + 8*U + 16*K  (Eq. 1, Ellis & Singer)."""
-    return 4.0 * th_ppm + 8.0 * u_ppm + 16.0 * k_wtpct
+    return petrolib.nuclear.gr_api(k_wtpct, u_ppm, th_ppm, coeff=(16.0, 8.0, 4.0))
 
 
 # ---------------------------------------------- M-ANNIE VTI -------------
@@ -64,9 +64,9 @@ def vti_moduli(C11, C33, C13, C44, C66):
 
 def sigma_water_saturation(sigma_log, phi, sigma_ma, sigma_w, sigma_hc):
     """Water saturation from the sigma porosity balance (clipped to [0,1])."""
-    phi = np.asarray(phi, float)
-    num = np.asarray(sigma_log, float) - sigma_ma * (1.0 - phi) - phi * sigma_hc
-    return np.clip(num / (phi * (sigma_w - sigma_hc)), 0.0, 1.0)
+    return petrolib.nuclear.sw_from_sigma(
+        sigma_log, phi, sigma_ma=sigma_ma, sigma_w=sigma_w, sigma_hc=sigma_hc
+    )
 
 
 def acoustic_impedance(rho_kg_m3, vp_m_s):

@@ -27,14 +27,21 @@ relations the method relies on.  Paper anchors: brine ~220 c.u.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- sigma saturation --------
 
 def sigma_water_saturation(sigma_log, phi, sigma_ma, sigma_w, sigma_hc):
     """Water saturation from the Sigma porosity balance (clipped to [0,1])."""
-    phi = np.asarray(phi, float)
-    num = np.asarray(sigma_log, float) - sigma_ma * (1.0 - phi) - phi * sigma_hc
-    return np.clip(num / (phi * (sigma_w - sigma_hc)), 0.0, 1.0)
+    return petrolib.nuclear.sw_from_sigma(
+        sigma_log, phi, sigma_ma=sigma_ma, sigma_w=sigma_w, sigma_hc=sigma_hc
+    )
 
 
 def saturation_change(sigma_before, sigma_after, phi, sigma_ma, sigma_w, sigma_hc):
@@ -46,7 +53,7 @@ def saturation_change(sigma_before, sigma_after, phi, sigma_ma, sigma_w, sigma_h
 
 def sigma_sensitivity(phi, sigma_w, sigma_hc):
     """Sigma swing per unit Sw  dSigma/dSw = phi*(Sigma_w - Sigma_hc)  (c.u.)."""
-    return phi * (sigma_w - sigma_hc)
+    return petrolib.nuclear.sigma_sensitivity(phi, sigma_w, sigma_hc)
 
 
 def detectable(dsw, phi, sigma_w, sigma_hc, sigma_noise=1.0):
@@ -59,7 +66,7 @@ def brine_sigma(salinity_ppm):
 
     ~22 c.u. fresh water rising ~ linearly; ~450,000 ppm -> ~220 c.u.
     """
-    return 22.0 + (220.0 - 22.0) * salinity_ppm / 450000.0
+    return petrolib.nuclear.sigma_w_from_salinity(salinity_ppm, model="linear450k")
 
 
 # ---------------------------------------------- tests --------------
