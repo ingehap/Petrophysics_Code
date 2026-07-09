@@ -27,6 +27,13 @@ in nD/mD (consistent), stress/pressure in psi, viscosity in cP, lengths in cm.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Darcy --------------
 
@@ -38,7 +45,8 @@ def darcy_permeability(flow_rate, viscosity, length, area, dp):
     with q the volumetric flow rate, mu the viscosity, L and A the plug length
     and cross-section, and dP the pressure drop.
     """
-    return flow_rate * viscosity * length / (area * dp)
+    return petrolib.flow_transport.darcy_permeability(
+        flow_rate, mu=viscosity, length=length, area=area, dp=dp)
 
 
 # ---------------------------------------------- net confining stress --------------
@@ -51,7 +59,8 @@ def net_confining_stress(sleeve_pressure, pore_pressure, biot=1.0):
     with sigma_S the hydrostatic sleeve pressure, Pp the mean pore pressure and
     eta the Biot coefficient (assumed 1 in the paper).
     """
-    return sleeve_pressure - biot * pore_pressure
+    return petrolib.flow_transport.net_confining_stress(
+        sleeve_pressure, pore_pressure=pore_pressure, biot=biot)
 
 
 # ---------------------------------------------- stress-dependent permeability --------------
@@ -64,7 +73,7 @@ def stress_dependent_permeability(k0, gamma, ncs):
     with k0 the zero-stress permeability and gamma the stress-sensitivity
     coefficient.
     """
-    return k0 * np.exp(-gamma * np.asarray(ncs, float))
+    return petrolib.flow_transport.stress_permeability(k0, gamma=gamma, ncs=ncs)
 
 
 def fit_stress_permeability(ncs, k):
@@ -74,9 +83,7 @@ def fit_stress_permeability(ncs, k):
 
     Returns (k0, gamma).
     """
-    ncs = np.asarray(ncs, float)
-    slope, intercept = np.polyfit(ncs, np.log(np.asarray(k, float)), 1)
-    return np.exp(intercept), -slope
+    return petrolib.flow_transport.fit_stress_permeability(ncs, k)
 
 
 # ---------------------------------------------- tests --------------

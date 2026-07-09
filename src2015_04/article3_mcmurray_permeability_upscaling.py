@@ -27,6 +27,13 @@ mD, Vsh and porosity as fractions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Vsh-permeability --------------
 
@@ -47,14 +54,7 @@ def vsh_permeability(vsh, k_sand, k25):
 
 def permeability_average(k_values, method="geometric"):
     """Average a permeability field (arithmetic / geometric / harmonic)."""
-    k = np.asarray(k_values, float)
-    if method == "arithmetic":
-        return float(np.mean(k))
-    if method == "geometric":
-        return float(np.exp(np.mean(np.log(k))))
-    if method == "harmonic":
-        return float(k.size / np.sum(1.0 / k))
-    raise ValueError(f"unknown method: {method}")
+    return petrolib.flow_transport.permeability_average(k_values, method=method)
 
 
 def effective_permeability_bounds(k_values):
@@ -65,9 +65,10 @@ def effective_permeability_bounds(k_values):
     The true flow-based effective permeability lies within these bounds; returns
     (harmonic, geometric, arithmetic).
     """
-    return (permeability_average(k_values, "harmonic"),
-            permeability_average(k_values, "geometric"),
-            permeability_average(k_values, "arithmetic"))
+    avg = petrolib.flow_transport.permeability_average
+    return (avg(k_values, method="harmonic"),
+            avg(k_values, method="geometric"),
+            avg(k_values, method="arithmetic"))
 
 
 # ---------------------------------------------- tests --------------

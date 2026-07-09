@@ -29,6 +29,13 @@ in kg/m^3, height in m, temperature in K, D in m^2/s, time in s.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 KB = 1.380649e-23             # Boltzmann constant, J/K
 G_EARTH = 9.81                # m/s^2
 
@@ -60,7 +67,7 @@ def fhz_gravity_gradient(od_ref, h_ref, h, particle_volume, delta_rho, temperatu
 
 def diffusion_length(diffusion_coeff, time):
     """Characteristic diffusion length  L = sqrt(D*t)."""
-    return np.sqrt(diffusion_coeff * np.asarray(time, float))
+    return petrolib.flow_transport.diffusion_length(diffusion_coeff, time)
 
 
 def equilibration_time(length, diffusion_coeff):
@@ -69,7 +76,7 @@ def equilibration_time(length, diffusion_coeff):
     so a smaller diffusion coefficient (larger asphaltene cluster) needs far
     longer to equilibrate than a fast-diffusing gas molecule (GOR).
     """
-    return length ** 2 / diffusion_coeff
+    return petrolib.flow_transport.diffusion_time(length, diffusion_coeff)
 
 
 # ---------------------------------------------- tests --------------

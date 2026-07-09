@@ -35,6 +35,13 @@ except ImportError:  # bare clone, not installed
     sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
     import petrolib
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Washburn --------------
 
@@ -63,7 +70,7 @@ def winland_r35(k, phi):
     with k in mD and porosity in percent; r35 (um) is the throat radius at 35%
     mercury saturation.
     """
-    return 10.0 ** (0.732 + 0.588 * np.log10(k) - 0.864 * np.log10(np.asarray(phi, float) * 100.0))
+    return petrolib.flow_transport.winland_r35(k, phi)
 
 
 def winland_permeability(r35, phi):
@@ -71,8 +78,7 @@ def winland_permeability(r35, phi):
 
         log10(k) = (log10(r35) - 0.732 + 0.864*log10(phi_pct))/0.588.
     """
-    phi_pct = np.asarray(phi, float) * 100.0
-    return 10.0 ** ((np.log10(r35) - 0.732 + 0.864 * np.log10(phi_pct)) / 0.588)
+    return petrolib.flow_transport.winland_permeability(r35, phi)
 
 
 # ---------------------------------------------- Swanson / characteristic radius --------------
@@ -85,7 +91,7 @@ def swanson_permeability(sb_pc_max, c=399.0, d=1.691):
     where (Sb/Pc)max is the maximum ratio of bulk mercury saturation to
     injection pressure (the apex of the curve).
     """
-    return c * np.asarray(sb_pc_max, float) ** d
+    return petrolib.flow_transport.swanson_permeability(sb_pc_max, c=c, d=d)
 
 
 def characteristic_radius_permeability(phi, radius, c=1.0, a=1.0):

@@ -42,13 +42,12 @@ except ImportError:  # bare clone, not installed
 
 def rqi(k, phi):
     """Reservoir quality index  RQI = 0.0314*sqrt(k/phi)  [um], k in mD."""
-    return 0.0314 * np.sqrt(np.asarray(k, float) / phi)
+    return petrolib.flow_transport.rqi(k, phi)
 
 
 def normalized_porosity(phi):
     """Normalized porosity index  phi_z = phi/(1 - phi)  (pore-to-grain volume)."""
-    phi = np.asarray(phi, float)
-    return phi / (1.0 - phi)
+    return petrolib.flow_transport.phi_z(phi)
 
 
 def fzi(k, phi):
@@ -56,7 +55,7 @@ def fzi(k, phi):
 
     grouping samples with similar pore geometry into a hydraulic (flow) unit.
     """
-    return rqi(k, phi) / normalized_porosity(phi)
+    return petrolib.flow_transport.fzi(k, phi)
 
 
 def permeability_from_fzi(phi, fzi_value):
@@ -64,8 +63,7 @@ def permeability_from_fzi(phi, fzi_value):
 
         k = phi * (FZI*phi_z/0.0314)^2,   phi_z = phi/(1-phi).
     """
-    phi_z = normalized_porosity(phi)
-    return phi * (fzi_value * phi_z / 0.0314) ** 2
+    return petrolib.flow_transport.k_from_fzi(phi, fzi_value)
 
 
 def rocktype_permeability(phi, a, b):

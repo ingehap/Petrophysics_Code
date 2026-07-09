@@ -25,12 +25,19 @@ in s; recovery as a fraction.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- diffusion --------------
 
 def diffusion_length(diffusion_coeff, time):
     """Characteristic diffusion length  L = sqrt(D*t)."""
-    return np.sqrt(diffusion_coeff * np.asarray(time, float))
+    return petrolib.flow_transport.diffusion_length(diffusion_coeff, time)
 
 
 def sqrt_time_recovery(time, rate, rf_max=1.0):
@@ -64,7 +71,7 @@ def fick_early_time_recovery(diffusion_coeff, time, half_length):
 
     valid until Mt/Minf ~ 0.6; L is the block half-length.  Linear in sqrt(t).
     """
-    return (2.0 / half_length) * np.sqrt(diffusion_coeff * np.asarray(time, float) / np.pi)
+    return petrolib.flow_transport.early_time_uptake(diffusion_coeff, time, half_length)
 
 
 def diffusion_coefficient_from_slope(slope, half_length):

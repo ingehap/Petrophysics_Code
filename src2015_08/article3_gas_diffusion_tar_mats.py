@@ -31,6 +31,13 @@ import math
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 KB = 1.380649e-23             # Boltzmann constant, J/K
 G_EARTH = 9.81                # m/s^2
 
@@ -43,7 +50,7 @@ def _erfc(x):
 
 def diffusion_length(diffusion_coeff, time):
     """Characteristic diffusion length  L = sqrt(D*t)."""
-    return np.sqrt(diffusion_coeff * np.asarray(time, float))
+    return petrolib.flow_transport.diffusion_length(diffusion_coeff, time)
 
 
 def equilibration_time(length, diffusion_coeff):
@@ -51,7 +58,7 @@ def equilibration_time(length, diffusion_coeff):
 
         tau = L^2/D.
     """
-    return length ** 2 / diffusion_coeff
+    return petrolib.flow_transport.diffusion_time(length, diffusion_coeff)
 
 
 def gas_concentration_profile(c0, x, diffusion_coeff, time):
@@ -62,8 +69,7 @@ def gas_concentration_profile(c0, x, diffusion_coeff, time):
     with x the distance from the gas-oil contact; the gas front advances as
     sqrt(D*t).
     """
-    arg = np.asarray(x, float) / (2.0 * np.sqrt(diffusion_coeff * time))
-    out = c0 * _erfc(arg)
+    out = np.atleast_1d(petrolib.flow_transport.erfc_profile(c0, x, D=diffusion_coeff, t=time))
     return out if out.size > 1 else float(out[0])
 
 

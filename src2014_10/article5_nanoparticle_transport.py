@@ -30,6 +30,13 @@ value.  SI units throughout (m, s, kg).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 KB = 1.380649e-23  # Boltzmann constant, J/K
 
 
@@ -42,7 +49,8 @@ def stokes_einstein(temperature, viscosity, particle_diameter):
 
     inversely proportional to particle diameter dp and fluid viscosity mu.
     """
-    return KB * temperature / (3.0 * np.pi * viscosity * particle_diameter)
+    # library takes a radius (6*pi*mu*r); dp/2 reproduces the 3*pi*mu*dp form.
+    return petrolib.flow_transport.stokes_einstein(temperature, viscosity, particle_diameter / 2.0)
 
 
 def millington_quirk(dd, phi, sw):
@@ -52,8 +60,7 @@ def millington_quirk(dd, phi, sw):
 
     the tortuosity/constriction reduction of the free-fluid diffusion.
     """
-    phi_w = phi * sw
-    return phi_w ** (10.0 / 3.0) / phi ** 2 * dd
+    return petrolib.flow_transport.millington_quirk(dd, phi, sw)
 
 
 def pore_velocity(darcy_velocity, phi, sw):
@@ -61,7 +68,7 @@ def pore_velocity(darcy_velocity, phi, sw):
 
         v_w = u_w/(phi*Sw).
     """
-    return darcy_velocity / (phi * sw)
+    return petrolib.flow_transport.pore_velocity(darcy_velocity, phi, sw)
 
 
 def dispersion_coefficient(v_w, dd_eff, dispersivity):
@@ -95,28 +102,11 @@ def transport_1d(c0, length, n_cells, total_time, v_w, d_star, k_dep,
     with a fixed injection concentration c0 at x = 0 (upwind advection, central
     diffusion, explicit deposition).  Returns (x, C) at ``total_time``.
     """
-    dx = length / n_cells
-    # CFL- and diffusion-stable step unless overridden
-    dt_adv = dx / max(v_w, 1e-30)
-    dt_dif = dx ** 2 / max(2.0 * d_star, 1e-30)
-    dt = 0.4 * min(dt_adv, dt_dif)
-    steps = int(np.ceil(total_time / dt)) if n_steps is None else n_steps
-    dt = total_time / steps
-    c = np.zeros(n_cells)
-    x = (np.arange(n_cells) + 0.5) * dx
-    for _ in range(steps):
-        cl = np.empty_like(c)
-        cl[0] = c0                       # injection boundary
-        cl[1:] = c[:-1]
-        cr = np.empty_like(c)
-        cr[-1] = c[-1]                   # outflow boundary
-        cr[:-1] = c[1:]
-        adv = -v_w * (c - cl) / dx
-        dif = d_star * (cr - 2.0 * c + cl) / dx ** 2
-        dep = -k_dep * c
-        c = c + dt * (adv + dif + dep)
-        c = np.clip(c, 0.0, c0)
-    return x, c
+    # phi and Sw cancel out of every term of this PDE as written, so the
+    # library advection-dispersion-reaction solver reproduces it exactly.
+    return petrolib.flow_transport.advect_disperse_1d(
+        c0, length=length, n_cells=n_cells, t_total=total_time,
+        v=v_w, D=d_star, k_rxn=k_dep, n_steps=n_steps)
 
 
 # ---------------------------------------------- tests --------------
