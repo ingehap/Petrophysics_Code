@@ -10,7 +10,7 @@ Article 1: Shaly-Sand Models & Dry-Clay Parameters
   Ct: WS=0.1617  DW=0.5175  Simandoux=0.4725
   apparent m = 1.541
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - OBM Resistivity Imager Inversion
@@ -22,7 +22,7 @@ Article 2: OBM Resistivity Imager Inversion
   ZB90 projection = 9.999e+00
   recovered |xi_f|=1.000e+01  rel.err=9.43e-15
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - NMR & Dielectric in Limestone
@@ -35,7 +35,7 @@ Article 3: NMR & Dielectric in Limestone
   T2(1um)=49.7 ms   T2(10um)=432.3 ms
   eps=8.64  Sw_recovered=0.300
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Pore-Scale Dielectric Measurements
@@ -47,7 +47,7 @@ Article 4: Pore-Scale Dielectric Measurements
   CRIM eps=8.96  Sw_recovered=0.350
   directional eps (fw=1) = 9.97
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Cased-Well Gas-Saturation Analysis
@@ -59,7 +59,7 @@ Article 5: Cased-Well Gas-Saturation Analysis
   RIN13=2.920  RATO13=1.786
   Sg: gas-limit=1.00  wet-limit=0.00  mid=0.50
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Array-Induction Geometric Factors
@@ -71,16 +71,16 @@ Article 6: Array-Induction Geometric Factors
   Ca = 0.3382 S/m
   inverted: Rxo=1.000  Rt=9.931  Di=0.399 m
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_shaly_sand_dry_clay  (#.##s)
-  PASS   article2_obm_imager_inversion  (#.##s)
-  PASS   article3_nmr_dielectric_limestone  (#.##s)
-  PASS   article4_porescale_dielectric  (#.##s)
-  PASS   article5_cased_well_gas_saturation  (#.##s)
-  PASS   article6_array_induction_geometric_factors  (#.##s)
+ PASS article1_shaly_sand_dry_clay (#.##s)
+ PASS article2_obm_imager_inversion (#.##s)
+ PASS article3_nmr_dielectric_limestone (#.##s)
+ PASS article4_porescale_dielectric (#.##s)
+ PASS article5_cased_well_gas_saturation (#.##s)
+ PASS article6_array_induction_geometric_factors (#.##s)
 
   6/6 modules passed

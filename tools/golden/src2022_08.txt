@@ -16,7 +16,7 @@ Article 1: Gas-Condensate PVT From Fluid Pressure Gradient
      Multivariate V_p (Eq. 9) = 1212 m/s
      CGR relative error      =  0.7 %
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - DL 2.5D LWD Resistivity Inversion
@@ -28,7 +28,7 @@ Article 2: Deep-Learning 2.5-D LWD Resistivity Inversion
   Classifier  held-out accuracy = 1.000  (paper reports ~ 0.98-0.99)
   Joint loss (Eq. 2) on a 5 % parameter error = 15.674
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Electric Dipole Bed-Detection
@@ -44,7 +44,7 @@ Article 3: Electric-Dipole Bed-Detection Sensitivity
   Reflectivity at host->bed: R_0 = +0.9998
   Reflectivity at bed->host: R_1 = -0.9998
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Bayesian DB Log Interpretation
@@ -58,7 +58,7 @@ Article 4: Database-Driven Bayesian Log Interpretation
   Posterior Vsh  = 0.059  +/- 0.008   (true 0.05)
   Posterior calc = 0.744  +/- 0.050   (true 0.75)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - CPA + FCM Log-Facies Analysis
@@ -72,15 +72,15 @@ Article 5: CPA + Fuzzy-C-Means Log-Facies Analysis
   Jump-magnitude theta values  = [np.float64(38.3), np.float64(0.39), np.float64(0.16), np.float64(10.73), np.float64(8.32)]
   FCM converged in 11 iters; objective dropped by 91.8 %
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_gas_condensate_fpg  (#.##s)
-  PASS   article2_lwd_dl_inversion  (#.##s)
-  PASS   article3_electric_dipole_sensitivity  (#.##s)
-  PASS   article4_bayesian_log_db  (#.##s)
-  PASS   article5_cpa_fcm_logfacies  (#.##s)
+ PASS article1_gas_condensate_fpg (#.##s)
+ PASS article2_lwd_dl_inversion (#.##s)
+ PASS article3_electric_dipole_sensitivity (#.##s)
+ PASS article4_bayesian_log_db (#.##s)
+ PASS article5_cpa_fcm_logfacies (#.##s)
 
   5/5 modules passed

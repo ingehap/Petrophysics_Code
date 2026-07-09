@@ -11,7 +11,7 @@ Article 1: Data Quality Considerations for ML Models
   RMSE clean / noisy     = 0.000 / 23.212
   Pearson(feat, target)  = 0.991
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - VAE Mineral Quantification
@@ -26,7 +26,7 @@ Article 2: VAE Mineral Quantification From Spectroscopy
   cost (sigma matched)   = -25.44
   cost (sigma too tight) = 1306.37
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - SEAT Dip Eigenvector Analysis
@@ -41,7 +41,7 @@ Article 3: SEAT Dip Eigenvector Analysis
   Vollmer P/G/R          = 0.12/0.88/0.00
   trend after 25deg tilt = 90.0 deg
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - DL Sedimentary Geometry (borehole image)
@@ -54,7 +54,7 @@ Article 4: DL Sedimentary Geometry From Borehole Images
   softmax accuracy / CE  = 1.00 / 0.480
   example bedform label  = 3D_var_T_PS
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Density Breakout Behind Casing
@@ -70,7 +70,7 @@ Article 5: Density Breakout Behind Casing
   Taylor delta_h (Eq. 5) = +0.638 in
   annulus classes        = gas/water/solids OK
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - NanoTags Cuttings Depth Correlation
@@ -84,7 +84,7 @@ Article 6: NanoTags for Cuttings Depth Correlation
   t_g conventional/tag   = 17.2 / 17.0 min
   depth error @60 ft/hr  = 2.0 ft for 2-min slip
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7 - Multistring Isolation (acoustic)
@@ -98,7 +98,7 @@ Article 7: Multistring Isolation Evaluation (Acoustic)
   thickness resonance f1 = 295 kHz
   isolated footage       = 210 ft  -> qualifies=True
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 8 - Overbalanced-Drilling Correction
@@ -113,7 +113,7 @@ Article 8: Overbalanced-Drilling Impact & Correction
   k at 13 p.u.           = 271 md
   damage flags           = [False, True, True, False]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 9 - Integrated Tight-Gas Char. (proxy)
@@ -127,7 +127,7 @@ Article 9: Integrated Tight-Gas Characterization (proxy)
   Winland r35 lo / hi    = 0.154 / 1.624 um
   FZI                    = [0.285 0.632 1.486]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 10 - Resistivity Rock-Physics Wolfcamp (proxy)
@@ -140,20 +140,20 @@ Article 10: Resistivity Rock-Physics in Wolfcamp (proxy)
   HCPV Archie / new      = 49923 / 53397 bbl/acre
   improvement            = 7%
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article01_data_quality_ml  (#.##s)
-  PASS   article02_vae_mineral_spectroscopy  (#.##s)
-  PASS   article03_seat_dip_eigenvectors  (#.##s)
-  PASS   article04_borehole_image_cnn_sedimentary  (#.##s)
-  PASS   article05_density_breakout_behind_casing  (#.##s)
-  PASS   article06_nanotags_cuttings_depth  (#.##s)
-  PASS   article07_multistring_isolation_acoustic  (#.##s)
-  PASS   article08_overbalanced_drilling_correction  (#.##s)
-  PASS   article09_tight_gas_neuquen_integrated  (#.##s)
-  PASS   article10_resistivity_rockphysics_wolfcamp  (#.##s)
+ PASS article01_data_quality_ml (#.##s)
+ PASS article02_vae_mineral_spectroscopy (#.##s)
+ PASS article03_seat_dip_eigenvectors (#.##s)
+ PASS article04_borehole_image_cnn_sedimentary (#.##s)
+ PASS article05_density_breakout_behind_casing (#.##s)
+ PASS article06_nanotags_cuttings_depth (#.##s)
+ PASS article07_multistring_isolation_acoustic (#.##s)
+ PASS article08_overbalanced_drilling_correction (#.##s)
+ PASS article09_tight_gas_neuquen_integrated (#.##s)
+ PASS article10_resistivity_rockphysics_wolfcamp (#.##s)
 
   10/10 modules passed

@@ -9,7 +9,7 @@ Article 1: EMLA Look-Ahead Resistivity
   UHRA / UHRP            = 6.02 dB / 11.46 deg
   DOD span 5 / 15 m      = 10.61 / 18.37 m
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Tight-Gas Drainage/Imbibition Sw
@@ -21,7 +21,7 @@ Article 2: Tight-Gas Drainage/Imbibition Sw Models
   Thomeer Sw @100/1000 psi = 0.407 / 0.311
   Land Sgt (Sgi=0.8)     = 0.322
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - First-Order Error Propagation (FOEP)
@@ -34,7 +34,7 @@ Article 3: First-Order Error Propagation (FOEP)
   contributions          = [0.723 0.248 0.029]
   Archie Sw / error      = 0.413 +/- 0.092
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Dielectric/CRIM Archie (Green River)
@@ -47,7 +47,7 @@ Article 4: Dielectric/CRIM Archie Parameters (Green River)
   Pickett m / Rw         = 1.300 / 0.230
   Sw (m=2 / m=1.3)       = 0.596 / 0.327
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Microfracturing In-Situ Stress
@@ -60,15 +60,15 @@ Article 5: Microfracturing In-Situ Stress
   breakdown / reopening  = 7300 / 6500 psi
   G-function closure     = 5800 psi
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_emla_lookahead_resistivity  (#.##s)
-  PASS   article2_tightgas_saturation_height  (#.##s)
-  PASS   article3_foep_error_propagation  (#.##s)
-  PASS   article4_dielectric_archie_greenriver  (#.##s)
-  PASS   article5_microfracturing_insitu_stress  (#.##s)
+ PASS article1_emla_lookahead_resistivity (#.##s)
+ PASS article2_tightgas_saturation_height (#.##s)
+ PASS article3_foep_error_propagation (#.##s)
+ PASS article4_dielectric_archie_greenriver (#.##s)
+ PASS article5_microfracturing_insitu_stress (#.##s)
 
   5/5 modules passed

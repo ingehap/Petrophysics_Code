@@ -9,7 +9,7 @@ Article 1: Sonic Slowness Deconvolution
   deconvolved max error  = 0.000 us/ft
   QC mismatch            = 9.357e-13
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Ultrasonic LWD Caliper & Imaging
@@ -22,7 +22,7 @@ Article 2: Ultrasonic LWD Caliper & Imaging
   R hard / soft          = 0.828 / 0.585
   recovered so/e/phi     = 0.040 / 0.0120 / 35.0
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Permittivity From LWD Resistivity
@@ -34,7 +34,7 @@ Article 3: Permittivity From LWD Resistivity
   wavelength 400kHz/2MHz = 49.17 / 20.58 m
   CRIM eps wet / oil     = 13.7 / 5.8
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Crushed-Rock GRI+ Workflow
@@ -45,7 +45,7 @@ Article 4: Crushed-Rock GRI+ Workflow
   Phitot summation/bulk  = 0.080 / 0.080
   Sw conventional / GRI+ = 0.385 / 0.445  (+16%)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - NMR Light-HC / Pore Size / Tortuosity
@@ -57,7 +57,7 @@ Article 5: NMR Light-HC Composition / Pore Size / Tortuosity
   D/D0 (short-time)      = 0.918
   tortuosity             = 85.0
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Magnetic Susceptibility on NMR
@@ -68,7 +68,7 @@ Article 6: Magnetic Susceptibility Contrast on NMR
   1/T2D at TE=1/2 ms     = 59.630 / 238.521 1/s
   recovered gradient     = 350.0 Gauss/cm  (true 350.0)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7 - ANN Formation Tops
@@ -78,7 +78,7 @@ Article 7: ANN Formation Tops From Drilling Parameters
 ============================================================
   test R / RMSE / AAPE   = 0.996 / 13.0 / 0.132%
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 8 - ML Vuggy-Facies Classifiers
@@ -89,7 +89,7 @@ Article 8: ML Classifiers for Carbonate Vuggy Facies
   accuracy LR/kNN/RF     = 1.000 / 1.000 / 1.000
   LR acc/prec/rec/F1     = 1.00/1.00/1.00/1.00
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 9 - Gas-Hydrate Joint Inversion
@@ -100,7 +100,7 @@ Article 9: Gas-Hydrate Joint Elastic-Electrical Inversion
   recovered Sh           = 0.450  (true 0.45)
   mean |dSh| joint / rt-only = 0.0228 / 0.0235
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 10 - Micro/Nanofluidic Transport
@@ -111,20 +111,20 @@ Article 10: Micro/Nanofluidic Transport in Tight Rocks
   mean free path 1bar/100bar = 75.3 / 0.753 nm
   Kn 5nm / 5um           = 1.51 / 1.51e-03
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_sonic_inversion_deconvolution  (#.##s)
-  PASS   article2_ultrasonic_lwd_imaging  (#.##s)
-  PASS   article3_lwd_permittivity  (#.##s)
-  PASS   article4_crushed_rock_gri_plus  (#.##s)
-  PASS   article5_nmr_lighthc_chalk  (#.##s)
-  PASS   article6_nmr_magnetic_susceptibility  (#.##s)
-  PASS   article7_ann_formation_tops  (#.##s)
-  PASS   article8_ml_vuggy_facies_classifiers  (#.##s)
-  PASS   article9_gashydrate_inverse_rockphysics  (#.##s)
-  PASS   article10_micronanofluidic_transport_review  (#.##s)
+ PASS article1_sonic_inversion_deconvolution (#.##s)
+ PASS article2_ultrasonic_lwd_imaging (#.##s)
+ PASS article3_lwd_permittivity (#.##s)
+ PASS article4_crushed_rock_gri_plus (#.##s)
+ PASS article5_nmr_lighthc_chalk (#.##s)
+ PASS article6_nmr_magnetic_susceptibility (#.##s)
+ PASS article7_ann_formation_tops (#.##s)
+ PASS article8_ml_vuggy_facies_classifiers (#.##s)
+ PASS article9_gashydrate_inverse_rockphysics (#.##s)
+ PASS article10_micronanofluidic_transport_review (#.##s)
 
   10/10 modules passed

@@ -38,7 +38,7 @@ McGlynn et al. pulsed-neutron 3-phase solver:
 
 === trevizan_gan_image_log ===
 Trevizan & Menezes GAN super-resolution:
-  torch trained, output shape (32, 32), losses g=#.### d=#.###
+ torch trained, output shape (32, 32), losses g=#.### d=#.###
   PASS
 
 === wang_co2_solubility ===

@@ -9,7 +9,7 @@ Article 1: Thermal Maturity-Adjusted Log Interpretation
   kerogen density vs Ro  = [1.21 1.33 1.42]
   kerogen vol correct/wrong = 0.236 / 0.277
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Free & Adsorbed Gas in Shale
@@ -20,7 +20,7 @@ Article 2: Free & Adsorbed Gas in Shale
   Gc at PL / saturation  = 0.0061 / 0.0122
   total gas-in-place     = 11.209
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - ML Well-Log Depth Matching
@@ -31,7 +31,7 @@ Article 3: ML Well-Log Depth Matching
   recovered lag / corr   = -8 / 1.000
   DTW aligned / misaligned = 2.0 / 7.0
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Net Sand From Images (NN)
@@ -42,7 +42,7 @@ Article 4: Net Sand From Borehole Images (NN)
   net-sand RMSE NN / cutoff = 0.016 / 0.307
   NN correlation R       = 0.999
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Log-Soak-Log Imbibition (Tengiz)
@@ -54,7 +54,7 @@ Article 5: Log-Soak-Log In-Situ Imbibition (Tengiz)
   recovered dSw          = 0.150  (true 0.15)
   Sigma sensitivity      = 3.96 c.u./Sw
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Micro-CT Invasion & Mudcake
@@ -66,7 +66,7 @@ Article 6: Time-Lapse Micro-CT Invasion & Mudcake
   CT porosity            = 0.300
   mudcake h(t) ratio 4/1 = 2.0  (sqrt -> 2)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7 - Through-Casing Acoustic Dual-Source
@@ -77,7 +77,7 @@ Article 7: Through-Casing Acoustic Dual-Source
   raw pick (casing)      = 57 us/ft
   dual-source pick (fm)  = 82 us/ft  (true 82)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 8 - Unconventional Rock Typing (Permian)
@@ -89,7 +89,7 @@ Article 8: Unconventional Rock Typing (Permian)
   Winland R35 (10mD,15%) = 2.01 um
   HFU log(FZI) centers   = [-0.3   0.17  0.6 ]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 9 - ANN Bulk Density While Drilling
@@ -99,7 +99,7 @@ Article 9: ANN Bulk Density While Drilling
 ============================================================
   test R / RMSE / AAPE   = 0.985 / 0.021 / 0.693%
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 10 - Through-Casing Conductivity (TEM)
@@ -110,20 +110,20 @@ Article 10: Through-Casing Conductivity via TEM
   V(t) decay ratio       = 32.0  (expect 4^2.5 = 32)
   recovered sigma        = 0.2500  (true 0.25)
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_tmali_organic_shales  (#.##s)
-  PASS   article2_free_adsorbed_gas_shale  (#.##s)
-  PASS   article3_ml_depth_matching  (#.##s)
-  PASS   article4_netsand_borehole_image_nn  (#.##s)
-  PASS   article5_log_soak_log_imbibition  (#.##s)
-  PASS   article6_microct_invasion_mudcake  (#.##s)
-  PASS   article7_through_casing_acoustic_dualsource  (#.##s)
-  PASS   article8_unconventional_rock_typing  (#.##s)
-  PASS   article9_ann_bulk_density_drilling  (#.##s)
-  PASS   article10_through_casing_tem_conductivity  (#.##s)
+ PASS article1_tmali_organic_shales (#.##s)
+ PASS article2_free_adsorbed_gas_shale (#.##s)
+ PASS article3_ml_depth_matching (#.##s)
+ PASS article4_netsand_borehole_image_nn (#.##s)
+ PASS article5_log_soak_log_imbibition (#.##s)
+ PASS article6_microct_invasion_mudcake (#.##s)
+ PASS article7_through_casing_acoustic_dualsource (#.##s)
+ PASS article8_unconventional_rock_typing (#.##s)
+ PASS article9_ann_bulk_density_drilling (#.##s)
+ PASS article10_through_casing_tem_conductivity (#.##s)
 
   10/10 modules passed

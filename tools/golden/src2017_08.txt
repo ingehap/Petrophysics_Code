@@ -7,7 +7,7 @@ Article 1: Bakken NMR Relaxometry
 ============================================================
   components             = ('kerogen', 'bitumen', 'clay-bound water', 'free water', 'free oil')
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Wettability from NMR T1/T2
@@ -18,7 +18,7 @@ Article 2: Wettability from NMR T1/T2
   USBM* water-wet/oil-wet = +0.517 / -0.971
   USBM* at T1/T2=1.488   = +0.327
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Centrifuge Capillary Pressure
@@ -30,7 +30,7 @@ Article 3: Centrifuge Capillary Pressure
   critical speed         = 1103 rpm
   Sw(0) / Sw(end)        = 1.000 / 0.305
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Pressure-Gradient Measurement Errors
@@ -41,7 +41,7 @@ Article 4: Pressure-Gradient Measurement Errors
   bracket                = 0.2129 < 0.3 < 0.3221
   method-of-moments      = 0.2793
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Contamination Quantification
@@ -52,7 +52,7 @@ Article 5: Contamination Quantification
   OD early / late        = 0.694 / 0.8859
   1.9 vol% OBM -> wt%    = 2.07 %
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Fast-Neutron Gamma Density (proxy)
@@ -62,16 +62,16 @@ Article 6: Fast-Neutron Gamma Density (proxy)
 ============================================================
   recovered density      = 2.450 g/cc (true 2.450)
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_bakken_nmr_relaxometry  (#.##s)
-  PASS   article2_wettability_nmr_t1t2  (#.##s)
-  PASS   article3_centrifuge_capillary_pressure  (#.##s)
-  PASS   article4_pressure_gradient_errors  (#.##s)
-  PASS   article5_contamination_quantification  (#.##s)
-  PASS   article6_fast_neutron_gamma_density  (#.##s)
+ PASS article1_bakken_nmr_relaxometry (#.##s)
+ PASS article2_wettability_nmr_t1t2 (#.##s)
+ PASS article3_centrifuge_capillary_pressure (#.##s)
+ PASS article4_pressure_gradient_errors (#.##s)
+ PASS article5_contamination_quantification (#.##s)
+ PASS article6_fast_neutron_gamma_density (#.##s)
 
   6/6 modules passed

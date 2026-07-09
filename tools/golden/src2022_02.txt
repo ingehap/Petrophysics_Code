@@ -17,7 +17,7 @@ Article 1: In-Situ Raman Composition Logging Tool
   Beer-Lambert X (att.)  = [2.02e+27 1.78e+26 8.96e+25 1.97e+26 1.22e+26]
   zone-2 CH4 contribution = 159136.4 (std)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - CNN vs Cross-Correlation Depth Matching
@@ -32,7 +32,7 @@ Article 2: CNN vs Cross-Correlation Depth Matching
   Ind1% (CNN improves)  = 98%
   Ind4% (CNN > Xcorr)   = 0%
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Log Analytics: Cross-Correlation / DTW + QC
@@ -48,7 +48,7 @@ Article 3: Cross-Correlation / DTW Depth Matching + QC
   alpha search           = alpha=1.00, shift=13
   DTW distance           = 14.41 over 132 steps
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Ultrasonic Logging of Creeping Shale
@@ -65,7 +65,7 @@ Article 4: Ultrasonic Logging of Creeping Shale
   R (kerosene gap)       = -0.95
   R (bonded shale)       = -0.82
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Sand-Injectite Thomas-Stieber Volumetrics
@@ -82,7 +82,7 @@ Article 5: Sand-Injectite Petrophysics & Volumetrics
   net thickness  BCA/TS  = 15.00 / 10.10 m
   HVOLH          BCA/TS  = 3.373 / 3.608 m
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Closed-Retort Core-Based Quantification
@@ -99,16 +99,16 @@ Article 6: Closed-Retort Core-Based Quantification
   Schmoker TOC @2.45/2.65 = 5.80 / 1.04 wt%
   closed efficiency      = 0.95 (open 0.8)
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_raman_logging_eor_gas_storage  (#.##s)
-  PASS   article2_cnn_xcorr_depth_matching  (#.##s)
-  PASS   article3_log_analytics_dtw_xcorr  (#.##s)
-  PASS   article4_ultrasonic_creeping_shale  (#.##s)
-  PASS   article5_sand_injectite_thomas_stieber  (#.##s)
-  PASS   article6_closed_retort_core_quant  (#.##s)
+ PASS article1_raman_logging_eor_gas_storage (#.##s)
+ PASS article2_cnn_xcorr_depth_matching (#.##s)
+ PASS article3_log_analytics_dtw_xcorr (#.##s)
+ PASS article4_ultrasonic_creeping_shale (#.##s)
+ PASS article5_sand_injectite_thomas_stieber (#.##s)
+ PASS article6_closed_retort_core_quant (#.##s)
 
   6/6 modules passed

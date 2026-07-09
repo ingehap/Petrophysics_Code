@@ -8,7 +8,7 @@ Article 1 (Tutorial): Shaly Sand No. 3 of 3
   C0 clean / shaly       = 0.5000 / 0.5022 S/m
   Thomas-Stieber porosity = 0.315
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Matrix-Adjusted Shale Porosity
@@ -20,7 +20,7 @@ Article 2: Matrix-Adjusted Shale Porosity
   porosity dry/ker       = 0.139 / 0.038
   d(phi) for +0.1 rho_ker = 1.47 p.u.
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - NMR Wettability Index in Shales
@@ -31,7 +31,7 @@ Article 3: NMR Wettability Index in Shales
   average wettability    = +0.367
   clay 5/30/80 wt%       = ['oil-wet', 'mixed-wet', 'water-wet']
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Clay-Network Resistivity Saturation
@@ -42,7 +42,7 @@ Article 4: Clay-Network Resistivity Saturation
   sigma_PC low/high psi  = 0.480 / 1.120 S/m
   Sw without/with clay   = 0.850 / 1.000
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Wideband EM DEM Permittivity
@@ -53,7 +53,7 @@ Article 5: Wideband EM DEM Permittivity
   Im(eps*) at 0.01Hz/1GHz = 1.798e+12 / 1.798e+01
   Bruggeman eff. eps     = 13.531
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Dielectric Response & Continuous CEC
@@ -64,7 +64,7 @@ Article 6: Dielectric Response & Continuous CEC
   sigma_n for CEC        = 6.3731e-10 S/m
   eps* @1kHz             = 25.0 + 1.146e-02j
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7 - Carbonate Permeability Heterogeneity
@@ -75,7 +75,7 @@ Article 7: Carbonate Permeability Heterogeneity (proxy)
   Kh / Kv                = 155.0 / 18.05 mD,  Kv/Kh = 0.116
   Dykstra-Parsons / Lorenz = 0.709 / 0.424
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 8 - Saturation-Height Stress Corrections
@@ -87,7 +87,7 @@ Article 8: Saturation-Height Stress Corrections (proxy)
   Pc lab/reservoir       = 1.0e5 / 1.310e+05 Pa
   Brooks-Corey Sw        = [1.    0.184 0.152]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 9 - NMR Relaxation of Fe3O4 Nanoparticles
@@ -98,19 +98,19 @@ Article 9: NMR Relaxation of Fe3O4 Nanoparticles (proxy)
   T2 (S/V 1e5 / 1e6)     = 1.000e+00 / 1.000e-01 s
   fitted r2 / intercept  = 12.00 / 0.500
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_shaly_sand_tutorial_part3  (#.##s)
-  PASS   article2_matrix_adjusted_shale_porosity  (#.##s)
-  PASS   article3_nmr_wettability_index_shales  (#.##s)
-  PASS   article4_clay_network_resistivity_saturation  (#.##s)
-  PASS   article5_wideband_em_dem_permittivity  (#.##s)
-  PASS   article6_dielectric_cec_shaly_sand  (#.##s)
-  PASS   article7_carbonate_permeability_heterogeneity  (#.##s)
-  PASS   article8_saturation_height_stress_correction  (#.##s)
-  PASS   article9_nmr_fe3o4_nanoparticle_relaxation  (#.##s)
+ PASS article1_shaly_sand_tutorial_part3 (#.##s)
+ PASS article2_matrix_adjusted_shale_porosity (#.##s)
+ PASS article3_nmr_wettability_index_shales (#.##s)
+ PASS article4_clay_network_resistivity_saturation (#.##s)
+ PASS article5_wideband_em_dem_permittivity (#.##s)
+ PASS article6_dielectric_cec_shaly_sand (#.##s)
+ PASS article7_carbonate_permeability_heterogeneity (#.##s)
+ PASS article8_saturation_height_stress_correction (#.##s)
+ PASS article9_nmr_fe3o4_nanoparticle_relaxation (#.##s)
 
   9/9 modules passed

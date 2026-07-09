@@ -12,7 +12,7 @@ Article 1: Oliver-Pharr Nanoindentation on Woodford Shale
   Log-creep coefficient b        =  1.205  (true 1.20)
   Fracture toughness K_c (Eq. 11) =   0.87 MPa.sqrt(m)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Shale Capillary Pressure Model
@@ -25,7 +25,7 @@ Article 2: Shale Capillary-Pressure Model Comparison
   van Genuchten   alpha=0.165  m=0.609  n=1.050  R2= 1.000  MSE=8.610e+00
   Proposed        pe= 2.148  a1=7.943  a2=1.503  R2= 1.000  MSE=3.307e+00
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Stress-Dependent Tight Permeability
@@ -41,7 +41,7 @@ Article 3: Stress-Dependent Tight Rock Permeability
   Recovered beta  = 0.830              (true 0.830)
   Recovered k0    =  100.0 nD       (true  100.0)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Mud-Filtrate Invasion (Micro-CT)
@@ -58,7 +58,7 @@ Article 4: Mud-Filtrate Invasion (Micro-CT / Buckley-Leverett)
   t =  120.0 min   x_front = 600.00 cm
   Mean Sw behind front  = 0.573  (paper reports 0.43 - 0.51)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Cement Corrosion (CO2 + H2S)
@@ -79,15 +79,15 @@ Article 5: Oilwell Cement Corrosion (CO2 + H2S)
   k(30d) = 5.954e-02 mD  (paper ~ 6.5e-2)
   Tensile strength at 30 d = 9.50 MPa  (paper ~ 9.8 MPa)
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_nanoindentation  (#.##s)
-  PASS   article2_shale_capillary_pressure  (#.##s)
-  PASS   article3_stress_dependent_permeability  (#.##s)
-  PASS   article4_mud_filtrate_invasion_ct  (#.##s)
-  PASS   article5_cement_acid_gas_corrosion  (#.##s)
+ PASS article1_nanoindentation (#.##s)
+ PASS article2_shale_capillary_pressure (#.##s)
+ PASS article3_stress_dependent_permeability (#.##s)
+ PASS article4_mud_filtrate_invasion_ct (#.##s)
+ PASS article5_cement_acid_gas_corrosion (#.##s)
 
   5/5 modules passed

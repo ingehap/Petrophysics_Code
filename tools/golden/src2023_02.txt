@@ -14,7 +14,7 @@ Article 1: RFG + Petroleum-System Modeling Case Study
      h_above=+40.0 m   phi_a / phi_a_ref = 0.874
      h_above=+60.0 m   phi_a / phi_a_ref = 0.817
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Carbonate Rock-Type Permeability
@@ -31,7 +31,7 @@ Article 2: Carbonate Rock-Type Permeability Modeling
     muddy   FZI= 0.36  RFN=3.96  r35= 0.30 um
             within x2  FZI=0.73  Lucia=0.51  Winland=0.62
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Swin-Style Fracture Extraction
@@ -52,7 +52,7 @@ Article 3: Swin-Style Borehole-Image Fracture Extraction
      iou        = 0.522
      dice       = 0.686
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Hexa-Combo LWD Case Study
@@ -74,7 +74,7 @@ Article 4: Hexa-Combo LWD Case Study (Marrat-style)
       8110.0 -  8135.0  (25.0 ft)
       8135.5 -  8230.0  (94.5 ft)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Digital-Core Poisson's Ratio
@@ -97,7 +97,7 @@ Article 5: Digital-Core Poisson's Ratio Sensitivity
 
   Minimum-nu bedding angle = 45 deg (paper reports ~45 deg)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - LM-EnRML Geosteering
@@ -111,7 +111,7 @@ Article 6: LM-EnRML Geosteering Inversion
   Posterior mean phi_layers = 0.079, 0.197, 0.090   (true [0.05, 0.22, 0.08])
   Posterior mean boundaries = [np.float64(40.627691142242355), np.float64(58.095441613188974)]   (true [44.0, 56.0])
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7 - Data-Mining Carbonate Permeability
@@ -134,7 +134,7 @@ Article 7: Data-Mining Permeability for Complex Carbonates
   Random Forest                 = 0.101 dex
   Improvement vs global         =  54.7 %  (paper reports ~18 %)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 8 - Hot-Water Injection T Optimisation
@@ -148,7 +148,7 @@ Article 8: Hot-Water Injection Temperature Optimisation
   Required T_inj  with insulation = 63.25 degC
   Energy saving (delta T)         = 13.96 degC
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 9 - Depth-Matching DTW / CDTW / COW
@@ -161,19 +161,19 @@ Article 9: Depth-Matching Algorithm Benchmark
   CDTW (10% Sakoe-Chiba band)   = 0.977
   COW  (20 segments, slack=12)  = 0.490
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_rfg_petroleum_system  (#.##s)
-  PASS   article2_carbonate_phi_k  (#.##s)
-  PASS   article3_swin_fracture  (#.##s)
-  PASS   article4_hexa_combo_lwd  (#.##s)
-  PASS   article5_digital_core_poisson  (#.##s)
-  PASS   article6_geosteering_enrml  (#.##s)
-  PASS   article7_dm_permeability  (#.##s)
-  PASS   article8_hot_water_injection  (#.##s)
-  PASS   article9_depth_matching  (#.##s)
+ PASS article1_rfg_petroleum_system (#.##s)
+ PASS article2_carbonate_phi_k (#.##s)
+ PASS article3_swin_fracture (#.##s)
+ PASS article4_hexa_combo_lwd (#.##s)
+ PASS article5_digital_core_poisson (#.##s)
+ PASS article6_geosteering_enrml (#.##s)
+ PASS article7_dm_permeability (#.##s)
+ PASS article8_hot_water_injection (#.##s)
+ PASS article9_depth_matching (#.##s)
 
   9/9 modules passed

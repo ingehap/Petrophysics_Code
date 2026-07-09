@@ -11,7 +11,7 @@ Article 1: Flexural Attenuation Technique
   annulus slant / thick  = 4.09 / 3.54 mm
   eccentricity A / phi   = 0.800 / 35.0 deg
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Saturation Exponent (Clay/Digital Rock)
@@ -24,7 +24,7 @@ Article 2: Saturation Exponent of Clay-Bearing Sandstone
   apparent n clean/clay/montmor = 2.00 / 1.16 / 1.04
   apparent n  lowCw/hiCw = 1.13 / 1.59
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Thermochemical Stimulation
@@ -37,7 +37,7 @@ Article 3: Thermochemical Stimulation of Tight Rocks
   E before/after         = 0.02 / 0.02 GPa
   Pc 0.5um / 1.5um       = 86603 / 28868 Pa
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - KDHC Facies Detection
@@ -50,14 +50,14 @@ Article 4: KDHC Facies Detection
   reservoir F1           = 0.986
   best cluster count     = 2  (silhouette 0.813)
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_flexural_attenuation_casing  (#.##s)
-  PASS   article2_saturation_exponent_clay_digitalrock  (#.##s)
-  PASS   article3_thermochemical_stimulation  (#.##s)
-  PASS   article4_kdhc_facies_clustering  (#.##s)
+ PASS article1_flexural_attenuation_casing (#.##s)
+ PASS article2_saturation_exponent_clay_digitalrock (#.##s)
+ PASS article3_thermochemical_stimulation (#.##s)
+ PASS article4_kdhc_facies_clustering (#.##s)
 
   4/4 modules passed

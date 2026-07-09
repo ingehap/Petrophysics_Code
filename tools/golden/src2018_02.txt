@@ -8,7 +8,7 @@ Article 1 (Tutorial): Shaly Sand 1 of 3
   Sw (Rt 2 / 20)         = 0.632 / 0.200
   shaly-sand 3/25/60%    = [False, True, False]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - DRP Blind Study (capillary pressure)
@@ -19,7 +19,7 @@ Article 2: DRP Blind Study (capillary pressure)
   r at Pc 1e6 / 1e5      = 144.0 / 1440.0 nm
   drainage Pc            = [314354. 355839. 491548.]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Stress Sensitivity of MICP
@@ -31,7 +31,7 @@ Article 3: Stress Sensitivity of MICP
   apex SHg/Pc at idx 1   = 0.0667,  Swanson k = 3.479 mD
   threshold pressure     = 300 psi
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Stress-Dependent Permeability
@@ -42,7 +42,7 @@ Article 4: Stress-Dependent Permeability
   k(NCS) ratio end/start = 0.317
   matrix gas k           = 2.300e-21 m^2
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - DRT Relative-Permeability QC
@@ -53,7 +53,7 @@ Article 5: DRT Relative-Permeability QC
   outliers above bound   = 12/12
   fw range               = 0.000 -> 1.000
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Densitometer Fluid Volume
@@ -63,7 +63,7 @@ Article 6: Densitometer Fluid Volume
 ============================================================
   produced water / oil   = 0.400 / 0.600 ml
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7 - Salt-Bearing Sediments (digital rock)
@@ -75,7 +75,7 @@ Article 7: Salt-Bearing Sediments (digital rock)
   salt saturation        = 0.400 (low)
   D10/D50/D90            = 1.6 / 5.0 / 16.2
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 8 - Core Restoration RSM
@@ -86,7 +86,7 @@ Article 8: Core Restoration RSM
   Box-Behnken runs       = 13
   optimum factors        = [ 1.  -1.   0.5]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 9 - Geostress Resistivity Correction
@@ -97,7 +97,7 @@ Article 9: Geostress Resistivity Correction (proxy)
   Rt0 / stressed Rt      = 20.0 / 26.00 ohm.m
   Sw bias (uncorrected)  = -0.0615
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 10 - Shale Gas Adsorption
@@ -108,20 +108,20 @@ Article 10: Shale Gas Adsorption (proxy)
   adsorbed fraction      = 0.947
   gas released 4000->500 = 116.67
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_shaly_sand_tutorial_part1  (#.##s)
-  PASS   article2_drp_blind_study_pc  (#.##s)
-  PASS   article3_stress_sensitivity_micp  (#.##s)
-  PASS   article4_stress_dependent_permeability  (#.##s)
-  PASS   article5_drt_relperm_qc  (#.##s)
-  PASS   article6_densitometer_fluid_volume  (#.##s)
-  PASS   article7_salt_bearing_digital_rock  (#.##s)
-  PASS   article8_core_restoration_rsm  (#.##s)
-  PASS   article9_geostress_resistivity_correction  (#.##s)
-  PASS   article10_shale_gas_adsorption  (#.##s)
+ PASS article1_shaly_sand_tutorial_part1 (#.##s)
+ PASS article2_drp_blind_study_pc (#.##s)
+ PASS article3_stress_sensitivity_micp (#.##s)
+ PASS article4_stress_dependent_permeability (#.##s)
+ PASS article5_drt_relperm_qc (#.##s)
+ PASS article6_densitometer_fluid_volume (#.##s)
+ PASS article7_salt_bearing_digital_rock (#.##s)
+ PASS article8_core_restoration_rsm (#.##s)
+ PASS article9_geostress_resistivity_correction (#.##s)
+ PASS article10_shale_gas_adsorption (#.##s)
 
   10/10 modules passed

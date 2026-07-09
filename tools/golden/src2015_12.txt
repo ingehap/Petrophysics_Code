@@ -9,7 +9,7 @@ Article 1: Presalt Sag NMR Petrophysics
   T2 log-mean            = 87.92 ms
   Coates / SDR k         = 0.000 / 102.594 mD
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Santos Presalt Evaluation
@@ -21,7 +21,7 @@ Article 2: Santos Presalt Carbonate Evaluation
   m / textural m*n / n   = 2.10 / 3.99 / 1.90
   Archie Sw              = 0.175
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Grosmont Bitumen Carbonates
@@ -33,7 +33,7 @@ Article 3: Grosmont Bitumen-Saturated Carbonates
   Sw / Sb                = 0.151 / 0.849
   Dean-Stark phi/Sw/Sb   = 0.200 / 0.200 / 0.800
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Tengiz Carbonate Rock Typing
@@ -44,14 +44,14 @@ Article 4: Tengiz Carbonate Rock Typing
   RQI / FZI              = 0.2564 / 1.4528
   SHF Sw @10/200         = 0.299 / 0.160
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_presalt_sag_nmr_petrophysics  (#.##s)
-  PASS   article2_santos_presalt_evaluation  (#.##s)
-  PASS   article3_grosmont_bitumen_carbonates  (#.##s)
-  PASS   article4_tengiz_rock_typing  (#.##s)
+ PASS article1_presalt_sag_nmr_petrophysics (#.##s)
+ PASS article2_santos_presalt_evaluation (#.##s)
+ PASS article3_grosmont_bitumen_carbonates (#.##s)
+ PASS article4_tengiz_rock_typing (#.##s)
 
   4/4 modules passed

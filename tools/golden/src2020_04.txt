@@ -9,7 +9,7 @@ Article 1: Critical Gas Saturation by Micro-CT
   critical gas saturation = 0.180
   connected kr proxy lo/hi = 0.676 / 0.922
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Coupled NMR + Ultrasonic
@@ -20,7 +20,7 @@ Article 2: Coupled Low-Field NMR + Ultrasonic
   T2 big / small pore    = 2307.7 / 750.0 ms
   Vp / Vs                = 3230 / 1615 m/s
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Crushed-Rock Klinkenberg Permeability
@@ -32,7 +32,7 @@ Article 3: Klinkenberg Permeability on Crushed Rock
   recovered k_l / b      = 10.00 nD / 8.00
   slip-factor ratio He/N2 = 2.91  (expect ~2.9)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - CEC From Dielectric Analysis
@@ -44,7 +44,7 @@ Article 4: CEC From High-Frequency Dielectric Analysis
   calibration R^2        = 0.997
   CEC smectite (eps=12)  = 34.5 meq/100g
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Wettability Upscaling
@@ -56,7 +56,7 @@ Article 5: Upscaling Wettability Nanoscale -> Core
   Wenzel angle (30 deg, r=1.5) = 0.0 deg
   upscaled contact angle = 57.0 deg
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Gas-Condensate Rel-Perm (LBM)
@@ -67,7 +67,7 @@ Article 6: Gas-Condensate Rel-Perm via Lattice Boltzmann
   Nc at v=1e-4 / 1e-3    = 2.00e-06 / 2.00e-05
   krg(low Nc) / krg(high Nc) = 0.307 / 0.999
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7 - Shale Imbibition Rel-Perm & Pc
@@ -79,7 +79,7 @@ Article 7: Shale Imbibition Rel-Perm & Capillary Pressure
   imbibed Sw @1000/15000 psi = 0.22 / 0.50
   krg low/high inj P     = 0.950 / 0.351
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 8 - Spontaneous Imbibition (Mixed-Wet)
@@ -90,7 +90,7 @@ Article 8: Spontaneous Gas-Water Imbibition (Mixed-Wet)
   L(t=1) / L(t=4)        = 4.376 / 8.752 mm
   net Pc  20%/80% water-wet = -24679 / 51284 Pa
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 9 - Chemical Formation Damage in Shale
@@ -103,19 +103,19 @@ Article 9: Chemically Induced Formation Damage in Shale
   k/k0 after 10% phi loss = 0.729
   fracture k 20um/10um   = 3.33e-11 / 8.33e-12 m^2
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_critical_gas_saturation_microct  (#.##s)
-  PASS   article2_coupled_nmr_ultrasonic  (#.##s)
-  PASS   article3_crushed_rock_klinkenberg  (#.##s)
-  PASS   article4_cec_dielectric_proxy  (#.##s)
-  PASS   article5_wettability_upscaling  (#.##s)
-  PASS   article6_gas_condensate_lbm_relperm  (#.##s)
-  PASS   article7_shale_imbibition_relperm_pc  (#.##s)
-  PASS   article8_spontaneous_imbibition_mixedwet  (#.##s)
-  PASS   article9_chemical_formation_damage_shale  (#.##s)
+ PASS article1_critical_gas_saturation_microct (#.##s)
+ PASS article2_coupled_nmr_ultrasonic (#.##s)
+ PASS article3_crushed_rock_klinkenberg (#.##s)
+ PASS article4_cec_dielectric_proxy (#.##s)
+ PASS article5_wettability_upscaling (#.##s)
+ PASS article6_gas_condensate_lbm_relperm (#.##s)
+ PASS article7_shale_imbibition_relperm_pc (#.##s)
+ PASS article8_spontaneous_imbibition_mixedwet (#.##s)
+ PASS article9_chemical_formation_damage_shale (#.##s)
 
   9/9 modules passed

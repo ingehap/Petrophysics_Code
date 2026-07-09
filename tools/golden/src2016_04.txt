@@ -10,7 +10,7 @@ Article 1: Reservoir Producibility Index
   WC_oil                  = 0.0143
   RPI rich/lean           = 0.01500 / 0.00042
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Bakken Shale Petrofacies
@@ -23,7 +23,7 @@ Article 2: Bakken Shale Petrofacies
   facies (Q.7/C.1/cl.2)   = siliceous
   chi-square / dof        = 180.4 / 4
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Measuring Organic Density
@@ -35,7 +35,7 @@ Article 3: A New Approach to Measuring Organic Density
   total grain density     = 2.325 g/cm^3
   fitted rho_mineral/kerogen = 2.700 / 1.300
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Pore-Confinement Phase Equilibrium
@@ -49,7 +49,7 @@ Article 4: Pore-Confinement Phase Equilibrium
   Macleod-Sugden IFT     = 45566240.04 dyne/cm
   PR Z vapor/liquid      = 0.9523 / 0.1292
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Acoustic Anisotropy (No Stoneley)
@@ -62,15 +62,15 @@ Article 5: Acoustic Anisotropy When Stoneley Is Missing
   M-ANNIE 2 C66          = 10.48
   sigma_h                = 6000 psi
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_reservoir_producibility_index  (#.##s)
-  PASS   article2_bakken_petrofacies  (#.##s)
-  PASS   article3_organic_density  (#.##s)
-  PASS   article4_pore_confinement_phase_equilibrium  (#.##s)
-  PASS   article5_acoustic_anisotropy_no_stoneley  (#.##s)
+ PASS article1_reservoir_producibility_index (#.##s)
+ PASS article2_bakken_petrofacies (#.##s)
+ PASS article3_organic_density (#.##s)
+ PASS article4_pore_confinement_phase_equilibrium (#.##s)
+ PASS article5_acoustic_anisotropy_no_stoneley (#.##s)
 
   5/5 modules passed

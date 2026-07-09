@@ -70,7 +70,7 @@
 [PASS] wave_separation_slowness — all tests passed
 
 ======================================================================
-  RESULTS: 11 passed, 0 failed  (#.## s)
+ RESULTS: 11 passed, 0 failed (#.## s)
 ======================================================================
 
   All 11 modules passed successfully!
