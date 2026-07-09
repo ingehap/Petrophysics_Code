@@ -28,6 +28,13 @@ Relaxivity in um/s, times in s, diameters in um.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 T2_CUTOFF_S = 1.5e-3         # intragranular / intergranular split
 
 
@@ -41,7 +48,7 @@ def observed_rate(t_bulk, rho, sv):
     the sum of the bulk-fluid rate and the surface rate (internal-gradient
     diffusion T2D ruled out in the paper for this sample).
     """
-    return 1.0 / t_bulk + rho * np.asarray(sv, float)
+    return petrolib.nmr.relaxation_rate(t2_bulk=t_bulk, rho=rho, s_over_v=sv)
 
 
 def surface_rate(t_observed, t_bulk):
@@ -51,7 +58,7 @@ def surface_rate(t_observed, t_bulk):
 
 def surface_to_volume(rho, t_surface):
     """Surface-to-volume ratio from the surface relaxation  S/V = 1/(rho*T_S)."""
-    return 1.0 / (rho * np.asarray(t_surface, float))
+    return petrolib.nmr.surface_to_volume(t_surface, rho=rho)
 
 
 def sv_from_bet(s_bet, rho_bulk, phi):
@@ -68,7 +75,7 @@ def sv_from_bet(s_bet, rho_bulk, phi):
 
 def pore_diameter(rho, t_surface):
     """Spherical pore diameter  d = 6/(S/V) = 6*rho*T_S  (Eqs. 13-16)."""
-    return 6.0 * rho * np.asarray(t_surface, float)
+    return petrolib.nmr.pore_radius_from_t2(t_surface, rho=rho, shape_factor=6.0)
 
 
 def bet_partition(phi_small, phi_large, s_bet):

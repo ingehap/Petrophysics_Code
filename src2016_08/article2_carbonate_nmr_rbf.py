@@ -49,7 +49,7 @@ def surface_to_volume(relaxation_time, rho):
 
     with rho the (T1 or T2) surface relaxivity.
     """
-    return 1.0 / (rho * np.asarray(relaxation_time, float))
+    return petrolib.nmr.surface_to_volume(relaxation_time, rho=rho)
 
 
 # ---------------------------------------------- closed-form permeability --------------
@@ -61,7 +61,7 @@ def coates_permeability(phi, ffi, bvi, c=10.0):
 
     with FFI/BVI the free-fluid / bound-fluid ratio split at a T2 cutoff.
     """
-    return (phi / c) ** 4 * (ffi / bvi) ** 2
+    return petrolib.nmr.timur_coates(phi, ffi, bvi, C=c)
 
 
 def sdr_permeability(phi, t2_gm, a=4.0):
@@ -71,7 +71,7 @@ def sdr_permeability(phi, t2_gm, a=4.0):
 
     with T2gm the geometric-mean (log-mean) T2.
     """
-    return a * phi ** 4 * t2_gm ** 2
+    return petrolib.nmr.sdr(phi, t2_gm, a=a)
 
 
 def t2_logmean(t2_bins, amplitudes):
@@ -79,9 +79,7 @@ def t2_logmean(t2_bins, amplitudes):
 
         T2gm = exp( sum(A_i * ln T2_i) / sum(A_i) ).
     """
-    t2 = np.asarray(t2_bins, float)
-    a = np.asarray(amplitudes, float)
-    return float(np.exp(np.sum(a * np.log(t2)) / np.sum(a)))
+    return petrolib.nmr.t2_logmean(t2_bins, amplitudes)
 
 
 # ---------------------------------------------- PCA --------------

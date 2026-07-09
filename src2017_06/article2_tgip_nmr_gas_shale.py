@@ -26,6 +26,13 @@ are faithful standard-form reconstructions.  Densities in g/cm^3.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 MW_AIR = 28.97
 SCF_PER_MOLE = 0.8305        # Eq. 15 constant (scf per mole, x1e6 cm^3/m^3)
 
@@ -34,7 +41,7 @@ SCF_PER_MOLE = 0.8305        # Eq. 15 constant (scf per mole, x1e6 cm^3/m^3)
 
 def hydrogen_index(rho, n_protons, mol_weight, rho_w=1.0, n_w=2.0, m_w=18.02):
     """Hydrogen index  HI = (rho*n/M)/(rho_w*n_w/M_w)  (Eqs. 5-6)."""
-    return (rho * n_protons / mol_weight) / (rho_w * n_w / m_w)
+    return petrolib.nmr.hydrogen_index(rho, n_protons, mol_weight, rho_w=rho_w, n_w=n_w, m_w=m_w)
 
 
 def mean_protons(component_amounts, protons_per_component):
