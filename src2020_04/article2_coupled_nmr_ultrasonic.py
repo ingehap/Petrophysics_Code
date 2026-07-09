@@ -27,6 +27,13 @@ elastic-velocity forms anchored to those definitions.  Paper anchors: 0.049 T
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 GAMMA_H = 2.675e8        # rad/s/T
 
 
@@ -34,12 +41,12 @@ GAMMA_H = 2.675e8        # rad/s/T
 
 def t1_recovery(t, M0, T1):
     """Longitudinal recovery  M(t) = M0*(1 - exp(-t/T1))  (Eq. 1)."""
-    return M0 * (1.0 - np.exp(-np.asarray(t, float) / T1))
+    return petrolib.nmr.t1_saturation_recovery(t, M0, T1)
 
 
 def t2_decay(t, M0, T2):
     """Transverse decay  M(t) = M0*exp(-t/T2)  (Eq. 2)."""
-    return M0 * np.exp(-np.asarray(t, float) / T2)
+    return petrolib.nmr.multiexp_decay(t, M0, T2)
 
 
 def surface_relaxation(rho_s, s_over_v, T2_bulk=3.0, D0=0.0, G=0.0,
@@ -49,16 +56,13 @@ def surface_relaxation(rho_s, s_over_v, T2_bulk=3.0, D0=0.0, G=0.0,
         1/T2 = 1/T2_bulk + rho_s*(S/V) + D0*gamma^2*G^2*te^2/12
     rho_s in m/s, S/V in 1/m, T2_bulk in s -> returns T2 in s.
     """
-    inv = 1.0 / T2_bulk + rho_s * s_over_v + D0 * gamma ** 2 * G ** 2 * te ** 2 / 12.0
-    return 1.0 / inv
+    return petrolib.nmr.t2_apparent(
+        t2_bulk=T2_bulk, rho=rho_s, s_over_v=s_over_v, D=D0, G=G, TE=te, gamma=gamma)
 
 
 def multiexponential(t, amplitudes, T2s):
     """Multiexponential magnetization  M(t) = sum_i A_i*exp(-t/T2_i)  (Eq. 4)."""
-    t = np.asarray(t, float)
-    A = np.asarray(amplitudes, float)
-    T2 = np.asarray(T2s, float)
-    return (A[:, None] * np.exp(-t[None, :] / T2[:, None])).sum(axis=0)
+    return petrolib.nmr.multiexp_decay(t, amplitudes, T2s)
 
 
 # ---------------------------------------------- elastic -----------------

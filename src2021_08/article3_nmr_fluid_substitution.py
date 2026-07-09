@@ -26,6 +26,13 @@ surface relaxivity in um/s, radius in um.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 T2_CUTOFF_SANDSTONE = 33.0      # ms, classic BVI cutoff
 
 
@@ -33,8 +40,9 @@ T2_CUTOFF_SANDSTONE = 33.0      # ms, classic BVI cutoff
 
 def surface_relaxation_rate(T2_bulk, rho_um_s, s_over_v_per_um):
     """1/T2 = 1/T2bulk + rho*(S/V).  rho in um/s, S/V in 1/um -> 1/ms."""
-    rho_um_ms = rho_um_s * 1e-3            # um/s -> um/ms
-    return 1.0 / T2_bulk + rho_um_ms * s_over_v_per_um
+    rho_um_ms = rho_um_s * 1e-3            # um/s -> um/ms  (adapter kept local)
+    return petrolib.nmr.relaxation_rate(
+        t2_bulk=T2_bulk, rho=rho_um_ms, s_over_v=s_over_v_per_um)
 
 
 def t2_to_pore_radius(T2_ms, rho_um_s, shape_factor=3.0):
@@ -50,7 +58,7 @@ def t2_to_pore_radius(T2_ms, rho_um_s, shape_factor=3.0):
 
 def total_porosity(amplitudes):
     """Total porosity = sum of the T2-distribution amplitudes."""
-    return float(np.sum(amplitudes))
+    return petrolib.nmr.total_porosity(amplitudes)
 
 
 def bvi_bvm(T2_ms, amplitudes, cutoff=T2_CUTOFF_SANDSTONE):

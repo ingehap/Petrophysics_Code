@@ -43,12 +43,12 @@ D0_DECANE = 1.6
 
 def timur_coates(phi, ffv, bfv, A=0.1, m=4.0, n=2.0):
     """Timur-Coates permeability  k = A*phi^m*(FFV/BFV)^n  (Eq. 1)."""
-    return A * phi ** m * (ffv / bfv) ** n
+    return petrolib.nmr.timur_coates(phi, ffv, bfv, C=A, m=m, n=n, form="prefactor")
 
 
 def sdr_permeability(phi, t2lm, A=0.1, m=4.0, n=2.0):
     """SDR permeability  k = A*phi^m*T2LM^n  (Eq. 2)."""
-    return A * phi ** m * np.asarray(t2lm, float) ** n
+    return petrolib.nmr.sdr(phi, t2lm, a=A, m=m, n=n)
 
 
 # ---------------------------------------------- Eq. 3: Carman-Kozeny ----
@@ -76,14 +76,14 @@ def archie_formation_factor(phi, m):
 
 def diffusive_tortuosity(D0, D_inf):
     """Diffusive tortuosity  tau = D0 / D_inf  (Eq. 7)."""
-    return D0 / D_inf
+    return petrolib.nmr.tortuosity(D0, D_inf)
 
 
 # ---------------------------------------------- Eqs. 9-11: diffusion ----
 
 def diffusion_length(D0, t_delta):
     """Diffusion length  L_D = sqrt(D0 * t_delta)  (Eq. 9).  um."""
-    return np.sqrt(D0 * np.asarray(t_delta, float))
+    return petrolib.flow_transport.diffusion_length(D0, t_delta)
 
 
 def sv_cylinder(d):
