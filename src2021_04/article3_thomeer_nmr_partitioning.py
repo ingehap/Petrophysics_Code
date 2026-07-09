@@ -50,17 +50,18 @@ def thomeer_shg(Pc, Bv, G, Pd):
 
 def normalized_porosity(phi):
     """Normalized porosity  PhiN = Phi/(1-Phi)  (Eq. 2)."""
-    return np.asarray(phi, float) / (1.0 - np.asarray(phi, float))
+    return petrolib.flow_transport.phi_z(phi)
 
 
 def rqi(k_md, phi):
     """Reservoir quality index  RQI = sqrt(k/(1014*Phi))  (microns).  k in mD."""
-    return np.sqrt(k_md / (1014.0 * phi))
+    # sqrt(k/(1014*phi)) == c*sqrt(k/phi) with c = sqrt(1/1014) (agrees to ~1 ULP).
+    return petrolib.flow_transport.rqi(k_md, phi, c=(1.0 / 1014.0) ** 0.5)
 
 
 def fzi(k_md, phi):
     """Flow zone indicator  FZI = RQI / PhiN  (microns)  (Eq. 3)."""
-    return rqi(k_md, phi) / normalized_porosity(phi)
+    return petrolib.flow_transport.fzi(k_md, phi, c=(1.0 / 1014.0) ** 0.5)
 
 
 # ---------------------------------------------- Eqs. 4-5: Swanson k -----

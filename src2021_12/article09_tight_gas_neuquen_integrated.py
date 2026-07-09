@@ -82,27 +82,24 @@ def winland_r35(k_md, phi):
 
     log10(r35) = 0.732 + 0.588*log10(k) - 0.864*log10(phi*100).
     """
-    k = np.asarray(k_md, float)
-    phi_pct = np.asarray(phi, float) * 100.0
-    return 10.0 ** (0.732 + 0.588 * np.log10(k) - 0.864 * np.log10(phi_pct))
+    return petrolib.flow_transport.winland_r35(k_md, phi)
 
 
 # ---------------------------------------------- hydraulic units ---------
 
 def rock_quality_index(k_md, phi):
     """RQI (microns)  = 0.0314 * sqrt(k/phi)."""
-    return 0.0314 * np.sqrt(np.asarray(k_md, float) / np.asarray(phi, float))
+    return petrolib.flow_transport.rqi(k_md, phi)
 
 
 def normalized_porosity(phi):
     """phi_z = phi / (1 - phi)."""
-    phi = np.asarray(phi, float)
-    return phi / (1.0 - phi)
+    return petrolib.flow_transport.phi_z(phi)
 
 
 def flow_zone_indicator(k_md, phi):
     """FZI (microns) = RQI / phi_z."""
-    return rock_quality_index(k_md, phi) / normalized_porosity(phi)
+    return petrolib.flow_transport.fzi(k_md, phi)
 
 
 # ---------------------------------------------- overpressure ------------

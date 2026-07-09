@@ -24,6 +24,13 @@ ratio = 2.9; absolute permeability range 1-50 nD.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Gas properties: dynamic viscosity (Pa.s) and molar mass (g/mol) at lab T
 GAS = {
     "He": {"mu": 1.96e-5, "M": 4.003},
@@ -35,7 +42,7 @@ GAS = {
 
 def klinkenberg_kapp(k_l, b, p_mean):
     """Apparent gas permeability  k_app = k_l*(1 + b/Pm)  (Eq. 3)."""
-    return k_l * (1.0 + b / np.asarray(p_mean, float))
+    return petrolib.flow_transport.klinkenberg_apparent(k_l, b=b, p_mean=p_mean)
 
 
 def mean_pressure(p1, p2):
@@ -49,11 +56,7 @@ def klinkenberg_extrapolate(p_mean, k_app):
     k_l is the intercept (1/Pm -> 0, liquid-equivalent permeability), and the
     slope equals k_l*b so b = slope/intercept.
     """
-    x = 1.0 / np.asarray(p_mean, float)
-    slope, intercept = np.polyfit(x, np.asarray(k_app, float), 1)
-    k_l = intercept
-    b = slope / intercept
-    return float(k_l), float(b)
+    return petrolib.flow_transport.fit_klinkenberg(p_mean, k_app)
 
 
 def slip_factor_ratio(gas1="He", gas2="N2"):

@@ -23,6 +23,13 @@ describes.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- damage ratio ------------
 
@@ -48,7 +55,7 @@ def swelling_permeability(k0, eps_swell, n=3.0):
 
 def kozeny_carman(k0, phi, phi0):
     """Kozeny-Carman porosity-permeability sensitivity  k/k0 = (phi/phi0)^3."""
-    return k0 * (np.asarray(phi, float) / phi0) ** 3
+    return petrolib.flow_transport.kozeny_carman_ratio(k0, phi, phi0, grain_term=False)
 
 
 def fracture_permeability(aperture_m, length_m=1.0):

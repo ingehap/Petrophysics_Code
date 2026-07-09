@@ -74,7 +74,7 @@ def sdr_krw(sw, t2lm, t2lm100, a=1.0, m=1.0, n=2.0):
 
 def klinkenberg(k_inf, b, p_mean):
     """Gas-slippage corrected permeability  k_app = k_inf*(1 + b/p_mean)."""
-    return k_inf * (1.0 + b / np.asarray(p_mean, float))
+    return petrolib.flow_transport.klinkenberg_apparent(k_inf, b=b, p_mean=p_mean)
 
 
 # ---------------------------------------------- tests --------------
