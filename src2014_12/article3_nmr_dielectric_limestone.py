@@ -30,6 +30,13 @@ T2 in seconds, radii in metres, relaxivity in m/s.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- MICP pore throat --------------
 
@@ -40,8 +47,14 @@ def washburn_radius(pc, sigma=0.480, theta_deg=140.0):
 
     with the mercury-air surface tension sigma = 0.480 N/m and contact angle
     theta ~ 140 deg, so the numerator is positive.  Pc in Pa, r in m.
+
+    The leading minus folds the obtuse mercury angle's negative cosine to a
+    positive radius; the library expresses this as the |cos(theta)| (mercury)
+    convention (absolute=True), which matches ``-2*sigma*cos(theta)/Pc`` for
+    theta in [90, 180] deg.
     """
-    return -2.0 * sigma * np.cos(np.radians(theta_deg)) / np.asarray(pc, float)
+    return petrolib.capillary_pressure.washburn_radius(
+        pc, sigma=sigma, theta_deg=theta_deg, absolute=True)
 
 
 # ---------------------------------------------- Land trapping --------------
