@@ -24,6 +24,13 @@ Implements:
 
 import numpy as np
 from dataclasses import dataclass, field
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from typing import Dict, List, Optional, Tuple
 from enum import Enum
 
@@ -159,8 +166,7 @@ def r35_pore_throat_radius(k_md: float, phi_frac: float) -> float:
     """
     if k_md <= 0 or phi_frac <= 0:
         return float("nan")
-    log_R35 = 0.732 + 0.588 * np.log10(k_md) - 0.864 * np.log10(phi_frac * 100)
-    return 10**log_R35
+    return float(petrolib.flow_transport.winland_r35(k_md, phi_frac))
 
 
 def displacement_pressure(k_md: float, phi_frac: float,

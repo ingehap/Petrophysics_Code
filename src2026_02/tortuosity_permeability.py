@@ -26,6 +26,13 @@ Kozeny (1927); Carman (1937).
 import numpy as np
 from typing import Optional
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 def kozeny_carman_permeability(porosity: float,
                                specific_surface: float,
@@ -50,7 +57,8 @@ def kozeny_carman_permeability(porosity: float,
     """
     if porosity <= 0 or specific_surface <= 0:
         return 0.0
-    return porosity**3 / (kozeny_constant * specific_surface**2)
+    return float(petrolib.flow_transport.kozeny_carman(
+        porosity, specific_surface=specific_surface, c=kozeny_constant, grain_term=False))
 
 
 def garcia_permeability_model(pore_radii: np.ndarray,

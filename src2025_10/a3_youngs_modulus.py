@@ -19,6 +19,13 @@ Implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Dynamic Young's modulus (Eq. 1)
@@ -95,12 +102,7 @@ def flow_zone_indicator(k_md, porosity):
     """Flow zone indicator FZI (Eqs. 17-19).
     k in md, porosity as fraction.
     """
-    phi = np.asarray(porosity, dtype=float)
-    k = np.asarray(k_md, dtype=float)
-    phi_z = phi / (1.0 - phi)
-    rqi = 0.0314 * np.sqrt(k / phi)  # RQI in microns
-    fzi = rqi / phi_z
-    return fzi
+    return petrolib.flow_transport.fzi(k_md, porosity)
 
 
 def discrete_rock_type(fzi):
