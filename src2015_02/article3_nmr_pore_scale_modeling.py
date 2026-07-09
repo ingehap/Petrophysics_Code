@@ -28,12 +28,19 @@ s, T2 in s, relaxivity in m/s, S/V in 1/m, diffusion in m^2/s.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- relaxation --------------
 
 def magnetization_decay(m0, time, t2):
     """Transverse magnetization decay  M(t) = M0*exp(-t/T2)."""
-    return m0 * np.exp(-np.asarray(time, float) / t2)
+    return petrolib.nmr.multiexp_decay(time, m0, t2)
 
 
 def surface_relaxation_t2(t2_bulk, rho, sv):
@@ -44,7 +51,7 @@ def surface_relaxation_t2(t2_bulk, rho, sv):
     the Bloch-Torrey surface-relaxation boundary condition in the
     well-mixed (fast-diffusion) limit.
     """
-    return 1.0 / (1.0 / t2_bulk + rho * sv)
+    return petrolib.nmr.t2_apparent(t2_bulk=t2_bulk, rho=rho, s_over_v=sv)
 
 
 def mitra_restricted_diffusion(d0, time, sv):
@@ -55,7 +62,7 @@ def mitra_restricted_diffusion(d0, time, sv):
     the early-time decrease of the apparent diffusion coefficient that encodes
     the pore surface-to-volume ratio.
     """
-    return d0 * (1.0 - (4.0 / (9.0 * np.sqrt(np.pi))) * sv * np.sqrt(d0 * np.asarray(time, float)))
+    return petrolib.nmr.mitra_short_time(d0, time, sv, normalized=False)
 
 
 # ---------------------------------------------- Bloch-Torrey 1D --------------

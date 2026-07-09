@@ -95,7 +95,7 @@ def t2_surface_relaxation(rho, surface_to_volume, t2_bulk):
     with the surface relaxivity rho (m/s), surface-to-volume ratio A/V (1/m)
     and bulk relaxation T2B (s).
     """
-    return 1.0 / (rho * surface_to_volume + 1.0 / t2_bulk)
+    return petrolib.nmr.t2_apparent(t2_bulk=t2_bulk, rho=rho, s_over_v=surface_to_volume)
 
 
 def t2_spherical_pore(rho, radius, t2_bulk=np.inf):
@@ -103,7 +103,7 @@ def t2_spherical_pore(rho, radius, t2_bulk=np.inf):
 
         1/T2 = 3*rho/r + 1/T2B.
     """
-    return t2_surface_relaxation(rho, 3.0 / radius, t2_bulk)
+    return petrolib.nmr.t2_apparent(t2_bulk=t2_bulk, rho=rho, s_over_v=3.0 / radius)
 
 
 def pore_radius_from_t2(rho, t2, t2_bulk=np.inf):
@@ -111,7 +111,7 @@ def pore_radius_from_t2(rho, t2, t2_bulk=np.inf):
 
         r = 3*rho/(1/T2 - 1/T2B).
     """
-    return 3.0 * rho / (1.0 / t2 - 1.0 / t2_bulk)
+    return petrolib.nmr.pore_radius_from_t2(t2, rho=rho, shape_factor=3.0, t2_bulk=t2_bulk)
 
 
 # ---------------------------------------------- CRIM dielectric --------------

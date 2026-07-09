@@ -28,6 +28,13 @@ permeability in mD, T2 in ms, porosity/fractions dimensionless.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- log response --------------
 
@@ -61,13 +68,13 @@ def ksdr_permeability(phi, rho, t2lm, a=4.0, b=4.0, c=2.0):
 
     with rho the surface relaxivity (um/s) and T2LM the log-mean T2.
     """
-    return a * phi ** b * (rho * t2lm) ** c
+    return petrolib.nmr.sdr(phi, t2lm, a=a, m=b, n=c, rho_um_s=rho)
 
 
 def nmr_surface_to_volume(t2, rho):
     """Pore surface-to-volume ratio from T2  1/T2 = rho*(S/V)  ->  S/V = 1/(rho*T2)
     (Eq. 4)."""
-    return 1.0 / (rho * np.asarray(t2, float))
+    return petrolib.nmr.surface_to_volume(t2, rho=rho)
 
 
 # ---------------------------------------------- thin-bed Rh-Rv --------------

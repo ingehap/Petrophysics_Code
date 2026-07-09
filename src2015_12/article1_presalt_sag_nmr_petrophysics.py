@@ -29,6 +29,13 @@ reconstructions.  Permeability in mD, times in ms, porosity as a fraction.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 T2_CUTOFF_LIMESTONE_MS = 100.0    # typical carbonate cutoff (90-200 ms range)
 
 
@@ -42,10 +49,7 @@ def t2_partition(t2_bins, amplitudes, t2_cutoff=T2_CUTOFF_LIMESTONE_MS):
 
     Returns (BVI, FFI) in the amplitude (porosity) units of the distribution.
     """
-    t2 = np.asarray(t2_bins, float)
-    a = np.asarray(amplitudes, float)
-    bvi = float(np.sum(a[t2 < t2_cutoff]))
-    return bvi, float(np.sum(a)) - bvi
+    return petrolib.nmr.bvi_ffi(t2_bins, amplitudes, cutoff_ms=t2_cutoff)
 
 
 def total_porosity(bvi, ffi):
@@ -55,21 +59,19 @@ def total_porosity(bvi, ffi):
 
 def t2_logmean(t2_bins, amplitudes):
     """Logarithmic-mean T2  T2lm = exp(sum(A*ln T2)/sum(A))."""
-    t2 = np.asarray(t2_bins, float)
-    a = np.asarray(amplitudes, float)
-    return float(np.exp(np.sum(a * np.log(t2)) / np.sum(a)))
+    return petrolib.nmr.t2_logmean(t2_bins, amplitudes)
 
 
 # ---------------------------------------------- NMR permeability --------------
 
 def coates_permeability(phi, ffi, bvi, c=10.0):
     """Coates (Timur-Coates) permeability  k = (phi/C)^4*(FFI/BVI)^2."""
-    return (phi / c) ** 4 * (ffi / bvi) ** 2
+    return petrolib.nmr.timur_coates(phi, ffi, bvi, C=c)
 
 
 def sdr_permeability(phi, t2lm, a=4.0):
     """SDR permeability  k = a*phi^4*T2lm^2  (T2lm the log-mean relaxation time)."""
-    return a * phi ** 4 * t2lm ** 2
+    return petrolib.nmr.sdr(phi, t2lm, a=a)
 
 
 # ---------------------------------------------- tests --------------

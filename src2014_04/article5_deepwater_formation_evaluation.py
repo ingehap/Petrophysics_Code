@@ -32,6 +32,13 @@ Resistivities in Ohm*m, pressures in psi.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Field-case anchors reported in the review (Figs. 9, 13, 15).
 FIELD_AVERAGE_POROSITY_PU = 30.0      # p.u., appraisal reservoir
 FIELD_WELLTEST_PERMEABILITY_MD = 1000.0
@@ -169,7 +176,7 @@ def coates_permeability(porosity, ffi, bvi, c=10.0):
     calibration constant C (~10).  This is the NMR-based permeability the review
     cites (Coates, 1998) for ranking deepwater pay quality.
     """
-    return (porosity / c) ** 4 * (ffi / bvi) ** 2
+    return petrolib.nmr.timur_coates(porosity, ffi, bvi, C=c)
 
 
 # ---------------------------------------------- tests --------------

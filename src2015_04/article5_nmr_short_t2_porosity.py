@@ -28,15 +28,20 @@ porosity in p.u. (or fraction), amplitudes dimensionless.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- inversion --------------
 
 def nmr_kernel(times, t2_bins):
     """NMR relaxation kernel  L[i,j] = exp(-t_i/T2_j)  relating the T2
     distribution to the measured magnetization decay."""
-    t = np.asarray(times, float)[:, None]
-    t2 = np.asarray(t2_bins, float)[None, :]
-    return np.exp(-t / t2)
+    return petrolib.nmr.cpmg_kernel(times, t2_bins)
 
 
 def tikhonov_t2_inversion(g, l, alpha):
@@ -91,7 +96,7 @@ def snr_correction_factor(r_t2, r_mean, beta=1.0):
 
 def total_porosity(phi_bins):
     """Total NMR porosity  phi = sum over T2 bins  (Eq. 6)."""
-    return float(np.sum(np.asarray(phi_bins, float)))
+    return petrolib.nmr.total_porosity(phi_bins)
 
 
 # ---------------------------------------------- tests --------------
