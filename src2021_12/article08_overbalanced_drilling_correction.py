@@ -29,6 +29,13 @@ permeability in md, porosity in fraction.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 BAR_PER_SG_M = 0.0980665    # bar per (sg * metre): rho_water*g in bar/m
 DAMAGE_PHI = 0.12           # porosity damage threshold (p.u. -> fraction)
 DAMAGE_K = 100.0            # permeability damage threshold (md)
@@ -70,7 +77,7 @@ def kphi_permeability(phi, a, b):
 
 def klinkenberg(k_gas, b_slip, p_mean_bar):
     """Liquid-equivalent permeability  k_inf = k_gas / (1 + b/P_mean)  (INF-8)."""
-    return k_gas / (1.0 + b_slip / p_mean_bar)
+    return petrolib.flow_transport.klinkenberg_corrected(k_gas, b=b_slip, p_mean=p_mean_bar)
 
 
 # ---------------------------------------------- INF-6: FOO --------------
