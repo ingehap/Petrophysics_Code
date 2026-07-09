@@ -294,6 +294,48 @@ def test_thomeer_log_base_hazard() -> None:
 # --- Buoyancy / lab kernels -----------------------------------------------------
 
 
+G_ACCEL_2018 = 9.81  # the tutorial trilogy's rounded gravity, passed at the facade
+
+
+def _original_capillary_rise_2018_08(sigma, theta_deg, rho, r, rho_above=0.0):
+    # src2018_08/article1 capillary_rise_height (signed cos, g = 9.81)
+    drho = rho - rho_above
+    num = 2.0 * sigma * np.cos(np.radians(theta_deg))
+    return num / (drho * G_ACCEL_2018 * np.asarray(r, float))
+
+
+def _original_pc_from_rise_2018_08(rho_w, rho_a, h):
+    # src2018_08/article1 capillary_pressure_from_rise (SI buoyancy, g = 9.81)
+    return (rho_w - rho_a) * G_ACCEL_2018 * np.asarray(h, float)
+
+
+def _original_saturation_height_2018_10(pc, rho_w, rho_hc):
+    # src2018_10/article1 saturation_height = height_above_fwl (SI, g = 9.81)
+    return np.asarray(pc, float) / ((rho_w - rho_hc) * G_ACCEL_2018)
+
+
+def test_trilogy_gravity_forms_2018() -> None:
+    r = RNG.uniform(1e-6, 5e-5, size=30)
+    assert_matches_original(
+        _original_capillary_rise_2018_08,
+        lambda s, th, rho, r_, rho_above=0.0: cap.capillary_rise_height(
+            r_, sigma=s, theta_deg=th, delta_rho=rho - rho_above, g=G_ACCEL_2018
+        ),
+        [(0.072, 0.0, 1000.0, r), (0.485, 140.0, 13546.0, r, 1.2)],
+    )
+    h = RNG.uniform(0.1, 50.0, size=30)
+    assert_matches_original(
+        _original_pc_from_rise_2018_08,
+        lambda rw, ra, h_: cap.buoyancy_pc(h_, delta_rho=rw - ra, g=G_ACCEL_2018),
+        [(1000.0, 1.2, h)],
+    )
+    assert_matches_original(
+        _original_saturation_height_2018_10,
+        lambda pc, rw, rhc: cap.height_above_fwl(pc, delta_rho=rw - rhc, g=G_ACCEL_2018),
+        [(PC, 1000.0, 700.0)],
+    )
+
+
 def test_buoyancy_round_trip_and_oilfield() -> None:
     h = RNG.uniform(1.0, 120.0, size=30)
     pc = cap.buoyancy_pc(h, delta_rho=300.0)

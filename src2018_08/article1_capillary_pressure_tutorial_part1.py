@@ -26,6 +26,13 @@ of the capillary-pressure relations the tutorial derives (Eqs. 2-13).  SI units.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 G_ACCEL = 9.81
 
 
@@ -37,7 +44,8 @@ def young_laplace(sigma, r):
     The concave (non-wetting) side carries the higher pressure; a tighter
     radius r gives a larger jump.
     """
-    return 2.0 * sigma / np.asarray(r, float)
+    # Pure spherical meniscus (theta = 0): 2*sigma/r.
+    return petrolib.capillary_pressure.young_laplace_pc(r, sigma=sigma)
 
 
 def capillary_rise_height(sigma, theta_deg, rho, r, rho_above=0.0):
@@ -48,8 +56,9 @@ def capillary_rise_height(sigma, theta_deg, rho, r, rho_above=0.0):
     A wetting fluid (theta < 90) rises; a non-wetting fluid (theta > 90, e.g.
     mercury) is depressed (h < 0).
     """
-    drho = rho - rho_above
-    return 2.0 * sigma * np.cos(np.radians(theta_deg)) / (drho * G_ACCEL * np.asarray(r, float))
+    # Signed rise (mercury depresses); g = 9.81 as the tutorial uses.
+    return petrolib.capillary_pressure.capillary_rise_height(
+        r, sigma=sigma, theta_deg=theta_deg, delta_rho=rho - rho_above, g=G_ACCEL)
 
 
 # ---------------------------------------------- capillary pressure --------------
@@ -60,7 +69,8 @@ def capillary_pressure_from_rise(rho_w, rho_a, h):
     The difference of the two hydrostatic columns (light fluid above, dense
     wetting fluid below) across the meniscus is the capillary pressure.
     """
-    return (rho_w - rho_a) * G_ACCEL * np.asarray(h, float)
+    return petrolib.capillary_pressure.buoyancy_pc(
+        h, delta_rho=rho_w - rho_a, g=G_ACCEL)
 
 
 def capillary_pressure_radius(sigma, theta_deg, r):
@@ -70,7 +80,8 @@ def capillary_pressure_radius(sigma, theta_deg, r):
     curve of a rock is the envelope of these single-tube values over the pore-
     throat-size distribution; |cos(theta)| handles a non-wetting system.
     """
-    return 2.0 * sigma * abs(np.cos(np.radians(theta_deg))) / np.asarray(r, float)
+    return petrolib.capillary_pressure.young_laplace_pc(
+        r, sigma=sigma, theta_deg=theta_deg, absolute=True)
 
 
 def wettability(theta_deg):
