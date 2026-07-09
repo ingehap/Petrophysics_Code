@@ -20,6 +20,13 @@ Reference: DOI:10.30632/PJV65N5-2024a7
 import numpy as np
 from typing import Tuple, Dict, Optional
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 def timur_coates_perm(phi: np.ndarray, BVI: np.ndarray, FFI: np.ndarray,
                       C: float = 10.0, a: float = 4.0,
@@ -80,7 +87,7 @@ def sdr_perm(phi: np.ndarray, T2lm: np.ndarray,
     """
     phi = np.asarray(phi, dtype=float)
     T2lm = np.asarray(T2lm, dtype=float)
-    k = C * phi ** a * T2lm ** b
+    k = petrolib.nmr.sdr(phi, T2lm, a=C, m=a, n=b)
     return np.maximum(k, 1e-4)
 
 
