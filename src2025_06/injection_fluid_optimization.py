@@ -28,6 +28,13 @@ import numpy as np
 from dataclasses import dataclass
 from typing import Tuple, List, Dict, Optional
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ============================================================
 # Reservoir characterisation
@@ -85,11 +92,11 @@ def capillary_pressure(ift_mn_m: float, contact_angle_deg: float,
 
     Pc = 2·γ·cos(θ) / r
     """
-    gamma = ift_mn_m * 1e-3  # N/m
-    theta = np.radians(contact_angle_deg)
-    r = pore_radius_um * 1e-6  # m
-    pc_pa = 2 * gamma * np.cos(theta) / r
-    return pc_pa * 1e-6  # MPa
+    # Young-Laplace (signed); mN/m -> N/m, um -> m, Pa -> MPa adapters in facade.
+    pc_pa = petrolib.capillary_pressure.young_laplace_pc(
+        pore_radius_um * 1e-6, sigma=ift_mn_m * 1e-3, theta_deg=contact_angle_deg, absolute=False
+    )
+    return float(pc_pa * 1e-6)  # MPa
 
 
 def imbibition_rate(reservoir: TightOilReservoir,

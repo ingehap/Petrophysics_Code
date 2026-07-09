@@ -28,6 +28,13 @@ from typing import Tuple
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ──────────────────────────────────────────────────────────────────────
 # 1. Washburn Capillary Rise  (Eq. 1)
@@ -61,11 +68,11 @@ def washburn_capillary_rise(
     np.ndarray
         Height of capillary rise h(t) (m).
     """
-    theta = math.radians(theta_deg)
-    t = np.asarray(t, float)
-    coeff = r * sigma * math.cos(theta) / (2.0 * mu)
-    h_sq = coeff * t
-    return np.sqrt(np.maximum(h_sq, 0.0))
+    # Lucas-Washburn rise; the library returns NaN for oil-wet pores (cos < 0),
+    # which this article's max(.,0) clip-to-zero maps to 0 via nan_to_num.
+    length = petrolib.capillary_pressure.lucas_washburn_length(
+        t, sigma=sigma, radius=r, theta_deg=theta_deg, mu=mu)
+    return np.nan_to_num(length, nan=0.0)
 
 
 def washburn_effective_radius(

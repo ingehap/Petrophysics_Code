@@ -62,8 +62,9 @@ def centrifuge_capillary_pressure(
     np.ndarray
         Capillary pressure (Pa) at each position.
     """
-    r = np.asarray(r, float)
-    return 0.5 * delta_rho * omega ** 2 * (R ** 2 - r ** 2)
+    # Hassler-Brunner with omega already in rad/s; radii r (inner) and R (outer face).
+    return petrolib.capillary_pressure.centrifuge_pc(
+        omega, delta_rho=delta_rho, r1=r, r2=R)
 
 
 def rpm_to_omega(rpm: float) -> float:
