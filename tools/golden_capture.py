@@ -64,8 +64,7 @@ def golden_path(dirname: str) -> Path:
     return GOLDEN_DIR / f"{dirname}.txt"
 
 
-def capture(dirnames: list[str] | None = None, jobs: int = 0,
-            timeout: float = 900.0) -> int:
+def capture(dirnames: list[str] | None = None, jobs: int = 0, timeout: float = 900.0) -> int:
     results = harness.run_all(dirnames, jobs, timeout)
     GOLDEN_DIR.mkdir(parents=True, exist_ok=True)
     n_written = n_failed = n_skipped = 0
@@ -78,11 +77,11 @@ def capture(dirnames: list[str] | None = None, jobs: int = 0,
             n_failed += 1
             print(f"  NOT captured (failing): {result.dirname} — {result.detail}")
             continue
-        golden_path(result.dirname).write_text(normalize(result.stdout),
-                                               encoding="utf-8")
+        golden_path(result.dirname).write_text(normalize(result.stdout), encoding="utf-8")
         n_written += 1
-    print(f"\n  {n_written} goldens written to {GOLDEN_DIR}, "
-          f"{n_failed} failing, {n_skipped} skipped")
+    print(
+        f"\n  {n_written} goldens written to {GOLDEN_DIR}, {n_failed} failing, {n_skipped} skipped"
+    )
     return 1 if n_failed else 0
 
 

@@ -32,7 +32,8 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 _spec = importlib.util.spec_from_file_location(
-    "run_all_issues", REPO_ROOT / "tools" / "run_all_issues.py")
+    "run_all_issues", REPO_ROOT / "tools" / "run_all_issues.py"
+)
 harness = importlib.util.module_from_spec(_spec)
 sys.modules.setdefault("run_all_issues", harness)
 _spec.loader.exec_module(harness)
@@ -40,6 +41,7 @@ _spec.loader.exec_module(harness)
 DIRS = harness.issue_dir_names()
 
 
+@pytest.mark.articles
 @pytest.mark.parametrize("dirname", DIRS)
 def test_issue_directory(dirname):
     missing = harness.missing_packages(dirname)
@@ -62,8 +64,7 @@ def test_issue_directory_count():
 
 
 def test_every_directory_has_a_recognized_runner():
-    missing = [d for d in DIRS
-               if not (REPO_ROOT / d / harness.runner_for(d)).exists()]
+    missing = [d for d in DIRS if not (REPO_ROOT / d / harness.runner_for(d)).exists()]
     assert not missing, (
         f"directories without their expected runner: {missing} — teach "
         "RUNNER_OVERRIDES in tools/run_all_issues.py about them"

@@ -56,9 +56,7 @@ RUNNER_OVERRIDES = {
 # every directory failing loudly is the correct outcome.
 OPTIONAL_PACKAGES = ("scipy", "sklearn", "skimage", "xgboost", "torch")
 
-_IMPORT_RE = re.compile(
-    r"^\s*(?:import|from)\s+(" + "|".join(OPTIONAL_PACKAGES) + r")\b", re.M
-)
+_IMPORT_RE = re.compile(r"^\s*(?:import|from)\s+(" + "|".join(OPTIONAL_PACKAGES) + r")\b", re.M)
 _TEST_ALL_RE = re.compile(r"^def test_all\b", re.M)
 
 # Expected repository invariants, asserted by tests/test_articles.py.
@@ -74,8 +72,7 @@ _SUMMARY_RULES = [
     # 2014-2022 era test_all.py, plus src2023_12, src2024_02, src2025_06,
     # src2025_12: "  5/5 modules passed", "== 8 / 8 modules passed ==",
     # "0/13 modules passed,  13 FAILED"
-    (re.compile(r"(\d+)\s*/\s*(\d+) modules passed"),
-     lambda m: m.group(1) == m.group(2)),
+    (re.compile(r"(\d+)\s*/\s*(\d+) modules passed"), lambda m: m.group(1) == m.group(2)),
     # src2023_08
     (re.compile(r"ALL ARTICLE MODULES PASSED"), lambda m: True),
     (re.compile(r"^FAILED: \[", re.M), lambda m: False),
@@ -89,11 +86,15 @@ _SUMMARY_RULES = [
     (re.compile(r"All (\d+) modules passed\."), lambda m: True),
     (re.compile(r"(\d+) of (\d+) modules FAILED"), lambda m: False),
     # src2024_08: "| Passed: 14/14 | Failed: 0/14 |"
-    (re.compile(r"Passed:\s*(\d+)/(\d+)\s*\|+\s*Failed:\s*(\d+)/(\d+)"),
-     lambda m: m.group(3) == "0" and m.group(1) == m.group(2)),
+    (
+        re.compile(r"Passed:\s*(\d+)/(\d+)\s*\|+\s*Failed:\s*(\d+)/(\d+)"),
+        lambda m: m.group(3) == "0" and m.group(1) == m.group(2),
+    ),
     # src2026_04 / src2026_06: "  RESULTS:  71/71 passed  |  0 failed"
-    (re.compile(r"RESULTS:\s+(\d+)/(\d+) passed\s+\|\s+(\d+) failed"),
-     lambda m: m.group(3) == "0" and m.group(1) == m.group(2)),
+    (
+        re.compile(r"RESULTS:\s+(\d+)/(\d+) passed\s+\|\s+(\d+) failed"),
+        lambda m: m.group(3) == "0" and m.group(1) == m.group(2),
+    ),
     # src2025_08: "All 11 modules passed successfully!"
     (re.compile(r"All (\d+) modules passed successfully!"), lambda m: True),
     # Generic "<n> passed, <m> failed" summary, shared by src2023_10
@@ -101,15 +102,14 @@ _SUMMARY_RULES = [
     # passed, 0 failed, 1.2s elapsed"), src2025_02/src2025_10 ("RESULTS:
     # 103 passed, 0 failed"), src2025_04 ("9 passed, 0 failed  (92.2s)")
     # and src2026_02 ("RESULTS: 89 passed, 0 failed out of 89 tests").
-    (re.compile(r"(\d+) passed,\s*(\d+) failed"),
-     lambda m: m.group(2) == "0"),
+    (re.compile(r"(\d+) passed,\s*(\d+) failed"), lambda m: m.group(2) == "0"),
 ]
 
 
 @dataclass
 class Result:
     dirname: str
-    status: str          # "PASS" | "FAIL" | "SKIP"
+    status: str  # "PASS" | "FAIL" | "SKIP"
     detail: str
     returncode: int | None = None
     stdout: str = ""
@@ -135,8 +135,7 @@ def required_optional_packages(dirname: str) -> set[str]:
 
 def missing_packages(dirname: str) -> set[str]:
     return {
-        pkg for pkg in required_optional_packages(dirname)
-        if importlib.util.find_spec(pkg) is None
+        pkg for pkg in required_optional_packages(dirname) if importlib.util.find_spec(pkg) is None
     }
 
 
@@ -177,10 +176,9 @@ def _verdict(returncode: int, stdout: str) -> tuple[bool, str]:
     if returncode != 0:
         return False, f"runner exited with code {returncode}"
     for pattern, decide in _SUMMARY_RULES:
-        match = None
-        for match in pattern.finditer(stdout):
-            pass
-        if match:
+        matches = list(pattern.finditer(stdout))
+        if matches:
+            match = matches[-1]
             ok = decide(match)
             return ok, f"summary: {match.group(0).strip()!r}"
     return False, "unrecognized summary format (harness must be taught this runner)"
@@ -194,8 +192,7 @@ def run_directory(dirname: str, timeout: float = 900.0) -> Result:
         return Result(dirname, "FAIL", f"runner {runner} not found")
     missing = missing_packages(dirname)
     if missing:
-        return Result(dirname, "SKIP",
-                      f"optional dependencies not installed: {sorted(missing)}")
+        return Result(dirname, "SKIP", f"optional dependencies not installed: {sorted(missing)}")
     start = time.time()
     try:
         proc = subprocess.run(
@@ -209,19 +206,33 @@ def run_directory(dirname: str, timeout: float = 900.0) -> Result:
             timeout=timeout,
         )
     except subprocess.TimeoutExpired as exc:
-        stdout = (exc.stdout or b"")
+        stdout = exc.stdout or b""
         if isinstance(stdout, bytes):
             stdout = stdout.decode("utf-8", "replace")
-        return Result(dirname, "FAIL", f"timed out after {timeout:.0f}s",
-                      None, stdout, "", time.time() - start)
+        return Result(
+            dirname,
+            "FAIL",
+            f"timed out after {timeout:.0f}s",
+            None,
+            stdout,
+            "",
+            time.time() - start,
+        )
     ok, detail = _verdict(proc.returncode, proc.stdout)
-    return Result(dirname, "PASS" if ok else "FAIL", detail,
-                  proc.returncode, proc.stdout, proc.stderr,
-                  time.time() - start)
+    return Result(
+        dirname,
+        "PASS" if ok else "FAIL",
+        detail,
+        proc.returncode,
+        proc.stdout,
+        proc.stderr,
+        time.time() - start,
+    )
 
 
-def run_all(dirnames: list[str] | None = None, jobs: int = 0,
-            timeout: float = 900.0) -> list[Result]:
+def run_all(
+    dirnames: list[str] | None = None, jobs: int = 0, timeout: float = 900.0
+) -> list[Result]:
     dirnames = dirnames or issue_dir_names()
     jobs = jobs or min(8, os.cpu_count() or 1)
     results: dict[str, Result] = {}
@@ -231,20 +242,26 @@ def run_all(dirnames: list[str] | None = None, jobs: int = 0,
             result = future.result()
             results[result.dirname] = result
             marker = {"PASS": " ", "FAIL": "!", "SKIP": "-"}[result.status]
-            print(f"  [{marker}] {result.dirname:12s} {result.status:4s} "
-                  f"({result.duration:5.1f}s)  {result.detail}", flush=True)
+            print(
+                f"  [{marker}] {result.dirname:12s} {result.status:4s} "
+                f"({result.duration:5.1f}s)  {result.detail}",
+                flush=True,
+            )
     return [results[d] for d in dirnames]
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("dirs", nargs="*", help="issue directories (default: all)")
-    parser.add_argument("--jobs", type=int, default=0,
-                        help="parallel runners (default: min(8, cpus))")
-    parser.add_argument("--timeout", type=float, default=900.0,
-                        help="per-directory timeout in seconds")
-    parser.add_argument("--require-all", action="store_true",
-                        help="treat SKIP (missing optional deps) as failure")
+    parser.add_argument(
+        "--jobs", type=int, default=0, help="parallel runners (default: min(8, cpus))"
+    )
+    parser.add_argument(
+        "--timeout", type=float, default=900.0, help="per-directory timeout in seconds"
+    )
+    parser.add_argument(
+        "--require-all", action="store_true", help="treat SKIP (missing optional deps) as failure"
+    )
     args = parser.parse_args(argv)
 
     for dirname in args.dirs:
@@ -256,8 +273,7 @@ def main(argv: list[str] | None = None) -> int:
     n_pass = sum(r.status == "PASS" for r in results)
     n_fail = sum(r.status == "FAIL" for r in results)
     n_skip = sum(r.status == "SKIP" for r in results)
-    print(f"\n  {n_pass} passed, {n_fail} failed, {n_skip} skipped "
-          f"(of {len(results)} directories)")
+    print(f"\n  {n_pass} passed, {n_fail} failed, {n_skip} skipped (of {len(results)} directories)")
     for r in results:
         if r.status == "FAIL":
             print(f"\n===== {r.dirname}: {r.detail}")
