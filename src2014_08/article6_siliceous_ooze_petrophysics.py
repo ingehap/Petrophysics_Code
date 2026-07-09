@@ -114,7 +114,7 @@ def hydrogen_index_log(phi_neutron, hi_solid=0.113, hi_water=1.0):
     HI_solid being the matrix hydrogen index (calcite ~0.113; opal-bearing
     solids carry structural water, ~0.19).
     """
-    return phi_neutron * hi_water + (1.0 - phi_neutron) * hi_solid
+    return petrolib.nuclear.hi_mix(phi_neutron, hi_fluid=hi_water, hi_matrix=hi_solid)
 
 
 def true_neutron_porosity(hi_log, hi_solid, hi_water=1.0):
@@ -122,7 +122,7 @@ def true_neutron_porosity(hi_log, hi_solid, hi_water=1.0):
 
         phi_n_true = (HI_log - HI_solid)/(HI_water - HI_solid).
     """
-    return (hi_log - hi_solid) / (hi_water - hi_solid)
+    return petrolib.nuclear.phi_from_hi(hi_log, hi_matrix=hi_solid, hi_fluid=hi_water)
 
 
 # ---------------------------------------------- Biot coefficient --------------

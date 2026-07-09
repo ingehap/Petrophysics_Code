@@ -29,6 +29,13 @@ times in seconds, lengths in cm.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 AVOGADRO = 6.022e23  # 1/mol
 
 
@@ -41,7 +48,7 @@ def compton_transmission(i0, mu_c, x):
 
     with the Compton (mass) attenuation coefficient mu_c and path length x.
     """
-    return i0 * np.exp(-mu_c * np.asarray(x, float))
+    return petrolib.nuclear.beer_lambert(i0, mu_c, x)
 
 
 def compton_attenuation(rho_b, sigma_c, av=AVOGADRO):
@@ -88,7 +95,7 @@ def neutron_gamma_density(count_ratio, slope, intercept):
     a linear calibration of density against the log of the near/far inelastic
     count ratio.
     """
-    return intercept + slope * np.log(np.asarray(count_ratio, float))
+    return petrolib.nuclear.dual_detector_density(count_ratio, 1.0, a=intercept, b=slope)
 
 
 # ---------------------------------------------- precision --------------
@@ -101,7 +108,7 @@ def counting_precision(rho, counts):
     showing the higher source intensity (larger N) of the alternatives improves
     precision for a given logging speed.
     """
-    return rho / np.sqrt(np.asarray(counts, float))
+    return petrolib.nuclear.counting_sigma(rho, counts)
 
 
 # ---------------------------------------------- tests --------------

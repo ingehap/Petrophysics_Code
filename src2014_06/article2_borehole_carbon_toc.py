@@ -28,6 +28,13 @@ crossterms).  Yields in counts/counts, TOC in weight fraction.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- inorganic carbon --------------
 
@@ -89,7 +96,7 @@ def toc_weight_fraction(y_toc, calibration):
 
     a linear yield-to-weight conversion from the spectroscopy closure.
     """
-    return calibration * np.asarray(y_toc, float)
+    return petrolib.nuclear.toc_from_yield(y_toc, calibration)
 
 
 # ---------------------------------------------- tests --------------

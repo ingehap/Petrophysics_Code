@@ -27,6 +27,13 @@ ppm; GR in API.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Standard API sensitivity coefficients (API per unit concentration)
 API_K = 16.0          # per wt% K
 API_U = 8.0           # per ppm U
@@ -74,7 +81,7 @@ def total_gamma_ray(k, u, th, api_k=API_K, api_u=API_U, api_th=API_TH):
 
         SGR = api_k*K + api_u*U + api_th*Th.
     """
-    return api_k * k + api_u * u + api_th * th
+    return petrolib.nuclear.gr_api(k, u, th, coeff=(api_k, api_u, api_th))
 
 
 def uranium_free_gamma_ray(k, th, api_k=API_K, api_th=API_TH):
@@ -84,7 +91,7 @@ def uranium_free_gamma_ray(k, th, api_k=API_K, api_th=API_TH):
 
     computed from the K and Th concentrations only.
     """
-    return api_k * k + api_th * th
+    return petrolib.nuclear.cgr_api(k, th, coeff=(api_k, api_th))
 
 
 # ---------------------------------------------- tests --------------

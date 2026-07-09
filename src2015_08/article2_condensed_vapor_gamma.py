@@ -27,6 +27,13 @@ in days, activity in Bq.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 R_GAS = 8.314                 # J/(mol*K)
 RN222_HALF_LIFE_DAYS = 3.8235 # days
 
@@ -50,12 +57,12 @@ def clausius_clapeyron(p_ref, t_ref, temperature, latent_heat, molar_mass):
 
 def decay_constant(half_life=RN222_HALF_LIFE_DAYS):
     """Radioactive decay constant  lambda = ln(2)/half_life."""
-    return np.log(2.0) / half_life
+    return petrolib.nuclear.decay_constant(half_life)
 
 
 def radioactive_decay(n0, time, half_life=RN222_HALF_LIFE_DAYS):
     """Remaining radon atoms  N = N0*exp(-lambda*t)."""
-    return n0 * np.exp(-decay_constant(half_life) * np.asarray(time, float))
+    return petrolib.nuclear.radioactive_decay(n0, time, half_life)
 
 
 def activity(n, half_life=RN222_HALF_LIFE_DAYS):
@@ -63,7 +70,7 @@ def activity(n, half_life=RN222_HALF_LIFE_DAYS):
 
     proportional to the gamma signal from the radon progeny.
     """
-    return decay_constant(half_life) * n
+    return petrolib.nuclear.activity(n, half_life)
 
 
 # ---------------------------------------------- partition / concentration --------------
