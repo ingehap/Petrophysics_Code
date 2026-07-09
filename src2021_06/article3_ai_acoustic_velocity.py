@@ -25,6 +25,13 @@ Equations transcribed from the rendered article.  Velocities in km/s
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Eq. 1: Spearman ---------
 
@@ -52,27 +59,22 @@ def spearman(x, y):
 
 def aape(y_true, y_pred):
     """Average absolute percentage error (Eq. 2), in percent."""
-    y_true = np.asarray(y_true, float); y_pred = np.asarray(y_pred, float)
-    return float(np.mean(np.abs((y_true - y_pred) / y_true)) * 100.0)
+    return petrolib.ml_stats.mape(y_true, y_pred)
 
 
 def correlation_coefficient(y_true, y_pred):
     """Correlation coefficient R (Eq. 3)."""
-    y = np.asarray(y_true, float); yh = np.asarray(y_pred, float)
-    n = len(y)
-    num = n * np.sum(y * yh) - np.sum(y) * np.sum(yh)
-    den = np.sqrt((n * np.sum(y ** 2) - np.sum(y) ** 2) *
-                  (n * np.sum(yh ** 2) - np.sum(yh) ** 2))
-    return float(num / den)
+    # The historical body used the textbook n*Sxy form; the canonical
+    # centered-sums path agrees to <1e-13 at this article's data scales
+    # and is better conditioned against cancellation.
+    return petrolib.ml_stats.pearson_r(y_true, y_pred)
 
 
 # ---------------------------------------------- normalization -----------
 
 def minmax(x, lo=-1.0, hi=1.0):
     """Min-max scale each column into [lo, hi]."""
-    x = np.asarray(x, float)
-    mn, mx = x.min(axis=0), x.max(axis=0)
-    return lo + (hi - lo) * (x - mn) / (mx - mn + 1e-12)
+    return petrolib.ml_stats.minmax(x, axis=0, lo=lo, hi=hi, eps=1e-12)
 
 
 # ---------------------------------------------- Appendix 1: Vs from Vp --
@@ -108,14 +110,21 @@ def vs_brocher(vp):
 # ---------------------------------------------- linear surrogate --------
 
 def fit_linear(X, y):
-    """Least-squares linear predictor with intercept (ANN/RF surrogate)."""
-    X1 = np.column_stack([np.ones(len(X)), X])
-    beta, *_ = np.linalg.lstsq(X1, y, rcond=None)
-    return beta
+    """Least-squares linear predictor with intercept (ANN/RF surrogate).
+
+    HAZARD (LIBRARY_MERGE_PLAN.md section 9): this article's beta puts the
+    INTERCEPT FIRST (the historical design matrix prepended the ones
+    column); the canonical ols returns (coef, intercept) separately, so
+    the layout is rebuilt explicitly here.  The column reorder changes the
+    lstsq float path by <1e-13 relative at this article's scales.
+    """
+    coef, intercept = petrolib.ml_stats.ols(X, y)
+    return np.concatenate([[intercept], coef])
 
 
 def predict_linear(X, beta):
-    return np.column_stack([np.ones(len(X)), X]) @ beta
+    beta = np.asarray(beta, float)
+    return petrolib.ml_stats.predict_linear(X, beta[1:], float(beta[0]))
 
 
 # ---------------------------------------------- tests --------------

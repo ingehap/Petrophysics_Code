@@ -520,3 +520,79 @@ def test_equivalence_b2_variants() -> None:
         ),
         [(with_nans, Y_PRED)],
     )
+
+
+# --- Hazard call sites (one-file PRs; LIBRARY_MERGE_PLAN.md section 9) ------
+
+
+def _original_r2_reversed_2022_10(y_pred, y_obs):  # src2022_10/article2:
+    # the article's r2 takes PREDICTIONS first
+    ss_res = float(np.sum((y_obs - y_pred) ** 2))
+    ss_tot = float(np.sum((y_obs - y_obs.mean()) ** 2))
+    return 1.0 - ss_res / ss_tot
+
+
+def _original_fit_linear_2021_06(X, y):  # src2021_06/article3: intercept-first beta
+    X1 = np.column_stack([np.ones(len(X)), X])
+    beta, *_ = np.linalg.lstsq(X1, y, rcond=None)
+    return beta
+
+
+def _original_predict_linear_2021_06(X, beta):  # src2021_06/article3
+    return np.column_stack([np.ones(len(X)), X]) @ beta
+
+
+def _original_correlation_textbook_2021_06(y_true, y_pred):  # src2021_06/article3
+    y = np.asarray(y_true, float)
+    yh = np.asarray(y_pred, float)
+    n = len(y)
+    num = n * np.sum(y * yh) - np.sum(y) * np.sum(yh)
+    den = np.sqrt((n * np.sum(y**2) - np.sum(y) ** 2) * (n * np.sum(yh**2) - np.sum(yh) ** 2))
+    return float(num / den)
+
+
+def _original_minmax_pm1_2021_06(x, lo=-1.0, hi=1.0):  # src2021_06/article3
+    x = np.asarray(x, float)
+    mn, mx = x.min(axis=0), x.max(axis=0)
+    return lo + (hi - lo) * (x - mn) / (mx - mn + 1e-12)
+
+
+def test_hazard_r2_reversed_arguments() -> None:
+    correct = _original_r2_reversed_2022_10(Y_PRED, Y_TRUE)
+    # the facade maps the historical (y_pred, y_obs) order onto keywords
+    assert ml_stats.r2_score(Y_TRUE, Y_PRED) == pytest.approx(correct, rel=1e-12)
+    # the trap the explicit mapping prevents: migrating positionally would
+    # compute ss_tot from the predictions and silently change the value
+    naive = ml_stats.r2_score(Y_PRED, Y_TRUE)
+    assert naive != pytest.approx(correct, rel=1e-6)
+
+
+def test_hazard_fit_linear_intercept_first() -> None:
+    rng = np.random.default_rng(11)
+    X = rng.uniform(-1, 1, size=(600, 6))
+    truth = np.array([3500.0, 200.0, -150.0, 80.0, 40.0, -60.0, 25.0])
+    y = truth[0] + X @ truth[1:] + rng.normal(0, 50.0, 600)
+    beta_old = _original_fit_linear_2021_06(X, y)
+    coef, intercept = ml_stats.ols(X, y)
+    beta_new = np.concatenate([[intercept], coef])
+    # the design-matrix column reorder changes the lstsq float path;
+    # measured <3e-14 relative at the article's data scales
+    np.testing.assert_allclose(beta_new, beta_old, rtol=1e-12, atol=0.0)
+    pred_old = _original_predict_linear_2021_06(X, beta_old)
+    pred_new = ml_stats.predict_linear(X, beta_new[1:], float(beta_new[0]))
+    np.testing.assert_allclose(pred_new, pred_old, rtol=1e-12, atol=0.0)
+
+
+def test_hazard_textbook_correlation_and_minmax() -> None:
+    rng = np.random.default_rng(12)
+    vp = rng.normal(4000.0, 300.0, 400)  # the article's velocity scale
+    vp_hat = vp + rng.normal(0, 150.0, 400)
+    assert_matches_original(
+        _original_correlation_textbook_2021_06, ml_stats.pearson_r, [(vp, vp_hat)]
+    )
+    table = rng.uniform(0.0, 500.0, size=(80, 6))
+    assert_matches_original(
+        _original_minmax_pm1_2021_06,
+        lambda v: ml_stats.minmax(v, axis=0, lo=-1.0, hi=1.0, eps=1e-12),
+        [(table,)],
+    )
