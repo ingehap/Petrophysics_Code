@@ -102,7 +102,8 @@ def misfit_cost(simulated, measured, weights=None):
     s = np.asarray(simulated, float)
     d = np.asarray(measured, float)
     w = np.ones_like(d) if weights is None else np.asarray(weights, float)
-    return float(np.sum(w * (s - d) ** 2) / np.sum(w * d ** 2))
+    num = petrolib.inversion_numerics.costs.misfit(s, d, weights=w, kind="l2")
+    return float(num / np.sum(w * d ** 2))
 
 
 def invert_sand_conductivity(sigma_h, sigma_sh_h, net_to_gross):

@@ -57,9 +57,8 @@ def fit_sqrt_time_slope(times, recovery):
     A good linear fit of RF against sqrt(t) confirms diffusion as the production
     mechanism.  Returns the slope.
     """
-    x = np.sqrt(np.asarray(times, float))
-    slope, _ = np.polyfit(x, np.asarray(recovery, float), 1)
-    return slope
+    return petrolib.inversion_numerics.fitting.fit_line(
+        times, recovery, xform="sqrt").slope
 
 
 # ---------------------------------------------- Fickian block recovery --------------

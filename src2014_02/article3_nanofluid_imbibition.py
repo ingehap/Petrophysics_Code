@@ -144,7 +144,8 @@ def imbibition_mechanism(recovery, atol=0.02):
     """
     r = np.asarray(recovery, float)
     t = np.arange(r.size, dtype=float)
-    slope, intercept = np.polyfit(t, r, 1)
+    lf = petrolib.inversion_numerics.fitting.fit_line(t, r)
+    slope, intercept = lf.slope, lf.intercept
     residual = float(np.sqrt(np.mean((r - (slope * t + intercept)) ** 2)))
     return "gravity" if residual < atol else "capillary"
 

@@ -30,6 +30,13 @@ SI units; impedivity in Ohm*m, conductivity in S/m, permittivity relative.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 EPS0 = 8.854e-12  # vacuum permittivity, F/m
 
 
@@ -90,7 +97,8 @@ def regularization_coefficient(misfit, alpha, beta, lam_max=np.inf):
     with beta > 1 so the regularization vanishes faster than the misfit as the
     inversion converges.
     """
-    return min(alpha * misfit ** beta, lam_max)
+    return petrolib.inversion_numerics.costs.reg_lambda_multiplicative(
+        misfit, alpha, beta, lam_max)
 
 
 # ---------------------------------------------- Gauss-Newton inversion --------------

@@ -27,6 +27,13 @@ in cc, time in s, rate in cc/s.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- mobility --------------
 
@@ -51,10 +58,8 @@ def drawdown_mobility(cpf, flow_rate, dp_drawdown):
 def linear_regression(x, y):
     """Least-squares slope and intercept of  y = a + b*x  (Eqs. 2-4).  Returns
     (slope, intercept)."""
-    x = np.asarray(x, float)
-    y = np.asarray(y, float)
-    b, a = np.polyfit(x, y, 1)
-    return b, a
+    lf = petrolib.inversion_numerics.fitting.fit_line(x, y)
+    return lf.slope, lf.intercept
 
 
 def regression_residual_std(x, y):

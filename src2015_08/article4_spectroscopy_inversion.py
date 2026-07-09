@@ -53,14 +53,8 @@ def tikhonov_inversion(a, b, lam, x_ref=None):
     with lam the stabilization parameter and x_ref a reference model.  Stabilizes
     underdetermined / noisy elemental-yield inversions.
     """
-    a = np.asarray(a, float)
-    b = np.asarray(b, float)
-    n = a.shape[1]
-    if x_ref is None:
-        x_ref = np.zeros(n)
-    lhs = a.T @ a + lam ** 2 * np.eye(n)
-    rhs = a.T @ b + lam ** 2 * np.asarray(x_ref, float)
-    return np.linalg.solve(lhs, rhs)
+    return petrolib.inversion_numerics.linear.tikhonov_solve(
+        a, b, lam ** 2, x_ref=x_ref)
 
 
 def cost_function(x, a, b, lam, x_ref):

@@ -25,6 +25,13 @@ reconstructed in standard log-log form.  Resistivity in ohm-m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- image processing --------------
 
@@ -65,10 +72,9 @@ def fit_calibration(r_median, r_wireline):
 
     Returns (A, B).
     """
-    x = np.log10(np.asarray(r_median, float))
-    y = np.log10(np.asarray(r_wireline, float))
-    b, a = np.polyfit(x, y, 1)
-    return a, b
+    lf = petrolib.inversion_numerics.fitting.fit_line(
+        r_median, r_wireline, xform="log10", yform="log10")
+    return lf.intercept, lf.slope
 
 
 # ---------------------------------------------- tests --------------
