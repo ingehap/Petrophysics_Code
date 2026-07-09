@@ -25,6 +25,13 @@ paper analyzes.  SI units; h in m, Pc in Pa.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 G_ACCEL = 9.81
 
 
@@ -35,7 +42,8 @@ def buoyancy_pc(height_above_fwl, rho_w=1000.0, rho_hc=700.0):
 
         Pc = (rho_w - rho_hc)*g*h
     """
-    return (rho_w - rho_hc) * G_ACCEL * np.asarray(height_above_fwl, float)
+    return petrolib.capillary_pressure.buoyancy_pc(
+        height_above_fwl, delta_rho=rho_w - rho_hc, g=G_ACCEL)
 
 
 def brooks_corey_sw(pc, pe, lam, swr=0.1):
@@ -43,14 +51,14 @@ def brooks_corey_sw(pc, pe, lam, swr=0.1):
 
         Sw = Swr + (1 - Swr)*(Pe/Pc)^lambda   for Pc >= Pe, else Sw = 1
     """
-    pc = np.asarray(pc, float)
-    sw = np.where(pc <= pe, 1.0, swr + (1.0 - swr) * (pe / pc) ** lam)
-    return np.clip(sw, swr, 1.0)
+    return petrolib.capillary_pressure.brooks_corey_sw(
+        pc, pc_entry=pe, lam=lam, swirr=swr)
 
 
 def entry_height(pe, rho_w=1000.0, rho_hc=700.0):
     """Height above FWL at which buoyancy pressure equals the entry pressure Pe."""
-    return pe / ((rho_w - rho_hc) * G_ACCEL)
+    return petrolib.capillary_pressure.height_above_fwl(
+        pe, delta_rho=rho_w - rho_hc, g=G_ACCEL)
 
 
 def is_perched(barrier_pe, buoyancy_at_barrier):

@@ -26,12 +26,21 @@ the capillary-pressure / wettability-alteration relations the protocol uses.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- capillary pressure ------
 
 def capillary_pressure(sigma, theta_deg, r):
     """Young-Laplace capillary pressure  Pc = 2*sigma*cos(theta)/r  (Pa)."""
-    return 2.0 * sigma * np.cos(np.radians(theta_deg)) / np.asarray(r, float)
+    # Signed cos (theta > 90 gives Pc < 0).
+    return petrolib.capillary_pressure.young_laplace_pc(
+        r, sigma=sigma, theta_deg=theta_deg, absolute=False)
 
 
 def drainage_swi(pore_radii, volumes, pc_applied, sigma, theta_deg):
