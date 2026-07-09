@@ -19,6 +19,13 @@ Reference: DOI:10.30632/PJV65N5-2024a4
 import numpy as np
 from typing import Tuple, List, Dict, Optional
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 def reservoir_quality_index(k_md: np.ndarray, phi: np.ndarray) -> np.ndarray:
     """
@@ -38,9 +45,10 @@ def reservoir_quality_index(k_md: np.ndarray, phi: np.ndarray) -> np.ndarray:
     np.ndarray
         RQI (µm).
     """
+    # This workflow floors k and phi at 1e-6 before the RQI kernel.
     k = np.asarray(k_md, dtype=float)
     phi = np.asarray(phi, dtype=float)
-    return 0.0314 * np.sqrt(np.maximum(k, 1e-6) / np.maximum(phi, 1e-6))
+    return petrolib.flow_transport.rqi(np.maximum(k, 1e-6), np.maximum(phi, 1e-6))
 
 
 def flow_zone_indicator(k_md: np.ndarray, phi: np.ndarray) -> np.ndarray:

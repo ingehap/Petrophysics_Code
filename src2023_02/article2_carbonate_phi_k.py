@@ -17,27 +17,35 @@ mean RFN 1.7 / 2.85 / 3.65).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # -------------------------------------------------- Amaefule FZI (Eqs 1-3) ---
 
 def rqi(k_md, phi):
     """Reservoir Quality Index, micron.  RQI = 0.0314 * sqrt(k / phi)  (Eq. 1)."""
-    return 0.0314 * np.sqrt(k_md / phi)
+    return petrolib.flow_transport.rqi(k_md, phi)
 
 
 def npi(phi):
     """Normalised Porosity Index.  NPI = phi / (1 - phi)  (Eq. 2)."""
-    return phi / (1.0 - phi)
+    return petrolib.flow_transport.phi_z(phi)
 
 
 def fzi(k_md, phi):
     """Flow Zone Indicator, micron.  FZI = RQI / NPI  (Eq. 3)."""
-    return rqi(k_md, phi) / npi(phi)
+    return petrolib.flow_transport.fzi(k_md, phi)
 
 
 def k_from_fzi(phi, fzi_mean):
     """Invert Eqs. 1-3 for k given mean FZI and porosity."""
-    return 1014.0 * (fzi_mean ** 2) * (phi ** 3) / (1.0 - phi) ** 2
+    # This copy uses exactly 1014 (not 1/0.0314**2); c = sqrt(1/1014) matches it.
+    return petrolib.flow_transport.k_from_fzi(phi, fzi_mean, c=(1.0 / 1014.0) ** 0.5)
 
 
 # ---------------------------------------------- Lucia rock-fabric number ---
@@ -48,9 +56,7 @@ def lucia_rfn_from_swi(phi_g, swi):
         log(RFN) = (3.1107 + 1.8834 * log phi_g + log Swi) /
                    (3.0634 + 1.4045 * log phi_g)
     """
-    num = 3.1107 + 1.8834 * np.log10(phi_g) + np.log10(swi)
-    den = 3.0634 + 1.4045 * np.log10(phi_g)
-    return 10.0 ** (num / den)
+    return petrolib.flow_transport.lucia_rfn_from_swi(phi_g, swi)
 
 
 def lucia_k(phi_g, rfn):
@@ -58,9 +64,7 @@ def lucia_k(phi_g, rfn):
 
         log k = (9.7982 - 12.0838 log RFN) + (8.6711 - 8.2965 log RFN) log phi_g
     """
-    a = 9.7982 - 12.0838 * np.log10(rfn)
-    b = 8.6711 - 8.2965 * np.log10(rfn)
-    return 10.0 ** (a + b * np.log10(phi_g))
+    return petrolib.flow_transport.lucia_permeability(phi_g, rfn)
 
 
 # ---------------------------------------------- Winland-Kolodzie r35 (Eq 6) ---
@@ -70,12 +74,12 @@ def winland_r35(k_md, phi):
 
         log r35 = 0.732 + 0.588 log k - 0.864 log phi   (Eq. 6)
     """
-    return 10.0 ** (0.732 + 0.588 * np.log10(k_md) - 0.864 * np.log10(phi * 100.0))
+    return petrolib.flow_transport.winland_r35(k_md, phi)
 
 
 def winland_k(phi, r35):
     """Invert Eq. 6 for permeability given r35 and porosity."""
-    return 10.0 ** ((np.log10(r35) - 0.732 + 0.864 * np.log10(phi * 100.0)) / 0.588)
+    return petrolib.flow_transport.winland_permeability(r35, phi)
 
 
 # --------------------------------------------------------- synthetic dataset --

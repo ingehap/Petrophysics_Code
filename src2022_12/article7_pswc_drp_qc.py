@@ -27,6 +27,13 @@ plugs:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # --------------------------------------------- synthetic sand-pack -----
 
@@ -123,7 +130,8 @@ def kozeny_carman_permeability(phi, Sv, c=5.0, voxel_size_um=2.0):
     Returned in millidarcy (1 D = 0.9869e-12 m^2).
     """
     Sv_per_m = Sv / (voxel_size_um * 1e-6)
-    k_m2 = phi ** 3 / (c * Sv_per_m ** 2 * (1.0 - phi) ** 2 + 1e-30)
+    k_m2 = petrolib.flow_transport.kozeny_carman(
+        phi, specific_surface=Sv_per_m, c=c, grain_term=True)
     return k_m2 / 0.9869e-15  # m^2 -> mD
 
 
