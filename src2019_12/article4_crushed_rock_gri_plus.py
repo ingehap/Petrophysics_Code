@@ -26,17 +26,24 @@ GRI+ water saturation is ~30% higher than the conventional value.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- porosity ----------------
 
 def fluid_summation_porosity(phi_air, bvo, bvw):
     """Fluid-summation total porosity  Phitot = Phiair + BVO + BVW  (Eq. 1)."""
-    return phi_air + bvo + bvw
+    return petrolib.porosity_lithology.fluid_summation_porosity(phi_air, bvo, bvw)
 
 
 def bulk_grain_porosity(v_bulk, v_grain):
     """Bulk/grain total porosity  Phitot = (V_bulk - V_grain)/V_bulk  (Eq. 2)."""
-    return (v_bulk - v_grain) / v_bulk
+    return petrolib.porosity_lithology.porosity_from_volumes(v_bulk, v_grain)
 
 
 # ---------------------------------------------- saturation --------------

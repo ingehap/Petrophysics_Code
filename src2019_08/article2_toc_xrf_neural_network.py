@@ -52,9 +52,10 @@ def passey_dlogr(resistivity, dt_sonic, r_baseline, dt_baseline, lom=10.0):
         dlogR = log10(R/R_base) + 0.02*(dt - dt_base)
         TOC = dlogR * 10^(2.297 - 0.1688*LOM)
     """
-    dlogr = np.log10(np.asarray(resistivity, float) / r_baseline) \
-        + 0.02 * (np.asarray(dt_sonic, float) - dt_baseline)
-    return np.clip(dlogr * 10 ** (2.297 - 0.1688 * lom), 0.0, None)
+    # the 0-floor clip stays local; the dlogR->TOC transform delegates.
+    toc = petrolib.porosity_lithology.toc_passey_dlogr(
+        resistivity, dt_sonic, r_baseline, dt_baseline, lom=lom)
+    return np.clip(toc, 0.0, None)
 
 
 # ---------------------------------------------- NN ----------------------

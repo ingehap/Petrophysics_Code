@@ -57,15 +57,13 @@ def porosity_cutoff_from_perm(k_cut, A=8.0, B=5.0):
 
 def pay_flag(phi, vsh, sw, phi_cut, vsh_cut=0.4, sw_cut=0.5):
     """Per-sample pay flag from porosity, shale-volume and Sw cutoffs."""
-    return ((np.asarray(phi, float) >= phi_cut)
-            & (np.asarray(vsh, float) <= vsh_cut)
-            & (np.asarray(sw, float) <= sw_cut))
+    return petrolib.porosity_lithology.pay_flag(
+        phi, vsh, sw, phi_cut=phi_cut, vsh_cut=vsh_cut, sw_cut=sw_cut)
 
 
 def net_to_gross(depth, pay):
     """Net/gross = net pay thickness / gross thickness."""
-    dz = np.abs(np.gradient(np.asarray(depth, float)))
-    return float(np.sum(dz[np.asarray(pay, bool)]) / np.sum(dz))
+    return petrolib.porosity_lithology.net_to_gross(depth, pay)
 
 
 # ---------------------------------------------- tests --------------

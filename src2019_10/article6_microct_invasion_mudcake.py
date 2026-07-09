@@ -25,6 +25,13 @@ filtration relations the method is grounded in.  Paper anchors: 42.5-um voxels,
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Beer-Lambert ------------
 
@@ -42,7 +49,7 @@ def attenuation_from_intensity(I0, I, x):
 
 def ct_porosity(mu_voxel, mu_grain, mu_fluid):
     """Porosity from voxel attenuation  phi = (mu_grain - mu)/(mu_grain - mu_fluid)."""
-    return (mu_grain - np.asarray(mu_voxel, float)) / (mu_grain - mu_fluid)
+    return petrolib.porosity_lithology.ct_porosity(mu_voxel, mu_grain, mu_fluid)
 
 
 def ct_saturation(mu_voxel, mu_dry, mu_sat):
@@ -51,8 +58,7 @@ def ct_saturation(mu_voxel, mu_dry, mu_sat):
         S = (mu - mu_dry)/(mu_sat - mu_dry)
     where mu_dry/mu_sat are the dry and fully-saturated voxel attenuations.
     """
-    return np.clip((np.asarray(mu_voxel, float) - mu_dry) / (mu_sat - mu_dry),
-                   0.0, 1.0)
+    return petrolib.porosity_lithology.ct_saturation(mu_voxel, mu_dry, mu_sat)
 
 
 # ---------------------------------------------- filtration --------------
