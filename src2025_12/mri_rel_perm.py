@@ -31,6 +31,13 @@ from typing import Tuple, Optional
 import numpy as np
 from scipy import optimize
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ──────────────────────────────────────────────────────────────────────
 # 1. Corey Relative Permeability  (Eqs. 18-19)
@@ -41,9 +48,8 @@ def corey_krw(Sw: np.ndarray, Swir: float, Sor: float,
 
     krw = krw0 * ((Sw - Swir) / (1 - Swir - Sor))^αw
     """
-    Sw = np.asarray(Sw, float)
-    Se = np.clip((Sw - Swir) / (1.0 - Swir - Sor), 0.0, 1.0)
-    return krw0 * Se ** alpha_w
+    return petrolib.relperm_wettability.corey_krw(
+        Sw, swr=Swir, sor=Sor, krw_max=krw0, nw=alpha_w)
 
 
 def corey_kro(Sw: np.ndarray, Swir: float, Sor: float,
@@ -52,9 +58,10 @@ def corey_kro(Sw: np.ndarray, Swir: float, Sor: float,
 
     kro = kro0 * ((1 - Sw - Sor) / (1 - Swir - Sor))^αo
     """
-    Sw = np.asarray(Sw, float)
-    Se = np.clip((1.0 - Sw - Sor) / (1.0 - Swir - Sor), 0.0, 1.0)
-    return kro0 * Se ** alpha_o
+    # Oil normalized independently as (1-Sw-Sor)/(1-Swir-Sor); the library's
+    # (1-Se) form on the water-normalized Se agrees to ~1 ULP.
+    return petrolib.relperm_wettability.corey_kro(
+        Sw, swr=Swir, sor=Sor, kro_max=kro0, no=alpha_o)
 
 
 # ──────────────────────────────────────────────────────────────────────
