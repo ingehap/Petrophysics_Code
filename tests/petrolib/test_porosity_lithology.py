@@ -248,14 +248,22 @@ def test_multimineral_solve_recovers_mixture() -> None:
     )
     v_true = np.array([0.5, 0.3, 0.2])
     measured = endpoints @ v_true
-    # the square (unconstrained) system recovers the mixture exactly
+    # the square (unconstrained) system recovers the mixture exactly (numpy only)
     v = pl.multimineral_solve(measured, endpoints, closure=False, method="lstsq")
     np.testing.assert_allclose(v, v_true, rtol=1e-9)
-    # the constrained solvers land near the truth and sum to one
-    for method in ("nnls", "simplex"):
-        v = pl.multimineral_solve(measured, endpoints, method=method)
-        np.testing.assert_allclose(v, v_true, atol=1e-2)
-        np.testing.assert_allclose(v.sum(), 1.0, atol=1e-2)
+    # the simplex projected-gradient solver lands near the truth and sums to one
+    v = pl.multimineral_solve(measured, endpoints, method="simplex")
+    np.testing.assert_allclose(v, v_true, atol=1e-2)
+    np.testing.assert_allclose(v.sum(), 1.0, atol=1e-2)
+
+
+def test_multimineral_nnls() -> None:
+    pytest.importorskip("scipy")  # the nnls method imports scipy lazily
+    endpoints = np.array([[2.65, 2.71, 2.87], [0.05, 0.30, 0.12], [1.81, 5.08, 3.14]])
+    v_true = np.array([0.5, 0.3, 0.2])
+    v = pl.multimineral_solve(endpoints @ v_true, endpoints, method="nnls")
+    np.testing.assert_allclose(v, v_true, atol=1e-2)
+    np.testing.assert_allclose(v.sum(), 1.0, atol=1e-2)
 
 
 def test_multimineral_bad_method_raises() -> None:
