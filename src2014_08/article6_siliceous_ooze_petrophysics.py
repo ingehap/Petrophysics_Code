@@ -29,6 +29,13 @@ GPa.  Densities in g/cm^3, moduli in GPa.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 M_SIO2 = 60.09   # g/mol
 M_H2O = 18.02    # g/mol
 
@@ -51,7 +58,7 @@ def non_opal_volume_from_gr(gr_log, gr_min, gr_max):
 
     the opal volume fraction is 1 - V_non_opal.
     """
-    return np.clip((np.asarray(gr_log, float) - gr_min) / (gr_max - gr_min), 0, 1)
+    return petrolib.porosity_lithology.gamma_ray_index(gr_log, gr_min, gr_max)
 
 
 def corrected_grain_density(opal_fraction, rho_g_opal=2.16, rho_g_rest=2.78):
@@ -83,7 +90,7 @@ def corrected_bulk_density(phi, rho_grain, rho_fluid=1.025):
 
         rho_b = (1 - phi)*rho_grain + phi*rho_fluid.
     """
-    return (1.0 - phi) * rho_grain + phi * rho_fluid
+    return petrolib.porosity_lithology.bulk_density(phi, rho_grain, rho_fluid)
 
 
 def density_porosity(rho_b, rho_grain, rho_fluid=1.025):
@@ -94,7 +101,7 @@ def density_porosity(rho_b, rho_grain, rho_fluid=1.025):
     Using a quartz grain density (2.65) instead of the opal-corrected value
     overestimates porosity by ~5-10 p.u.
     """
-    return (rho_grain - rho_b) / (rho_grain - rho_fluid)
+    return petrolib.porosity_lithology.density_porosity(rho_b, rho_grain, rho_fluid)
 
 
 # ---------------------------------------------- neutron / hydrogen index --------------

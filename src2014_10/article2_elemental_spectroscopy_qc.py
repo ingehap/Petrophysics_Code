@@ -34,6 +34,13 @@ weight fractions unless noted; densities in g/cm^3.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- oxide closure --------------
 
@@ -101,7 +108,7 @@ def organic_matter_from_toc(toc):
 
         OM = TOC/0.83 = 1.2*TOC.
     """
-    return 1.2 * np.asarray(toc, float)
+    return petrolib.porosity_lithology.kerogen_mass_fraction(toc, k=1.2)
 
 
 def remove_organic_dilution(element_fraction, toc):
