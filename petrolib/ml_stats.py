@@ -207,8 +207,12 @@ def zscore(
     src2020_10/article3.
     """
     array = np.asarray(x, np.float64)
-    mean = array.mean(axis=axis, keepdims=axis is not None)
-    std = array.std(axis=axis, keepdims=axis is not None)
+    if axis is None:
+        mean: np.float64 | NDArray[np.float64] = array.mean()
+        std: np.float64 | NDArray[np.float64] = array.std()
+    else:
+        mean = array.mean(axis=axis, keepdims=True)
+        std = array.std(axis=axis, keepdims=True)
     with np.errstate(divide="ignore", invalid="ignore"):
         return np.asarray((array - mean) / (std + eps))
 
@@ -228,8 +232,12 @@ def minmax(
     src2019_10/article9, src2020_06/article5.
     """
     array = np.asarray(x, np.float64)
-    x_min = array.min(axis=axis, keepdims=axis is not None)
-    x_max = array.max(axis=axis, keepdims=axis is not None)
+    if axis is None:
+        x_min: np.float64 | NDArray[np.float64] = array.min()
+        x_max: np.float64 | NDArray[np.float64] = array.max()
+    else:
+        x_min = array.min(axis=axis, keepdims=True)
+        x_max = array.max(axis=axis, keepdims=True)
     with np.errstate(divide="ignore", invalid="ignore"):
         unit = (array - x_min) / (x_max - x_min + eps)
     return np.asarray(lo + unit * (hi - lo))
