@@ -24,30 +24,20 @@ unsupervised T1-T2 fluid-volume method the paper presents (numpy k-means).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- clustering --------------
 
 def kmeans(X, k, weights=None, iters=100, seed=0):
     """Weighted k-means; returns (labels, centers)."""
-    X = np.asarray(X, float)
-    w = np.ones(len(X)) if weights is None else np.asarray(weights, float)
-    idx = [int(np.argmax(np.linalg.norm(X - X.mean(0), axis=1)))]
-    for _ in range(1, k):
-        d = np.min([np.linalg.norm(X - X[j], axis=1) for j in idx], axis=0)
-        idx.append(int(np.argmax(d)))
-    centers = X[idx].copy()
-    labels = np.zeros(len(X), int)
-    for _ in range(iters):
-        D = np.stack([np.linalg.norm(X - c, axis=1) for c in centers], axis=1)
-        new = D.argmin(1)
-        if np.array_equal(new, labels):
-            break
-        labels = new
-        for c in range(k):
-            m = labels == c
-            if m.any():
-                centers[c] = np.average(X[m], axis=0, weights=w[m])
-    return labels, centers
+    del seed  # historical, unused: the farthest-point init is deterministic
+    return petrolib.ml_stats.kmeans(X, k, weights=weights, max_iter=iters)
 
 
 def fluid_volumes(labels, amplitudes, n_clusters):

@@ -32,6 +32,13 @@ times in ms, porosity as a fraction.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- NMR pore size --------------
 
@@ -86,13 +93,8 @@ def pca_reduce(distributions, n_components):
     mean) where scores is (n_samples, n_components); only the first few PCs of
     the T2 distribution are used as RBF inputs.
     """
-    x = np.asarray(distributions, float)
-    mean = x.mean(axis=0)
-    xc = x - mean
-    # SVD of the centered data; right-singular vectors are the principal axes
-    _, _, vt = np.linalg.svd(xc, full_matrices=False)
-    components = vt[:n_components]
-    scores = xc @ components.T
+    scores, components, mean, _ = petrolib.ml_stats.pca(
+        distributions, n_components=n_components)
     return scores, components, mean
 
 

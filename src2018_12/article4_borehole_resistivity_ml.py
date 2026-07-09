@@ -22,6 +22,13 @@ standard-form reconstructions of the ML-modeling approach the paper applies.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- forward model -----------
 
@@ -66,7 +73,7 @@ def predict_surrogate(p, X):
 
 
 def rmse(y, yhat):
-    return float(np.sqrt(np.mean((np.asarray(y, float) - np.asarray(yhat, float)) ** 2)))
+    return petrolib.ml_stats.rmse(y, yhat)
 
 
 # ---------------------------------------------- tests --------------

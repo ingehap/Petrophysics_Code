@@ -23,17 +23,22 @@ proxy implementing the standard data-preconditioning steps the paper recommends.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- scaling -----------------
 
 def zscore(x):
-    x = np.asarray(x, float)
-    return (x - x.mean()) / (x.std() + 1e-12)
+    return petrolib.ml_stats.zscore(x, eps=1e-12)
 
 
 def minmax(x):
-    x = np.asarray(x, float)
-    return (x - x.min()) / (x.max() - x.min() + 1e-12)
+    return petrolib.ml_stats.minmax(x, eps=1e-12)
 
 
 # ---------------------------------------------- cleaning ----------------
