@@ -31,6 +31,13 @@ psi, IFT in dyne/cm, densities in g/cm^3, saturations/porosities as fractions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 GRAV_PSI_PER_FT = 0.433       # psi/ft per unit specific gravity (water column)
 
 
@@ -42,8 +49,11 @@ def pc_air_brine_from_mercury(pc_am, ift_ab=72.0, theta_ab=0.0,
 
         Pc_ab = Pc_am * (IFT_ab*cos(theta_ab)) / (IFT_am*cos(theta_am)).
     """
-    return pc_am * (ift_ab * abs(np.cos(np.radians(theta_ab)))
-                    / (ift_am * abs(np.cos(np.radians(theta_am)))))
+    # |cos| convention (mercury conversions stay positive): from = air-mercury,
+    # to = air-brine.
+    return petrolib.capillary_pressure.pc_convert_system(
+        pc_am, sigma_from=ift_am, theta_from_deg=theta_am,
+        sigma_to=ift_ab, theta_to_deg=theta_ab, absolute=True)
 
 
 def cbw_saturation_correction(swp, phi_t, phi_e):
@@ -65,8 +75,10 @@ def pc_lab_to_reservoir(pc_lab, ift_res=47.0, theta_res=0.0,
 
         Pc_res = Pc_lab * (IFT_res*cos(theta_res)) / (IFT_lab*cos(theta_lab)).
     """
-    return pc_lab * (ift_res * np.cos(np.radians(theta_res))
-                     / (ift_lab * np.cos(np.radians(theta_lab))))
+    # Signed cos here (both angles ~0 by default): from = lab, to = reservoir.
+    return petrolib.capillary_pressure.pc_convert_system(
+        pc_lab, sigma_from=ift_lab, theta_from_deg=theta_lab,
+        sigma_to=ift_res, theta_to_deg=theta_res, absolute=False)
 
 
 # ---------------------------------------------- drainage (Thomeer) --------------
@@ -79,8 +91,11 @@ def thomeer_sw(pc, pe, g, swirr):
     with entry pressure Pe, pore-geometrical factor G and irreducible water
     saturation Swirr.
     """
-    pc = np.asarray(pc, float)
-    snw = np.where(pc > pe, (1.0 - swirr) * np.exp(-g / np.log10(pc / pe)), 0.0)
+    # The nonwetting (mercury/gas) saturation is the Thomeer SHg form with
+    # bulk-volume ceiling (1 - Swirr) and Pd = Pe (log10 base); Sw is its
+    # complement.
+    snw = petrolib.capillary_pressure.thomeer_shg(
+        pc, bv_inf=1.0 - swirr, g=g, pd=pe, log_base=10.0)
     return 1.0 - snw
 
 
@@ -118,7 +133,10 @@ def brooks_corey_imbibition_pc(swn, a, b):
 
     where A is the capillary pressure at Swgt (Swn = 1) and B is the curvature.
     """
-    return a * np.asarray(swn, float) ** (-b)
+    # Swn is already normalized (swirr=0 identity window); the library exponent
+    # is -1/lam, so lam = 1/B recovers A*Swn^(-B).
+    return petrolib.capillary_pressure.brooks_corey_pc(
+        swn, pc_entry=a, lam=1.0 / b, swirr=0.0)
 
 
 def brooks_corey_imbibition_sw(pc, a, b, swirr, sw_gt):
@@ -143,7 +161,9 @@ def buoyancy_pc(height_above_fwl, sg_water, sg_gas):
 
     the equilibrium relation Pc = (rho_w - rho_g)*g*h converted to psi/ft.
     """
-    return GRAV_PSI_PER_FT * (sg_water - sg_gas) * np.asarray(height_above_fwl, float)
+    return petrolib.capillary_pressure.buoyancy_pc_gradient(
+        height_above_fwl, sg_water=sg_water, sg_hc=sg_gas,
+        gradient_psi_per_ft=GRAV_PSI_PER_FT)
 
 
 # ---------------------------------------------- tests --------------
