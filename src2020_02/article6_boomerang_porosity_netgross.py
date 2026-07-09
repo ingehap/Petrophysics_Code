@@ -27,12 +27,19 @@ relations the paper's title describes.  Porosities as fractions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- porosity ----------------
 
 def density_porosity(rho_b, rho_ma=2.65, rho_fl=1.0):
     """Density porosity  phiD = (rho_ma - rho_b)/(rho_ma - rho_fl)."""
-    return (rho_ma - np.asarray(rho_b, float)) / (rho_ma - rho_fl)
+    return petrolib.porosity_lithology.density_porosity(rho_b, rho_ma, rho_fl)
 
 
 def gas_corrected_porosity(phi_n, phi_d):
@@ -41,30 +48,25 @@ def gas_corrected_porosity(phi_n, phi_d):
     The root-mean-square of the neutron (gas-suppressed) and density
     (gas-inflated) porosities recovers a porosity between the two.
     """
-    phi_n = np.asarray(phi_n, float); phi_d = np.asarray(phi_d, float)
-    return np.sqrt((phi_n ** 2 + phi_d ** 2) / 2.0)
+    return petrolib.porosity_lithology.neutron_density_porosity(phi_n, phi_d, method="rms")
 
 
 def effective_porosity(phi_total, vsh, phi_shale):
     """Shale-corrected effective porosity  phie = phi - Vsh*phi_sh (>= 0)."""
-    return np.clip(np.asarray(phi_total, float)
-                   - np.asarray(vsh, float) * phi_shale, 0.0, None)
+    return petrolib.porosity_lithology.effective_porosity(phi_total, vsh, phi_shale)
 
 
 # ---------------------------------------------- net/gross ---------------
 
 def vshale_from_gr(gr, gr_clean, gr_shale):
     """Linear shale volume from gamma ray  Vsh = (GR - GR_clean)/(GR_shale - GR_clean)."""
-    return np.clip((np.asarray(gr, float) - gr_clean) / (gr_shale - gr_clean),
-                   0.0, 1.0)
+    return petrolib.porosity_lithology.gamma_ray_index(gr, gr_clean, gr_shale)
 
 
 def net_to_gross(depth, phie, vsh, phi_cut=0.08, vsh_cut=0.4):
     """Net/gross: fraction of gross thickness meeting porosity & shale cutoffs."""
-    depth = np.asarray(depth, float)
-    dz = np.abs(np.gradient(depth))
-    net = (np.asarray(phie, float) >= phi_cut) & (np.asarray(vsh, float) <= vsh_cut)
-    return float(np.sum(dz[net]) / np.sum(dz))
+    net = petrolib.porosity_lithology.pay_flag(phie, vsh, phi_cut=phi_cut, vsh_cut=vsh_cut)
+    return petrolib.porosity_lithology.net_to_gross(depth, net)
 
 
 # ---------------------------------------------- tests --------------

@@ -27,6 +27,13 @@ S_wir = 0.332, S_or = 0.226, E_D ~ 66%).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 WATER_WET_ANGLE = 90.0      # contact-angle threshold (deg)
 
 
@@ -35,7 +42,7 @@ WATER_WET_ANGLE = 90.0      # contact-angle threshold (deg)
 def porosity_from_binary(pore_mask):
     """Porosity = pore-pixel fraction of a binary image."""
     pore_mask = np.asarray(pore_mask, bool)
-    return float(pore_mask.sum()) / pore_mask.size
+    return float(petrolib.porosity_lithology.porosity_from_voxel_count(pore_mask.sum(), pore_mask.size))
 
 
 # ---------------------------------------------- saturation --------------

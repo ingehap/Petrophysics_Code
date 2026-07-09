@@ -39,21 +39,20 @@ except ImportError:  # bare clone, not installed
 
 def vshale_linear(gr, gr_clean, gr_shale):
     """Linear gamma-ray shale index IGR = (GR - GRclean)/(GRshale - GRclean)."""
-    igr = (np.asarray(gr, float) - gr_clean) / (gr_shale - gr_clean)
-    return np.clip(igr, 0.0, 1.0)
+    return petrolib.porosity_lithology.gamma_ray_index(gr, gr_clean, gr_shale)
 
 
 def vshale_larionov_old(gr, gr_clean, gr_shale):
     """Larionov (1969) older-rocks correction  Vsh = 0.33*(2^(2*IGR) - 1)."""
-    igr = vshale_linear(gr, gr_clean, gr_shale)
-    return np.clip(0.33 * (2.0 ** (2.0 * igr) - 1.0), 0.0, 1.0)
+    return petrolib.porosity_lithology.vshale_from_gr(
+        gr, gr_clean, gr_shale, method="larionov_older", clip=(0.0, 1.0))
 
 
 # ---------------------------------------------- porosity ----------------
 
 def density_porosity(rhob, rho_ma=2.65, rho_fl=1.0):
     """Density porosity  phi = (rho_ma - rhob)/(rho_ma - rho_fl)."""
-    return (rho_ma - np.asarray(rhob, float)) / (rho_ma - rho_fl)
+    return petrolib.porosity_lithology.density_porosity(rhob, rho_ma, rho_fl)
 
 
 # ---------------------------------------------- saturation --------------
