@@ -23,6 +23,7 @@ _SUBMODULES = frozenset(
         "capillary_pressure",
         "constants",
         "ml_stats",
+        "relperm_wettability",
         "saturation_resistivity",
         "testing",
         "units",

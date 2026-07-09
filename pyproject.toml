@@ -43,3 +43,9 @@ markers = [
 [tool.mypy]
 strict = true
 files = ["petrolib"]
+
+# scipy ships no type stubs; petrolib imports it lazily in a few functions
+# (e.g. relperm_wettability.fit_corey) with a clear ImportError fallback.
+[[tool.mypy.overrides]]
+module = ["scipy.*"]
+ignore_missing_imports = true
