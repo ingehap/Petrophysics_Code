@@ -58,9 +58,8 @@ def oxide_closure(oxides):
 
     Returns (closed_oxides, F).
     """
-    ox = np.asarray(oxides, float)
-    f = 1.0 / ox.sum()
-    return f * ox, float(f)
+    closed, factor = petrolib.geochem_fluids.core_geochem.oxide_closure(oxides)
+    return closed, float(factor)
 
 
 def pyrite_from_sulfur(sulfur_wt_pct):

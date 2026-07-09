@@ -28,6 +28,13 @@ DFA optical relation it relies on, not formulas transcribed from it.  The 35 wt%
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 R_GAS = 8.314                # J/(mol K)
 G_ACCEL = 9.81
 
@@ -47,8 +54,8 @@ def fhz_relative_concentration(depth, depth_ref, molar_volume, rho_fluid, rho_as
     With depth increasing downward and rho_asph > rho_fluid, asphaltenes
     concentrate toward the base of the column.
     """
-    dz = np.asarray(depth, float) - depth_ref
-    return np.exp(molar_volume * G_ACCEL * (rho_asph - rho_fluid) * dz / (R_GAS * temperature_k))
+    return petrolib.geochem_fluids.asphaltene.fhz_ratio(
+        np.asarray(depth, float) - depth_ref, molar_volume, rho_asph - rho_fluid, temperature_k)
 
 
 def optical_density(asphaltene_fraction, k=1.0):

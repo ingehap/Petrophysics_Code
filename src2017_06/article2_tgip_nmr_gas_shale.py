@@ -53,7 +53,7 @@ def mean_protons(component_amounts, protons_per_component):
 
 def mixture_molecular_weight(fractions, molecular_weights):
     """Gas mixture molecular weight  MWg = sum(C_i*MW_i)  (Eq. 22)."""
-    return float(np.sum(np.asarray(fractions, float) * np.asarray(molecular_weights, float)))
+    return float(petrolib.geochem_fluids.pvt.mixture_mw(fractions, molecular_weights))
 
 
 def gas_gravity(mw_gas, mw_air=MW_AIR):

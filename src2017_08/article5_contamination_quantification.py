@@ -26,6 +26,13 @@ reconstructions.  Compositions as mole fractions; OD dimensionless.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- composition --------------
 
@@ -36,7 +43,7 @@ def exponential_composition(carbon_number, a, b):
 
 def mass_balance(m, y_filtrate, x_native):
     """Contaminated composition  z_i = m*y_i + (1 - m)*x_i  (Eq. 2)."""
-    return m * np.asarray(y_filtrate, float) + (1.0 - m) * np.asarray(x_native, float)
+    return petrolib.geochem_fluids.contamination.mix_linear(x_native, y_filtrate, m)
 
 
 def native_composition(z_contaminated, y_filtrate, m):

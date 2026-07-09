@@ -73,9 +73,7 @@ def dean_stark(v_water, v_bitumen, v_bulk):
         phi = (V_water + V_bitumen)/V_bulk,
         Sw  = V_water/(V_water + V_bitumen),  Sb = 1 - Sw.
     """
-    v_pore = v_water + v_bitumen
-    phi = v_pore / v_bulk
-    sw = v_water / v_pore
+    phi, sw, _ = petrolib.geochem_fluids.core_geochem.dean_stark(v_water, v_bitumen, v_bulk=v_bulk)
     return phi, sw, 1.0 - sw
 
 

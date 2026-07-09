@@ -27,6 +27,13 @@ concentration in ppm NaCl.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 ARPS_C_FAHRENHEIT = 6.77      # Arps constant for deg F
 
 
@@ -40,7 +47,7 @@ def bateman_konen_rw75(salinity_ppm):
     with C the NaCl concentration in ppm.  The 0.0123 term reproduces the chart's
     low-concentration upturn.
     """
-    return 0.0123 + 3647.5 / np.asarray(salinity_ppm, float) ** 0.955
+    return petrolib.geochem_fluids.brine.rw75_from_salinity(salinity_ppm)
 
 
 def bateman_konen_salinity(r75):
@@ -48,7 +55,7 @@ def bateman_konen_salinity(r75):
 
         C = (3647.5/(R75 - 0.0123))^(1/0.955)   [ppm].
     """
-    return (3647.5 / (np.asarray(r75, float) - 0.0123)) ** (1.0 / 0.955)
+    return petrolib.geochem_fluids.brine.salinity_from_rw75(r75)
 
 
 # ---------------------------------------------- temperature --------------
@@ -58,7 +65,7 @@ def arps_temperature_conversion(r75, temperature_f):
 
         R(T) = R75*(75 + 6.77)/(T + 6.77) = R75*81.77/(T + 6.77).
     """
-    return r75 * 81.77 / (temperature_f + ARPS_C_FAHRENHEIT)
+    return petrolib.geochem_fluids.brine.arps_correct(r75, 75.0, temperature_f, unit="F")
 
 
 def rw_from_salinity(salinity_ppm, temperature_f):

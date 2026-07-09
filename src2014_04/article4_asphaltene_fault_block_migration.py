@@ -31,6 +31,13 @@ is dimensionless.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 R = 8.314      # universal gas constant, J/(mol*K)
 G = 9.81       # m/s^2
 NA = 6.022e23  # 1/mol
@@ -76,7 +83,7 @@ def fhz_gravity_only(h2, h1, molar_volume_a, delta_rho, temperature):
 
     Note h2 below h1 (deeper) gives a ratio > 1: asphaltene increases with depth.
     """
-    return np.exp(molar_volume_a * G * delta_rho * (h2 - h1) / (R * temperature))
+    return petrolib.geochem_fluids.asphaltene.fhz_ratio(h2 - h1, molar_volume_a, delta_rho, temperature)
 
 
 def particle_diameter_from_molar_volume(molar_volume_a):
@@ -84,8 +91,7 @@ def particle_diameter_from_molar_volume(molar_volume_a):
 
         d = (6*va/(pi*NA))^(1/3).
     """
-    v_particle = molar_volume_a / NA
-    return (6.0 * v_particle / np.pi) ** (1.0 / 3.0)
+    return petrolib.geochem_fluids.asphaltene.diameter_from_molar_volume(molar_volume_a)
 
 
 def molar_volume_from_diameter(particle_diameter):
@@ -97,8 +103,7 @@ def molar_volume_from_diameter(particle_diameter):
     size when no adjustable parameter is fitted (Wells 3-4 use a fixed 2.0-nm
     nanoaggregate).
     """
-    v_particle = np.pi / 6.0 * np.asarray(particle_diameter, float) ** 3
-    return v_particle * NA
+    return petrolib.geochem_fluids.asphaltene.molar_volume_from_diameter(particle_diameter)
 
 
 def nearest_yen_mullins(particle_diameter, rtol=0.25):
@@ -121,7 +126,7 @@ def infer_molar_volume(h2, h1, conc2, conc1, delta_rho, temperature):
 
         va = R*T*ln(conc2/conc1)/(g*drho*(h2-h1)).
     """
-    return R * temperature * np.log(conc2 / conc1) / (G * delta_rho * (h2 - h1))
+    return petrolib.geochem_fluids.asphaltene.fhz_invert_molar_volume(conc1, h1, conc2, h2, delta_rho, temperature)
 
 
 # ---------------------------------------------- fault-block offset --------------
