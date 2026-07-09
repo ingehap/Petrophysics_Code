@@ -27,6 +27,13 @@ import numpy as np
 from dataclasses import dataclass, field
 from typing import Tuple, Optional, List
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 @dataclass
 class RockClassEndpoints:
@@ -164,7 +171,7 @@ def electron_density(rho_b: np.ndarray,
 
     ρ_e = a + b · ρ_b
     """
-    return a + b * rho_b
+    return petrolib.porosity_lithology.electron_density_to_bulk(rho_b, a=b, b=a)
 
 
 def pef_from_volumetric(u_b: np.ndarray,

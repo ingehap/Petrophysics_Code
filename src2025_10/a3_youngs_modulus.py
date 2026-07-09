@@ -91,7 +91,7 @@ def steiber_vsh(igr):
 
 def gamma_ray_index(gr, gr_min, gr_max):
     """Gamma ray index IGR = (GR - GR_min) / (GR_max - GR_min)."""
-    return np.clip((gr - gr_min) / (gr_max - gr_min), 0.0, 1.0)
+    return petrolib.porosity_lithology.gamma_ray_index(gr, gr_min, gr_max)
 
 
 # ---------------------------------------------------------------------------

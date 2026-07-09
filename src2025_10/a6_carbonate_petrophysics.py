@@ -30,20 +30,19 @@ except ImportError:  # bare clone, not installed
 
 def vshale_linear(gr, gr_clean, gr_shale):
     """Linear shale volume from gamma ray."""
-    igr = np.clip((gr - gr_clean) / (gr_shale - gr_clean), 0, 1)
-    return igr
+    return petrolib.porosity_lithology.gamma_ray_index(gr, gr_clean, gr_shale)
 
 
 def vshale_larionov_tertiary(gr, gr_clean, gr_shale):
     """Larionov (1969) non-linear Vsh for Tertiary rocks."""
-    igr = np.clip((gr - gr_clean) / (gr_shale - gr_clean), 0, 1)
-    return 0.083 * (2.0 ** (3.7 * igr) - 1.0)
+    return petrolib.porosity_lithology.vshale_from_gr(
+        gr, gr_clean, gr_shale, method="larionov_tertiary")
 
 
 def vshale_larionov_older(gr, gr_clean, gr_shale):
     """Larionov (1969) non-linear Vsh for older (pre-Tertiary) rocks."""
-    igr = np.clip((gr - gr_clean) / (gr_shale - gr_clean), 0, 1)
-    return 0.33 * (2.0 ** (2.0 * igr) - 1.0)
+    return petrolib.porosity_lithology.vshale_from_gr(
+        gr, gr_clean, gr_shale, method="larionov_older")
 
 
 # ---------------------------------------------------------------------------
@@ -52,17 +51,17 @@ def vshale_larionov_older(gr, gr_clean, gr_shale):
 
 def density_porosity(rho_b, rho_ma, rho_fl):
     """Density porosity.  phi_d = (rho_ma - rho_b) / (rho_ma - rho_fl)."""
-    return np.clip((rho_ma - rho_b) / (rho_ma - rho_fl), 0, 0.6)
+    return petrolib.porosity_lithology.density_porosity(rho_b, rho_ma, rho_fl, clip=(0.0, 0.6))
 
 
 def neutron_density_porosity(nphi, dphi):
     """Combined neutron-density porosity (RMS average)."""
-    return np.sqrt((nphi ** 2 + dphi ** 2) / 2.0)
+    return petrolib.porosity_lithology.neutron_density_porosity(nphi, dphi, method="rms")
 
 
 def effective_porosity(phi_total, vsh, phi_sh=0.10):
     """Effective porosity = phi_total - Vsh * phi_shale."""
-    return np.clip(phi_total - vsh * phi_sh, 0, 0.6)
+    return petrolib.porosity_lithology.effective_porosity(phi_total, vsh, phi_sh, clip=(0.0, 0.6))
 
 
 # ---------------------------------------------------------------------------
@@ -130,7 +129,8 @@ def perm_winland_r35(phi, k_md):
 
 def net_pay_flag(phi, sw, vsh, phi_cut=0.05, sw_cut=0.6, vsh_cut=0.5):
     """Flag net pay based on cutoffs."""
-    return ((phi >= phi_cut) & (sw <= sw_cut) & (vsh <= vsh_cut)).astype(int)
+    return petrolib.porosity_lithology.pay_flag(
+        phi, vsh, sw, phi_cut=phi_cut, vsh_cut=vsh_cut, sw_cut=sw_cut).astype(int)
 
 
 # ---------------------------------------------------------------------------

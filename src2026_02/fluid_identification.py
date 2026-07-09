@@ -28,6 +28,13 @@ import numpy as np
 from dataclasses import dataclass
 from typing import Optional
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 @dataclass
 class MudGasData:
@@ -215,7 +222,7 @@ def neutron_density_fluid_indicator(nphi: float,
         'dphi': density porosity, 'separation': NPHI-DPHI,
         'gas_flag': True if gas effect detected.
     """
-    dphi = (matrix_density - rhob) / (matrix_density - fluid_density)
+    dphi = float(petrolib.porosity_lithology.density_porosity(rhob, matrix_density, fluid_density))
     separation = nphi - dphi
 
     return {
