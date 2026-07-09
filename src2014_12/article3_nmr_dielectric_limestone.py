@@ -65,7 +65,7 @@ def land_constant(s_res, s_i=1.0):
 
         1/S_res - 1/S_i = C.
     """
-    return 1.0 / s_res - 1.0 / s_i
+    return petrolib.relperm_wettability.land_c(s_i_max=s_i, s_r_max=s_res)
 
 
 def disconnected_saturation(land_c, s_res, s_imb):

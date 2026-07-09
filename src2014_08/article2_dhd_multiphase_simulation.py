@@ -27,6 +27,13 @@ method.  A water-wet validation sandstone has porosity 0.23 and permeability
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- free energy & chemical potential --------------
 
@@ -72,7 +79,7 @@ def interface_profile(x, width, rho_a=0.0, rho_b=1.0, x0=0.0):
 
 def capillary_number(viscosity, velocity, ift):
     """Capillary number  Ca = mu*v/sigma (viscous-to-capillary force ratio)."""
-    return viscosity * velocity / ift
+    return petrolib.relperm_wettability.capillary_number(mu=viscosity, v=velocity, sigma=ift)
 
 
 def relative_permeability(q, viscosity, length, k_abs, area, dp):

@@ -30,6 +30,13 @@ energy 36% of p*dV, ~64% dissipated).  SI units; volumes in m^3.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # np.trapz was renamed np.trapezoid in NumPy 2.0; support both.
 _trapezoid = getattr(np, "trapezoid", getattr(np, "trapz", None))
 
@@ -42,7 +49,7 @@ def capillary_number(velocity, viscosity, ift):
     Experimental values ranged 4e-9 to 4e-8; the critical Ncap for desaturation
     in sintered glass was about 3e-8.
     """
-    return velocity * viscosity / ift
+    return petrolib.relperm_wettability.capillary_number(mu=viscosity, v=velocity, sigma=ift)
 
 
 # ---------------------------------------------- Haines-jump work --------------

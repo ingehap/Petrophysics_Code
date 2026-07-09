@@ -89,8 +89,7 @@ def young_contact_angle(sigma_so, sigma_sw, sigma_wo):
     with the solid-oil, solid-water and water-oil interfacial tensions.
     Returns theta in degrees.
     """
-    cos_t = cos_contact_angle(sigma_so, sigma_sw, sigma_wo)
-    return np.degrees(np.arccos(np.clip(cos_t, -1.0, 1.0)))
+    return petrolib.relperm_wettability.young_contact_angle(sigma_so, sigma_sw, sigma_wo)
 
 
 def work_of_adhesion(sigma_wo, contact_angle_deg):
@@ -101,7 +100,7 @@ def work_of_adhesion(sigma_wo, contact_angle_deg):
     the energy to separate water from the surface; larger W means stronger
     water-wetting, the favourable direction for spontaneous imbibition.
     """
-    return sigma_wo * (1.0 + np.cos(np.radians(contact_angle_deg)))
+    return petrolib.relperm_wettability.work_of_adhesion(sigma_wo, contact_angle_deg)
 
 
 def wettability_class(contact_angle_deg):
@@ -109,12 +108,7 @@ def wettability_class(contact_angle_deg):
 
         < 75 deg : water-wet,  75-105 deg : intermediate,  > 105 deg : oil-wet.
     """
-    a = contact_angle_deg
-    if a < 75:
-        return "water-wet"
-    if a <= 105:
-        return "intermediate"
-    return "oil-wet"
+    return petrolib.relperm_wettability.classify_wettability_angle(contact_angle_deg)
 
 
 # ---------------------------------------------- capillary force --------------
