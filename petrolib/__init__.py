@@ -20,6 +20,7 @@ __version__ = "0.1.0"
 # Grows one entry per domain train (LIBRARY_MERGE_PLAN.md section 7).
 _SUBMODULES = frozenset(
     {
+        "capillary_pressure",
         "constants",
         "ml_stats",
         "saturation_resistivity",
