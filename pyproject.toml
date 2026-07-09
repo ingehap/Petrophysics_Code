@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "spwla-petrolib"
+version = "0.1.0"
+description = "Common petrophysics library extracted from the Petrophysics_Code article implementations (import name: petrolib)"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+dependencies = ["numpy>=1.24"]
+
+[project.optional-dependencies]
+scipy = ["scipy>=1.10"]
+ml = ["scikit-learn>=1.2", "xgboost>=1.7"]
+torch = ["torch>=2.0"]
+image = ["scikit-image>=0.21"]
+# Everything the 75 issue directories collectively need.
+articles = ["spwla-petrolib[scipy,ml,torch,image]"]
+dev = ["pytest>=7", "pytest-xdist", "ruff", "mypy"]
+
+[tool.hatch.build.targets.wheel]
+# Only the library is packaged; the 75 srcYYYY_MM issue directories stay
+# plain checkout content (see LIBRARY_MERGE_PLAN.md section 6).
+packages = ["petrolib"]
+
+[tool.ruff]
+line-length = 100
+# The legacy article scripts are deliberately exempt from lint/format:
+# reformatting them is churn that pollutes blame (LIBRARY_MERGE_PLAN.md
+# section 10). Library-side code only.
+extend-exclude = ["src20*"]
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "I", "NPY", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "articles: full per-directory article-suite runs (slow; nightly / run-articles CI lane)",
+]
+
+[tool.mypy]
+strict = true
+files = ["petrolib"]

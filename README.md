@@ -9,6 +9,21 @@ article into self-contained Python code with synthetic-data demonstrations.
 The implementations are meant for learning and experimentation, not as a
 replacement for the original papers.
 
+## Common library (`petrolib`) — migration in progress
+
+Shared physics and utilities are being consolidated into the [`petrolib/`](petrolib/)
+package so that article scripts import one canonical implementation instead of
+re-implementing it. See [LIBRARY_MERGE_PLAN.md](LIBRARY_MERGE_PLAN.md) for the plan and
+[CONVENTIONS.md](CONVENTIONS.md) for the API and migration rules.
+
+- Running article scripts needs **no install step** — every directory keeps working from
+  a bare clone (`cd src2019_06 && python test_all.py`).
+- `pip install -e .` (Python 3.10+) is optional; it installs `petrolib`, and
+  `pip install -e ".[dev]"` adds pytest/ruff/mypy.
+- Repo-wide test harness: `python tools/run_all_issues.py` runs every directory's own
+  test suite; `python tools/golden_diff.py` additionally compares each suite's printed
+  output against the frozen baselines in `tools/golden/`.
+
 ## Requirements
 
 * Python 3.9+

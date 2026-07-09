@@ -34,10 +34,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("dirs", nargs="*", help="issue directories (default: all)")
     parser.add_argument("--jobs", type=int, default=0)
     parser.add_argument("--timeout", type=float, default=900.0)
-    parser.add_argument("--require-all", action="store_true",
-                        help="treat SKIP (missing optional deps) as failure")
-    parser.add_argument("--max-diff-lines", type=int, default=40,
-                        help="diff lines shown per mismatching directory")
+    parser.add_argument(
+        "--require-all", action="store_true", help="treat SKIP (missing optional deps) as failure"
+    )
+    parser.add_argument(
+        "--max-diff-lines", type=int, default=40, help="diff lines shown per mismatching directory"
+    )
     args = parser.parse_args(argv)
 
     results = harness.run_all(args.dirs or None, args.jobs, args.timeout)
@@ -54,8 +56,9 @@ def main(argv: list[str] | None = None) -> int:
         golden_file = golden_capture.golden_path(result.dirname)
         if not golden_file.exists():
             n_mismatch += 1
-            print(f"  MISSING GOLDEN: {result.dirname} "
-                  f"(run tools/golden_capture.py {result.dirname})")
+            print(
+                f"  MISSING GOLDEN: {result.dirname} (run tools/golden_capture.py {result.dirname})"
+            )
             continue
         expected = golden_file.read_text(encoding="utf-8")
         actual = golden_capture.normalize(result.stdout)
@@ -76,8 +79,10 @@ def main(argv: list[str] | None = None) -> int:
                 break
             print(line, end="")
 
-    print(f"\n  {n_match} matched, {n_mismatch} mismatched/failed, "
-          f"{n_skip} skipped (of {len(results)} directories)")
+    print(
+        f"\n  {n_match} matched, {n_mismatch} mismatched/failed, "
+        f"{n_skip} skipped (of {len(results)} directories)"
+    )
     if n_mismatch or (args.require_all and n_skip):
         return 1
     return 0
