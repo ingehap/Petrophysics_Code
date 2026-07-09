@@ -66,9 +66,9 @@ def sigma_total(phi, sw, sigma_ma, sigma_w, sigma_hc):
     """
     phi = np.asarray(phi, dtype=float)
     sw  = np.asarray(sw,  dtype=float)
-    return (1.0 - phi) * sigma_ma \
-           + phi * (1.0 - sw) * sigma_hc \
-           + phi * sw * sigma_w
+    return petrolib.nuclear.sigma_forward(
+        phi, sw, sigma_ma=sigma_ma, sigma_w=sigma_w, sigma_hc=sigma_hc
+    )
 
 
 def sw_from_sigma(sigma_t, phi, sigma_ma, sigma_w, sigma_hc):
@@ -114,11 +114,7 @@ def water_salinity_to_sigma_w(salinity_ppm_nacl, temperature_C=75.0):
     ~22 c.u. for fresh water and ~120 c.u. for saturated brine at reservoir
     temperature.  Suitable for synthetic testing only.
     """
-    s = np.asarray(salinity_ppm_nacl, dtype=float) / 1.0e6  # weight fraction
-    # Linear in salinity with mild T-correction; 22 c.u. baseline.
-    sigma_w = 22.0 + 750.0 * s
-    sigma_w *= (1.0 - 0.0008 * (temperature_C - 75.0))
-    return sigma_w
+    return petrolib.nuclear.sigma_w_from_salinity(salinity_ppm_nacl, temperature_c=temperature_C)
 
 
 # ---------------------------------------------------------------------------

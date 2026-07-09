@@ -8,22 +8,30 @@ Implements a forward model for inelastic C/O and capture-sigma response,
 plus a least-squares solver for (S_oil, S_gas, S_water).
 """
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from scipy.optimize import nnls
 
 
 def co_ratio(s_oil, s_gas, s_w, phi,
              c_oil=0.85, c_gas=0.75, c_mat=0.10, o_w=1.0, o_mat=0.55):
     """Inelastic C/O ratio model."""
-    C = phi * (s_oil * c_oil + s_gas * c_gas) + (1 - phi) * c_mat
-    O = phi * s_w * o_w + (1 - phi) * o_mat
-    return C / (O + 1e-9)
+    return petrolib.nuclear.co_forward_3phase(
+        phi, s_oil, s_gas, s_w, c_oil=c_oil, c_gas=c_gas, c_mat=c_mat, o_w=o_w, o_mat=o_mat
+    )
 
 
 def sigma_capture(s_oil, s_gas, s_w, phi,
                   sig_oil=22, sig_gas=8, sig_w=80, sig_mat=10):
     """Capture cross-section in c.u."""
-    return phi * (s_oil * sig_oil + s_gas * sig_gas + s_w * sig_w) \
-           + (1 - phi) * sig_mat
+    return petrolib.nuclear.sigma_forward_3phase(
+        phi, s_oil, s_gas, s_w, sigma_oil=sig_oil, sigma_gas=sig_gas, sigma_w=sig_w, sigma_ma=sig_mat
+    )
 
 
 def solve_saturations(co_obs, sigma_obs, gas_ratio_obs, phi):

@@ -37,6 +37,13 @@ from typing import List
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Endpoint constants  (representative for supercritical CO2 vs ~100 kppm
@@ -65,8 +72,9 @@ def forward_tphi(phi: np.ndarray, Sw: np.ndarray, ep: Endpoints) -> np.ndarray:
 
 
 def forward_sigma(phi: np.ndarray, Sw: np.ndarray, ep: Endpoints) -> np.ndarray:
-    return (1.0 - phi) * ep.sigma_matrix + phi * (
-        Sw * ep.sigma_brine + (1.0 - Sw) * ep.sigma_co2)
+    return petrolib.nuclear.sigma_forward(
+        phi, Sw, sigma_ma=ep.sigma_matrix, sigma_w=ep.sigma_brine, sigma_hc=ep.sigma_co2
+    )
 
 
 def forward_fnxs(phi: np.ndarray, Sw: np.ndarray, ep: Endpoints) -> np.ndarray:
