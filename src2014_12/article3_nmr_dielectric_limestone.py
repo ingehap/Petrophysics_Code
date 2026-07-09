@@ -122,9 +122,9 @@ def crim_permittivity(sw, phi, eps_w, eps_hc, eps_matrix):
         sqrt(eps) = Sw*phi*sqrt(eps_w) + (1-Sw)*phi*sqrt(eps_hc)
                     + (1-phi)*sqrt(eps_matrix).
     """
-    root = (sw * phi * np.sqrt(eps_w) + (1 - sw) * phi * np.sqrt(eps_hc)
-            + (1 - phi) * np.sqrt(eps_matrix))
-    return root ** 2
+    return petrolib.em_dielectric.crim(
+        phi, sw, eps_w=eps_w, eps_hc=eps_hc, eps_matrix=eps_matrix
+    )
 
 
 def crim_water_saturation(eps, phi, eps_w, eps_hc, eps_matrix):
@@ -133,10 +133,9 @@ def crim_water_saturation(eps, phi, eps_w, eps_hc, eps_matrix):
         Sw = [sqrt(eps) - (1-phi)*sqrt(eps_m) - phi*sqrt(eps_hc)]
              / [phi*(sqrt(eps_w) - sqrt(eps_hc))].
     """
-    num = (np.sqrt(eps) - (1 - phi) * np.sqrt(eps_matrix)
-           - phi * np.sqrt(eps_hc))
-    den = phi * (np.sqrt(eps_w) - np.sqrt(eps_hc))
-    return num / den
+    return petrolib.em_dielectric.sw_from_permittivity(
+        eps, phi, eps_w=eps_w, eps_hc=eps_hc, eps_matrix=eps_matrix, clip=False
+    )
 
 
 # ---------------------------------------------- tests --------------

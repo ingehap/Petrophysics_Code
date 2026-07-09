@@ -27,6 +27,13 @@ relative, porosities and saturations as fractions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- CRIM --------------
 
@@ -36,9 +43,9 @@ def crim_permittivity(sw, phi, eps_w, eps_hc, eps_matrix):
         sqrt(eps) = (1-phi)*sqrt(eps_matrix) + phi*Sw*sqrt(eps_w)
                     + phi*(1-Sw)*sqrt(eps_hc).
     """
-    root = ((1 - phi) * np.sqrt(eps_matrix) + phi * sw * np.sqrt(eps_w)
-            + phi * (1 - sw) * np.sqrt(eps_hc))
-    return root ** 2
+    return petrolib.em_dielectric.crim(
+        phi, sw, eps_w=eps_w, eps_hc=eps_hc, eps_matrix=eps_matrix
+    )
 
 
 def water_filled_porosity(eps_apparent, eps_water, eps_matrix_star):
@@ -49,8 +56,9 @@ def water_filled_porosity(eps_apparent, eps_water, eps_matrix_star):
     where eps_matrix* is the effective permittivity of the non-water (matrix +
     hydrocarbon) system.
     """
-    return ((np.sqrt(eps_apparent) - np.sqrt(eps_matrix_star))
-            / (np.sqrt(eps_water) - np.sqrt(eps_matrix_star)))
+    return petrolib.em_dielectric.water_filled_porosity(
+        eps_apparent, eps_matrix=eps_matrix_star, eps_w=eps_water, clip=False
+    )
 
 
 # ---------------------------------------------- saturations --------------

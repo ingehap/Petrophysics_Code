@@ -28,6 +28,13 @@ forms are named but not displayed and reconstructed in standard form (Debye,
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 EPS0 = 8.854e-12  # vacuum permittivity, F/m
 
 
@@ -50,8 +57,7 @@ def debye(freq, eps_inf, eps_s, tau):
 
         eps* = eps_inf + (eps_s - eps_inf)/(1 + i*omega*tau).
     """
-    omega = 2.0 * np.pi * np.asarray(freq, float)
-    return eps_inf + (eps_s - eps_inf) / (1.0 + 1j * omega * tau)
+    return petrolib.em_dielectric.debye(freq, eps_inf=eps_inf, eps_s=eps_s, tau=tau)
 
 
 def cole_cole(freq, eps_inf, eps_s, tau, alpha):
@@ -61,8 +67,9 @@ def cole_cole(freq, eps_inf, eps_s, tau, alpha):
 
     the distributed-relaxation generalization of Debye (alpha = 0 recovers it).
     """
-    omega = 2.0 * np.pi * np.asarray(freq, float)
-    return eps_inf + (eps_s - eps_inf) / (1.0 + (1j * omega * tau) ** (1.0 - alpha))
+    return petrolib.em_dielectric.cole_cole(
+        freq, eps_inf=eps_inf, eps_s=eps_s, tau=tau, alpha=alpha
+    )
 
 
 # ---------------------------------------------- empirical correlations --------------

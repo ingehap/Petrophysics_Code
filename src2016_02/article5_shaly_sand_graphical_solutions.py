@@ -113,7 +113,7 @@ def laminated_rv(rsand, rshale, vlam):
 
 def laminated_anisotropy(rh, rv):
     """Resistivity anisotropy  lambda = sqrt(Rv/Rh)  (>= 1 for laminated shale)."""
-    return np.sqrt(rv / rh)
+    return petrolib.em_dielectric.anisotropy_coefficient(rh, rv)
 
 
 def solve_laminated(rh, rv, rshale):

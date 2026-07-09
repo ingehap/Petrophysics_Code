@@ -70,7 +70,7 @@ def anisotropy_coefficient(rv, rh):
     the square root of the vertical-to-horizontal resistivity ratio (>= 1 for
     laminated shaly sands; field average ~1.22).
     """
-    return np.sqrt(rv / rh)
+    return petrolib.em_dielectric.anisotropy_coefficient(rh, rv)
 
 
 # ---------------------------------------------- net sand Archie --------------

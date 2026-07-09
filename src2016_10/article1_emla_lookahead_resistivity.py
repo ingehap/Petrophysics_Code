@@ -29,6 +29,13 @@ ohm-m, frequency in Hz, lengths in m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 MU0 = 4.0e-7 * np.pi          # permeability of free space (H/m)
 
 
@@ -40,8 +47,7 @@ def skin_depth(rho, freq, mu_r=1.0):
     with omega = 2*pi*freq and mu = mu_r*mu0; the depth at which the current
     density falls to 1/e of its surface value (Jordan & Balmain, 1968).
     """
-    omega = 2.0 * np.pi * np.asarray(freq, float)
-    return np.sqrt(2.0 * rho / (omega * mu_r * MU0))
+    return petrolib.em_dielectric.skin_depth(rho, freq, mu_r=mu_r)
 
 
 # ---------------------------------------------- harmonic resistivity --------------
@@ -55,10 +61,7 @@ def uhr_attenuation_phase(v_near, v_far):
     from the (complex) coupling-voltage ratio; for UHR the near/far voltages are
     formed from the coaxial (Vxx) and coplanar (Vyy, Vzz) couplings.
     """
-    ratio = np.asarray(v_near, complex) / np.asarray(v_far, complex)
-    uhra = 20.0 * np.log10(np.abs(ratio))
-    uhrp = np.degrees(np.angle(ratio))
-    return uhra, uhrp
+    return petrolib.em_dielectric.attenuation_phase_from_voltages(v_near, v_far)
 
 
 def coupling_ratio(vxx, vyy, vzz):
