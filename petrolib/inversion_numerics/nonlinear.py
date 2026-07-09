@@ -47,9 +47,7 @@ def fd_jacobian(
     f0 = _arr(forward(m_arr))
     jac = np.zeros((f0.size, m_arr.size))
     for i in range(m_arr.size):
-        dm = eps * (abs(m_arr[i]) if relative else 1.0)
-        if dm == 0.0:
-            dm = eps
+        dm = eps * max(abs(m_arr[i]), 1.0) if relative else eps
         mp = m_arr.copy()
         mp[i] += dm
         if scheme == "central":

@@ -70,6 +70,24 @@ def test_ista_l1_sparse() -> None:
     assert np.all(x >= 0.0)
 
 
+def test_tikhonov_matrix_rhs() -> None:
+    # a multi-column right-hand side solves each column independently and
+    # matches the explicit ridge normal equations
+    rng = np.random.default_rng(9)
+    a = rng.normal(size=(15, 4))
+    x_true = rng.normal(size=(4, 3))
+    b = a @ x_true
+    lam = 0.5
+    x = inv.linear.tikhonov_solve(a, b, lam)
+    expected = np.linalg.solve(a.T @ a + lam * np.eye(4), a.T @ b)
+    assert x.shape == (4, 3)
+    np.testing.assert_array_equal(x, expected)
+    # each column matches the single-vector solve of that column (LAPACK batches
+    # multi-RHS solves differently, so compare within tolerance, not bit-for-bit)
+    for j in range(3):
+        np.testing.assert_allclose(x[:, j], inv.linear.tikhonov_solve(a, b[:, j], lam))
+
+
 # --- costs --------------------------------------------------------------------
 
 
