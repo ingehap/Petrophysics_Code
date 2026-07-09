@@ -12,7 +12,7 @@ Article 1: DEC Tool Bayesian-GPR Inversion
   Recovered (Ecc, theta, Def, gamma) = (0.398, 59.9, 1.052, 25.9)
   True       (Ecc, theta, Def, gamma) = (0.400, 60.0, 1.050, 30.0)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Kozeny Permeability in Clay-Rich Chalk
@@ -30,7 +30,7 @@ Article 2: Kozeny Permeability for Clay-Rich Chalk
   FZI (Eqs. 11-12)         = 1.0403
   FZI from Vp = 3000 m/s   = 0.5477
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Pyrite-Aware Sw with HS Bounds
@@ -46,7 +46,7 @@ Article 3: Pyrite-Aware Sw with HS-Bounded Mineral Mixing
   sigma_t  pure Archie               = 0.265 S/m
   sigma_t  with extras (Eq. 6)       = 0.272 S/m
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Micro-CT Filter-Cake Deposition (proxy)
@@ -64,7 +64,7 @@ Article 4: Time-Lapse Micro-CT of Mudcake Deposition (proxy)
    120   0.314      0.1880
   Detected mudcake thickness (synthetic slice) = 6.35 px
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Methane Solubility in OBM (proxy)
@@ -79,7 +79,7 @@ Article 5: Methane Solubility in OBM (proxy)
   Truth                              = [np.float64(-0.5), np.float64(0.025), np.float64(-0.005), np.float64(1.2), np.float64(-0.01)]
   Coefficient relative error         = 1.53 %
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Gas-Hydrate Rock Physics (proxy)
@@ -94,7 +94,7 @@ Article 6: Gas-Hydrate Rock-Physics Modeling (proxy)
   Calcite (15 % porosity):
     Vp = 5356 m/s   Vs = 2719 m/s   class = calcite
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7 - Digital-Core Wellbore Stability (proxy)
@@ -111,17 +111,17 @@ Article 7: Digital-Core Wellbore Stability (proxy)
   UCS after 14 days water immersion  = 49.33 MPa
   Critical mud pressure (Kirsch + MC) = 0.00 MPa
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_dec_tool_bayesian_gpr  (#.##s)
-  PASS   article2_kozeny_permeability_chalk  (#.##s)
-  PASS   article3_pyrite_saturation_hs_bounds  (#.##s)
-  PASS   article4_microct_filtercake  (#.##s)
-  PASS   article5_methane_solubility_obm  (#.##s)
-  PASS   article6_gas_hydrate_rock_physics  (#.##s)
-  PASS   article7_digital_core_wellbore_stability  (#.##s)
+ PASS article1_dec_tool_bayesian_gpr (#.##s)
+ PASS article2_kozeny_permeability_chalk (#.##s)
+ PASS article3_pyrite_saturation_hs_bounds (#.##s)
+ PASS article4_microct_filtercake (#.##s)
+ PASS article5_methane_solubility_obm (#.##s)
+ PASS article6_gas_hydrate_rock_physics (#.##s)
+ PASS article7_digital_core_wellbore_stability (#.##s)
 
   7/7 modules passed

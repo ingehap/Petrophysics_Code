@@ -8,7 +8,7 @@ Article 1 (Tutorial): Shaly Sand No. 2 of 3
   apparent neutron phi   = 0.348  (true water 0.10)
   spectral GR            = 128 API
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Silt in LRLC Pay (Thomas-Stieber)
@@ -19,7 +19,7 @@ Article 2: Silt in LRLC Pay (Thomas-Stieber)
   phi disp/lam/total     = 0.240 / 0.270 / 0.360
   TS sand phi Vlam .2/.4 = 0.250 / 0.300
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - NMR Pore Coupling
@@ -30,7 +30,7 @@ Article 3: NMR Pore Coupling
   T2 macro / micro       = 2.000e+01 / 2.000e-01 s
   Mz(0) / Mz(end)        = 1.000 / 0.057
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Neutron & X-Ray Imaging
@@ -41,7 +41,7 @@ Article 4: Neutron & X-Ray Imaging
   mu (sum sigma*N)       = 0.400 1/cm
   voxel classes          = organic / mineral / void
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Shale Total Porosity (elemental)
@@ -52,7 +52,7 @@ Article 5: Shale Total Porosity (elemental)
   V_OM for 4% TOC        = 0.1114
   recovered phi / Sh     = 0.080 / 0.600  (true 0.080 / 0.600)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Dielectric Matrix Calibration (CRIM)
@@ -64,7 +64,7 @@ Article 6: Dielectric Matrix Calibration (CRIM/CDA)
   recovered phi_w        = 0.180  (true 0.180)
   sensitivity (+1 eps_mat) = 3.3 p.u.
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7 - Bakken Dielectric Dispersion
@@ -75,7 +75,7 @@ Article 7: Bakken Dielectric Dispersion
   eps Sw=0.3 / 0.9       = 5.516 / 7.423
   recovered Sw           = 0.450  (true 0.450)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 8 - 2D Directional Resistivity Imaging
@@ -86,7 +86,7 @@ Article 8: 2D Directional Resistivity Imaging (proxy)
   Ra far / near boundary = 48.70 / 13.74 ohm.m
   recovered distance     = 3.500 m  (true 3.500)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 9 - Downhole Relative Permeability
@@ -97,7 +97,7 @@ Article 9: Downhole Relative Permeability (proxy)
   fw(Swirr) / fw(1-Sor)  = 0.000 / 1.000
   end-point mobility ratio = 1.60
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 10 - PNN Lithofacies Identification
@@ -109,20 +109,20 @@ Article 10: PNN Lithofacies Identification (proxy)
   LOO accuracy           = 1.000
   best sigma / accuracy  = 0.3 / 1.000
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_shaly_sand_tutorial_part2  (#.##s)
-  PASS   article2_silt_lrlc_thomas_stieber  (#.##s)
-  PASS   article3_nmr_pore_coupling  (#.##s)
-  PASS   article4_neutron_xray_imaging  (#.##s)
-  PASS   article5_shale_total_porosity_elemental  (#.##s)
-  PASS   article6_dielectric_matrix_crim_cda  (#.##s)
-  PASS   article7_bakken_dielectric_dispersion  (#.##s)
-  PASS   article8_2d_directional_resistivity_imaging  (#.##s)
-  PASS   article9_downhole_relative_permeability  (#.##s)
-  PASS   article10_pnn_lithofacies  (#.##s)
+ PASS article1_shaly_sand_tutorial_part2 (#.##s)
+ PASS article2_silt_lrlc_thomas_stieber (#.##s)
+ PASS article3_nmr_pore_coupling (#.##s)
+ PASS article4_neutron_xray_imaging (#.##s)
+ PASS article5_shale_total_porosity_elemental (#.##s)
+ PASS article6_dielectric_matrix_crim_cda (#.##s)
+ PASS article7_bakken_dielectric_dispersion (#.##s)
+ PASS article8_2d_directional_resistivity_imaging (#.##s)
+ PASS article9_downhole_relative_permeability (#.##s)
+ PASS article10_pnn_lithofacies (#.##s)
 
   10/10 modules passed

@@ -8,7 +8,7 @@ Article 1: Carbonate Saturation-Height Models
   Sw @2/20 bar           = 0.751 / 0.340
   k arith/geo/harm       = 37.0 / 10.0 / 2.70 mD
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Hydraulic + Electrical Pore Space
@@ -19,7 +19,7 @@ Article 2: Hydraulic + Electrical Pore-Space Model
   k direct / via F       = 4.983e-13 / 4.983e-13 m^2
   pore-shape factor a    = 16094.4 1/m
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - WFT Permeability & Effective Thickness
@@ -31,7 +31,7 @@ Article 3: WFT Permeability & Effective Thickness
   spherical k            = 63.0 mD
   derivative slope       = -0.50
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Shear-Wave Anisotropy + Leaky-P
@@ -42,7 +42,7 @@ Article 4: Shear-Wave Anisotropy + Leaky-P Removal
   fast azimuth true/fit  = 30.0 / 30.0 deg
   objective correct/wrong = 0.00e+00 / 2.15e+01
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Wireline Depth Elastic-Stretch
@@ -54,15 +54,15 @@ Article 5: Wireline Depth Elastic-Stretch Correction
   stretch @1500/3000 m   = 0.287 / 0.950 m
   corrected depth        = 3000.950 m (+0.950)
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_carbonate_saturation_height  (#.##s)
-  PASS   article2_hydraulic_electrical_pore_space  (#.##s)
-  PASS   article3_wft_permeability_effective_thickness  (#.##s)
-  PASS   article4_shearwave_anisotropy_leakyP  (#.##s)
-  PASS   article5_wireline_depth_elastic_stretch  (#.##s)
+ PASS article1_carbonate_saturation_height (#.##s)
+ PASS article2_hydraulic_electrical_pore_space (#.##s)
+ PASS article3_wft_permeability_effective_thickness (#.##s)
+ PASS article4_shearwave_anisotropy_leakyP (#.##s)
+ PASS article5_wireline_depth_elastic_stretch (#.##s)
 
   5/5 modules passed

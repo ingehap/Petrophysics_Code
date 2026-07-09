@@ -395,20 +395,20 @@ Testing: LiOBIA Cuttings Image Analysis (Yamada et al., 2024)
 ╠══════════════════════════════════════════════════════════════════════╣
 ║   #  Module                                Status      Time ║
 ║ ───  ─────────────────────────────────── ────────  ──────── ║
-║   1  gor_prediction_ml                     ✓ PASS     #.##s ║
-║   2  shale_fluid_prediction                ✓ PASS     #.##s ║
-║   3  realtime_fluid_id                     ✓ PASS     #.##s ║
-║   4  standard_mudgas_typing                ✓ PASS     #.##s ║
-║   5  ml_fluid_typing                       ✓ PASS    #.##s ║
-║   6  heavy_oil_viscosity                   ✓ PASS     #.##s ║
-║   7  prospect_fluid_estimation             ✓ PASS     #.##s ║
-║   8  pvt_gor_snorre                        ✓ PASS     #.##s ║
-║   9  membrane_gas_logging                  ✓ PASS     #.##s ║
-║  10  mudgas_response                       ✓ PASS     #.##s ║
-║  11  alkene_hydrogen_dbm                   ✓ PASS     #.##s ║
-║  12  gpc_uv_cuttings                       ✓ PASS     #.##s ║
-║  13  magnetic_permeability                 ✓ PASS     #.##s ║
-║  14  lithobia_cuttings                     ✓ PASS     #.##s ║
+║ 1 gor_prediction_ml ✓ PASS #.##s ║
+║ 2 shale_fluid_prediction ✓ PASS #.##s ║
+║ 3 realtime_fluid_id ✓ PASS #.##s ║
+║ 4 standard_mudgas_typing ✓ PASS #.##s ║
+║ 5 ml_fluid_typing ✓ PASS #.##s ║
+║ 6 heavy_oil_viscosity ✓ PASS #.##s ║
+║ 7 prospect_fluid_estimation ✓ PASS #.##s ║
+║ 8 pvt_gor_snorre ✓ PASS #.##s ║
+║ 9 membrane_gas_logging ✓ PASS #.##s ║
+║ 10 mudgas_response ✓ PASS #.##s ║
+║ 11 alkene_hydrogen_dbm ✓ PASS #.##s ║
+║ 12 gpc_uv_cuttings ✓ PASS #.##s ║
+║ 13 magnetic_permeability ✓ PASS #.##s ║
+║ 14 lithobia_cuttings ✓ PASS #.##s ║
 ╠══════════════════════════════════════════════════════════════════════╣
-║ Passed: 14/14 | Failed: 0/14 | Total time: #.##s                ║
+║ Passed: 14/14 | Failed: 0/14 | Total time: #.##s ║
 ╚══════════════════════════════════════════════════════════════════════╝

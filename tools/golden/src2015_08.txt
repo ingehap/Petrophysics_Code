@@ -5,10 +5,10 @@
 ============================================================
 Article 1: NMR T1-T2 Fluid Characterization
 ============================================================
-  T2 app / intrinsic     = 0.2470 / #.## s
+ T2 app / intrinsic = 0.2470 / #.## s
   echo decay M(0)/M(end) = 0.250 / 0.020
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Condensed Vapor Gamma
@@ -20,7 +20,7 @@ Article 2: Condensed Vapor Gamma
   radon activity         = 1.813e+05 (per day)
   CVG amplitude HC/water = 2000 / 200
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Gas Diffusion into Oil & Tar Mats
@@ -32,7 +32,7 @@ Article 3: Gas Diffusion into Oil & Tar Mats
   gas conc near/far      = 0.997 / 0.972
   tar mat (0.40/0.20)    = True / False
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Spectroscopy Inversion
@@ -44,7 +44,7 @@ Article 4: Spectroscopy Inversion
   matrix density         = 2.694 g/cm^3
   density porosity       = 0.144
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Bateman-Konen (Technical Note)
@@ -56,15 +56,15 @@ Article 5 (TN): Bateman-Konen Resistivity-Salinity
   Rw 20k/80k ppm @150F   = 0.1550 / 0.0459 ohm-m
   salinity round-trip    = 55000 -> 55000 ppm
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_nmr_t1t2_fluid_characterization  (#.##s)
-  PASS   article2_condensed_vapor_gamma  (#.##s)
-  PASS   article3_gas_diffusion_tar_mats  (#.##s)
-  PASS   article4_spectroscopy_inversion  (#.##s)
-  PASS   article5_bateman_konen_resistivity_salinity  (#.##s)
+ PASS article1_nmr_t1t2_fluid_characterization (#.##s)
+ PASS article2_condensed_vapor_gamma (#.##s)
+ PASS article3_gas_diffusion_tar_mats (#.##s)
+ PASS article4_spectroscopy_inversion (#.##s)
+ PASS article5_bateman_konen_resistivity_salinity (#.##s)
 
   5/5 modules passed

@@ -12,7 +12,7 @@ Article 1: DAS-VSP FWI (1-D reflectivity-domain demo)
   Final  misfit   J = 6.073e-26
   Per-layer |Z_est - Z_true| / Z_true = 0.009, 0.009, 0.009, 0.009, 0.009
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Sourceless LWD Acoustics
@@ -24,7 +24,7 @@ Article 2: Sourceless LWD Acoustics from Drill-Bit Noise
   Picked Vp =   3387 m/s  (true 3500)
   Picked Vs =   1966 m/s  (true 2000)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - UDAR-LWD Geosteering Inversion
@@ -40,7 +40,7 @@ Article 3: UDAR-LWD 1-D Stochastic Inversion + Geostop
   Geostop recommendation       = True  (5th-pctile distance = -6.96 m)
   Misfit  prior = 1.5978   posterior = 0.0143
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Fractured-Carbonate SOM Classifier
@@ -55,7 +55,7 @@ Article 4: Fractured-Carbonate SOM Facies Classifier
   SOM held-out classification accuracy = 0.991
   Nearest-centroid baseline accuracy   = 0.982
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Dipole Shear + Mohr-Coulomb Filter
@@ -70,7 +70,7 @@ Article 5: Dipole-Shear Imaging + Mohr-Coulomb Filter
   True dipole strike  = 35.0 deg
   Recovered strike    = 35.0 deg  (err = 0.0 deg)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Mineral / Fluid MD Interfaces
@@ -85,7 +85,7 @@ Article 6: MD-Style Analysis of Mineral/Fluid Interface
   Wall-contact fraction (sticky)       = 0.425
   Sticky density edge / bulk           = 14.59
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7 - PSWC Quality via Digital Rock Physics
@@ -101,17 +101,17 @@ Article 7: PSWC Quality via Digital Rock Physics
   Damage-zone slices: k drop    = 3939.24 mD
   Undamaged slices:   phi drop  = 0.000
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_das_vsp_fwi  (#.##s)
-  PASS   article2_sourceless_lwd_acoustics  (#.##s)
-  PASS   article3_udar_geosteering  (#.##s)
-  PASS   article4_fractured_carbonate_som  (#.##s)
-  PASS   article5_dipole_shear_mohr  (#.##s)
-  PASS   article6_md_mineral_fluid  (#.##s)
-  PASS   article7_pswc_drp_qc  (#.##s)
+ PASS article1_das_vsp_fwi (#.##s)
+ PASS article2_sourceless_lwd_acoustics (#.##s)
+ PASS article3_udar_geosteering (#.##s)
+ PASS article4_fractured_carbonate_som (#.##s)
+ PASS article5_dipole_shear_mohr (#.##s)
+ PASS article6_md_mineral_fluid (#.##s)
+ PASS article7_pswc_drp_qc (#.##s)
 
   7/7 modules passed

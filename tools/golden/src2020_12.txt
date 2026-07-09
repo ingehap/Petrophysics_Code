@@ -10,7 +10,7 @@ Article 1: A History of Nuclear Spectroscopy
   C/O oil / water        = 0.818 / 0.250
   GR shale / sand        = 144 / 17 API
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Formation Chlorine -> Salinity
@@ -23,7 +23,7 @@ Article 2: Formation Chlorine -> Water Salinity
   BVW (round-trip)       = 0.2000  (phi_w 0.2)
   sigma clean / salty    = 11.5 / 17.2 c.u.
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Self-Compensated Spectroscopy
@@ -37,7 +37,7 @@ Article 3: Self-Compensated Pulsed-Neutron Spectroscopy
   cement Ca 0.10 -> recovered formation Ca = 0.1200
   cement Ca 0.30 -> recovered formation Ca = 0.1200
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - C/O & Sigma Saturation (Malaysia)
@@ -49,7 +49,7 @@ Article 4: C/O and Sigma Saturation (Malaysia)
   Sw (saline wet / oil)  = 1.00 / 0.47
   near/far ratio liquid / gas = 2.50 / 1.67
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Through-Casing TOC & Saturation
@@ -61,7 +61,7 @@ Article 5: Through-Casing TOC & Saturation (Kuwait)
   excess carbon          = 0.0150
   oil saturation         = 0.424
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Pulsed-Neutron Gas Pressure
@@ -74,7 +74,7 @@ Article 6: Pulsed-Neutron Gas Pressure Through Casing
   measured sigma         = 6.22 c.u.
   recovered pressure     = 2785 psi  (true 2785)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7 - Sigma Gas Saturation (Low-Porosity)
@@ -87,17 +87,17 @@ Article 7: Sigma Gas Saturation (Low-Porosity, Indonesia)
   ignoring shale -> Sg   = 0.000  (biased)
   |dSigma/dSg| @12/30 pu = 2.52 / 6.30 c.u.
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_nuclear_spectroscopy_history  (#.##s)
-  PASS   article2_formation_chlorine_salinity  (#.##s)
-  PASS   article3_self_compensated_spectroscopy  (#.##s)
-  PASS   article4_co_sigma_saturation_casestudy  (#.##s)
-  PASS   article5_through_casing_toc_saturation  (#.##s)
-  PASS   article6_pulsed_neutron_gas_pressure  (#.##s)
-  PASS   article7_sigma_gas_saturation_lowporosity  (#.##s)
+ PASS article1_nuclear_spectroscopy_history (#.##s)
+ PASS article2_formation_chlorine_salinity (#.##s)
+ PASS article3_self_compensated_spectroscopy (#.##s)
+ PASS article4_co_sigma_saturation_casestudy (#.##s)
+ PASS article5_through_casing_toc_saturation (#.##s)
+ PASS article6_pulsed_neutron_gas_pressure (#.##s)
+ PASS article7_sigma_gas_saturation_lowporosity (#.##s)
 
   7/7 modules passed

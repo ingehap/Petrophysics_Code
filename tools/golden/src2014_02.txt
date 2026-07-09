@@ -15,7 +15,7 @@ Article 1: Dual-Water Dielectric-NMR-Spectroscopy
   Sw sensitivity: {'Sxo': 0.0235, 'Qv': 0.005, 'salinity': 0.0054, 'n': 0.0235}
   n-m trade-off @ Sw=0.8: n=1.5->m=2.01  n=2.5->m=1.87  n=3.5->m=1.73
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Pc & Resistivity Index in Carbonate
@@ -33,7 +33,7 @@ Article 2: Pc & Resistivity Index in Mixed-Wet Carbonate
   fitted m=2.000  a=1.000
   reported n: group1 1.99->2.28  group2 1.56->1.82
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Nanofluid Spontaneous Imbibition
@@ -48,7 +48,7 @@ Article 3: Nanofluid Spontaneous Imbibition
   incremental recovery (nano - surf) = 6.0% IOIP
   oil-phase angles [32.0, 95.0, 134.0]   water/air angles [93.0, 51.0, 21.0]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Canister Gas Sampling & Isotopes
@@ -63,7 +63,7 @@ Article 4: Canister Gas Sampling & Isotopes
   origins: biogenic, mixed, thermogenic
   CO2-CH4 isotope separation = 75.0 permil -> biogenic
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Thermal Conductivity from Velocity
@@ -82,15 +82,15 @@ Article 5: Thermal Conductivity from Elastic Velocity
   lambda(Vp high)=5.75  lambda(Vp low)=4.92 W/m/K
   regression lambda=5.20  model lambda=5.20 W/m/K
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_dualwater_dielectric_nmr  (#.##s)
-  PASS   article2_pc_resistivity_index_carbonate  (#.##s)
-  PASS   article3_nanofluid_imbibition  (#.##s)
-  PASS   article4_canister_gas_isotopes  (#.##s)
-  PASS   article5_thermal_conductivity_velocity  (#.##s)
+ PASS article1_dualwater_dielectric_nmr (#.##s)
+ PASS article2_pc_resistivity_index_carbonate (#.##s)
+ PASS article3_nanofluid_imbibition (#.##s)
+ PASS article4_canister_gas_isotopes (#.##s)
+ PASS article5_thermal_conductivity_velocity (#.##s)
 
   5/5 modules passed

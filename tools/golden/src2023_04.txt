@@ -9,7 +9,7 @@ Article 1: DP Electrofacies Clustering
   ARI vs true = 1.000  (1.0 = perfect)
   Predicted blocks: (array([0, 1, 2]), array([20, 20, 20]))
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2  — Image Rock Classification
@@ -23,7 +23,7 @@ Article 2: Image-Based Rock Classification
   KMeans best-aligned acc = 0.987
   Class-based perm relative error = 0.609
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3  — Symbolic Regression
@@ -37,7 +37,7 @@ Article 3: Symbolic Regression for Petrophysical Models
   Equation size: 15    R^2 (log F) = 0.994
   Ensemble R^2:  0.902
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4  — ML Methods for Log Prediction
@@ -50,7 +50,7 @@ Article 4: ML Methods for Log Prediction
   XGB:  RMSE=2.34  MAE=1.93  r=0.879  PSNR=19.43 dB
   PAE w/ RHOB missing: RMSE=2.20  r=0.892
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5  — Outlier Detection / Log Editing
@@ -65,7 +65,7 @@ Article 5: Outlier Detection and Log Editing
   MDS embedding shape: (8, 2)
   Reconstruction RMSE (density)=0.114  mean uncertainty=0.036
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6  — Borehole Image Artifact Removal
@@ -77,7 +77,7 @@ Article 6: Borehole Image Artifact Removal
   RMSE traditional      = 33.57
   RMSE ML cleaner       = 35.77
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7  — Sonic Log Imputation w/ Uncertainty
@@ -89,7 +89,7 @@ Article 7: Sonic Log Imputation with Uncertainty
   Ensemble RMSE = 3.20  goodness = 0.399  mean unc = 1.05
   Best by goodness-aware loss: lr=0.1 ne=200 score=0.601
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 8  — Exemplar-Guided Facies Modeling
@@ -102,7 +102,7 @@ Article 8: Exemplar-Guided Facies Modeling (simplified)
   IoU vs exemplar: 0.270
   Pattern controllability (diff w/ vertical exemplar) = 0.322
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 9  — Spatial Data Analytics
@@ -117,7 +117,7 @@ Article 9: Spatial Data Analytics
   SGS realizations: (3, 10), ensemble std = 2.049
   Collocated cokriging mean = 1.198
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 10 — ML Induction-Log Deconvolution
@@ -132,7 +132,7 @@ Article 10: ML-Based Deconvolution of Induction Log
   Test  RMSLE   linear    = 0.838
   Test  RMSLE   ML        = 0.526
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 11 — ML Induction-Log Convolution
@@ -146,21 +146,21 @@ Article 11: ML-Based Convolution for Forward Induction Modelling
   Test  RMSLE   ML        = 0.2890
   Window-size scan RMSLE: {11: 0.8501247668775572, 31: 0.3774597638539893, 51: 0.371896504699108, 81: 0.38173643497520954}
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article01_electrofacies_dp  (#.##s)
-  PASS   article02_image_rock_classification  (#.##s)
-  PASS   article03_symbolic_regression  (#.##s)
-  PASS   article04_log_prediction_ml  (#.##s)
-  PASS   article05_outlier_detection  (#.##s)
-  PASS   article06_borehole_image_artifacts  (#.##s)
-  PASS   article07_sonic_log_imputation  (#.##s)
-  PASS   article08_egfm_facies  (#.##s)
-  PASS   article09_spatial_analytics  (#.##s)
-  PASS   article10_induction_deconvolution  (#.##s)
-  PASS   article11_induction_convolution  (#.##s)
+ PASS article01_electrofacies_dp (#.##s)
+ PASS article02_image_rock_classification (#.##s)
+ PASS article03_symbolic_regression (#.##s)
+ PASS article04_log_prediction_ml (#.##s)
+ PASS article05_outlier_detection (#.##s)
+ PASS article06_borehole_image_artifacts (#.##s)
+ PASS article07_sonic_log_imputation (#.##s)
+ PASS article08_egfm_facies (#.##s)
+ PASS article09_spatial_analytics (#.##s)
+ PASS article10_induction_deconvolution (#.##s)
+ PASS article11_induction_convolution (#.##s)
 
   11/11 modules passed

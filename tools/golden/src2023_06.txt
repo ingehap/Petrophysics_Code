@@ -48,7 +48,7 @@ Petrophysics Vol. 64 No. 3 (June 2023) - run all module tests
 ----------------------------------------------------------------------
 [article5] testing T2* from T2 + dB0 + dchi*B0 ...
 [article5] testing Look-Locker T1* ...
-           T1=#.##s  alpha=10deg  tau=5ms  -> T1*=#.##s
+ T1=#.##s alpha=10deg tau=5ms -> T1*=#.##s
 [article5] inverting a synthetic 2-D T1-T2* dataset ...
            true amplitudes      = [1.  0.6 0.4]
            recovered amplitudes = [1.  0.6 0.4]
@@ -101,14 +101,14 @@ Summary
 ======================================================================
 module                                   status   time (s)
 ----------------------------------------------------------------------
-article1_hdt                             OK          #.###
-article2_wiri                            OK          #.###
-article3_overburden_frf_ri               OK          #.###
-article4_gas_trapping                    OK          #.###
-article5_shale_t1t2star                  OK          #.###
-article6_ultrasonic_reflection           OK          #.###
-article7_dielectric_nmr                  OK          #.###
-article8_thz_porosity                    OK          #.###
-article9_xray_invasion                   OK          #.###
+article1_hdt OK #.###
+article2_wiri OK #.###
+article3_overburden_frf_ri OK #.###
+article4_gas_trapping OK #.###
+article5_shale_t1t2star OK #.###
+article6_ultrasonic_reflection OK #.###
+article7_dielectric_nmr OK #.###
+article8_thz_porosity OK #.###
+article9_xray_invasion OK #.###
 ----------------------------------------------------------------------
 9/9 modules passed.

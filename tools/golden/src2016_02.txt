@@ -8,7 +8,7 @@ Article 1: CO2-Brine Multiphase Flow
   Land C / Sgr(0.4)      = 1.667 / 0.240
   Leverett J             = 0.167
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - 2D NMR Shale Saturations
@@ -21,7 +21,7 @@ Article 2: Estimating Saturations in Organic Shales (2D NMR)
   water R1 lo/hi freq    = 1.500 / 1.500 1/s
   oil R1 lo/hi freq      = 1.949 / 1.095 1/s
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Low-Permeability Measurements
@@ -33,7 +33,7 @@ Article 3: Low-Permeability Measurements
   Darcy k gas / liquid   = 2.56e-19 / 1.14e-18 m^2
   mean free path / Kn    = 6.7 nm / 0.268
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Low-Salinity Waterflooding
@@ -46,7 +46,7 @@ Article 4: Low-Salinity Waterflooding
   recovery factor        = 0.625
   LSWI incremental Sor   = 0.070
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Shaly-Sand Graphical Solutions
@@ -59,15 +59,15 @@ Article 5: Shaly-Sand Graphical Solutions
   Rh / Rv / anisotropy   = 3.448 / 4.100 / 1.090
   solved Vlam / Rsand    = 0.300 / 5.000
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_co2_brine_multiphase_flow  (#.##s)
-  PASS   article2_2d_nmr_shale_saturations  (#.##s)
-  PASS   article3_low_permeability_measurements  (#.##s)
-  PASS   article4_low_salinity_waterflooding  (#.##s)
-  PASS   article5_shaly_sand_graphical_solutions  (#.##s)
+ PASS article1_co2_brine_multiphase_flow (#.##s)
+ PASS article2_2d_nmr_shale_saturations (#.##s)
+ PASS article3_low_permeability_measurements (#.##s)
+ PASS article4_low_salinity_waterflooding (#.##s)
+ PASS article5_shaly_sand_graphical_solutions (#.##s)
 
   5/5 modules passed

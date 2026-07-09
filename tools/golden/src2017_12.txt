@@ -8,7 +8,7 @@ Article 1 (Tutorial): Digital Log Preparation
   phi liquid / gassy     = 0.152 / 0.242
   squared log            = [1. 1. 1. 5. 5. 5.]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Driller's Depth Way-Point Methodology
@@ -19,7 +19,7 @@ Article 2: Driller's Depth Way-Point Methodology
   thermal elongation     = 1.200 m over 1000 m
   total depth correction = 6.073 m
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Carbonate Pore Structure & Sonic
@@ -30,7 +30,7 @@ Article 3: Carbonate Pore Structure & Sonic
   Vp / Vs                = 3795 / 2191 m/s
   pore types g=2/6/12    = ['moldic', 'meso/macro-intercrystalline', 'micro-intercrystalline']
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - 3D Printing Berea Sandstone
@@ -40,7 +40,7 @@ Article 4: 3D Printing Berea Sandstone
 ============================================================
   printed size @160um    = 130 um
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Kerogen Density & Thermal Maturity
@@ -52,7 +52,7 @@ Article 5: Kerogen Density & Thermal Maturity
   rho_ma / phi / Sw      = 2.538 / 0.057 / 1.000
   porosity sensitivity   = 60.0 %
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Cleaning Methods & Porosity
@@ -64,16 +64,16 @@ Article 6: Cleaning Methods & Porosity
   porosity dirty/clean   = 0.167 / 0.219
   solvent ranking        = ['toluene', 'DCM', 'chloroform', 'n-heptane']
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_digital_log_preparation  (#.##s)
-  PASS   article2_drillers_depth_waypoint  (#.##s)
-  PASS   article3_carbonate_pore_structure_sonic  (#.##s)
-  PASS   article4_3d_printing_berea  (#.##s)
-  PASS   article5_kerogen_density_maturity  (#.##s)
-  PASS   article6_cleaning_methods_porosity  (#.##s)
+ PASS article1_digital_log_preparation (#.##s)
+ PASS article2_drillers_depth_waypoint (#.##s)
+ PASS article3_carbonate_pore_structure_sonic (#.##s)
+ PASS article4_3d_printing_berea (#.##s)
+ PASS article5_kerogen_density_maturity (#.##s)
+ PASS article6_cleaning_methods_porosity (#.##s)
 
   6/6 modules passed

@@ -8,7 +8,7 @@ Article 1 (Tutorial): Capillary Pressure, Part 3
   Leverett J             = 0.707
   Sw vs Pc               = [1.   0.73 0.26 0.14]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Geological Feature Image ML
@@ -19,7 +19,7 @@ Article 2: Geological Feature Prediction (Image ML)
   contrast bedded/chaotic = -0.004 / -0.010
   classification accuracy = 1.00
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Poisson's Ratio Functional Network
@@ -30,7 +30,7 @@ Article 3: Poisson's Ratio via Functional Network
   dynamic nu (Vp=5.5,Vs=3.0) = 0.288
   functional-net R / RMSE = 0.983 / 0.0051
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Borehole Resistivity ML Surrogate
@@ -41,7 +41,7 @@ Article 4: Borehole Resistivity Modeling (ML Surrogate)
   Ra thick/thin bed      = 50.0 / 2.5 ohm-m
   surrogate R / RMSE     = 0.988 / 0.075 (log10 ohm-m)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Ultradeep Resistivity Transdim Inversion
@@ -52,7 +52,7 @@ Article 5: Ultradeep Resistivity Transdimensional Inversion
   posterior rel. error   = 0.005
   post std near/away bnd = 0.72 / 0.52
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Lithology CNN
@@ -62,7 +62,7 @@ Article 6: Lithology Interpretation With CNN
 ============================================================
   3-class lithology accuracy = 1.00
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7 - Hydraulic Fracture Optimization
@@ -73,7 +73,7 @@ Article 7: Optimizing Hydraulic Fracture Locations
   CQ at sweet spots / mean = 0.87 / 0.05
   selected stages        = [10, 25, 40]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 8 - Shallow Learning Sonic Logs
@@ -84,7 +84,7 @@ Article 8: Shallow Learning for Sonic Traveltime Logs
   DTC  OLS R/RMSE        = 0.995 / 2.20
   DTC  kNN R/RMSE        = 0.974 / 5.11
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 9 - Fluid Optical Database Reconstruction
@@ -96,7 +96,7 @@ Article 9: Fluid Optical Database Reconstruction
   composition error      = 2.78e-16
   spectrum reconstruction rel. error = 0.004
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 10 - ML Well-Log Depth Matching
@@ -107,7 +107,7 @@ Article 10: ML-Based Automatic Well-Log Depth Matching
   bulk lag / correlation = -15 / 0.998
   local shifts (median)  = -14
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 11 - Data Preconditioning
@@ -118,21 +118,21 @@ Article 11: Data Preconditioning for Data-Driven Analytics
   imputed gaps           = [1. 2. 3. 4. 5. 6.]
   RMSE raw / preconditioned = 5.82 / 1.39
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_capillary_pressure_tutorial_part3  (#.##s)
-  PASS   article2_geological_feature_image_ml  (#.##s)
-  PASS   article3_poisson_ratio_functional_network  (#.##s)
-  PASS   article4_borehole_resistivity_ml  (#.##s)
-  PASS   article5_ultradeep_resistivity_transdim_inversion  (#.##s)
-  PASS   article6_lithology_cnn  (#.##s)
-  PASS   article7_hydraulic_fracture_optimization  (#.##s)
-  PASS   article8_shallow_learning_sonic_logs  (#.##s)
-  PASS   article9_fluid_optical_database_reconstruction  (#.##s)
-  PASS   article10_ml_depth_matching  (#.##s)
-  PASS   article11_data_preconditioning  (#.##s)
+ PASS article1_capillary_pressure_tutorial_part3 (#.##s)
+ PASS article2_geological_feature_image_ml (#.##s)
+ PASS article3_poisson_ratio_functional_network (#.##s)
+ PASS article4_borehole_resistivity_ml (#.##s)
+ PASS article5_ultradeep_resistivity_transdim_inversion (#.##s)
+ PASS article6_lithology_cnn (#.##s)
+ PASS article7_hydraulic_fracture_optimization (#.##s)
+ PASS article8_shallow_learning_sonic_logs (#.##s)
+ PASS article9_fluid_optical_database_reconstruction (#.##s)
+ PASS article10_ml_depth_matching (#.##s)
+ PASS article11_data_preconditioning (#.##s)
 
   11/11 modules passed

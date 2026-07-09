@@ -55,6 +55,11 @@ _NORMALIZATIONS = [
 def normalize(text: str) -> str:
     for pattern, replacement in _NORMALIZATIONS:
         text = pattern.sub(replacement, text)
+    # A masked timing had a run-dependent digit count, so any fixed-width
+    # padding around it (src2025_04's box layout) differs between runs.
+    # Collapse space runs on lines where a timing was masked.
+    lines = [re.sub(r"  +", " ", line) if "#.##" in line else line for line in text.split("\n")]
+    text = "\n".join(lines)
     if not text.endswith("\n"):
         text += "\n"
     return text

@@ -14,7 +14,7 @@ Article 1: NMF + Hierarchical Clustering on NMR T1-T2 Maps
   Wettability index (Eq. 8) = -0.558
   Body-to-throat ratio      = 6.76
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2  - Fuzzy + GA + kNN NMR-WD
@@ -28,7 +28,7 @@ Article 2: Fuzzy + GA + kNN NMR-WD Fluid Typing
   GA  3-coef polynomial    test RMSE = 0.126
   k-NN (k=7)               test RMSE = 0.073
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3  - NMR Logging Data Processing
@@ -42,7 +42,7 @@ Article 3: NMR Logging Data Processing Toolbox
   SDR          K        =     0.58 mD  (T2_lm =  8.91 ms)
   ML log-linear K       RMSLE = 0.000
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4  - BSS-ICA + D-T2 Invasion
@@ -56,7 +56,7 @@ Article 4: BSS-ICA + D-T2 for Near-Wellbore NMR Analysis
   Permeability ratio index KRI (Eq. 5)     = 0.035
   ICA best-source corrs (3 ICs)            = [np.float64(1.0), np.float64(0.993), np.float64(0.993)]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5  - NPPM Pore-Size + Kozeny-Carman
@@ -73,7 +73,7 @@ Article 5: NPPM Gaussian Mixture - Pore Size & Permeability
   Matched 4 / 4 planted clusters
   Kozeny-Carman k (with Herron factor) =  0.024 mD
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6  - DDTW NMR + Mud-Gas Integration
@@ -87,7 +87,7 @@ Article 6: DDTW NMR + Mud-Gas Integrated Porosity
   Truth                phi = 0.220   Sg = 0.650
   Mud-gas HI            = 0.399
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7  - Slimhole LWD NMR + Factor Analysis
@@ -100,7 +100,7 @@ Article 7: Slimhole LWD NMR + Factor Analysis (proxy)
   Mean LWD-wireline diff inside invaded zone (depth 60-80): 0.012
   Mean LWD-wireline diff outside invaded zone:                0.000
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 8  - 27Al MAS NMR Mineral Identification
@@ -118,7 +118,7 @@ Article 8: 27Al MAS NMR Mineral Characterisation (proxy)
   Planted    = ['kaolinite', 'K_feldspar', 'corundum']
   Matched 3 / 3 planted minerals
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 9  - T2-Imbibition Wettability Index
@@ -130,7 +130,7 @@ Article 9: T2-Imbibition NMR Wettability Index (proxy)
   Oil-wet rock:    A_w =  1.48   A_o =  6.28   WI = -0.619
   D2O - H2O long-T2 isolated water signal = 5.910
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 10 - PCR Permeability from NMR + MICP
@@ -142,7 +142,7 @@ Article 10: PCR Permeability from NMR + MICP (proxy)
   Timur-Coates       RMSE log10 k = 0.485
   SDR                RMSE log10 k = 0.646
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 11 - NMR Core Analysis Review (VST / SPRITE)
@@ -154,21 +154,21 @@ Article 11: NMR Core Analysis Review (concept proxies)
   Slice-selective signal  in-slab = 18.425,  off-slab = 0.567
   SPRITE image peak at z = -0.003 m  (true 0.010)
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_nmf_clustering_t1t2  (#.##s)
-  PASS   article2_fuzzy_genetic_nmr  (#.##s)
-  PASS   article3_nmr_processing_toolbox  (#.##s)
-  PASS   article4_bssica_dt2_invasion  (#.##s)
-  PASS   article5_nppm_pore_size_perm  (#.##s)
-  PASS   article6_ddtw_mudgas_integration  (#.##s)
-  PASS   article7_slimhole_lwd_factor  (#.##s)
-  PASS   article8_highfield_al_nmr  (#.##s)
-  PASS   article9_t2_imbibition_wettability  (#.##s)
-  PASS   article10_pcr_nmr_micp_perm  (#.##s)
-  PASS   article11_core_nmr_review  (#.##s)
+ PASS article1_nmf_clustering_t1t2 (#.##s)
+ PASS article2_fuzzy_genetic_nmr (#.##s)
+ PASS article3_nmr_processing_toolbox (#.##s)
+ PASS article4_bssica_dt2_invasion (#.##s)
+ PASS article5_nppm_pore_size_perm (#.##s)
+ PASS article6_ddtw_mudgas_integration (#.##s)
+ PASS article7_slimhole_lwd_factor (#.##s)
+ PASS article8_highfield_al_nmr (#.##s)
+ PASS article9_t2_imbibition_wettability (#.##s)
+ PASS article10_pcr_nmr_micp_perm (#.##s)
+ PASS article11_core_nmr_review (#.##s)
 
   11/11 modules passed

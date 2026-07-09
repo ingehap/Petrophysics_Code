@@ -11,7 +11,7 @@ Article 1: Tutorial - A Century of Sidewall Coring
   MaxCOR per-run (60)    = 265.1 in^3
   tools >= 30k psi/400F/1.5in = ['Xaminer Core', 'Xaminer Dual-Coring', 'XL-Rock']
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Pore Size/Tortuosity/Perm From NMR
@@ -25,7 +25,7 @@ Article 2: Pore Size / Tortuosity / Permeability From NMR
   k Carman-Kozeny        = 1.302e-10 (cm^2 units)
   k Timur-Coates / SDR   = 0.0018 / 0.7290
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Real-Time Acoustic Velocity (AI)
@@ -39,7 +39,7 @@ Article 3: Real-Time Acoustic-Velocity Prediction (AI)
   Carroll Vs(5.9)        = 3.232 km/s
   surrogate Vp AAPE / R  = 0.57% / 0.994
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - ML-Enabled Sonic Shear Processing
@@ -52,7 +52,7 @@ Article 4: Machine-Learning Sonic Shear Processing
   RMAD (260 vs 262 us/ft) = 0.0077
   inverted DTS           = 260.67 us/ft  (true 260.0)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - LWD Co-Located Antenna Anisotropy
@@ -64,7 +64,7 @@ Article 5: LWD Co-Located Antenna Anisotropy / Dip
   phase / attenuation    = 31.1 deg / 4.71 dB
   recovered resistivity  = 10.000 ohm-m  (true 10.0)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Geosteering & 2D Structural Analysis
@@ -76,16 +76,16 @@ Article 6: Proactive Geosteering & 2D Structural Analysis
   fitted fault dip/azim  = 44.0 / 203.0 (true 44.0/23.0)
   net pay                = 85.0%
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_sidewall_coring_tutorial  (#.##s)
-  PASS   article2_nmr_restricted_diffusion  (#.##s)
-  PASS   article3_ai_acoustic_velocity  (#.##s)
-  PASS   article4_ml_sonic_shear  (#.##s)
-  PASS   article5_lwd_colocated_antenna  (#.##s)
-  PASS   article6_geosteering_2d_structural  (#.##s)
+ PASS article1_sidewall_coring_tutorial (#.##s)
+ PASS article2_nmr_restricted_diffusion (#.##s)
+ PASS article3_ai_acoustic_velocity (#.##s)
+ PASS article4_ml_sonic_shear (#.##s)
+ PASS article5_lwd_colocated_antenna (#.##s)
+ PASS article6_geosteering_2d_structural (#.##s)
 
   6/6 modules passed

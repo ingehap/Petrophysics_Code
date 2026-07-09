@@ -11,7 +11,7 @@
     [PASS] Corrected perms positive
     [PASS] Correction factor plausible: 1.047
     [PASS] Measurement time decreases with higher perm
-    [PASS] Time range OK: #.## s
+ [PASS] Time range OK: #.## s
     [PASS] Perm increases with grain size
     [PASS] CO2 injectivity index positive: 849.86
     [PASS] Trapping capacity plausible: 0.0544

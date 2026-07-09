@@ -8,7 +8,7 @@ Article 1 (Tutorial): Organic-Mudstone Storage Capacity
   kerogen volume (TOC 6%) = 0.141
   free fraction lo/hi P  = 1.00 / 1.00
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Niutitang Shale Pore & Adsorption
@@ -20,7 +20,7 @@ Article 2: Niutitang Shale Pore Structure & Adsorption
   FHH fractal dimension  = 2.60
   VL TOC-rich / lean     = 15.60 / 9.20 cm3/g
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Wellsite Tomography Bayesian Inversion
@@ -32,7 +32,7 @@ Article 3: Wellsite Tomography Bayesian Inversion
   roughness MAP / LS     = 0.32 / 12.57
   error 25 vs 40 projections = 0.223 / 0.063
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Shale Tortuosity & Permeability (FVM)
@@ -44,7 +44,7 @@ Article 4: Shale Tortuosity & Permeability (FVM)
   tortuous sigma / tau   = 0.196 / 4.49
   k (tau 1.5 / 4.0)      = 1.78e-15 / 2.50e-16
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Fast NMR T1 Measurement
@@ -52,11 +52,11 @@ Article 4: Shale Tortuosity & Permeability (FVM)
 ============================================================
 Article 5: Fast NMR T1 Measurement
 ============================================================
-  full-fit T1            = #.## s  (true 0.8)
-  fast two-point T1      = #.## s
-  acq time full / fast   = 120.5 / #.## s  (12x)
+ full-fit T1 = #.## s (true 0.8)
+ fast two-point T1 = #.## s
+ acq time full / fast = 120.5 / #.## s (12x)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Reconsidering Klinkenberg
@@ -68,7 +68,7 @@ Article 6: Reconsidering Klinkenberg's Permeability Data
   2nd-order k_l/b/c      = 5.000 / 6.000 / 4.000
   RSS first / second     = 14.4745 / 1.32e-27
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7 - Carbonate m (Vugs & Fractures)
@@ -80,7 +80,7 @@ Article 7: Appropriate m for Vuggy/Fractured Carbonates
   effective m (fractures) = 1.83
   Sw (m=2 / m_vug=2.44) = 0.204 / 0.292
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 8 - Perched Water Contacts
@@ -92,7 +92,7 @@ Article 8: Perched Water Contacts
   entry height           = 17.0 m
   buoyancy @30 m         = 88290 Pa
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 9 - Wellbore Positioning While Drilling
@@ -103,19 +103,19 @@ Article 9: Wellbore Positioning While Drilling (LWD)
   vertical: dTVD/dN/dE   = 100.0 / 0.0 / 0.0
   final TVD / horiz disp = 1073 / 573 m
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_organic_mudstone_storage_tutorial  (#.##s)
-  PASS   article2_niutitang_shale_pore_adsorption  (#.##s)
-  PASS   article3_wellsite_tomography_bayesian  (#.##s)
-  PASS   article4_shale_tortuosity_permeability_fvm  (#.##s)
-  PASS   article5_fast_nmr_t1  (#.##s)
-  PASS   article6_reconsidering_klinkenberg  (#.##s)
-  PASS   article7_carbonate_m_vugs_fractures  (#.##s)
-  PASS   article8_perched_water_contacts  (#.##s)
-  PASS   article9_wellbore_positioning_lwd  (#.##s)
+ PASS article1_organic_mudstone_storage_tutorial (#.##s)
+ PASS article2_niutitang_shale_pore_adsorption (#.##s)
+ PASS article3_wellsite_tomography_bayesian (#.##s)
+ PASS article4_shale_tortuosity_permeability_fvm (#.##s)
+ PASS article5_fast_nmr_t1 (#.##s)
+ PASS article6_reconsidering_klinkenberg (#.##s)
+ PASS article7_carbonate_m_vugs_fractures (#.##s)
+ PASS article8_perched_water_contacts (#.##s)
+ PASS article9_wellbore_positioning_lwd (#.##s)
 
   9/9 modules passed

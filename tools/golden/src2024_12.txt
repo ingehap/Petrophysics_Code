@@ -249,19 +249,19 @@ Full analysis: 6 perched interval(s)
 ==========================================================================
   SUMMARY
 ==========================================================================
-  [+] m01_image_rock_properties                PASS  #.##s
-  [+] m02_dip_picking                          PASS  #.##s
-  [+] m03_synthetic_borehole_images            PASS  #.##s
-  [+] m04_well_integrity_ccs                   PASS  #.##s
-  [+] m05_casing_cement_inspection             PASS  #.##s
-  [+] m06_noise_logging                        PASS  #.##s
-  [+] m07_sourceless_density                   PASS  #.##s
-  [+] m08_tracer_aquifer_sampling              PASS  #.##s
-  [+] m09_gpc_fluid_properties                 PASS  #.##s
-  [+] m10_permeability_prediction              PASS  #.##s
-  [+] m11_wettability_adsorption               PASS  #.##s
-  [+] m12_fracability_evaluation               PASS  #.##s
-  [+] m13_perched_water                        PASS  #.##s
+ [+] m01_image_rock_properties PASS #.##s
+ [+] m02_dip_picking PASS #.##s
+ [+] m03_synthetic_borehole_images PASS #.##s
+ [+] m04_well_integrity_ccs PASS #.##s
+ [+] m05_casing_cement_inspection PASS #.##s
+ [+] m06_noise_logging PASS #.##s
+ [+] m07_sourceless_density PASS #.##s
+ [+] m08_tracer_aquifer_sampling PASS #.##s
+ [+] m09_gpc_fluid_properties PASS #.##s
+ [+] m10_permeability_prediction PASS #.##s
+ [+] m11_wettability_adsorption PASS #.##s
+ [+] m12_fracability_evaluation PASS #.##s
+ [+] m13_perched_water PASS #.##s
 
-  Total: 13 passed, 0 failed, #.##s elapsed
+ Total: 13 passed, 0 failed, #.##s elapsed
 ==========================================================================

@@ -10,7 +10,7 @@ Article 1: Bazhenov Shale Rock Physics
   K*=31.83  mu*=35.69 GPa
   Vp=5474 m/s  AI=14507
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Borehole Carbon Corrections for TOC
@@ -22,7 +22,7 @@ Article 2: Borehole Carbon Corrections for TOC
   Y_TOC = 0.0200
   f_Borehole(8in)=0.01040  f_Borehole(16in)=0.01980
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Three-Magnet Array Unilateral MR
@@ -34,7 +34,7 @@ Article 3: Three-Magnet Array Unilateral MR
   T2eff(grad)=422.71 ms   T2eff(no grad)=2307.69 ms
   porosity = 0.168
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - NMR Permeability of Carbonates
@@ -47,7 +47,7 @@ Article 4: NMR Permeability of Complex Carbonates
   RBF prediction error = 1.042e+00
   PCA variance fractions = [0.593 0.407]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Shaly-Sand Porosity (Shale Line)
@@ -61,15 +61,15 @@ Article 5: Shaly-Sand Porosity (Shale-Line Method)
   dry-clay slope kdcl = -0.334
   phi_e (N=0.7) = 0.222
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_bazhenov_rock_physics  (#.##s)
-  PASS   article2_borehole_carbon_toc  (#.##s)
-  PASS   article3_three_magnet_mr_coreplug  (#.##s)
-  PASS   article4_nmr_carbonate_permeability  (#.##s)
-  PASS   article5_shaly_sand_porosity_deepwater  (#.##s)
+ PASS article1_bazhenov_rock_physics (#.##s)
+ PASS article2_borehole_carbon_toc (#.##s)
+ PASS article3_three_magnet_mr_coreplug (#.##s)
+ PASS article4_nmr_carbonate_permeability (#.##s)
+ PASS article5_shaly_sand_porosity_deepwater (#.##s)
 
   5/5 modules passed

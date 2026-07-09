@@ -9,7 +9,7 @@ Article 1: Heavy-Oil NMR (SAGD)
   Clavier Vsh (mid GR)   = 0.307
   bitumen BVO / weight   = 0.080 / 0.040 wt/wt
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Fluid Contamination Prediction
@@ -21,7 +21,7 @@ Article 2: Downhole Fluid Contamination Prediction
   cleanup P(5)/P(80)     = 1.184 / 0.608
   fitted virgin endpoint = 0.500
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Asphaltenes Explained
@@ -32,7 +32,7 @@ Article 3: Asphaltenes Explained
   OD ratio nano/cluster  = 1.026 / 1.490
   OD ratio grav/full     = 1.026 / 1.502
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Bateman-Konen (Technical Note)
@@ -43,14 +43,14 @@ Article 4 (TN): Bateman-Konen Resistivity-Salinity
   R75 20k/150k ppm       = 0.2971 / 0.0539 ohm-m
   Rw (55k ppm, 180F)     = 0.0528 ohm-m
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_heavyoil_nmr_sagd  (#.##s)
-  PASS   article2_fluid_contamination_prediction  (#.##s)
-  PASS   article3_asphaltenes_explained  (#.##s)
-  PASS   article4_bateman_konen_transform  (#.##s)
+ PASS article1_heavyoil_nmr_sagd (#.##s)
+ PASS article2_fluid_contamination_prediction (#.##s)
+ PASS article3_asphaltenes_explained (#.##s)
+ PASS article4_bateman_konen_transform (#.##s)
 
   4/4 modules passed

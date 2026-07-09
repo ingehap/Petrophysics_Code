@@ -9,7 +9,7 @@ Article 1: Untangling Acoustic Anisotropy
   fast azimuth true/fit  = 40.0 / 40.0 deg
   Thomsen gamma          = 0.250
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Reservoir Fluid Geodynamics
@@ -21,7 +21,7 @@ Article 2: Reservoir Fluid Geodynamics
   diffusion length 50Myr = 125.6 m
   tau GOR / asphaltene   = 2.50e+12 / 2.50e+15 s
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Bakken Petrophysical Model
@@ -34,7 +34,7 @@ Article 3: Bakken Petrophysical Model
   Rh / Rv                = 4.717 / 31.200
   solved Fshale / Rsand  = 0.400 / 50.00
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - EMAT Cement Evaluation
@@ -46,7 +46,7 @@ Article 4: EMAT Cement Evaluation
   cement G / att         = 4.05e+09 Pa / 3.3 dB/ft
   Lamb residual @2000/3200 = -2.215e-04 / -2.153e-03
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - McElroy Rock Classification
@@ -57,7 +57,7 @@ Article 5: McElroy Integrated Rock Classification
   Winland r35            = 2.013 um
   cluster centers (logk) = [-1.02  1.99]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Thin-Bedded Sands (Gulf of Mexico)
@@ -70,16 +70,16 @@ Article 6: Thin-Bedded Sands (Gulf of Mexico)
   Rh / Rv                = 3.371 / 12.600
   Sw (sand / bulk Rh)    = 0.167 / 0.406
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_acoustic_anisotropy  (#.##s)
-  PASS   article2_reservoir_fluid_geodynamics  (#.##s)
-  PASS   article3_bakken_petrophysical_model  (#.##s)
-  PASS   article4_emat_cement_evaluation  (#.##s)
-  PASS   article5_mcelroy_rock_classification  (#.##s)
-  PASS   article6_thinbedded_sands_gom  (#.##s)
+ PASS article1_acoustic_anisotropy (#.##s)
+ PASS article2_reservoir_fluid_geodynamics (#.##s)
+ PASS article3_bakken_petrophysical_model (#.##s)
+ PASS article4_emat_cement_evaluation (#.##s)
+ PASS article5_mcelroy_rock_classification (#.##s)
+ PASS article6_thinbedded_sands_gom (#.##s)
 
   6/6 modules passed

@@ -9,7 +9,7 @@ Article 1 (Tutorial): Capillary Pressure, Part 2
   Leverett J rockA/rockB = 0.707 / 1.414
   Sw drainage/imbibition = [0.2 0.4 0.6] / [0.4  0.55 0.7 ]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - X-Ray Sourceless Density Logging
@@ -20,7 +20,7 @@ Article 2: X-Ray Sourceless Density Logging
   count at 2.45 g/cc     = 942895
   corrected rho / DRHO   = 2.600 / +0.150
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Kerogen Properties + Geomechanics
@@ -33,7 +33,7 @@ Article 3: Kerogen Properties in Log Analysis & Geomechanics
   bulk modulus rock/clean = 27.1 / 40.0 GPa
   E / nu                 = 48.2 GPa / 0.204
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Fast Pressure-Decay Permeability
@@ -44,7 +44,7 @@ Article 4: Fast Pressure-Decay Core Permeability
   decay rate 1uD / 10uD  = 0.0000 / 0.0004 1/s
   fitted k               = 1.000e-18 m^2 (true 1e-18)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Unsupervised NMR T1-T2 Fluid Volumes
@@ -55,7 +55,7 @@ Article 5: Unsupervised NMR T1-T2 Fluid Volumes
   recovered volumes      = [0.45 0.3  0.25]
   cluster labels         = ['clay-bound/bitumen', 'movable', 'movable']
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Proxy Stochastic Fluid Sampling
@@ -67,7 +67,7 @@ Article 6: Proxy-Enabled Stochastic Fluid Sampling
   posterior eta0 / V*    = 0.464 / 23.3 (true 0.45 / 25.0)
   V to 5% : mean 4844 +/- 385
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7 - DFA + Gas Chromatography
@@ -78,7 +78,7 @@ Article 7: DFA and Gas Chromatography
   GOR gassy / oily       = 430033 / 23644 scf/STB
   OD vs depth            = [0.3    0.4092 0.5582]
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 8 - Permeability From Rock Fabric (NMR+Elec)
@@ -89,7 +89,7 @@ Article 8: Permeability From Rock Fabric (NMR + Electric)
   cementation exponent m = 2.100
   joint k (m=1.8 / 2.6)  = 3.2 / 1.5 mD
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 9 - Digital Rock Porosity Upscaling
@@ -101,7 +101,7 @@ Article 9: Upscaling Digital Rock Porosity (CT Histograms)
   REV size               = 63 voxels
   upscaled core porosity = 0.190
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 10 - Resistivity in Mixed-Wet Rocks
@@ -112,7 +112,7 @@ Article 10: Resistivity in Mixed-Wet Rocks
   n water-wet / oil-wet  = 1.80 / 3.80
   Sw correct / fixed-n   = 0.350 / 0.174
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 11 - Hierarchical Rock Classification
@@ -123,21 +123,21 @@ Article 11: Hierarchical Rock Classification
   clusters found         = 3
   silhouette             = 0.870
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_capillary_pressure_tutorial_part2  (#.##s)
-  PASS   article2_xray_sourceless_density  (#.##s)
-  PASS   article3_kerogen_log_geomechanics  (#.##s)
-  PASS   article4_fast_pressure_decay_permeability  (#.##s)
-  PASS   article5_unsupervised_nmr_t1t2_fluid_volumes  (#.##s)
-  PASS   article6_proxy_stochastic_fluid_sampling  (#.##s)
-  PASS   article7_dfa_gas_chromatography  (#.##s)
-  PASS   article8_permeability_nmr_electric_rockfabric  (#.##s)
-  PASS   article9_digital_rock_porosity_upscaling  (#.##s)
-  PASS   article10_resistivity_mixedwet_rocks  (#.##s)
-  PASS   article11_hierarchical_rock_classification  (#.##s)
+ PASS article1_capillary_pressure_tutorial_part2 (#.##s)
+ PASS article2_xray_sourceless_density (#.##s)
+ PASS article3_kerogen_log_geomechanics (#.##s)
+ PASS article4_fast_pressure_decay_permeability (#.##s)
+ PASS article5_unsupervised_nmr_t1t2_fluid_volumes (#.##s)
+ PASS article6_proxy_stochastic_fluid_sampling (#.##s)
+ PASS article7_dfa_gas_chromatography (#.##s)
+ PASS article8_permeability_nmr_electric_rockfabric (#.##s)
+ PASS article9_digital_rock_porosity_upscaling (#.##s)
+ PASS article10_resistivity_mixedwet_rocks (#.##s)
+ PASS article11_hierarchical_rock_classification (#.##s)
 
   11/11 modules passed

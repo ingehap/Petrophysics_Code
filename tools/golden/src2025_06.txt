@@ -275,5 +275,5 @@ Reservoir: K=0.3 mD, φ=0.08, So=0.55, T=60.0°C
   ✓ PASS  Article 7: Fracturing Fluid Damage – Li et al.
   ✓ PASS  Article 8: Injection Fluid Optimization – Xiao et al.
 
-  8/8 modules passed  (#.##s total)
+ 8/8 modules passed (#.##s total)
 ======================================================================

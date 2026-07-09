@@ -14,7 +14,7 @@ Article 1: Deepwater GoM - Challenges & Opportunities
   $100 spend at 9% CAGR over 10 yr = $237
   deepest structure: Na Kika (2003) at 7745 ft = 2361 m
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Turbidite Sediments
@@ -31,7 +31,7 @@ Article 2: Turbidite Sediments (Bouma Sequence)
   amalgamated/layered pore-contact ratio = 22x
   deepwater giants: 31 discoveries, 177 Tcf, 51 BBOE
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Dynamics of Reservoir Fluids
@@ -48,7 +48,7 @@ Article 3: Dynamics of Reservoir Fluids
   half-height ratio for a 10x aggregate = 0.10
   oil consumed to go 3% -> 30% asphaltene = 90%
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Asphaltene Fault-Block Migration
@@ -63,7 +63,7 @@ Article 4: Fault-Block Migration from Asphaltene Gradients
   connectivity test: equilibrated pair connected, reversed-gradient pair not
   tar flag at 40 wt% = 'tar likely'
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Deepwater Formation Evaluation
@@ -80,7 +80,7 @@ Article 5: Deepwater Formation-Evaluation
   Coates k: bound-rich=3.2  free-rich=2025.0 md
   differential-T1 wait times = (8.0, 1.0) s
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Kerogen Effect on Resistivity
@@ -96,16 +96,16 @@ Article 6: Kerogen Effect on Resistivity
   Sw(true)=0.447  Sw(ignoring kerogen)=0.806  (+80%)
   Case 2: resistivity drop = 38.9%, Sw overestimation = 28%
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_deepwater_gom_overview  (#.##s)
-  PASS   article2_turbidite_sediments  (#.##s)
-  PASS   article3_reservoir_fluid_dynamics  (#.##s)
-  PASS   article4_asphaltene_fault_block_migration  (#.##s)
-  PASS   article5_deepwater_formation_evaluation  (#.##s)
-  PASS   article6_kerogen_resistivity_mudrocks  (#.##s)
+ PASS article1_deepwater_gom_overview (#.##s)
+ PASS article2_turbidite_sediments (#.##s)
+ PASS article3_reservoir_fluid_dynamics (#.##s)
+ PASS article4_asphaltene_fault_block_migration (#.##s)
+ PASS article5_deepwater_formation_evaluation (#.##s)
+ PASS article6_kerogen_resistivity_mudrocks (#.##s)
 
   6/6 modules passed

@@ -12,7 +12,7 @@ Article 1: Maximizing Value From Mudlogs (Net Pay)
   reservoir samples      = 10  pay samples = 8
   net pay                = 8.0 m   N/G = 0.80
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - DFA Lateral Gradients & Mixing
@@ -25,7 +25,7 @@ Article 2: DFA Lateral Fluid Gradients & Mixing
   mixing time 10m / 20m  = 1.01e+10 / 4.05e+10 s
   50 m column mixing time = 2.53e+11 s
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Marcellus Weak Bedding Planes
@@ -39,7 +39,7 @@ Article 3: Weak Bedding Planes in the Marcellus Shale
   bedding strength s3=10 / 30 = 32.4 / 64.7 MPa
   required mud density   = 222 kg/m^3
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Fracture Fill From Dielectric Imaging
@@ -51,7 +51,7 @@ Article 4: Fracture Fill From Dielectric Imaging (OBM)
   loss tangent oil / calcite / wet = 0.000 / 0.000 / 0.922
   classes: open (oil/mud) | calcite-cemented | conductive (clay/brine)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Formation-Tester CO2 Sampling
@@ -64,7 +64,7 @@ Article 5: Formation-Tester Sampling for CO2
   CO2 solubility fresh / brine = 1.490 / 0.697 mol/kg
   sampled 10% CO2 -> true = 13.7%
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - NMR/Resistivity/Pressure Carbonate
@@ -78,7 +78,7 @@ Article 6: NMR + Resistivity + Pressure (Carbonate)
   density oil / water    = 700 / 1000 kg/m^3
   recovered OWC          = 3120.0 m  (true 3120)
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 7 - LWD Dual Ultrasonic Slowness
@@ -90,7 +90,7 @@ Article 7: LWD Dual Ultrasonic Slowness & Imaging
   picked t0 / coherence  = 90 us / 0.999
   |R| hard / soft        = 0.810 / 0.541
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 8 - Multiwell EM 3D Inversion
@@ -103,7 +103,7 @@ Article 8: Multiwell EM 3D Inversion (Injectites)
   recovered body / background sigma = 0.013 / 0.050
   model-truth correlation = 0.988
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 9 - Dual NN Permeability & Uncertainty
@@ -115,19 +115,19 @@ Article 9: Dual NN Permeability + Uncertainty
   mean-head RMSE vs truth = 0.060 log10(mD)
   mean sigma low-phi / high-phi = 0.228 / 0.107
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_mudlog_net_pay_tutorial  (#.##s)
-  PASS   article2_dfa_lateral_gradients_mixing  (#.##s)
-  PASS   article3_marcellus_weak_bedding_planes  (#.##s)
-  PASS   article4_obm_dielectric_fracture_fill  (#.##s)
-  PASS   article5_formation_tester_co2_sampling  (#.##s)
-  PASS   article6_nmr_resistivity_pressure_carbonate  (#.##s)
-  PASS   article7_lwd_dual_ultrasonic_slowness  (#.##s)
-  PASS   article8_injectite_em_3d_inversion  (#.##s)
-  PASS   article9_dual_nn_permeability_uncertainty  (#.##s)
+ PASS article1_mudlog_net_pay_tutorial (#.##s)
+ PASS article2_dfa_lateral_gradients_mixing (#.##s)
+ PASS article3_marcellus_weak_bedding_planes (#.##s)
+ PASS article4_obm_dielectric_fracture_fill (#.##s)
+ PASS article5_formation_tester_co2_sampling (#.##s)
+ PASS article6_nmr_resistivity_pressure_carbonate (#.##s)
+ PASS article7_lwd_dual_ultrasonic_slowness (#.##s)
+ PASS article8_injectite_em_3d_inversion (#.##s)
+ PASS article9_dual_nn_permeability_uncertainty (#.##s)
 
   9/9 modules passed

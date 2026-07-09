@@ -7,9 +7,9 @@ Article 1: NMR Relaxometry in Shale
 ============================================================
   T1/T2 fast motion      = 1.000
   T1/T2 slow motion      = 120.3
-  BPP T1 / T2            = 0.0702 / #.## s
+ BPP T1 / T2 = 0.0702 / #.## s
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Carbonate NMR + RBF Interpolation
@@ -21,7 +21,7 @@ Article 2: Carbonate NMR + RBF Interpolation
   T2 log-mean            = 31.62 ms
   RBF train RMSE         = 1.45e-15
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - Short-Wait Porous-Plate Pc & RI
@@ -33,7 +33,7 @@ Article 3: Short-Wait Porous-Plate Pc & RI
   fitted Sweqm / tc      = 0.400 / 5.00
   fitted Archie n        = 2.100
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Spectral Gamma-Ray While Drilling
@@ -44,7 +44,7 @@ Article 4: Spectral Gamma-Ray While Drilling
   fitted K/U/Th          = [ 2.5  4.  12. ]
   SGR / CGR              = 120.0 / 88.0 API
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Pure Matrix GR
@@ -57,15 +57,15 @@ Article 5: Pure Matrix GR
   matrix GR              = 55.3 GAPI
   Nm rel. error phi=0.2/0.6 = 3.1% / 18.8%
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_nmr_relaxometry_shale  (#.##s)
-  PASS   article2_carbonate_nmr_rbf  (#.##s)
-  PASS   article3_porous_plate_pc_ri  (#.##s)
-  PASS   article4_spectral_gr_mwd  (#.##s)
-  PASS   article5_pure_matrix_gr  (#.##s)
+ PASS article1_nmr_relaxometry_shale (#.##s)
+ PASS article2_carbonate_nmr_rbf (#.##s)
+ PASS article3_porous_plate_pc_ri (#.##s)
+ PASS article4_spectral_gr_mwd (#.##s)
+ PASS article5_pure_matrix_gr (#.##s)
 
   5/5 modules passed

@@ -9,7 +9,7 @@ Article 1 (Tutorial): Monte Carlo Nuclear & FSF
   FSF integral           = 1.0000
   N (small/large dSigma) = 100.10 / 105.00
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 2 - Russian vs Western Resistivity Logs
@@ -20,7 +20,7 @@ Article 2: Russian vs Western Resistivity Logs
   Rh / Rv / lambda       = 1.96 / 25.50 / 3.61
   skin depth 14MHz/50kHz = 0.425 / 7.12 m
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 3 - HDIL Array Induction (Anisotropic)
@@ -32,7 +32,7 @@ Article 3: HDIL Array Induction in Anisotropic Formations
   focused apparent res   = 50.0 ohm-m
   rho_a @0/40/60/90 deg  = 10.0 / 15.0 / 18.0 / 20.0
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 4 - Physics-Driven Deep-Learning Inversion
@@ -43,7 +43,7 @@ Article 4: Physics-Driven Deep-Learning Inversion
   noise-free recovery err = 4.22e-10
   noisy err unreg / reg  = 0.240 / 0.205
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 5 - Bayesian Geosteering via SMC
@@ -54,7 +54,7 @@ Article 5: Bayesian Geosteering via Sequential Monte Carlo
   tracking RMSE          = 0.321 m
   final est / true       = 0.18 / 0.00 m
   PASS
-  -> #.##s
+ -> #.##s
 
 ######################################################################
 # Article 6 - Boomerang Porosity & Net/Gross
@@ -67,16 +67,16 @@ Article 6: Boomerang Workflow - Porosity & Net/Gross
   effective porosity     = 0.115
   net/gross              = 0.50
   PASS
-  -> #.##s
+ -> #.##s
 
 ======================================================================
  SUMMARY
 ======================================================================
-  PASS   article1_montecarlo_nuclear_fsf_tutorial  (#.##s)
-  PASS   article2_russian_western_resistivity  (#.##s)
-  PASS   article3_hdil_array_induction_anisotropic  (#.##s)
-  PASS   article4_physics_deeplearning_inversion  (#.##s)
-  PASS   article5_bayesian_geosteering_smc  (#.##s)
-  PASS   article6_boomerang_porosity_netgross  (#.##s)
+ PASS article1_montecarlo_nuclear_fsf_tutorial (#.##s)
+ PASS article2_russian_western_resistivity (#.##s)
+ PASS article3_hdil_array_induction_anisotropic (#.##s)
+ PASS article4_physics_deeplearning_inversion (#.##s)
+ PASS article5_bayesian_geosteering_smc (#.##s)
+ PASS article6_boomerang_porosity_netgross (#.##s)
 
   6/6 modules passed

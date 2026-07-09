@@ -157,5 +157,5 @@ Testing: microannuli_leak_rate (Machicote et al., 2025)
 ║  ✓  filter_cake_isolation                                            ║
 ║  ✓  microannuli_leak_rate                                            ║
 ╠══════════════════════════════════════════════════════════════════════╣
-║  9 passed, 0 failed  (#.##s)                                         ║
+║ 9 passed, 0 failed (#.##s) ║
 ╚══════════════════════════════════════════════════════════════════════╝
