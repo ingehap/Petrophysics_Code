@@ -92,7 +92,7 @@ def numerical_jacobian(func, x, eps=1e-6):
 def density_porosity(rho_b, rho_ma, rho_fl):
     """Total porosity from the density log  phi = (rho_ma - rho_b)/(rho_ma - rho_fl)
     (Eq. 15)."""
-    return (rho_ma - rho_b) / (rho_ma - rho_fl)
+    return petrolib.porosity_lithology.density_porosity(rho_b, rho_ma, rho_fl)
 
 
 def density_porosity_jacobian(rho_b, rho_ma, rho_fl):
@@ -115,12 +115,12 @@ def vsh_gr(gr, gr_sand, gr_shale):
 
         Vsh = (GR - GR_sand)/(GR_shale - GR_sand).
     """
-    return (gr - gr_sand) / (gr_shale - gr_sand)
+    return petrolib.porosity_lithology.gamma_ray_index(gr, gr_sand, gr_shale, clip=None)
 
 
 def effective_porosity(phi_t, vsh, phi_sh):
     """Effective porosity  phi_e = phi_t - Vsh*phi_sh  (Eq. 18)."""
-    return phi_t - vsh * phi_sh
+    return petrolib.porosity_lithology.effective_porosity(phi_t, vsh, phi_sh, clip=None)
 
 
 # ---------------------------------------------- tests --------------
