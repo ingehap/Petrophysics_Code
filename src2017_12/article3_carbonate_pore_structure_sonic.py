@@ -30,24 +30,29 @@ in Pa, velocities in m/s, density in kg/m^3.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- elastic --------------
 
 def moduli_from_velocity(vp, vs, rho):
     """Bulk and shear moduli from velocities  mu = rho*Vs^2, K = rho*Vp^2 - 4/3*mu."""
-    mu = rho * np.asarray(vs, float) ** 2
-    kappa = rho * np.asarray(vp, float) ** 2 - 4.0 / 3.0 * mu
-    return kappa, mu
+    return petrolib.acoustic_geomech.moduli_from_velocity(vp, vs, rho)
 
 
 def vp_velocity(kappa, mu, rho):
     """Compressional velocity  Vp = sqrt((K + 4/3*mu)/rho)."""
-    return np.sqrt((kappa + 4.0 / 3.0 * mu) / rho)
+    return petrolib.acoustic_geomech.velocity_from_moduli(kappa, mu, rho)[0]
 
 
 def vs_velocity(mu, rho):
     """Shear velocity  Vs = sqrt(mu/rho)."""
-    return np.sqrt(mu / rho)
+    return petrolib.acoustic_geomech.velocity_from_moduli(0.0, mu, rho)[1]
 
 
 def flexibility_factor(modulus_dry, modulus_solid, phi):

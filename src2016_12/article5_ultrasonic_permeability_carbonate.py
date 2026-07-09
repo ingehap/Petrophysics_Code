@@ -29,6 +29,13 @@ Timur-Coates curve).  Permeability in mD.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Initial (pre-optimization) parameters for Eq. 3
 COEF_INITIAL = dict(A=1.0e3, B=4.0, C=1.0e4, D=2.0, E=1.0e6)
 
@@ -49,7 +56,7 @@ def reflectance(rho1, v1, rho2, v2):
         R = (rho2*v2 - rho1*v1)/(rho2*v2 + rho1*v1).
     """
     z1, z2 = rho1 * v1, rho2 * v2
-    return (z2 - z1) / (z2 + z1)
+    return petrolib.acoustic_geomech.reflection_coefficient(z1, z2)
 
 
 # ---------------------------------------------- permeability --------------
