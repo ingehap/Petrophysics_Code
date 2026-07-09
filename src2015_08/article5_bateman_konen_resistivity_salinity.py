@@ -28,6 +28,13 @@ NaCl-equivalent.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 ARPS_C_FAHRENHEIT = 6.77      # Arps constant for deg F (use 21.5 for deg C)
 
 
@@ -72,12 +79,12 @@ def salinity_from_rw(rw, temperature_f):
 
 def apparent_water_resistivity(rt, phi, m=2.0, a=1.0):
     """Apparent water resistivity  Rwa = Rt*phi^m/a  (= Rw at Sw = 1)."""
-    return rt * phi ** m / a
+    return petrolib.saturation_resistivity.apparent_water_resistivity(rt, phi, a=a, m=m)
 
 
 def archie_sw(rt, rw, phi, m=2.0, n=2.0, a=1.0):
     """Archie water saturation  Sw = (a*Rw/(phi^m*Rt))^(1/n)."""
-    return (a * rw / (phi ** m * rt)) ** (1.0 / n)
+    return petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, a=a, m=m, n=n)
 
 
 # ---------------------------------------------- tests --------------

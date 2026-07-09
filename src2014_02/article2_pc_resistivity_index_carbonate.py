@@ -42,6 +42,13 @@ up to 80 psi.  Saturations as fractions, resistivities in Ohm*m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Reservoir conditions of the study (Dernaika et al., 2014): measurements at
 # reservoir temperature 121 degC; NMR T2 acquired with a 200 usec echo spacing.
 RESERVOIR_TEMPERATURE_C = 121.0
@@ -67,12 +74,12 @@ NMR_HELIUM_POROSITY_TOLERANCE_PU = 1.1
 def resistivity_index(rt, ro):
     """Resistivity index  RI = Rt/Ro, the resistivity at saturation Sw relative
     to the fully brine-saturated resistivity Ro."""
-    return np.asarray(rt, float) / ro
+    return petrolib.saturation_resistivity.resistivity_index(rt, ro)
 
 
 def resistivity_index_from_sw(sw, n):
     """Resistivity index from water saturation  RI = Sw^(-n)."""
-    return np.asarray(sw, float) ** (-n)
+    return petrolib.saturation_resistivity.resistivity_index_from_sw(sw, n=n)
 
 
 def water_saturation_from_ri(ri, n):
@@ -82,7 +89,7 @@ def water_saturation_from_ri(ri, n):
 
     the application of the measured saturation exponent to logs.
     """
-    return np.asarray(ri, float) ** (-1.0 / n)
+    return petrolib.saturation_resistivity.sw_from_resistivity_index(ri, n=n)
 
 
 def archie_water_saturation(rt, rw, phi, a=1.0, m=2.0, n=2.0):
@@ -91,7 +98,7 @@ def archie_water_saturation(rt, rw, phi, a=1.0, m=2.0, n=2.0):
 
         Sw = (a*Rw/(phi^m*Rt))^(1/n).
     """
-    return (a * rw / (np.asarray(phi, float) ** m * rt)) ** (1.0 / n)
+    return petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, a=a, m=m, n=n)
 
 
 def fit_saturation_exponent(sw, ri):
@@ -99,10 +106,7 @@ def fit_saturation_exponent(sw, ri):
 
         log(RI) = -n*log(Sw)  ->  n = -slope.
     """
-    x = np.log10(np.asarray(sw, float))
-    y = np.log10(np.asarray(ri, float))
-    slope, _ = np.polyfit(x, y, 1)
-    return -slope
+    return petrolib.saturation_resistivity.fit_saturation_exponent(sw, ri)
 
 
 def saturation_exponents_by_cycle(cycles):
@@ -218,7 +222,7 @@ def formation_resistivity_factor(ro, rw):
 
 def frf_from_porosity(phi, a=1.0, m=2.0):
     """Formation factor from porosity  FRF = a/phi^m."""
-    return a * np.asarray(phi, float) ** (-m)
+    return petrolib.saturation_resistivity.formation_factor(phi, a=a, m=m)
 
 
 def fit_cementation_exponent(phi, frf):
@@ -228,10 +232,7 @@ def fit_cementation_exponent(phi, frf):
 
     Returns (m, a).
     """
-    x = np.log10(np.asarray(phi, float))
-    y = np.log10(np.asarray(frf, float))
-    slope, intercept = np.polyfit(x, y, 1)
-    return -slope, 10.0 ** intercept
+    return petrolib.saturation_resistivity.fit_cementation_exponent(phi, frf)
 
 
 # ---------------------------------------------- tests --------------

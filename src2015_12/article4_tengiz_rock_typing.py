@@ -30,6 +30,13 @@ fractions, height above free-water level in m or ft consistently.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- rock typing --------------
 
@@ -79,7 +86,7 @@ def saturation_height_function(height, a, b, swirr=0.0):
 def bulk_volume_water(phi, sw):
     """Bulk volume water  BVW = phi*Sw  (approximately constant per rock type at
     irreducible saturation)."""
-    return phi * sw
+    return petrolib.saturation_resistivity.bulk_volume_water(phi, sw)
 
 
 # ---------------------------------------------- tests --------------

@@ -30,6 +30,13 @@ dropped in extraction).  Conductivities in S/m, resistivities in Ohm*m.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- anisotropy (Hagiwara) --------------
 
@@ -73,7 +80,7 @@ def archie_sw_net_sand(rt, rw, phi, a=1.0, m=2.0, n=2.0):
 
         Sw = (a*Rw/(phi^m*Rt))^(1/n).
     """
-    return (a * rw / (phi ** m * rt)) ** (1.0 / n)
+    return petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, a=a, m=m, n=n)
 
 
 def net_pay_flag(net_to_gross, csh, ng_cutoff=0.05, csh_cutoff=0.95):

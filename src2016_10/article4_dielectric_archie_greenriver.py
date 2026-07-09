@@ -28,6 +28,13 @@ Resistivity in ohm-m, frequency in Hz; dielectric constants relative
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 MU0 = 4.0e-7 * np.pi          # permeability of free space (H/m)
 
 # Typical relative permittivities (real part) used in CRIM
@@ -95,12 +102,12 @@ def pickett_m_rw(bvw, rt):
 
 def archie_sw(rt, rw, phi, m=2.0, n=2.0):
     """Archie water saturation  Sw = (Rw/(phi^m * Rt))^(1/n)."""
-    return (rw / (phi ** m * rt)) ** (1.0 / n)
+    return petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, m=m, n=n)
 
 
 def bulk_volume_water(phi, sw):
     """Bulk volume water  BVW = phi*Sw."""
-    return phi * sw
+    return petrolib.saturation_resistivity.bulk_volume_water(phi, sw)
 
 
 # ---------------------------------------------- tests --------------

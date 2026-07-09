@@ -30,6 +30,13 @@ Densities in g/cm^3, resistivity in ohm-m, porosity/saturation as fractions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 RHO_DOLOMITE = 2.85           # g/cm^3, Grosmont dolomite grain density
 RHO_BITUMEN = 1.01            # g/cm^3, typical bitumen density
 
@@ -48,7 +55,7 @@ def density_porosity(rho_b, rho_ma=RHO_DOLOMITE, rho_fl=RHO_BITUMEN):
 
 def archie_sw(rt, rw, phi, m=2.0, n=2.0, a=1.0):
     """Archie water saturation with variable m, n  Sw = (a*Rw/(phi^m*Rt))^(1/n)."""
-    return (a * rw / (phi ** m * rt)) ** (1.0 / n)
+    return petrolib.saturation_resistivity.archie_sw(rt, rw, phi=phi, a=a, m=m, n=n)
 
 
 def bitumen_saturation(sw):
