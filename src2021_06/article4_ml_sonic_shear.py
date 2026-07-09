@@ -26,6 +26,13 @@ kg/m^3, stiffnesses in Pa, frequency in kHz.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Table 1 ANNIE-model parameter bounds (units in docstring)
 BOUNDS = {"bhr": (3, 9), "dtm": (180, 300), "rhom": (800, 1400),
           "dts": (60, 460), "pr": (0.1, 0.4), "rhob": (1800, 2800),
@@ -65,7 +72,7 @@ def poisson_ratio(dts, dtc):
 
 def thomsen_gamma(C66, C55):
     """Thomsen gamma  = (C66 - C55)/(2*C55)  (Eq. 7)."""
-    return (C66 - C55) / (2.0 * C55)
+    return petrolib.acoustic_geomech.thomsen_gamma(C66, C55)
 
 
 # ---------------------------------------------- Eqs. 9-10: metrics ------

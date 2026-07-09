@@ -24,6 +24,13 @@ the brittleness / stress / placement-optimization analytics the paper applies.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- brittleness / stress ----
 
@@ -32,9 +39,10 @@ def brittleness_index(E, nu, E_min=10.0, E_max=80.0, nu_min=0.15, nu_max=0.40):
 
         BI = 0.5*[(E - E_min)/(E_max - E_min) + (nu_max - nu)/(nu_max - nu_min)]
     """
-    be = (np.asarray(E, float) - E_min) / (E_max - E_min)
-    bn = (nu_max - np.asarray(nu, float)) / (nu_max - nu_min)
-    return np.clip(0.5 * (be + bn), 0.0, 1.0)
+    return np.clip(
+        petrolib.acoustic_geomech.brittleness_rickman(
+            E, nu, e_range=(E_min, E_max), nu_range=(nu_min, nu_max)),
+        0.0, 1.0)
 
 
 def min_horizontal_stress(overburden, p_pore, nu, biot=1.0):
@@ -42,8 +50,7 @@ def min_horizontal_stress(overburden, p_pore, nu, biot=1.0):
 
         sigma_h = (nu/(1-nu))*(S_v - alpha*Pp) + alpha*Pp
     """
-    nu = np.asarray(nu, float)
-    return (nu / (1.0 - nu)) * (overburden - biot * p_pore) + biot * p_pore
+    return petrolib.acoustic_geomech.min_horizontal_stress(overburden, p_pore, nu, biot=biot)
 
 
 def completion_quality(bi, stress):

@@ -25,14 +25,19 @@ kg/m^3, moduli Pa (Landau A,B,C given in GPa), angles in degrees.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- moduli helpers ----------
 
 def lame_from_velocities(rho, Vp, Vs):
     """Lame parameters from velocities:  mu = rho*Vs^2, lambda = rho*Vp^2 - 2*mu."""
-    mu = rho * Vs ** 2
-    lam = rho * Vp ** 2 - 2.0 * mu
-    return lam, mu
+    return petrolib.acoustic_geomech.lame_from_velocity(Vp, Vs, rho)
 
 
 # ---------------------------------------------- Eqs. 1-2 ----------------

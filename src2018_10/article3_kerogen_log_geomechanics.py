@@ -49,20 +49,17 @@ def bulk_density(phi, vk, rho_f, rho_k, rho_ma):
 
 def voigt_reuss_hill(fractions, moduli):
     """Voigt-Reuss-Hill average modulus of a composite."""
-    f = np.asarray(fractions, float); m = np.asarray(moduli, float)
-    voigt = np.sum(f * m)
-    reuss = 1.0 / np.sum(f / m)
-    return 0.5 * (voigt + reuss)
+    return petrolib.acoustic_geomech.voigt_reuss_hill(fractions, moduli)
 
 
 def youngs_from_k_mu(K, mu):
     """Young's modulus  E = 9*K*mu/(3*K + mu)."""
-    return 9.0 * K * mu / (3.0 * K + mu)
+    return petrolib.acoustic_geomech.youngs_from_kg(K, mu)
 
 
 def poisson_from_k_mu(K, mu):
     """Poisson's ratio  nu = (3*K - 2*mu)/(2*(3*K + mu))."""
-    return (3.0 * K - 2.0 * mu) / (2.0 * (3.0 * K + mu))
+    return petrolib.acoustic_geomech.poisson_from_kg(K, mu)
 
 
 # ---------------------------------------------- tests --------------

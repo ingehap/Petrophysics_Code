@@ -65,24 +65,22 @@ def improvement_ratio(before, after):
 
 def dynamic_youngs(rho, vp, vs):
     """Dynamic Young's modulus  E = rho*Vs^2*(3Vp^2-4Vs^2)/(Vp^2-Vs^2)  (Eq. 1)."""
-    vp2, vs2 = np.asarray(vp, float) ** 2, np.asarray(vs, float) ** 2
-    return rho * vs2 * (3.0 * vp2 - 4.0 * vs2) / (vp2 - vs2)
+    return petrolib.acoustic_geomech.youngs_poisson_dynamic(vp, vs, rho)[0]
 
 
 def dynamic_poisson(vp, vs):
     """Dynamic Poisson's ratio  nu = (Vp^2-2Vs^2)/(2(Vp^2-Vs^2))  (Eq. 2)."""
-    vp2, vs2 = np.asarray(vp, float) ** 2, np.asarray(vs, float) ** 2
-    return (vp2 - 2.0 * vs2) / (2.0 * (vp2 - vs2))
+    return petrolib.acoustic_geomech.poisson_from_velocity(vp, vs)
 
 
 def bulk_modulus(rho, vp, vs):
     """Bulk modulus  K = rho*(Vp^2 - 4/3*Vs^2)  (Eq. 6)."""
-    return rho * (np.asarray(vp, float) ** 2 - 4.0 / 3.0 * np.asarray(vs, float) ** 2)
+    return petrolib.acoustic_geomech.moduli_from_velocity(vp, vs, rho)[0]
 
 
 def shear_modulus(rho, vs):
     """Shear modulus  mu = rho*Vs^2  (Eq. 7)."""
-    return rho * np.asarray(vs, float) ** 2
+    return petrolib.acoustic_geomech.stiffness_from_velocity(rho, vs)
 
 
 # ---------------------------------------------- capillary / scratch -----

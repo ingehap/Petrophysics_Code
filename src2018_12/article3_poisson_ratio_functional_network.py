@@ -35,8 +35,7 @@ except ImportError:  # bare clone, not installed
 
 def dynamic_poisson(vp, vs):
     """Dynamic Poisson's ratio  nu = (Vp^2 - 2Vs^2)/(2(Vp^2 - Vs^2))."""
-    vp2, vs2 = np.asarray(vp, float) ** 2, np.asarray(vs, float) ** 2
-    return (vp2 - 2.0 * vs2) / (2.0 * (vp2 - vs2))
+    return petrolib.acoustic_geomech.poisson_from_velocity(vp, vs)
 
 
 # ---------------------------------------------- functional network ------

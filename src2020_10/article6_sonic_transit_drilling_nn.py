@@ -85,8 +85,7 @@ def predict_ann(p, X):
 
 def dynamic_poisson(vp, vs):
     """Dynamic Poisson's ratio  nu = (Vp^2 - 2Vs^2)/(2(Vp^2 - Vs^2))  (Eq. 1)."""
-    vp2 = np.asarray(vp, float) ** 2; vs2 = np.asarray(vs, float) ** 2
-    return (vp2 - 2.0 * vs2) / (2.0 * (vp2 - vs2))
+    return petrolib.acoustic_geomech.poisson_from_velocity(vp, vs)
 
 
 def dynamic_youngs(rho, vp, vs):
@@ -94,8 +93,7 @@ def dynamic_youngs(rho, vp, vs):
 
     rho in g/cm^3, V in km/s -> E in GPa.
     """
-    vp2 = np.asarray(vp, float) ** 2; vs2 = np.asarray(vs, float) ** 2
-    return rho * vs2 * (3.0 * vp2 - 4.0 * vs2) / (vp2 - vs2)
+    return petrolib.acoustic_geomech.youngs_poisson_dynamic(vp, vs, rho)[0]
 
 
 # ---------------------------------------------- tests --------------

@@ -27,6 +27,13 @@ Stresses in MPa, angles in degrees.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 MICROFRACTURE_TYPES = {
     1: "radial",            # Type I  - radial from the perforation
     2: "oblique",           # Type II - oblique to the perforation axis
@@ -42,8 +49,7 @@ def kirsch_tangential_stress(s_H, s_h, p_w, theta_deg):
     sigma_theta = (s_H + s_h) - 2*(s_H - s_h)*cos(2*theta) - p_w,
     with theta measured from the maximum horizontal stress azimuth.
     """
-    theta = np.radians(theta_deg)
-    return (s_H + s_h) - 2.0 * (s_H - s_h) * np.cos(2.0 * theta) - p_w
+    return petrolib.acoustic_geomech.kirsch_hoop_stress(s_H, s_h, p_w, theta_deg)
 
 
 # ---------------------------------------------- R2: breakdown -----------
@@ -53,7 +59,8 @@ def breakdown_pressure(s_H, s_h, p0, tensile_strength):
 
     P_b = 3*s_h - s_H - p0 + T  (Hubbert-Willis / Haimson-Fairhurst form).
     """
-    return 3.0 * s_h - s_H - p0 + tensile_strength
+    return petrolib.acoustic_geomech.breakdown_pressure(
+        s_h, s_H, p0, tensile_strength=tensile_strength)
 
 
 # ---------------------------------------------- perforation modes -------
