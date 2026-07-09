@@ -51,8 +51,8 @@ def kozeny_permeability(porosity, s_bulk):
     phi = np.asarray(porosity, dtype=float)
     sb = np.asarray(s_bulk, dtype=float)
     c = kozeny_factor(phi)
-    k = phi ** 3 / (c * sb ** 2)
-    return k
+    return petrolib.flow_transport.kozeny_carman(
+        phi, specific_surface=sb, c=c, grain_term=False)
 
 
 def kozeny_surface_area(porosity, permeability):

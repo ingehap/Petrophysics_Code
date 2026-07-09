@@ -228,9 +228,9 @@ def flow_zone_indicator(k: np.ndarray, phi: np.ndarray) -> np.ndarray:
     np.ndarray
         Flow Zone Indicator values.
     """
-    rqi = 0.0314 * np.sqrt(k / (phi + 1e-30))
-    phi_z = phi / (1 - phi + 1e-30)
-    return rqi / (phi_z + 1e-30)
+    # The article's 1e-30 divide-by-zero guards vanish for any realistic phi,
+    # so the library FZI is equivalent.
+    return petrolib.flow_transport.fzi(k, phi)
 
 
 def classify_rock_types_pgs(k: np.ndarray,
