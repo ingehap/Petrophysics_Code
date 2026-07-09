@@ -27,6 +27,13 @@ N2 surface-area lower limit 0.01 m^2/g, minimum pore volume 0.0001 cm^3/g.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 NA = 6.022e23            # Avogadro
 N2_CROSS_NM2 = 0.162     # N2 molecular cross-sectional area (nm^2)
 V_MOLAR_STP = 22414.0    # cm^3/mol at STP
@@ -41,8 +48,7 @@ def bet_isotherm(p_rel, vm, c):
 
         v = Vm*C*x / ((1-x)*(1 + (C-1)*x))
     """
-    x = np.asarray(p_rel, float)
-    return vm * c * x / ((1.0 - x) * (1.0 + (c - 1.0) * x))
+    return petrolib.geochem_fluids.adsorption.bet_isotherm(p_rel, vm, c)
 
 
 def bet_surface_area(p_rel, v_ads, cross_nm2=N2_CROSS_NM2):
@@ -52,16 +58,7 @@ def bet_surface_area(p_rel, v_ads, cross_nm2=N2_CROSS_NM2):
     intercept over the BET range.  Returns (Vm, C, SSA m^2/g).  v_ads in
     cm^3(STP)/g.
     """
-    x = np.asarray(p_rel, float)
-    v = np.asarray(v_ads, float)
-    y = x / (v * (1.0 - x))
-    A = np.vstack([x, np.ones_like(x)]).T
-    slope, intercept = np.linalg.lstsq(A, y, rcond=None)[0]
-    vm = 1.0 / (slope + intercept)
-    c = slope / intercept + 1.0
-    # SSA = (Vm/Vmolar)*NA*cross_section ; cross in nm^2 -> m^2
-    ssa = (vm / V_MOLAR_STP) * NA * (cross_nm2 * 1e-18)
-    return float(vm), float(c), float(ssa)
+    return petrolib.geochem_fluids.adsorption.bet_fit(p_rel, v_ads, cross_nm2=cross_nm2)
 
 
 # ---------------------------------------------- classification ----------

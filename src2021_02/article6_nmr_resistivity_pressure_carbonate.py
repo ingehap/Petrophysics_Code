@@ -78,11 +78,7 @@ def gradient_density(dP_dz_bar_per_m):
 
 def fit_gradient(depth, pressure):
     """Least-squares (dP/dz, P0) for pressure vs depth.  Returns (slope, intercept)."""
-    depth = np.asarray(depth, float)
-    pressure = np.asarray(pressure, float)
-    A = np.vstack([depth, np.ones_like(depth)]).T
-    slope, intercept = np.linalg.lstsq(A, pressure, rcond=None)[0]
-    return float(slope), float(intercept)
+    return petrolib.geochem_fluids.gradients.fit_pressure_gradient(depth, pressure)
 
 
 def fluid_contact(depth_a, press_a, depth_b, press_b):
@@ -91,9 +87,7 @@ def fluid_contact(depth_a, press_a, depth_b, press_b):
     Fits a line to each fluid's pretest points (e.g., oil above, water below)
     and returns the crossover depth = the oil-water (or gas-oil) contact.
     """
-    s1, b1 = fit_gradient(depth_a, press_a)
-    s2, b2 = fit_gradient(depth_b, press_b)
-    return (b2 - b1) / (s1 - s2)
+    return petrolib.geochem_fluids.gradients.fluid_contact(depth_a, press_a, depth_b, press_b)
 
 
 # ---------------------------------------------- tests --------------

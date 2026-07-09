@@ -25,6 +25,13 @@ adsorption characterization the paper applies.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 NA = 6.022e23
 N2_CROSS_NM2 = 0.162
 V_MOLAR_STP = 22414.0
@@ -64,8 +71,7 @@ def fhh_fractal_dimension(p_rel, v_ads):
 
 def langmuir_adsorption(VL, PL, P):
     """Langmuir methane adsorption  V = VL*P/(PL + P)  (cm^3/g)."""
-    P = np.asarray(P, float)
-    return VL * P / (PL + P)
+    return petrolib.geochem_fluids.adsorption.langmuir(P, VL, PL)
 
 
 def langmuir_volume_from_composition(toc, clay_frac, a=1.6, b=0.2):

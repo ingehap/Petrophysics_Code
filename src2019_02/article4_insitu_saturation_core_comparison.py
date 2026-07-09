@@ -26,13 +26,19 @@ the Dean-Stark / fluid-loss saturation reconstruction the paper compares.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Dean-Stark --------------
 
 def dean_stark_saturation(v_water, v_oil, pore_volume):
     """Water and oil saturation from Dean-Stark extracted volumes."""
-    sw = v_water / pore_volume
-    so = v_oil / pore_volume
+    _, sw, so = petrolib.geochem_fluids.core_geochem.dean_stark(v_water, v_oil, v_pore=pore_volume)
     return float(sw), float(so)
 
 
