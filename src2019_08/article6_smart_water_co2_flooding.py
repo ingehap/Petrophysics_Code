@@ -25,22 +25,30 @@ relations the coupled-flooding study relies on.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- fractional flow ---------
 
 def fractional_flow(krw, kro, mu_w, mu_o):
     """Buckley-Leverett water fractional flow  fw = 1/(1 + (kro/muo)/(krw/muw))."""
-    return 1.0 / (1.0 + (kro / mu_o) / (krw / mu_w))
+    return petrolib.relperm_wettability.fractional_flow(krw, kro, mu_w=mu_w, mu_nw=mu_o)
 
 
 def mobility_ratio(krw_end, kro_end, mu_w, mu_o):
     """End-point mobility ratio  M = (krw/muw)/(kro/muo)  (lower is better)."""
-    return (krw_end / mu_w) / (kro_end / mu_o)
+    return petrolib.relperm_wettability.endpoint_mobility_ratio(
+        krw_end, kro_end, mu_w=mu_w, mu_o=mu_o)
 
 
 def displacement_efficiency(soi, sor):
     """Microscopic displacement efficiency  E_D = (Soi - Sor)/Soi."""
-    return (soi - sor) / soi
+    return petrolib.relperm_wettability.displacement_efficiency(soi, sor)
 
 
 # ---------------------------------------------- EOR effects -------------
@@ -61,7 +69,7 @@ def co2_viscosity_reduction(mu_oil, co2_mole_frac):
 
 def recovery_factor(soi, sor):
     """Oil recovery factor from initial and residual oil saturation."""
-    return (soi - sor) / soi
+    return petrolib.relperm_wettability.displacement_efficiency(soi, sor)
 
 
 # ---------------------------------------------- tests --------------

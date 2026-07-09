@@ -24,6 +24,13 @@ wettability-index method the paper describes.  T2 in ms.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- surface relaxation ------
 
@@ -45,7 +52,7 @@ def wettability_index(t2w_obs, t2w_bulk, t2o_obs, t2o_bulk):
     Ro = surface_relaxation_rate(t2o_obs, t2o_bulk)
     if Rw + Ro == 0:
         return 0.0
-    return (Rw - Ro) / (Rw + Ro)
+    return float(petrolib.relperm_wettability.nmr_wettability_index(Rw, Ro))
 
 
 def bound_free_fraction(t2_ms, amplitude, cutoff_ms=33.0):

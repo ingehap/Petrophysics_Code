@@ -28,6 +28,13 @@ issue's confirmed pattern.  Saturations/relperms fractional; viscosities in cP.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Corey model --------------
 
@@ -39,24 +46,25 @@ def normalized_sw(sw, swirr=0.15, sor=0.20):
 
 def krw(sw, swirr=0.15, sor=0.20, krw_max=0.4, nw=3.0):
     """Corey water relative permeability  krw = krw_max*Swn^nw."""
-    return krw_max * normalized_sw(sw, swirr, sor) ** nw
+    return petrolib.relperm_wettability.corey_krw(sw, swr=swirr, sor=sor, krw_max=krw_max, nw=nw)
 
 
 def kro(sw, swirr=0.15, sor=0.20, kro_max=1.0, no=2.0):
     """Corey oil relative permeability  kro = kro_max*(1-Swn)^no."""
-    return kro_max * (1.0 - normalized_sw(sw, swirr, sor)) ** no
+    return petrolib.relperm_wettability.corey_kro(sw, swr=swirr, sor=sor, kro_max=kro_max, no=no)
 
 
 def fractional_flow(sw, mu_w=0.5, mu_o=2.0, **corey):
     """Water fractional flow  fw = (krw/mu_w)/(krw/mu_w + kro/mu_o)."""
-    lam_w = krw(sw, **{k: corey[k] for k in corey if k in ("swirr", "sor", "krw_max", "nw")}) / mu_w
-    lam_o = kro(sw, **{k: corey[k] for k in corey if k in ("swirr", "sor", "kro_max", "no")}) / mu_o
-    return lam_w / (lam_w + lam_o)
+    krw_val = krw(sw, **{k: corey[k] for k in corey if k in ("swirr", "sor", "krw_max", "nw")})
+    kro_val = kro(sw, **{k: corey[k] for k in corey if k in ("swirr", "sor", "kro_max", "no")})
+    return petrolib.relperm_wettability.fractional_flow(krw_val, kro_val, mu_w=mu_w, mu_nw=mu_o)
 
 
 def endpoint_mobility_ratio(krw_max=0.4, kro_max=1.0, mu_w=0.5, mu_o=2.0):
     """End-point mobility ratio  M = (krw_max/mu_w)/(kro_max/mu_o)."""
-    return (krw_max / mu_w) / (kro_max / mu_o)
+    return petrolib.relperm_wettability.endpoint_mobility_ratio(
+        krw_max, kro_max, mu_w=mu_w, mu_o=mu_o)
 
 
 # ---------------------------------------------- tests --------------

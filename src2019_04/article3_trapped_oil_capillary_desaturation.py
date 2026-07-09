@@ -25,12 +25,19 @@ dimensionless; saturations are fractions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- capillary number -------
 
 def capillary_number(mu, v, sigma):
     """Capillary number  Nc = mu*v/sigma (viscous / capillary forces)."""
-    return mu * np.asarray(v, float) / sigma
+    return petrolib.relperm_wettability.capillary_number(mu=mu, v=v, sigma=sigma)
 
 
 def capillary_desaturation(Nc, sor_low=0.05, sor_high=0.35, nc_crit=1e-5, p=0.8):
@@ -39,8 +46,8 @@ def capillary_desaturation(Nc, sor_low=0.05, sor_high=0.35, nc_crit=1e-5, p=0.8)
         Sor = sor_low + (sor_high - sor_low)/(1 + (Nc/Nc_crit)^p)
     Plateau at sor_high for Nc << Nc_crit; drops toward sor_low for Nc >> Nc_crit.
     """
-    Nc = np.asarray(Nc, float)
-    return sor_low + (sor_high - sor_low) / (1.0 + (Nc / nc_crit) ** p)
+    return petrolib.relperm_wettability.capillary_desaturation(
+        Nc, sor_max=sor_high, sor_min=sor_low, n_crit=nc_crit, exponent=p)
 
 
 def wettability_cdc(state):
