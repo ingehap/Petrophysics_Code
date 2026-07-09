@@ -27,6 +27,13 @@ units; cluster sizes/voxels in consistent units.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- capillary number --------------
 
@@ -43,7 +50,7 @@ def macroscopic_capillary_number(mu_nw, velocity, sigma, cluster_length, pore_ra
 
 def microscopic_capillary_number(mu, velocity, sigma):
     """Microscopic capillary number  Ca = mu*v/sigma."""
-    return mu * velocity / sigma
+    return petrolib.relperm_wettability.capillary_number(mu=mu, v=velocity, sigma=sigma)
 
 
 # ---------------------------------------------- cluster-size distribution --------------

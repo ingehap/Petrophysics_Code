@@ -43,7 +43,7 @@ def land_constant(sgi_max, sgr_max):
 
     from the maximum initial and residual non-wetting (CO2) saturations.
     """
-    return 1.0 / sgr_max - 1.0 / sgi_max
+    return petrolib.relperm_wettability.land_c(s_i_max=sgi_max, s_r_max=sgr_max)
 
 
 def land_trapped_saturation(sgi, c):
@@ -53,7 +53,7 @@ def land_trapped_saturation(sgi, c):
 
     the initial-residual characteristic curve used to parameterize hysteresis.
     """
-    return sgi / (1.0 + c * np.asarray(sgi, float))
+    return petrolib.relperm_wettability.land_trapped(sgi, C=c)
 
 
 # ---------------------------------------------- capillary scaling --------------
@@ -87,7 +87,9 @@ def corey_water_relperm(sw, swc, sor, krw_max=1.0, nw=4.0):
 
         krw = krw_max * Swn^nw,   Swn = (Sw - Swc)/(1 - Swc - Sor).
     """
-    return krw_max * _normalized_sw(sw, swc, sor) ** nw
+    # This article leaves Swn unclipped, so pass clip=None.
+    return petrolib.relperm_wettability.corey_krw(
+        sw, swr=swc, sor=sor, krw_max=krw_max, nw=nw, clip=None)
 
 
 def corey_co2_relperm(sw, swc, sor, krn_max=1.0, nn=2.0):
@@ -95,7 +97,8 @@ def corey_co2_relperm(sw, swc, sor, krn_max=1.0, nn=2.0):
 
         krn = krn_max * (1 - Swn)^nn.
     """
-    return krn_max * (1.0 - _normalized_sw(sw, swc, sor)) ** nn
+    return petrolib.relperm_wettability.corey_kro(
+        sw, swr=swc, sor=sor, kro_max=krn_max, no=nn, clip=None)
 
 
 def capillary_number(velocity, viscosity, sigma):
@@ -105,7 +108,7 @@ def capillary_number(velocity, viscosity, sigma):
     the intrinsic or an effective (heterogeneity-influenced) relative
     permeability.
     """
-    return velocity * viscosity / sigma
+    return petrolib.relperm_wettability.capillary_number(mu=viscosity, v=velocity, sigma=sigma)
 
 
 # ---------------------------------------------- tests --------------
