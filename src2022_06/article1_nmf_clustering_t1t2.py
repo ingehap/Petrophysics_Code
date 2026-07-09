@@ -23,6 +23,13 @@ unsupervised algorithm to 2-MHz NMR log T1-T2 maps:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- NMF -----------------------
 
@@ -85,7 +92,7 @@ def fluid_typing_rules(T1c, T2c, ratio_HC=4.0, T2_mobile=33.0):
 
     Returns one of: 'mobile_HC', 'immobile_HC', 'mobile_water', 'immobile_water'.
     """
-    is_HC = (T1c / T2c) >= ratio_HC
+    is_HC = bool(petrolib.nmr.classify_t1t2(T1c / T2c, cutoff=ratio_HC))
     is_mobile = T2c >= T2_mobile
     return ("mobile_HC" if is_HC and is_mobile else
             "immobile_HC" if is_HC and not is_mobile else

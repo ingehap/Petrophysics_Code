@@ -19,20 +19,25 @@ processing chain.  This module implements the core algorithmic pieces:
 import numpy as np
 from scipy.optimize import nnls
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- CPMG forward (Eq. 1) -----
 
 def cpmg_kernel(t_echo_s, T2_axis_s):
     """K[i, n] = exp(-t_i / T2_n)  - standard CPMG decay kernel."""
-    return np.exp(-t_echo_s[:, None] / T2_axis_s[None, :])
+    return petrolib.nmr.cpmg_kernel(t_echo_s, T2_axis_s)
 
 
 def t1_t2_kernel(t_echo_s, tw_s, T1_axis_s, T2_axis_s):
     """2-D T1-T2 kernel.  Returns K of shape (n_t * n_tw, n_T1 * n_T2)."""
-    K_t2 = cpmg_kernel(t_echo_s, T2_axis_s)
-    K_t1 = 1.0 - np.exp(-tw_s[:, None] / T1_axis_s[None, :])
-    # outer Kronecker structure
-    return np.kron(K_t1, K_t2)
+    return petrolib.nmr.t1t2_kernel(
+        t_echo_s, tw_s, T1_axis_s, T2_axis_s, mode="saturation")
 
 
 # ---------------------------------------------- Tikhonov NNLS (Eqs. 9-17) -
@@ -59,14 +64,15 @@ def tikhonov_invert(K, E, lam=0.05, n_iter=400):
 
 def timur_coates(phi, FFV, BFV, C=10.0, m=4.0, n=2.0):
     """K_TC = C * phi^m * (FFV / BFV)^n   (Eq. 52)."""
-    return float(C * phi ** m * (FFV / max(BFV, 1e-9)) ** n)
+    return float(petrolib.nmr.timur_coates(
+        phi, FFV, max(BFV, 1e-9), C=C, m=m, n=n, form="prefactor"))
 
 
 # ---------------------------------------------- SDR (Eq. 56) -----------
 
 def sdr_permeability(phi, T2_lm_ms, a=4.6, m=4.0, n=2.0):
     """SDR estimator  K_SDR = a * phi^m * T2_lm^n   (Eq. 56)."""
-    return float(a * phi ** m * T2_lm_ms ** n)
+    return float(petrolib.nmr.sdr(phi, T2_lm_ms, a=a, m=m, n=n))
 
 
 def log_mean_T2(A, T2_axis):

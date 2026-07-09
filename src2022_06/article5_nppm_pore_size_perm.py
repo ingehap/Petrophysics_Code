@@ -20,6 +20,13 @@ mudstones.  Implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Eqs. 1-3 ----------------
 
@@ -71,7 +78,9 @@ def fit_nppm_components(T1, T2, M_obs, n_components=4, n_iter=80, seed=0):
 
 def apparent_surface_relaxivity(t2_peak_ms, pore_radius_um):
     """rho_n = r / T2  - returned in um / s for consistency."""
-    return float(pore_radius_um / (t2_peak_ms * 1e-3))
+    # ms -> s adapter kept local; shape_factor=1 gives the raw r/T2.
+    return float(petrolib.nmr.surface_relaxivity_from_pore(
+        t2_peak_ms * 1e-3, pore_radius_um, shape_factor=1.0))
 
 
 # ---------------------------------------------- Kozeny-Carman (Eqs. 4-6) ---
