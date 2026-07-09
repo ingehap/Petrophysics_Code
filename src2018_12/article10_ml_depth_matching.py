@@ -23,10 +23,17 @@ describes.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 def pearson(a, b):
     """Pearson correlation coefficient."""
-    return float(np.corrcoef(np.asarray(a, float), np.asarray(b, float))[0, 1])
+    return petrolib.ml_stats.pearson_r(a, b)
 
 
 def cross_correlation_lag(reference, target, max_lag=60):

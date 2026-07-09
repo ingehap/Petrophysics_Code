@@ -22,6 +22,13 @@ paper's title describes.  Inputs: WOB, RPM, ROP, torque, SPP, flow rate.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 DRILLING_INPUTS = ["WOB", "RPM", "ROP", "Torque", "SPP", "GPM"]
 
 
@@ -29,19 +36,17 @@ DRILLING_INPUTS = ["WOB", "RPM", "ROP", "Torque", "SPP", "GPM"]
 
 def correlation_coefficient(y, yhat):
     """Pearson correlation coefficient R."""
-    return float(np.corrcoef(np.asarray(y, float), np.asarray(yhat, float))[0, 1])
+    return petrolib.ml_stats.pearson_r(y, yhat)
 
 
 def rmse(y, yhat):
     """Root-mean-square error."""
-    y = np.asarray(y, float); yhat = np.asarray(yhat, float)
-    return float(np.sqrt(np.mean((y - yhat) ** 2)))
+    return petrolib.ml_stats.rmse(y, yhat)
 
 
 def aape(y, yhat):
     """Average absolute percentage error (%)."""
-    y = np.asarray(y, float); yhat = np.asarray(yhat, float)
-    return float(np.mean(np.abs((y - yhat) / y)) * 100.0)
+    return petrolib.ml_stats.mape(y, yhat)
 
 
 # ---------------------------------------------- ANN ---------------------

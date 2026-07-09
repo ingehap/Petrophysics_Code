@@ -451,3 +451,72 @@ def test_equivalence_pca() -> None:
     np.testing.assert_allclose(scores_new, scores_old, rtol=1e-12, atol=1e-14)
     np.testing.assert_allclose(components_new, components_old, rtol=1e-12, atol=1e-14)
     np.testing.assert_allclose(mean_new, mean_old, rtol=1e-12, atol=0.0)
+
+
+# --- B2 variants -----------------------------------------------------------
+
+
+def _original_r_squared_2020_04(y, yhat):  # src2020_04/article4 (conditional guard;
+    # same shape in src2025_12/dl_permeability)
+    y = np.asarray(y, float)
+    yhat = np.asarray(yhat, float)
+    ss_res = np.sum((y - yhat) ** 2)
+    ss_tot = np.sum((y - y.mean()) ** 2)
+    return 1.0 - ss_res / ss_tot if ss_tot > 0 else 0.0
+
+
+def _original_r_squared_2024_10(y_true, y_pred):  # src2024_10/rddtw (+1e-12;
+    # src2025_10/a5 uses +1e-30)
+    ss_res = np.sum((y_true - y_pred) ** 2)
+    ss_tot = np.sum((y_true - np.mean(y_true)) ** 2)
+    return float(1.0 - ss_res / (ss_tot + 1e-12))
+
+
+def _original_standardize_2022_02(x):  # src2022_02/article2 and article3
+    x = np.asarray(x, dtype=float)
+    s = x.std()
+    return (x - x.mean()) / (s if s > 1e-12 else 1.0)
+
+
+def _original_mape_masked_2025_12(y_true, y_pred):  # src2025_12/dl_permeability
+    y_true, y_pred = np.asarray(y_true, float), np.asarray(y_pred, float)
+    mask = y_true != 0
+    return float(np.mean(np.abs((y_true[mask] - y_pred[mask]) / y_true[mask])) * 100)
+
+
+def _original_pearson_nanmask_2023_08(x, y):  # src2023_08/article6
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+    mask = np.isfinite(x) & np.isfinite(y)
+    x, y = x[mask], y[mask]
+    if x.size < 2:
+        return float("nan")
+    xbar, ybar = x.mean(), y.mean()
+    num = np.sum((x - xbar) * (y - ybar))
+    den = np.sqrt(np.sum((x - xbar) ** 2) * np.sum((y - ybar) ** 2))
+    return float(num / den) if den > 0 else float("nan")
+
+
+def test_equivalence_b2_variants() -> None:
+    assert_matches_original(_original_r_squared_2020_04, ml_stats.r2_score, [(Y_TRUE, Y_PRED)])
+    assert_matches_original(
+        _original_r_squared_2024_10,
+        lambda t, p: ml_stats.r2_score(t, p, eps=1e-12),
+        [(Y_TRUE, Y_PRED)],
+    )
+    flat = RNG.normal(50.0, 15.0, size=120)
+    assert_matches_original(_original_standardize_2022_02, ml_stats.zscore, [(flat,)])
+    with_zeros = np.where(RNG.random(80) < 0.1, 0.0, Y_TRUE)
+    assert_matches_original(
+        _original_mape_masked_2025_12,
+        lambda t, p: ml_stats.mape(t[t != 0], p[t != 0]),
+        [(with_zeros, Y_PRED)],
+    )
+    with_nans = np.where(RNG.random(80) < 0.1, np.nan, Y_TRUE)
+    assert_matches_original(
+        _original_pearson_nanmask_2023_08,
+        lambda x, y: (lambda m: ml_stats.pearson_r(x[m], y[m]) if m.sum() >= 2 else float("nan"))(
+            np.isfinite(x) & np.isfinite(y)
+        ),
+        [(with_nans, Y_PRED)],
+    )

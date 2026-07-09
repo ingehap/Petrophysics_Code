@@ -22,6 +22,13 @@ directly in numpy so the module is dependency-light and self-contained.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 NODATA = -999.25             # log no-data sentinel
 SAMPLING_FT = 0.5            # standard depth sampling rate (ft)
 
@@ -103,10 +110,8 @@ def dtw_distance(x, y, band=50):
 
 def pearson(x, y):
     """Pearson correlation coefficient r (Eq. A1.1)."""
-    x = np.asarray(x, float); y = np.asarray(y, float)
-    xc, yc = x - x.mean(), y - y.mean()
-    d = np.sqrt(np.sum(xc ** 2) * np.sum(yc ** 2))
-    return float(np.sum(xc * yc) / d) if d > 1e-12 else 0.0
+    r = petrolib.ml_stats.pearson_r(x, y)
+    return r if np.isfinite(r) else 0.0  # historical zero-variance fallback
 
 
 def trace_energy(x):
@@ -134,8 +139,7 @@ def euclidean(x, y):
 
 def _standardize(x):
     x = np.asarray(x, float)
-    s = x.std()
-    return (x - x.mean()) / (s if s > 1e-12 else 1.0)
+    return petrolib.ml_stats.zscore(x) if x.std() > 1e-12 else x - x.mean()
 
 
 def first_last_valid(log, nodata=NODATA):

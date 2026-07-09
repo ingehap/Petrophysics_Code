@@ -20,6 +20,13 @@ Reference: DOI:10.30632/PJV65N5-2024a8
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from typing import Tuple, Dict, Optional, List
 
 
@@ -233,7 +240,7 @@ def simple_ann_predict(X: np.ndarray, hidden_sizes: List[int] = None,
 # -----------------------------------------------------------------------
 def mae(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     """Mean Absolute Error (Eq. 14)."""
-    return float(np.mean(np.abs(y_true - y_pred)))
+    return petrolib.ml_stats.mae(y_true, y_pred)
 
 
 def rse(y_true: np.ndarray, y_pred: np.ndarray) -> float:

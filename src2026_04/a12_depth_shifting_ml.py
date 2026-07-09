@@ -21,6 +21,13 @@ Implements:
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 
@@ -31,12 +38,12 @@ from typing import Dict, List, Optional, Tuple
 
 def rmse(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     """Root mean squared error."""
-    return float(np.sqrt(np.mean((y_true - y_pred) ** 2)))
+    return petrolib.ml_stats.rmse(y_true, y_pred)
 
 
 def mad(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     """Mean absolute deviation (used as contest metric)."""
-    return float(np.mean(np.abs(y_true - y_pred)))
+    return petrolib.ml_stats.mae(y_true, y_pred)
 
 
 # ---------------------------------------------------------------------------

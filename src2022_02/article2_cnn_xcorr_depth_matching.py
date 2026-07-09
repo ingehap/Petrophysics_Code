@@ -26,6 +26,13 @@ runnable with numpy alone.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 WINDOW = 256                 # samples per window (~39 m at 0.5 ft)
 MAX_SHIFT = 20               # +/- shift label range (samples)
 
@@ -35,8 +42,7 @@ MAX_SHIFT = 20               # +/- shift label range (samples)
 def standardize(x):
     """Zero-mean, unit-variance (per-window normalization used in the paper)."""
     x = np.asarray(x, dtype=float)
-    s = x.std()
-    return (x - x.mean()) / (s if s > 1e-12 else 1.0)
+    return petrolib.ml_stats.zscore(x) if x.std() > 1e-12 else x - x.mean()
 
 
 # ---------------------------------------------- Eq. 1: cross correlation -
@@ -63,11 +69,8 @@ def cross_correlation_shift(reference, test, max_shift=MAX_SHIFT):
 
 def pearson(x, y):
     """Pearson correlation coefficient r (Eq. 6), range [-1, 1]."""
-    x = np.asarray(x, dtype=float)
-    y = np.asarray(y, dtype=float)
-    xc, yc = x - x.mean(), y - y.mean()
-    denom = np.sqrt(np.sum(xc ** 2) * np.sum(yc ** 2))
-    return float(np.sum(xc * yc) / denom) if denom > 1e-12 else 0.0
+    r = petrolib.ml_stats.pearson_r(x, y)
+    return r if np.isfinite(r) else 0.0  # historical zero-variance fallback
 
 
 def euclidean(x, y):

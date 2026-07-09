@@ -21,6 +21,13 @@ Implements:
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass
 from typing import Dict, List, Tuple, Optional
 from enum import IntEnum
@@ -249,9 +256,7 @@ def moving_mad(z: np.ndarray, ref: float,
 
 def zscore_standardise(mad_seq: np.ndarray) -> np.ndarray:
     """Z-score standardisation of MAD sequence (Eq. 24)."""
-    mu    = np.mean(mad_seq)
-    sigma = np.std(mad_seq) + 1e-12
-    return (mad_seq - mu) / sigma
+    return petrolib.ml_stats.zscore(mad_seq, eps=1e-12)
 
 
 class AlarmGrade(IntEnum):
