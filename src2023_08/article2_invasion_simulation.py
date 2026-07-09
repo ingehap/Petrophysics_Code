@@ -93,9 +93,11 @@ def krw_brooks_corey(sw, swcw, sgc, krw_end=1.0, nw=2.0):
 # ---------------------------------------------------------------------------
 def pc_brooks_corey(sw, swcw, pd, lam):
     """Pc = Pd * Se^(-1/lambda)."""
+    # Normalize+clip Se locally, then delegate the Pd*Se^(-1/lam) kernel (swirr=0).
     sw = np.asarray(sw, dtype=float)
     se = np.clip((sw - swcw) / (1.0 - swcw), 1e-6, 1.0)
-    return pd * np.power(se, -1.0 / lam)
+    return petrolib.capillary_pressure.brooks_corey_pc(
+        se, pc_entry=pd, lam=lam, swirr=0.0)
 
 
 # ---------------------------------------------------------------------------

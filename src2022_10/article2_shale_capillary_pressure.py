@@ -33,7 +33,9 @@ from scipy.optimize import curve_fit
 
 def young_laplace(d_m, gamma_N_m=0.072, theta_deg=180.0):
     """Pc = 4 gamma cos(theta) / d   (Eq. 1)."""
-    return 4.0 * gamma_N_m * np.cos(np.deg2rad(theta_deg)) / d_m
+    # Diameter form: 4*gamma*cos/d == 2*gamma*cos/r with r = d/2 (signed cos).
+    return petrolib.capillary_pressure.young_laplace_pc(
+        d_m / 2.0, sigma=gamma_N_m, theta_deg=theta_deg, absolute=False)
 
 
 # ------------------------------------------------ normalised saturation -
@@ -46,7 +48,10 @@ def sw_star(sw, swirr):
 # ------------------------------------------------ Brooks-Corey ---------
 
 def brooks_corey(sw, pe, lam, swirr):
-    return pe * sw_star(sw, swirr) ** (-1.0 / lam)
+    # sw_star is this article's normalized+clipped saturation; delegate the
+    # Pe*Se^(-1/lam) kernel (Se pre-normalized -> swirr=0).
+    return petrolib.capillary_pressure.brooks_corey_pc(
+        sw_star(sw, swirr), pc_entry=pe, lam=lam, swirr=0.0)
 
 
 # ------------------------------------------------ van Genuchten --------

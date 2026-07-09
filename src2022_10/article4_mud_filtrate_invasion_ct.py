@@ -24,6 +24,13 @@ Limestone, Vuggy Dolomite).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # --------------------------------------------- dimensionless numbers -----
 
@@ -51,7 +58,9 @@ def fractional_flow(sw, mu_w_Pa_s, mu_o_Pa_s, **kwargs):
 
 
 def leverett_J(Pc_Pa, k_m2, phi, sigma_N_m, theta_deg=180.0):
-    return Pc_Pa * np.sqrt(k_m2 / phi) / (sigma_N_m * abs(np.cos(np.deg2rad(theta_deg))))
+    # |cos| convention (abs): mercury (theta=180) keeps J positive.
+    return petrolib.capillary_pressure.leverett_j(
+        Pc_Pa, sigma=sigma_N_m, theta_deg=theta_deg, k=k_m2, phi=phi, absolute=True)
 
 
 # --------------------------------------------- Buckley-Leverett front ---
