@@ -24,6 +24,13 @@ paper's title describes.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- agglomerative -----------
 
@@ -56,18 +63,7 @@ def agglomerative(X, n_clusters):
 
 def silhouette(X, labels):
     """Mean silhouette coefficient (cluster-quality validation)."""
-    X = np.asarray(X, float); labels = np.asarray(labels, int)
-    uniq = np.unique(labels)
-    if len(uniq) < 2:
-        return 0.0
-    D = np.sqrt(((X[:, None, :] - X[None, :, :]) ** 2).sum(-1))
-    s = np.zeros(len(X))
-    for i in range(len(X)):
-        own = labels == labels[i]; own[i] = False
-        a = D[i, own].mean() if own.any() else 0.0
-        b = min(D[i, labels == c].mean() for c in uniq if c != labels[i])
-        s[i] = (b - a) / max(a, b) if max(a, b) > 0 else 0.0
-    return float(s.mean())
+    return petrolib.ml_stats.silhouette_score(X, labels)
 
 
 # ---------------------------------------------- tests --------------

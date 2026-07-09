@@ -28,6 +28,13 @@ when the class count matches the three formations present.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- image features ----------
 
@@ -83,41 +90,13 @@ def experimental_variogram(trace, max_lag):
 
 def kmeans(X, k, iters=100, seed=0):
     """Minimal k-means; returns (labels, centers)."""
-    X = np.asarray(X, float)
-    idx = [int(np.argmax(np.linalg.norm(X - X.mean(0), axis=1)))]
-    for _ in range(1, k):
-        d = np.min([np.linalg.norm(X - X[j], axis=1) for j in idx], axis=0)
-        idx.append(int(np.argmax(d)))
-    centers = X[idx].copy()
-    labels = np.zeros(len(X), int)
-    for _ in range(iters):
-        d = np.stack([np.linalg.norm(X - c, axis=1) for c in centers], axis=1)
-        new = d.argmin(1)
-        if np.array_equal(new, labels):
-            break
-        labels = new
-        for c in range(k):
-            if np.any(labels == c):
-                centers[c] = X[labels == c].mean(0)
-    return labels, centers
+    del seed  # historical, unused: the farthest-point init is deterministic
+    return petrolib.ml_stats.kmeans(X, k, max_iter=iters)
 
 
 def silhouette(X, labels):
     """Mean silhouette coefficient  s = (b - a)/max(a, b)  (Eq. 6)."""
-    X = np.asarray(X, float)
-    labels = np.asarray(labels, int)
-    uniq = np.unique(labels)
-    if len(uniq) < 2:
-        return 0.0
-    D = np.sqrt(((X[:, None, :] - X[None, :, :]) ** 2).sum(-1))
-    s = np.zeros(len(X))
-    for idx in range(len(X)):
-        own = labels == labels[idx]
-        own[idx] = False
-        a = D[idx, own].mean() if own.any() else 0.0
-        b = min(D[idx, labels == c].mean() for c in uniq if c != labels[idx])
-        s[idx] = (b - a) / max(a, b) if max(a, b) > 0 else 0.0
-    return float(s.mean())
+    return petrolib.ml_stats.silhouette_score(X, labels)
 
 
 def permeability_cost(features, core_perm, n_classes, seed=0):

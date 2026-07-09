@@ -26,6 +26,13 @@ this module implements the scoring + a numpy baseline.  Slowness in us/ft.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 FEATURES = ["CALI", "NPHI", "GR", "RDEP", "RMED", "PEF", "RHOB"]
 BENCHMARK_RMSE = 17.93
 
@@ -34,8 +41,7 @@ BENCHMARK_RMSE = 17.93
 
 def rmse(y_true, y_pred):
     """Single-log root-mean-square error."""
-    d = np.asarray(y_pred, float) - np.asarray(y_true, float)
-    return float(np.sqrt(np.mean(d ** 2)))
+    return petrolib.ml_stats.rmse(y_true, y_pred)
 
 
 def pooled_rmse(dtc_true, dtc_pred, dts_true, dts_pred):
@@ -48,25 +54,19 @@ def pooled_rmse(dtc_true, dtc_pred, dts_true, dts_pred):
 
 def r2_score(y_true, y_pred):
     """Coefficient of determination R^2."""
-    y_true = np.asarray(y_true, float); y_pred = np.asarray(y_pred, float)
-    ss_res = np.sum((y_true - y_pred) ** 2)
-    ss_tot = np.sum((y_true - y_true.mean()) ** 2)
-    return float(1.0 - ss_res / ss_tot)
+    return petrolib.ml_stats.r2_score(y_true, y_pred)
 
 
 # ---------------------------------------------- preprocessing -----------
 
 def zscore_normalize(x):
     """Standardize to zero mean, unit variance."""
-    x = np.asarray(x, float)
-    return (x - x.mean(axis=0)) / (x.std(axis=0) + 1e-12)
+    return petrolib.ml_stats.zscore(x, axis=0, eps=1e-12)
 
 
 def minmax_normalize(x):
     """Scale each column to [0, 1]."""
-    x = np.asarray(x, float)
-    lo, hi = x.min(axis=0), x.max(axis=0)
-    return (x - lo) / (hi - lo + 1e-12)
+    return petrolib.ml_stats.minmax(x, axis=0, eps=1e-12)
 
 
 def log_resistivity(R):

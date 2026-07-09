@@ -26,6 +26,13 @@ title describes (numpy classifiers stand in for the published implementations).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- classifiers -------------
 
@@ -91,19 +98,13 @@ def stump_ensemble_predict(X_train, y_train, X_test, n_stumps=21, seed=0):
 def confusion_matrix(y_true, y_pred):
     """2x2 confusion matrix [[TN, FP], [FN, TP]]."""
     yt = np.asarray(y_true, int); yp = np.asarray(y_pred, int)
-    tn = int(np.sum((yt == 0) & (yp == 0))); fp = int(np.sum((yt == 0) & (yp == 1)))
-    fn = int(np.sum((yt == 1) & (yp == 0))); tp = int(np.sum((yt == 1) & (yp == 1)))
-    return np.array([[tn, fp], [fn, tp]])
+    return petrolib.ml_stats.confusion_matrix(yt, yp, labels=[0, 1])
 
 
 def classification_metrics(y_true, y_pred):
     """Return (accuracy, precision, recall, F1)."""
-    cm = confusion_matrix(y_true, y_pred)
-    tn, fp, fn, tp = cm[0, 0], cm[0, 1], cm[1, 0], cm[1, 1]
-    acc = (tp + tn) / cm.sum()
-    prec = tp / (tp + fp) if (tp + fp) else 0.0
-    rec = tp / (tp + fn) if (tp + fn) else 0.0
-    f1 = 2 * prec * rec / (prec + rec) if (prec + rec) else 0.0
+    acc = petrolib.ml_stats.accuracy(y_true, y_pred)
+    prec, rec, f1 = petrolib.ml_stats.precision_recall_f1(y_true, y_pred)
     return acc, prec, rec, f1
 
 

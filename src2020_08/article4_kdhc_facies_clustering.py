@@ -29,6 +29,13 @@ baffle thresholds ZDN > 2.55 / MLR > 15, reservoir F1 ~ 0.98.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 RHO_GRAIN = 2.66         # g/cm^3
 RHO_WATER = 1.03         # g/cm^3
 ZDN_BAFFLE = 2.55        # g/cm^3
@@ -86,39 +93,12 @@ def f1_score(tp, fp, fn):
 
 def kmeans(X, k, iters=100):
     """Minimal k-means; returns (labels, centers)."""
-    X = np.asarray(X, float)
-    idx = [int(np.argmax(np.linalg.norm(X - X.mean(0), axis=1)))]
-    for _ in range(1, k):
-        d = np.min([np.linalg.norm(X - X[j], axis=1) for j in idx], axis=0)
-        idx.append(int(np.argmax(d)))
-    centers = X[idx].copy()
-    labels = np.zeros(len(X), int)
-    for _ in range(iters):
-        d = np.stack([np.linalg.norm(X - c, axis=1) for c in centers], axis=1)
-        new = d.argmin(1)
-        if np.array_equal(new, labels):
-            break
-        labels = new
-        for c in range(k):
-            if np.any(labels == c):
-                centers[c] = X[labels == c].mean(0)
-    return labels, centers
+    return petrolib.ml_stats.kmeans(X, k, max_iter=iters)
 
 
 def silhouette(X, labels):
     """Mean silhouette coefficient (Rousseeuw)."""
-    X = np.asarray(X, float); labels = np.asarray(labels, int)
-    uniq = np.unique(labels)
-    if len(uniq) < 2:
-        return 0.0
-    D = np.sqrt(((X[:, None, :] - X[None, :, :]) ** 2).sum(-1))
-    s = np.zeros(len(X))
-    for i in range(len(X)):
-        own = labels == labels[i]; own[i] = False
-        a = D[i, own].mean() if own.any() else 0.0
-        b = min(D[i, labels == c].mean() for c in uniq if c != labels[i])
-        s[i] = (b - a) / max(a, b) if max(a, b) > 0 else 0.0
-    return float(s.mean())
+    return petrolib.ml_stats.silhouette_score(X, labels)
 
 
 def best_cluster_count(X, candidates=(2, 3, 4, 5)):

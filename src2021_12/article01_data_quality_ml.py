@@ -30,6 +30,13 @@ of the methods described (every symbol is defined in the paper's prose).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 SENTINELS = (-999, -999.25, -9999)     # common LAS/DLIS no-data values
 
 
@@ -95,13 +102,12 @@ def recall(tp, fn):
 
 def mae(y_true, y_pred):
     """Mean absolute error (Eq. 7)."""
-    return float(np.mean(np.abs(np.asarray(y_pred, float) - np.asarray(y_true, float))))
+    return petrolib.ml_stats.mae(y_true, y_pred)
 
 
 def rmse(y_true, y_pred):
     """Root-mean-square error (Eq. 8)."""
-    d = np.asarray(y_pred, float) - np.asarray(y_true, float)
-    return float(np.sqrt(np.mean(d ** 2)))
+    return petrolib.ml_stats.rmse(y_true, y_pred)
 
 
 # ---------------------------------------------- Eqs. 9-10: noise --------
@@ -118,10 +124,8 @@ def add_gaussian_noise(x, sigma_fraction, rng=None):
 
 def pearson(x, y):
     """Pearson correlation coefficient r (Eq. 11)."""
-    x = np.asarray(x, float); y = np.asarray(y, float)
-    xc, yc = x - x.mean(), y - y.mean()
-    d = np.sqrt(np.sum(xc ** 2) * np.sum(yc ** 2))
-    return float(np.sum(xc * yc) / d) if d > 1e-12 else 0.0
+    r = petrolib.ml_stats.pearson_r(x, y)
+    return r if np.isfinite(r) else 0.0  # historical zero-variance fallback
 
 
 # ---------------------------------------------- missing data ------------
