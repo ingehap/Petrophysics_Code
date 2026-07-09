@@ -30,6 +30,13 @@ consistent), permeability in mD, porosity as a fraction, mobility in mD/cP.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 GRAV_PSI_PER_FT = 0.433       # psi/ft per unit specific gravity (water column)
 
 
@@ -42,9 +49,10 @@ def brooks_corey_sw(pc, pce, swi, n):
 
     with capillary entry pressure Pce, irreducible water Swi and shape factor N.
     """
-    pc = np.asarray(pc, float)
-    sw = swi + (1.0 - swi) * (pce / pc) ** (1.0 / n)
-    return np.where(pc <= pce, 1.0, sw)
+    # 1/N (reciprocal) convention: the library's pore-size index lam = 1/N
+    # (section 9 hazard; lam and N are NOT interchangeable).
+    return petrolib.capillary_pressure.brooks_corey_sw(
+        pc, pc_entry=pce, lam=1.0 / n, swirr=swi)
 
 
 def buoyancy_pc(height_above_fwl, sg_water, sg_hc):
@@ -54,7 +62,9 @@ def buoyancy_pc(height_above_fwl, sg_water, sg_hc):
 
     the equilibrium relation Pc = (rho_w - rho_hc)*g*h (psi/ft form).
     """
-    return GRAV_PSI_PER_FT * (sg_water - sg_hc) * np.asarray(height_above_fwl, float)
+    return petrolib.capillary_pressure.buoyancy_pc_gradient(
+        height_above_fwl, sg_water=sg_water, sg_hc=sg_hc,
+        gradient_psi_per_ft=GRAV_PSI_PER_FT)
 
 
 # ---------------------------------------------- permeability --------------

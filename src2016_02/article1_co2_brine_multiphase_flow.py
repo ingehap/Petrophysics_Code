@@ -28,6 +28,13 @@ mD consistently), saturations dimensionless.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- residual trapping --------------
 
@@ -57,12 +64,16 @@ def leverett_j(pc, sigma, k, phi):
     the dimensionless capillary pressure; CO2-brine Pc curves at different
     conditions collapse when scaled by the interfacial tension sigma.
     """
-    return (pc / sigma) * np.sqrt(k / phi)
+    # This article's J omits the cos(theta) term; the library form carries it,
+    # so pass theta_deg=0 (cos 0 = 1) to recover J = (Pc/sigma)*sqrt(k/phi).
+    return petrolib.capillary_pressure.leverett_j(
+        pc, sigma=sigma, theta_deg=0.0, k=k, phi=phi, absolute=True)
 
 
 def pc_from_j(j, sigma, k, phi):
     """Capillary pressure from the J-function  Pc = J*sigma*sqrt(phi/k)."""
-    return j * sigma * np.sqrt(phi / k)
+    return petrolib.capillary_pressure.pc_from_leverett_j(
+        j, sigma=sigma, theta_deg=0.0, k=k, phi=phi, absolute=True)
 
 
 # ---------------------------------------------- relative permeability --------------

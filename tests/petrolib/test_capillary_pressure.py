@@ -95,6 +95,16 @@ def _original_leverett_2014_02(pc, sigma, contact_angle_deg, k, phi):
     return pc / (sigma * np.cos(np.radians(contact_angle_deg))) * np.sqrt(k / phi)
 
 
+def _original_leverett_omitcos_2016_02(pc, sigma, k, phi):
+    # src2016_02/article1: J omits cos entirely -> facade passes theta_deg=0
+    return (pc / sigma) * np.sqrt(k / phi)
+
+
+def _original_pc_from_j_2016_02(j, sigma, k, phi):
+    # src2016_02/article1 inverse: Pc = J*sigma*sqrt(phi/k)
+    return j * sigma * np.sqrt(phi / k)
+
+
 def test_leverett_round_trip_and_equivalence() -> None:
     j = cap.leverett_j(PC, sigma=0.03, theta_deg=20.0, k=1e-14, phi=0.2)
     np.testing.assert_allclose(
@@ -109,6 +119,18 @@ def test_leverett_round_trip_and_equivalence() -> None:
         ),
         [(5e5, 0.03, 0.0, 1e-12, 0.30)],
     )
+    # src2016_02/article1: cos-omitted J and its inverse map with theta_deg=0
+    assert_matches_original(
+        _original_leverett_omitcos_2016_02,
+        lambda pc, s, k, phi: cap.leverett_j(pc, sigma=s, theta_deg=0.0, k=k, phi=phi),
+        [(PC, 0.03, 1e-14, 0.2)],
+    )
+    jvals = _original_leverett_omitcos_2016_02(PC, 0.03, 1e-14, 0.2)
+    assert_matches_original(
+        _original_pc_from_j_2016_02,
+        lambda j_, s, k, phi: cap.pc_from_leverett_j(j_, sigma=s, theta_deg=0.0, k=k, phi=phi),
+        [(jvals, 0.03, 1e-14, 0.2)],
+    )  # sqrt(phi/k) vs 1/sqrt(k/phi): float reassociation within rtol 1e-12
 
 
 def test_pc_convert_system() -> None:
@@ -136,6 +158,12 @@ def _original_bc_sw_ninv_2016_06(pc, pce, swi, n):
     return np.where(pc <= pce, 1.0, sw)
 
 
+def _original_bc_pc_normalized_2016_06(sw_star, pc0, ep):
+    # src2016_06/article3: Pc = Pc0 * Sw*^(-ep) on a pre-normalized Sw* ->
+    # facade passes swirr=0 (identity window) and lam = 1/ep (exponent -1/lam).
+    return pc0 * np.asarray(sw_star, float) ** (-ep)
+
+
 def test_brooks_corey_conventions_and_round_trip() -> None:
     # lam-convention article (clip form is value-equal to the where form)
     assert_matches_original(
@@ -150,6 +178,13 @@ def test_brooks_corey_conventions_and_round_trip() -> None:
         _original_bc_sw_ninv_2016_06,
         lambda pc, pce, swi, n: cap.brooks_corey_sw(pc, pc_entry=pce, lam=1.0 / n, swirr=swi),
         [(PC, 5e4, 0.12, 2.4)],
+    )
+    # normalized-saturation Pc form (Sw* already normalized -> swirr=0, lam=1/ep)
+    swn = RNG.uniform(0.15, 1.0, size=40)
+    assert_matches_original(
+        _original_bc_pc_normalized_2016_06,
+        lambda sw_, pc0, ep: cap.brooks_corey_pc(sw_, pc_entry=pc0, lam=1.0 / ep, swirr=0.0),
+        [(swn, 3e4, 1.5)],
     )
     # forward/inverse round trip above the entry pressure
     pc = cap.brooks_corey_pc(SW, pc_entry=5e4, lam=1.8, swirr=0.1)

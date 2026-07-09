@@ -32,6 +32,13 @@ in m, IFT in dyne/cm.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 R_GAS = 10.7316               # psi*ft^3/(lbmol*R), Peng-Robinson gas constant
 
 
@@ -92,9 +99,12 @@ def young_laplace_pc(sigma, pore_radius, theta=0.0):
         pc = 2*sigma*cos(theta)/rp,
 
     the pressure difference across the meniscus in a pore of radius rp.  sigma in
-    dyne/cm, rp in m -> pc in Pa (1 dyne/cm = 1e-3 N/m).
+    dyne/cm, rp in m -> pc in Pa (1 dyne/cm = 1e-3 N/m).  theta in radians.
     """
-    return 2.0 * (sigma * 1e-3) * np.cos(theta) / pore_radius
+    # Signed Young-Laplace; this article passes theta in radians, so bridge to
+    # the library's degrees convention with np.degrees, and dyne/cm -> N/m on sigma.
+    return petrolib.capillary_pressure.young_laplace_pc(
+        pore_radius, sigma=sigma * 1e-3, theta_deg=np.degrees(theta), absolute=False)
 
 
 def macleod_sugden_ift(parachors, x, y, v_liquid, v_vapor):

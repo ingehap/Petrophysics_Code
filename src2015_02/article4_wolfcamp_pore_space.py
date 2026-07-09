@@ -28,6 +28,13 @@ microns, permeability in mD, porosity as a fraction.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- Washburn --------------
 
@@ -39,8 +46,11 @@ def washburn_pore_radius(pc, ift=480.0, theta=140.0):
     with the air-mercury IFT (~480 dyne/cm) and contact angle (~140 deg).
     Returns r in microns for Pc in psi (with the 0.145 dyne/cm <-> psi factor).
     """
-    # 2*IFT[dyne/cm]*|cos|/Pc[psi]; 1 psi = 68947.6 dyne/cm^2, 1 cm = 1e4 um
-    return 2.0 * ift * abs(np.cos(np.radians(theta))) / (np.asarray(pc, float) * 68947.6) * 1e4
+    # 2*IFT[dyne/cm]*|cos|/Pc[psi]; 1 psi = 68947.6 dyne/cm^2, 1 cm = 1e4 um.
+    # Delegate the pure Washburn kernel (|cos| mercury convention) and keep the
+    # field-unit adapters (psi->dyne/cm^2 on Pc, cm->um on r) here in the facade.
+    return petrolib.capillary_pressure.washburn_radius(
+        np.asarray(pc, float) * 68947.6, sigma=ift, theta_deg=theta, absolute=True) * 1e4
 
 
 # ---------------------------------------------- Winland --------------
