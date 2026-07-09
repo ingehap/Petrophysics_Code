@@ -32,6 +32,13 @@ Implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- end-member moduli (GPa) --
 
@@ -76,9 +83,8 @@ def jason_grain_supported(phi, S_h, K_min, G_min):
 
 def gassmann_fluid_substitution(K_dry, K_min, phi, K_fl):
     """K_sat from the standard Gassmann formula."""
-    num = (1.0 - K_dry / K_min) ** 2
-    den = phi / K_fl + (1.0 - phi) / K_min - K_dry / K_min ** 2
-    return K_dry + num / den
+    return petrolib.acoustic_geomech.gassmann_ksat(
+        k_dry=K_dry, k_mineral=K_min, k_fluid=K_fl, phi=phi)
 
 
 # ---------------------------------------------- velocities -------------

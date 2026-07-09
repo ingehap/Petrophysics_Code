@@ -25,6 +25,13 @@ anchor pairs quoted in the article body and flagged as reconstructions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Characteristic acoustic impedances (MRayl)
 Z_PIPE = 43.5                # steel pipe ("casing")
 Z_SHALE = 4.2               # Pierre II shale at consolidation stress
@@ -107,7 +114,7 @@ def attenuation_rate(E_transmitted_db, E_measured_db, length_m):
 
 def reflection_coefficient(z_behind, z_pipe=Z_PIPE):
     """Normal-incidence reflection coefficient R = (Z2 - Z1)/(Z2 + Z1)."""
-    return (z_behind - z_pipe) / (z_behind + z_pipe)
+    return petrolib.acoustic_geomech.reflection_coefficient(z_pipe, z_behind)
 
 
 def _synthetic_pe_spectra(d, v_p, freqs, gap_delay_s):

@@ -41,6 +41,13 @@ from typing import Tuple
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Synthetic micro-frac pressure curve
@@ -137,8 +144,8 @@ def hubbert_willis_breakdown(stress: StressState, T: float) -> float:
 def overburden_profile(depth_m: np.ndarray,
                        rho_avg_kg_m3: float = 2300.0) -> np.ndarray:
     """Sv(z) = integral(rho*g*dz)  -- approximated with constant rho."""
-    g = 9.81
-    return rho_avg_kg_m3 * g * depth_m / 1.0e6        # MPa
+    return petrolib.acoustic_geomech.overburden_stress(
+        depth_m, rho_avg_kg_m3, g=9.81) / 1.0e6        # MPa
 
 
 # ---------------------------------------------------------------------------

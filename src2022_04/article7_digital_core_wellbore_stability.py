@@ -61,7 +61,7 @@ def vrh_solid(frac_q, K_q=37.0, G_q=44.0, K_c=21.0, G_c=7.0):
 
 
 def youngs_modulus(K_GPa, G_GPa):
-    return 9.0 * K_GPa * G_GPa / (3.0 * K_GPa + G_GPa)
+    return petrolib.acoustic_geomech.youngs_from_kg(K_GPa, G_GPa)
 
 
 # ---------------------------------------------- UCS predictor ---------
