@@ -31,6 +31,13 @@ Densities in g/cm^3, concentrations as noted, porosity/volumes as fractions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Standard API gamma-ray sensitivity to K (wt%), U (ppm), Th (ppm)
 GR_K, GR_U, GR_TH = 16.0, 8.0, 4.0
 
@@ -71,7 +78,7 @@ def linear_mixing_law(volumes, endpoints):
 
     e.g. matrix density, PEF or Sigma from the inverted mineral volumes.
     """
-    return float(np.sum(np.asarray(volumes, float) * np.asarray(endpoints, float)))
+    return float(petrolib.porosity_lithology.matrix_density_from_volumes(volumes, endpoints))
 
 
 def matrix_gamma_ray(k, u, th, gk=GR_K, gu=GR_U, gth=GR_TH):
@@ -85,10 +92,7 @@ def volume_to_weight_fraction(volumes, grain_densities):
 
         Cw_j = Vj*rho_j / sum_i(Vi*rho_i).
     """
-    v = np.asarray(volumes, float)
-    rho = np.asarray(grain_densities, float)
-    mass = v * rho
-    return mass / np.sum(mass)
+    return petrolib.porosity_lithology.volume_to_weight_fractions(volumes, grain_densities)
 
 
 def density_porosity(rho_bulk, rho_matrix, rho_fluid):
@@ -96,7 +100,7 @@ def density_porosity(rho_bulk, rho_matrix, rho_fluid):
 
         phi_D = (rho_matrix - rho_bulk)/(rho_matrix - rho_fluid).
     """
-    return (rho_matrix - rho_bulk) / (rho_matrix - rho_fluid)
+    return petrolib.porosity_lithology.density_porosity(rho_bulk, rho_matrix, rho_fluid)
 
 
 # ---------------------------------------------- tests --------------

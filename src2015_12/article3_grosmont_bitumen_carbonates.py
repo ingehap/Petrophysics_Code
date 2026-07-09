@@ -48,7 +48,7 @@ def density_porosity(rho_b, rho_ma=RHO_DOLOMITE, rho_fl=RHO_BITUMEN):
 
     using the dolomite grain density and the (bitumen) pore-fluid density.
     """
-    return (rho_ma - rho_b) / (rho_ma - rho_fl)
+    return petrolib.porosity_lithology.density_porosity(rho_b, rho_ma, rho_fl)
 
 
 # ---------------------------------------------- saturation --------------

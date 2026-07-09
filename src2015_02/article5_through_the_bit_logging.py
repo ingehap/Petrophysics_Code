@@ -27,6 +27,13 @@ reconstructed in standard form (Ellis & Singer, 2007).  Density in g/cm^3.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- density conversions --------------
 
@@ -35,7 +42,7 @@ def log_density(rho_e):
 
         rho_b = 1.0704*rho_e - 0.188.
     """
-    return 1.0704 * np.asarray(rho_e, float) - 0.188
+    return petrolib.porosity_lithology.electron_density_to_bulk(rho_e, a=1.0704, b=-0.188)
 
 
 def electron_density_index(z, a, rho_m):
