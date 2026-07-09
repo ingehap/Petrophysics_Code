@@ -56,7 +56,7 @@ def saturation_height(pc, rho_w, rho_hc):
 
 def stressed_permeability(k0, net_stress, c_k=2.0e-8):
     """Permeability under net stress  k = k0*exp(-c_k*stress)  (exponential closure)."""
-    return k0 * np.exp(-c_k * np.asarray(net_stress, float))
+    return petrolib.flow_transport.stress_permeability(k0, gamma=c_k, ncs=net_stress)
 
 
 def stressed_porosity(phi0, net_stress, c_phi=2.0e-9):

@@ -24,6 +24,13 @@ the carbonate rock-fabric / net-pay-cutoff methods the paper applies.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- rock fabric -------------
 
@@ -32,13 +39,13 @@ def winland_r35(k_md, phi):
 
     phi as a percentage; returns R35 in microns.
     """
-    return 10.0 ** (0.732 + 0.588 * np.log10(k_md)
-                    - 0.864 * np.log10(np.asarray(phi, float) * 100.0))
+    return petrolib.flow_transport.winland_r35(k_md, phi)
 
 
 def lucia_permeability(phi, A=8.0, B=5.0):
     """Rock-fabric permeability transform  log10(k) = A + B*log10(phi)  (mD)."""
-    return 10.0 ** (A + B * np.log10(np.asarray(phi, float)))
+    # This log-log form is the library's poro-perm power law (A intercept, B slope).
+    return petrolib.flow_transport.poroperm_powerlaw(phi, a=A, b=B)
 
 
 def porosity_cutoff_from_perm(k_cut, A=8.0, B=5.0):

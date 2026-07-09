@@ -40,12 +40,12 @@ KB = 1.380649e-23        # J/K
 
 def mean_free_path(T, P, d_molecule=3.8e-10):
     """Gas mean free path  lambda = kB*T/(sqrt(2)*pi*d^2*P)  (m).  P in Pa."""
-    return KB * T / (np.sqrt(2.0) * np.pi * d_molecule ** 2 * np.asarray(P, float))
+    return petrolib.flow_transport.mean_free_path(pressure=P, temperature=T, d_collision=d_molecule)
 
 
 def knudsen_number(mfp, pore_diameter):
     """Knudsen number  Kn = lambda / d."""
-    return mfp / np.asarray(pore_diameter, float)
+    return petrolib.flow_transport.knudsen_number(mfp, pore_diameter)
 
 
 def flow_regime(kn):
@@ -56,20 +56,14 @@ def flow_regime(kn):
       0.1 <= Kn < 10    -> transition
       Kn >= 10          -> free-molecular (Knudsen)
     """
-    if kn < 0.001:
-        return "continuum"
-    if kn < 0.1:
-        return "slip"
-    if kn < 10.0:
-        return "transition"
-    return "free-molecular"
+    return petrolib.flow_transport.flow_regime(kn)
 
 
 # ---------------------------------------------- apparent permeability ---
 
 def klinkenberg(k_inf, b, p_mean):
     """Klinkenberg slip-corrected apparent permeability  k_app = k_inf*(1+b/P)."""
-    return k_inf * (1.0 + b / np.asarray(p_mean, float))
+    return petrolib.flow_transport.klinkenberg_apparent(k_inf, b=b, p_mean=p_mean)
 
 
 def apparent_permeability_factor(kn, alpha=1.0):

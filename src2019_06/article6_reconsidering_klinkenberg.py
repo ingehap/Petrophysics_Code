@@ -24,25 +24,29 @@ reconsiders.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- models ------------------
 
 def klinkenberg(k_l, b, p_mean):
     """First-order Klinkenberg apparent permeability  k_app = k_l*(1 + b/Pm)."""
-    return k_l * (1.0 + b / np.asarray(p_mean, float))
+    return petrolib.flow_transport.klinkenberg_apparent(k_l, b=b, p_mean=p_mean)
 
 
 def klinkenberg_second_order(k_l, b, c, p_mean):
     """Second-order apparent permeability  k_app = k_l*(1 + b/Pm + c/Pm^2)."""
-    p = np.asarray(p_mean, float)
-    return k_l * (1.0 + b / p + c / p ** 2)
+    return petrolib.flow_transport.klinkenberg_apparent(k_l, b=b, p_mean=p_mean, c2=c)
 
 
 def fit_first_order(p_mean, k_app):
     """Regress k_app on 1/Pm: intercept = k_l, slope/intercept = b."""
-    x = 1.0 / np.asarray(p_mean, float)
-    slope, intercept = np.polyfit(x, np.asarray(k_app, float), 1)
-    return float(intercept), float(slope / intercept)
+    return petrolib.flow_transport.fit_klinkenberg(p_mean, k_app)
 
 
 def fit_second_order(p_mean, k_app):

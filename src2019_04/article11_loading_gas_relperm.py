@@ -25,22 +25,29 @@ Corey relations the loading study applies.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- stress / permeability ---
 
 def effective_stress(sigma_conf, p_pore, biot=1.0):
     """Biot effective stress  sigma_eff = sigma_conf - alpha*P_pore."""
-    return sigma_conf - biot * np.asarray(p_pore, float)
+    return petrolib.flow_transport.net_confining_stress(sigma_conf, pore_pressure=p_pore, biot=biot)
 
 
 def stress_permeability(k0, sigma_eff, c=0.05):
     """Stress-dependent permeability  k = k0*exp(-c*sigma_eff)  (microcrack closure)."""
-    return k0 * np.exp(-c * np.asarray(sigma_eff, float))
+    return petrolib.flow_transport.stress_permeability(k0, gamma=c, ncs=sigma_eff)
 
 
 def klinkenberg(k_l, b, p_mean):
     """Klinkenberg apparent gas permeability  k_app = k_l*(1 + b/Pm)."""
-    return k_l * (1.0 + b / np.asarray(p_mean, float))
+    return petrolib.flow_transport.klinkenberg_apparent(k_l, b=b, p_mean=p_mean)
 
 
 # ---------------------------------------------- Corey kr ----------------

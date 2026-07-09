@@ -27,23 +27,29 @@ the paper cites.  Paper anchors: >= 7 discrete HFUs cross-validating an 8- to
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- HFU / Winland ----------
 
 def rqi(k_md, phi):
     """Reservoir quality index  RQI = 0.0314*sqrt(k/phi)  (um), k in mD."""
-    return 0.0314 * np.sqrt(np.asarray(k_md, float) / np.asarray(phi, float))
+    return petrolib.flow_transport.rqi(k_md, phi)
 
 
 def normalized_porosity(phi):
     """Normalized porosity (pore/grain ratio)  phi_z = phi/(1 - phi)."""
-    phi = np.asarray(phi, float)
-    return phi / (1.0 - phi)
+    return petrolib.flow_transport.phi_z(phi)
 
 
 def fzi(k_md, phi):
     """Flow zone indicator  FZI = RQI/phi_z  (um)."""
-    return rqi(k_md, phi) / normalized_porosity(phi)
+    return petrolib.flow_transport.fzi(k_md, phi)
 
 
 def winland_r35(k_md, phi):
@@ -51,8 +57,7 @@ def winland_r35(k_md, phi):
 
     phi as a percentage; returns R35 in microns.
     """
-    logr = 0.732 + 0.588 * np.log10(k_md) - 0.864 * np.log10(np.asarray(phi, float) * 100.0)
-    return 10.0 ** logr
+    return petrolib.flow_transport.winland_r35(k_md, phi)
 
 
 def assign_hfu(k_md, phi, n_units, seed=0):

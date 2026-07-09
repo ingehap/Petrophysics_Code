@@ -26,12 +26,19 @@ reconstruction.  Stress/pressure consistent units; k in m^2 (or as supplied).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- stress dependence --------------
 
 def net_confining_stress(overburden, pore_pressure):
     """Net confining stress  NCS = overburden - pore pressure."""
-    return overburden - np.asarray(pore_pressure, float)
+    return petrolib.flow_transport.net_confining_stress(overburden, pore_pressure=pore_pressure)
 
 
 def stress_dependent_permeability(ki, gamma, ncs, ncs_i):
@@ -41,7 +48,7 @@ def stress_dependent_permeability(ki, gamma, ncs, ncs_i):
 
     ki = permeability at the initial stress NCSi, gamma = permeability exponent.
     """
-    return ki * np.exp(-gamma * (np.asarray(ncs, float) - ncs_i))
+    return petrolib.flow_transport.stress_permeability(ki, gamma=gamma, ncs=ncs, ncs0=ncs_i)
 
 
 def matrix_gas_permeability(diffusivity, viscosity, bulk_modulus):
@@ -51,7 +58,7 @@ def matrix_gas_permeability(diffusivity, viscosity, bulk_modulus):
 
 def klinkenberg(k_inf, b, pressure):
     """Klinkenberg apparent permeability  ka = k_inf*(1 + b/P)."""
-    return k_inf * (1.0 + b / np.asarray(pressure, float))
+    return petrolib.flow_transport.klinkenberg_apparent(k_inf, b=b, p_mean=pressure)
 
 
 # ---------------------------------------------- tests --------------
