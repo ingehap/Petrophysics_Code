@@ -1,0 +1,216 @@
+
+──────────────────────────────────────────────────────────────
+  A01 – Sponge Core Saturation Uncertainty
+──────────────────────────────────────────────────────────────
+  [PASS] TestA01.test_estimate_salinity_mass_balance_increases_with_salt_mass
+  [PASS] TestA01.test_estimate_salinity_mass_balance_positive
+  [PASS] TestA01.test_formation_water_volume_identity
+  [PASS] TestA01.test_formation_water_volume_increases_with_salinity
+  [PASS] TestA01.test_monte_carlo_output_keys
+  [PASS] TestA01.test_monte_carlo_percentile_ordering
+  [PASS] TestA01.test_monte_carlo_saturation_in_range
+  [PASS] TestA01.test_oil_volume_positive
+  [PASS] TestA01.test_reservoir_saturations_scale_with_formation_volume_factor
+  [PASS] TestA01.test_salt_correction_factor_increases_with_salinity
+  [PASS] TestA01.test_salt_correction_factor_zero_salinity
+  [PASS] TestA01.test_spearman_salinity_dominant
+  [PASS] TestA01.test_spearman_sensitivity_returns_dict
+  [PASS] TestA01.test_surface_saturations_sum_to_one
+
+──────────────────────────────────────────────────────────────
+  A02 – NMR Wettability Pore Partitioning
+──────────────────────────────────────────────────────────────
+  [PASS] TestA02.test_choking_threshold_range
+  [PASS] TestA02.test_classify_wettability_labels
+  [PASS] TestA02.test_mineralogy_wettability_carbonate
+  [PASS] TestA02.test_mineralogy_wettability_silica
+  [PASS] TestA02.test_pore_partition_fractions_sum
+  [PASS] TestA02.test_pore_partition_validity
+  [PASS] TestA02.test_pore_partition_water_wet_sample
+  [PASS] TestA02.test_recommend_strategy_mixed_wet
+  [PASS] TestA02.test_sequence_C_monotone_oil_increase
+  [PASS] TestA02.test_sequence_D_brine_displaces_oil
+  [PASS] TestA02.test_wettability_index_bounds
+  [PASS] TestA02.test_wettability_index_oil_wet
+  [PASS] TestA02.test_wettability_index_water_wet
+
+──────────────────────────────────────────────────────────────
+  A03 – Water-Rock Mechanical & AE
+──────────────────────────────────────────────────────────────
+  [PASS] TestA03.test_ae_energy_expectation_decreases_with_soaking
+  [PASS] TestA03.test_ae_energy_model_monotone_near_failure
+  [PASS] TestA03.test_ae_energy_release_rate_positive
+  [PASS] TestA03.test_attenuation_coefficient_positive
+  [PASS] TestA03.test_attenuation_increases_with_soaking
+  [PASS] TestA03.test_attenuation_roundtrip
+  [PASS] TestA03.test_compressive_strength_decreases_with_soaking
+  [PASS] TestA03.test_elastic_modulus_decreases_with_soaking
+  [PASS] TestA03.test_failure_mode_dry_is_brittle
+  [PASS] TestA03.test_failure_mode_long_soak_is_ductile
+  [PASS] TestA03.test_mechanical_decay_asymptote
+  [PASS] TestA03.test_mechanical_decay_at_zero
+  [PASS] TestA03.test_porosity_fluid_saturation_basic
+  [PASS] TestA03.test_porosity_in_realistic_range
+  [PASS] TestA03.test_soaking_weakening_profile_shape
+
+──────────────────────────────────────────────────────────────
+  A04 – Wireline Anomaly Diagnosis
+──────────────────────────────────────────────────────────────
+  [PASS] TestA04.test_buoyancy_positive
+  [PASS] TestA04.test_detect_anomalies_flags_large_spike
+  [PASS] TestA04.test_detect_anomalies_output_keys
+  [PASS] TestA04.test_diagnose_jamming_detected
+  [PASS] TestA04.test_diagnose_returns_correct_shape
+  [PASS] TestA04.test_ewma_reference_is_mean_of_first_window
+  [PASS] TestA04.test_grade_alarm_extreme_triggers_grade4
+  [PASS] TestA04.test_gravity_positive
+  [PASS] TestA04.test_moving_average_constant_signal
+  [PASS] TestA04.test_moving_mad_non_negative
+  [PASS] TestA04.test_moving_std_zero_for_constant
+  [PASS] TestA04.test_remove_adjacent_spikes_reduces_extremes
+  [PASS] TestA04.test_tension_hoisting_greater_than_lowering
+  [PASS] TestA04.test_tension_hoisting_stuck_increases
+  [PASS] TestA04.test_tension_lowering_increases_with_depth
+  [PASS] TestA04.test_zscore_zero_mean
+
+──────────────────────────────────────────────────────────────
+  A05 – AIL Hierarchical Correction
+──────────────────────────────────────────────────────────────
+  [PASS] TestA05.test_accuracy_error_less_than_3pct
+  [PASS] TestA05.test_accuracy_error_zero_for_perfect
+  [PASS] TestA05.test_anisotropy_coefficient_anisotropic
+  [PASS] TestA05.test_anisotropy_coefficient_isotropic
+  [PASS] TestA05.test_apparent_resistivity_dip_90
+  [PASS] TestA05.test_apparent_resistivity_dip_zero
+  [PASS] TestA05.test_hierarchical_correction_Rh_positive
+  [PASS] TestA05.test_hierarchical_correction_output_keys
+  [PASS] TestA05.test_invasion_corrected_gt_rxo
+  [PASS] TestA05.test_invasion_corrected_resistivity_no_invasion
+  [PASS] TestA05.test_software_focusing_uniform_weights
+  [PASS] TestA05.test_thickness_library_correct_count
+  [PASS] TestA05.test_true_thickness_correction_at_zero_dip
+  [PASS] TestA05.test_true_thickness_correction_decreases_with_dip
+
+──────────────────────────────────────────────────────────────
+  A06 – Bioclastic Limestone Classification
+──────────────────────────────────────────────────────────────
+  [PASS] TestA06.test_classify_grain_energy_high
+  [PASS] TestA06.test_classify_grain_energy_low
+  [PASS] TestA06.test_classify_grain_energy_mixed
+  [PASS] TestA06.test_classify_high_energy
+  [PASS] TestA06.test_classify_mudstone
+  [PASS] TestA06.test_classify_wackestone
+  [PASS] TestA06.test_displacement_pressure_decreases_with_k
+  [PASS] TestA06.test_kmeans_labels_in_range
+  [PASS] TestA06.test_kmeans_returns_correct_length
+  [PASS] TestA06.test_petrophysical_sample_as_array_shape
+  [PASS] TestA06.test_petrophysical_sample_from_core
+  [PASS] TestA06.test_productivity_rank_ordering
+  [PASS] TestA06.test_r35_increases_with_permeability
+  [PASS] TestA06.test_r35_positive
+
+──────────────────────────────────────────────────────────────
+  A07 – Knowledge-Guided DCDNN
+──────────────────────────────────────────────────────────────
+  [PASS] TestA07.test_archie_fully_saturated
+  [PASS] TestA07.test_archie_sw_decreases_with_rt
+  [PASS] TestA07.test_archie_sw_in_range
+  [PASS] TestA07.test_augment_features_shape
+  [PASS] TestA07.test_dilated_conv1d_output_length
+  [PASS] TestA07.test_ensemble_metrics_perfect
+  [PASS] TestA07.test_ensemble_model_averages_predictions
+  [PASS] TestA07.test_neutron_porosity_correction_clay_reduces
+  [PASS] TestA07.test_neutron_porosity_correction_no_clay
+  [PASS] TestA07.test_relu_all_positive_unchanged
+  [PASS] TestA07.test_relu_clips_negatives
+  [PASS] TestA07.test_simple_dnn_forward_shape
+  [PASS] TestA07.test_timur_permeability_decreases_with_swi
+  [PASS] TestA07.test_timur_permeability_increases_with_phi
+  [PASS] TestA07.test_timur_permeability_positive
+
+──────────────────────────────────────────────────────────────
+  A08 – Shale Induced-Stress Fracture
+──────────────────────────────────────────────────────────────
+  [PASS] TestA08.test_effective_stress_difference_reasonable
+  [PASS] TestA08.test_induced_stress_at_large_distance_small
+  [PASS] TestA08.test_induced_stress_difference_shape
+  [PASS] TestA08.test_induced_stress_symmetry
+  [PASS] TestA08.test_optimal_pumping_rate_output
+  [PASS] TestA08.test_secondary_fracture_condition_shape
+  [PASS] TestA08.test_stress_diff_vs_volume_monotone_shape
+
+──────────────────────────────────────────────────────────────
+  A09 – Acid Fracturing CBM
+──────────────────────────────────────────────────────────────
+  [PASS] TestA09.test_acid_dissolution_depth_increases_with_concentration
+  [PASS] TestA09.test_acid_dissolution_depth_increases_with_time
+  [PASS] TestA09.test_acid_dissolution_depth_positive
+  [PASS] TestA09.test_acid_etched_conductivity_positive
+  [PASS] TestA09.test_breakdown_pressure_lower_with_acid
+  [PASS] TestA09.test_fci_increases_with_concentration
+  [PASS] TestA09.test_fci_top_gt_bottom
+  [PASS] TestA09.test_fracture_half_length_increases_with_volume
+  [PASS] TestA09.test_fracture_half_length_positive
+  [PASS] TestA09.test_fracture_pressure_reduction_positive
+  [PASS] TestA09.test_fracture_width_positive
+  [PASS] TestA09.test_optimise_acid_returns_recommendation
+
+──────────────────────────────────────────────────────────────
+  A10 – Interlayer Fracture Propagation
+──────────────────────────────────────────────────────────────
+  [PASS] TestA10.test_cleat_connection_probability_above_critical
+  [PASS] TestA10.test_coal_initiation_lower_height
+  [PASS] TestA10.test_crossing_probability_all_in_range
+  [PASS] TestA10.test_crossing_probability_initiating_layer_is_one
+  [PASS] TestA10.test_interface_crossing_high_pressure
+  [PASS] TestA10.test_interface_crossing_tight_barrier
+  [PASS] TestA10.test_jiyang_stratigraphy_count
+  [PASS] TestA10.test_jiyang_stratigraphy_layer_types
+  [PASS] TestA10.test_optimise_fracturing_grid_shape
+  [PASS] TestA10.test_optimise_fracturing_output_keys
+
+──────────────────────────────────────────────────────────────
+  A11 – AWI Cement Evaluation
+──────────────────────────────────────────────────────────────
+  [PASS] TestA11.test_awi_delays_conductivity_jump
+  [PASS] TestA11.test_awi_score_higher_for_awi_slurry
+  [PASS] TestA11.test_conductivity_positive
+  [PASS] TestA11.test_conductivity_vs_time_shape
+  [PASS] TestA11.test_crack_width_increases_with_pressure
+  [PASS] TestA11.test_crack_width_positive
+  [PASS] TestA11.test_gel_strength_awi_higher
+  [PASS] TestA11.test_gel_strength_increases_with_time
+  [PASS] TestA11.test_hydraulic_conductivity_cubic_scaling
+  [PASS] TestA11.test_hydraulic_conductivity_positive
+  [PASS] TestA11.test_ion_loss_awi_lower
+  [PASS] TestA11.test_ion_loss_fraction_in_range
+  [PASS] TestA11.test_water_invasion_rate_awi_lower
+  [PASS] TestA11.test_water_invasion_rate_positive
+
+──────────────────────────────────────────────────────────────
+  A12 – Depth Shifting ML
+──────────────────────────────────────────────────────────────
+  [PASS] TestA12.test_align_logs_dtw
+  [PASS] TestA12.test_align_logs_xcorr
+  [PASS] TestA12.test_apply_bulk_shift_known_content
+  [PASS] TestA12.test_apply_bulk_shift_preserves_length
+  [PASS] TestA12.test_cnn_predictor_predict_shape
+  [PASS] TestA12.test_cross_correlation_shift_detects_known_shift
+  [PASS] TestA12.test_cross_correlation_zero_shift
+  [PASS] TestA12.test_dtw_alignment_same_log_zero_distance
+  [PASS] TestA12.test_dtw_path_endpoints
+  [PASS] TestA12.test_dtw_path_lengths_match
+  [PASS] TestA12.test_ensemble_depth_shift_custom_weights
+  [PASS] TestA12.test_ensemble_depth_shift_uniform_weights
+  [PASS] TestA12.test_mad_known_value
+  [PASS] TestA12.test_mad_zero_identical
+  [PASS] TestA12.test_ridge_predictor_constant_target
+  [PASS] TestA12.test_ridge_predictor_fit_and_predict_shape
+  [PASS] TestA12.test_rmse_known_value
+  [PASS] TestA12.test_rmse_zero_identical
+
+══════════════════════════════════════════════════════════════
+  RESULTS:  162/162 passed  |  0 failed
+══════════════════════════════════════════════════════════════
+
+  All tests passed ✓

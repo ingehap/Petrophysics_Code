@@ -1,0 +1,87 @@
+
+######################################################################
+# Article 1 - ML Well-Log Correlation
+######################################################################
+============================================================
+Article 1: ML-Based Assistive Well-Log Correlation
+============================================================
+  cross-correlation lag  = -12  (corr 0.998)
+  marker ref 40 -> offset 36
+  tie confidence same/diff = 0.88 / 0.01
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - TOC From XRF (Neural Network)
+######################################################################
+============================================================
+Article 2: TOC From XRF via Neural Network
+============================================================
+  Schmoker TOC @2.3 g/cc = 19.62 wt%
+  NN TOC test R / RMSE   = 0.988 / 0.364 wt%
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Shale-Gas Compressibility Factor Z
+######################################################################
+============================================================
+Article 3: Compressibility Factor Z of Shale Gas
+============================================================
+  Z at ~1 bar            = 0.999  (expect ~1)
+  Z at 20 MPa (Ppr=4.35) = 0.897
+  gas density 10/30 MPa  = 59.8 / 173.9 kg/m^3
+  confined Tpc/Ppc       = 158.2 K / 3.82 MPa
+  bulk Z / confined Z    = 0.897 / 1.002
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - NMR Wettability Index
+######################################################################
+============================================================
+Article 4: NMR Wettability Index (Looyestijn)
+============================================================
+  WI water-wet           = 1.00
+  WI oil-wet             = -1.00
+  WI mixed-wet           = -0.04
+  bound / free           = 0.50 / 0.50
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Aging Effect on Relative Permeability
+######################################################################
+============================================================
+Article 5: Aging Effect on Relative Permeability
+============================================================
+  crossover Sw water-wet = 0.585
+  crossover Sw aged      = 0.453
+  krw_max ww / aged      = 0.15 / 0.4
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - Smart Water-CO2 Flooding
+######################################################################
+============================================================
+Article 6: Coupled Smart Water-CO2 Flooding
+============================================================
+  fw low/high Sw         = 0.38 / 0.98
+  Sor smart-water / seawater = 0.161 / 0.350
+  mobility ratio base/CO2 = 2.50 / 1.12
+  RF base/SW/CO2/coupled = 0.46 / 0.75 / 0.57 / 0.77
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_ml_well_log_correlation  (#.##s)
+  PASS   article2_toc_xrf_neural_network  (#.##s)
+  PASS   article3_shale_gas_z_factor  (#.##s)
+  PASS   article4_nmr_wettability_index  (#.##s)
+  PASS   article5_relperm_aging_highthroughput  (#.##s)
+  PASS   article6_smart_water_co2_flooding  (#.##s)
+
+  6/6 modules passed

@@ -1,0 +1,147 @@
+
+######################################################################
+# Article 1 - Organic-Mudstone Storage Pt.1 (Tutorial)
+######################################################################
+============================================================
+Article 1 (Tutorial): Organic-Mudstone Storage, Part 1
+============================================================
+  fractional flow lo/hi  = 0.38 / 0.98
+  water cut (equal kr)   = 91 %
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Carbonate Net-Pay Cutoffs
+######################################################################
+============================================================
+Article 2: Net-Pay Cutoffs in Carbonates
+============================================================
+  R35 (10 mD, 18%)       = 1.72 um
+  Lucia k(15%) / phi back = 7593.75 mD / 0.150
+  porosity cutoff (0.1 mD) = 0.016
+  net samples / N:G      = 8 / 0.40
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - 2D NMR T1-T2 Maps of Shale
+######################################################################
+============================================================
+Article 3: Frequency/Temperature Dependence of 2D NMR T1-T2
+============================================================
+  T2 ref/warm            = 50 / 97.2 ms
+  T1/T2 at 2/20 MHz      = 3.0 / 5.99
+  map fractions          = {'bitumen/clay-bound': np.float64(0.4), 'capillary water': np.float64(0.3), 'movable water/hydrocarbon': np.float64(0.3)}
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - In-Situ Saturation Core Comparison
+######################################################################
+============================================================
+Article 4: In-Situ Saturations - Core Type Comparison
+============================================================
+  Dean-Stark Sw / So     = 0.20 / 0.30
+  So reconstructed sidewall/pressurized = 0.429 / 0.306
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Composite Cement Well Integrity
+######################################################################
+============================================================
+Article 5: Composite Cement & Well Integrity
+============================================================
+  Z gas/liquid/cement    = 0.20 / 1.65 / 5.32 Mrayl
+  |R| casing->cement/gas = 0.794 / 0.991
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - Depth: A Love and Hate Story
+######################################################################
+============================================================
+Article 6: Depth - A Love and Hate Story
+============================================================
+  elastic stretch 1/4 km = 1.000 / 4.000 m
+  apparent 4000 -> true 3989.68 m  (correction 10.32 m)
+  depth uncertainty 1/4 km = 0.36 / 0.85 m
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 7 - Groningen Depth Control
+######################################################################
+============================================================
+Article 7: Depth Control in the Groningen Discovery
+============================================================
+  marker depth shift     = 3.5 m
+  net-pay error (6 m top shift) = -6.0 m
+  GIIP error fraction    = -20 %
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 8 - Driller's Depth Correction
+######################################################################
+============================================================
+Article 8: Correction of Driller's Depth (Way-Point)
+============================================================
+  own-weight stretch 2/4 km = 0.699 / 2.795 m
+  raw 4000 -> corrected 4008.23 m  (+8.23 m)
+  way-point correction @3000 m = 1.250 m
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 9 - Azimuthal GR Geosteering
+######################################################################
+============================================================
+Article 9: Azimuthal Gamma-Ray Geosteering
+============================================================
+  up-down GR contrast    = 70.0 API
+  distance far/near      = 4.61 / 0.45 m
+  apparent dip           = 20.0 deg  (true 20.0)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 10 - Hydraulic-Fracturing Stress Test
+######################################################################
+============================================================
+Article 10: Hydraulic-Fracturing Stress Test (QRA)
+============================================================
+  closure G / P          = 2.50 / 5000  (true 2.5 / 5000)
+  min-stress gradient    = 0.625 psi/ft
+  success prob good/poor = 0.91 / 0.33
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 11 - Neutron Generators vs Am-Be
+######################################################################
+============================================================
+Article 11: Neutron Generators vs Am-Be Sources
+============================================================
+  Ls at 5%/30% porosity  = 19.4 / 16.4 cm
+  Ls Am-Be / D-T (15%)   = 18.2 / 32.2 cm
+  precision Am-Be / D-T  = 0.021 / 0.010
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_organic_mudstone_storage_part1_tutorial  (#.##s)
+  PASS   article2_carbonate_netpay_cutoffs  (#.##s)
+  PASS   article3_2d_nmr_t1t2_shale  (#.##s)
+  PASS   article4_insitu_saturation_core_comparison  (#.##s)
+  PASS   article5_composite_cement_well_integrity  (#.##s)
+  PASS   article6_depth_love_hate_essay  (#.##s)
+  PASS   article7_groningen_depth_control  (#.##s)
+  PASS   article8_drillers_depth_correction  (#.##s)
+  PASS   article9_azimuthal_gr_geosteering  (#.##s)
+  PASS   article10_hydraulic_fracturing_stress_test  (#.##s)
+  PASS   article11_neutron_generator_vs_ambe  (#.##s)
+
+  11/11 modules passed

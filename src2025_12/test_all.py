@@ -21,12 +21,28 @@ Or via pytest::
 
 from __future__ import annotations
 
+import importlib
 import math
 import sys
 import traceback
+from pathlib import Path
 from typing import Callable, List, Tuple
 
 import numpy as np
+
+# ── Bare-checkout compatibility ──────────────────────────────────────
+# The package lives in the repository as src2025_12/, but the test
+# functions below import it under its public name petrophysics_v66n6
+# (see __init__.py).  Register an alias so `python test_all.py` works
+# from a bare checkout, from any working directory, with no install.
+if "petrophysics_v66n6" not in sys.modules:
+    _repo_root = str(Path(__file__).resolve().parent.parent)
+    if _repo_root not in sys.path:
+        sys.path.insert(0, _repo_root)
+    sys.modules["petrophysics_v66n6"] = importlib.import_module("src2025_12")
+    for _name, _module in list(sys.modules.items()):
+        if _name.startswith("src2025_12."):
+            sys.modules["petrophysics_v66n6" + _name[len("src2025_12"):]] = _module
 
 # ── Tolerance constants ──────────────────────────────────────────────
 ATOL = 1e-8

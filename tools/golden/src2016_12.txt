@@ -1,0 +1,83 @@
+
+######################################################################
+# Article 1 - Shale Fracturing (ANNIE + ML)
+######################################################################
+============================================================
+Article 1: Shale Fracturing (ANNIE + ML)
+============================================================
+  C11 / C13              = 38.0 / 14.0
+  VTI  Eh / Ev           = 31.99 / 25.68 GPa
+  closure stress         = 5377 psi
+  equivalent E / v       = 32.00 GPa / 0.332
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Geomechanics of Orthorhombic Media
+######################################################################
+============================================================
+Article 2: Geomechanics of Orthorhombic Media
+============================================================
+  E1 / E2 / E3           = 25.05 / 25.05 / 20.95
+  sigma_H / sigma_h      = 5462 / 4822 psi
+  shear-wave splitting   = 10.0 %
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Shale Young's Moduli (Nanoindentation)
+######################################################################
+============================================================
+Article 3: Shale Young's Moduli From Nanoindentation
+============================================================
+  E from M=50 GPa        = 47.57 GPa
+  En (representative) / Em (volume) = 26.5 / 68.5 GPa
+  softest-frame contribution  = 0.233
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - 2D NMR Kerogen Fluid Typing
+######################################################################
+============================================================
+Article 4: 2D NMR Kerogen Fluid Typing
+============================================================
+  pore diameter          = 2.43 um
+  SBET small / large     = 6.06 / 7.94 m^2/g
+  fast-diffusion number  = 0.0066
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Ultrasonic Image Permeability
+######################################################################
+============================================================
+Article 5: Ultrasonic Image Permeability (carbonate)
+============================================================
+  k FP=0.01 / 0.10       = 21.86 / 201.22 mD
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - GR Normalization (Technical Note)
+######################################################################
+============================================================
+Article 6 (TN): GR Normalization (Haynesville)
+============================================================
+  out mean / std         = 100.00 / 15.00
+  max percent shift      = 833.7 %
+  mean shift             = 19.7 GAPI (24.5 %)
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_shale_fracturing_ml  (#.##s)
+  PASS   article2_orthorhombic_geomechanics  (#.##s)
+  PASS   article3_shale_youngs_nanoindentation  (#.##s)
+  PASS   article4_2d_nmr_kerogen_fluid_typing  (#.##s)
+  PASS   article5_ultrasonic_permeability_carbonate  (#.##s)
+  PASS   article6_gr_normalization_haynesville  (#.##s)
+
+  6/6 modules passed

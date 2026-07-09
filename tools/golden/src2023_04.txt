@@ -1,0 +1,166 @@
+
+######################################################################
+# Article 1  — DP Electrofacies Clustering
+######################################################################
+============================================================
+Article 1: DP Electrofacies Clustering
+============================================================
+  Total cost  = 0.0798
+  ARI vs true = 1.000  (1.0 = perfect)
+  Predicted blocks: (array([0, 1, 2]), array([20, 20, 20]))
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2  — Image Rock Classification
+######################################################################
+============================================================
+Article 2: Image-Based Rock Classification
+============================================================
+  Feature matrix: (300, 7)
+  RF  cv-acc=1.000  test=1.000
+  SVM cv-acc=0.978  test=0.992
+  KMeans best-aligned acc = 0.987
+  Class-based perm relative error = 0.609
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3  — Symbolic Regression
+######################################################################
+============================================================
+Article 3: Symbolic Regression for Petrophysical Models
+============================================================
+  Pearson [phi,F]: -0.793  Spearman: -0.998
+  Top features (spearman): ['phi', 'decoy']
+  Best equation: log(((x0 - ((0.701 / sq(x0)) / sq(1.72))) - (0.701 / sq(x0))))
+  Equation size: 15    R^2 (log F) = 0.994
+  Ensemble R^2:  0.902
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4  — ML Methods for Log Prediction
+######################################################################
+============================================================
+Article 4: ML Methods for Log Prediction
+============================================================
+  PAE:  RMSE=2.13  MAE=1.73  r=0.903  PSNR=20.22 dB
+  WAE:  RMSE=2.22  MAE=1.75  r=0.891  PSNR=19.88 dB
+  XGB:  RMSE=2.34  MAE=1.93  r=0.879  PSNR=19.43 dB
+  PAE w/ RHOB missing: RMSE=2.20  r=0.892
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5  — Outlier Detection / Log Editing
+######################################################################
+============================================================
+Article 5: Outlier Detection and Log Editing
+============================================================
+  nu chosen by inflection = 0.110
+  Outliers detected: 44  true: 24
+  Precision=0.52  Recall=0.96
+  Mean inter-well Jaccard = 0.385
+  MDS embedding shape: (8, 2)
+  Reconstruction RMSE (density)=0.114  mean uncertainty=0.036
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6  — Borehole Image Artifact Removal
+######################################################################
+============================================================
+Article 6: Borehole Image Artifact Removal
+============================================================
+  RMSE raw    vs clean = 40.28
+  RMSE traditional      = 33.57
+  RMSE ML cleaner       = 35.77
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 7  — Sonic Log Imputation w/ Uncertainty
+######################################################################
+============================================================
+Article 7: Sonic Log Imputation with Uncertainty
+============================================================
+  Top MI features: ['NPHI', 'GR', 'RHOB', 'logRT']  (MI=[1.46 0.88 0.63 0.36])
+  Ensemble RMSE = 3.20  goodness = 0.399  mean unc = 1.05
+  Best by goodness-aware loss: lr=0.1 ne=200 score=0.601
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 8  — Exemplar-Guided Facies Modeling
+######################################################################
+============================================================
+Article 8: Exemplar-Guided Facies Modeling (simplified)
+============================================================
+  Generated facies map: (64, 64), channel pixels = 2612/4096
+  Wells honoured: pos=1.00  neg=1.00
+  IoU vs exemplar: 0.270
+  Pattern controllability (diff w/ vertical exemplar) = 0.322
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 9  — Spatial Data Analytics
+######################################################################
+============================================================
+Article 9: Spatial Data Analytics
+============================================================
+  Isolation-forest flagged 4 / 80 outliers
+  Trend std on subgrid = 2.29, residual std = 2.33
+  Variogram: nugget=0.00  sill=16.38  range=162.73
+  Kriging RMSE (residual) = 2.017
+  SGS realizations: (3, 10), ensemble std = 2.049
+  Collocated cokriging mean = 1.198
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 10 — ML Induction-Log Deconvolution
+######################################################################
+============================================================
+Article 10: ML-Based Deconvolution of Induction Log
+============================================================
+  Train RMSLE   apparent  = 0.929
+  Train RMSLE   linear    = 0.887
+  Train RMSLE   ML        = 0.123
+  Test  RMSLE   apparent  = 0.804
+  Test  RMSLE   linear    = 0.838
+  Test  RMSLE   ML        = 0.526
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 11 — ML Induction-Log Convolution
+######################################################################
+============================================================
+Article 11: ML-Based Convolution for Forward Induction Modelling
+============================================================
+  Train RMSLE   linear    = 0.6929
+  Train RMSLE   ML        = 0.0329
+  Test  RMSLE   linear    = 0.7359
+  Test  RMSLE   ML        = 0.2890
+  Window-size scan RMSLE: {11: 0.8501247668775572, 31: 0.3774597638539893, 51: 0.371896504699108, 81: 0.38173643497520954}
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article01_electrofacies_dp  (#.##s)
+  PASS   article02_image_rock_classification  (#.##s)
+  PASS   article03_symbolic_regression  (#.##s)
+  PASS   article04_log_prediction_ml  (#.##s)
+  PASS   article05_outlier_detection  (#.##s)
+  PASS   article06_borehole_image_artifacts  (#.##s)
+  PASS   article07_sonic_log_imputation  (#.##s)
+  PASS   article08_egfm_facies  (#.##s)
+  PASS   article09_spatial_analytics  (#.##s)
+  PASS   article10_induction_deconvolution  (#.##s)
+  PASS   article11_induction_convolution  (#.##s)
+
+  11/11 modules passed

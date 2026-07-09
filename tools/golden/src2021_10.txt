@@ -1,0 +1,138 @@
+
+######################################################################
+# Article 1 - Binder Saturation -> Porosity
+######################################################################
+============================================================
+Article 1: Binder Saturation -> Porosity in 3D-Printed Sand
+============================================================
+  saturation @ 4 vol%    = 0.10  (expect 0.10)
+  S=0.10 -> porosity   = 0.360  (expect 0.36)
+  S=0.15 -> porosity   = 0.340  (expect 0.34)
+  S=0.20 -> porosity   = 0.320  (expect 0.32)
+  cylinder volume        = 12.87 cm^3
+  binder fraction        = 0.0370
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Image Processing for Petrophysics
+######################################################################
+============================================================
+Article 2: Image Processing for Petrophysics Education
+============================================================
+  porosity (pixel count) = 0.2701  (expect 0.2701)
+  oil saturation (drain) = 0.668  (expect ~0.668)
+  S_wir                  = 0.332  (expect ~0.332)
+  displacement eff. E_D  = 0.662  (expect ~0.662)
+  equivalent radius      = 5.00  (expect 5.0)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Original-Size Carbonate Pore Replication
+######################################################################
+============================================================
+Article 3: Original-Size Carbonate Pore Replication
+============================================================
+  1:1 model diameters    = [  5.  50. 500.]
+  50-um sphere volume    = 65450 um^3
+  recovered d_eq         = 50.00 um
+  VOI cylinder volume    = 1.571e+09 um^3
+  scaffold speedup       = 4.8x
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - 3D-Printed Mudrock Micromodels
+######################################################################
+============================================================
+Article 4: 3D-Printed Mudrock Micromodels
+============================================================
+  D @ 3 psi              = 71.1 um
+  D @ 33,000 psi         = 6.5 nm
+  cylinder bulk volume   = 12.27 cm^3
+  porosity               = 0.360
+  height loss on firing  = 12%
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Fractal Characterization of Digital Rocks
+######################################################################
+============================================================
+Article 5: Fractal Characterization of Digital Rocks
+============================================================
+  Sierpinski carpet D    = 1.8928  (exact 1.8928)
+  K(phi) over range      = 0.75 .. 489.6 md
+  K(D) over range        = 0.61 .. 340.5 md
+  Archie F / recovered m = 34.60 / 2.000
+  lacunarity (carpet)    = 1.255
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - Pore-Volume Compressibility of Sand
+######################################################################
+============================================================
+Article 6: Pore-Volume Compressibility of Sand Packs
+============================================================
+  Cm (per step)          = [11.   9.1  7.1] microsips
+  Cp (Cm=22, phi=0.31)   = 71.0 microsips
+  Trask So well / poor   = 1.00 / 1.86
+  curve peak near        = 1970 psi (expect ~2000)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 7 - Fluids in Anisotropic 3D-Printed Rock
+######################################################################
+============================================================
+Article 7: Fluids in 3D-Printed Anisotropic Rock Models
+============================================================
+  saturated density      = 1.0304 g/cc
+  G / K                  = 0.387 / 2.644 GPa
+  Poisson / Vp:Vs        = 0.430 / 2.857
+  Thomsen epsilon (air)  = 0.26
+  K_sat air / water      = 2.30 / 4.05 GPa
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 8 - Joint Roughness & Shear (3D-printed)
+######################################################################
+============================================================
+Article 8: Joint Roughness & Shear of 3D-Printed Samples
+============================================================
+  Z2 smooth / rough      = 0.055 / 1.310
+  JRC smooth / rough     = 0.0 / 20.0
+  Barton-Bandis tau      = 0.999 MPa (JRC=11.5, sn=1)
+  Mohr-Coulomb tau       = 0.900 MPa;  k_s = 1.25 MPa/mm
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 9 - Perforation Fracture Morphology (proxy)
+######################################################################
+============================================================
+Article 9: Near-Wellbore Perforation Fracture (proxy)
+============================================================
+  hoop-stress minimum at = 0 deg (expect 0/180)
+  breakdown pressure     = 30 MPa
+  perforation modes      = spiral / directional / fixed-plane OK
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_binder_saturation_porosity  (#.##s)
+  PASS   article2_image_processing_petrophysics  (#.##s)
+  PASS   article3_carbonate_pore_replication  (#.##s)
+  PASS   article4_3dprint_mudrock_micromodel  (#.##s)
+  PASS   article5_fractal_digital_rock  (#.##s)
+  PASS   article6_pore_volume_compressibility  (#.##s)
+  PASS   article7_3dprint_anisotropic_elastic  (#.##s)
+  PASS   article8_joint_roughness_shear  (#.##s)
+  PASS   article9_perforation_fracture_morphology  (#.##s)
+
+  9/9 modules passed

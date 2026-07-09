@@ -1,0 +1,159 @@
+
+######################################################################
+# Article 1 - Data Quality for ML Models
+######################################################################
+============================================================
+Article 1: Data Quality Considerations for ML Models
+============================================================
+  precision (Eq. 5)      = 0.7042
+  recall    (Eq. 6)      = 0.9091
+  z-score / IQR caught planted outlier = True
+  RMSE clean / noisy     = 0.000 / 23.212
+  Pearson(feat, target)  = 0.991
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - VAE Mineral Quantification
+######################################################################
+============================================================
+Article 2: VAE Mineral Quantification From Spectroscopy
+============================================================
+  matrix shape           = (9, 10) (9 elems x 10 mins)
+  forward elements e     = [0.297 0.049 0.06  0.032 0.006 0.018 0.005 0.001 0.028]
+  max element reconstruction error = 0.0001
+  matrix grain density   = 2.793 g/cc
+  cost (sigma matched)   = -25.44
+  cost (sigma too tight) = 1306.37
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - SEAT Dip Eigenvector Analysis
+######################################################################
+============================================================
+Article 3: SEAT Dip Eigenvector Analysis
+============================================================
+  eigenvalues (desc)     = [5.625e-01 4.375e-01 8.029e-34]
+  recovered axis trend   = 270.0 deg  (expect ~90)
+  recovered axis plunge  = 0.0 deg  (expect ~0)
+  Woodcock K / C         = 0.01 / 27.06
+  Vollmer P/G/R          = 0.12/0.88/0.00
+  trend after 25deg tilt = 90.0 deg
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - DL Sedimentary Geometry (borehole image)
+######################################################################
+============================================================
+Article 4: DL Sedimentary Geometry From Borehole Images
+============================================================
+  fitted dip / azimuth   = 30.00 deg / 120.0 deg
+  true   dip / azimuth   = 30.00 deg / 120.0 deg
+  softmax accuracy / CE  = 1.00 / 0.480
+  example bedform label  = 3D_var_T_PS
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Density Breakout Behind Casing
+######################################################################
+============================================================
+Article 5: Density Breakout Behind Casing
+============================================================
+  tuned lambda           = 0.416 1/in  (C = 1.78)
+  rho_CH at nominal      = 2.5500 (expect 2.55)
+  recovered h (nominal)  = 0.875 in (expect 0.875)
+  breakout: rho_CH       = 1.994 g/cc
+  exact h / change       = 1.600 in / +0.725 in
+  Taylor delta_h (Eq. 5) = +0.638 in
+  annulus classes        = gas/water/solids OK
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - NanoTags Cuttings Depth Correlation
+######################################################################
+============================================================
+Article 6: NanoTags for Cuttings Depth Correlation
+============================================================
+  downward lag t_d       = 17.0 min (expect ~17)
+  upward lag 8.375/9.0in = 36.8 / 45.7 min
+  round trip (down+up)   = 53.8 min
+  t_g conventional/tag   = 17.2 / 17.0 min
+  depth error @60 ft/hr  = 2.0 ft for 2-min slip
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 7 - Multistring Isolation (acoustic)
+######################################################################
+============================================================
+Article 7: Multistring Isolation Evaluation (Acoustic)
+============================================================
+  Z steel / cement / brine = 46.3 / 5.4 / 1.5 MRayl
+  R (brine->steel)       = 0.937
+  energy lost thru tubing= 100.0%
+  thickness resonance f1 = 295 kHz
+  isolated footage       = 210 ft  -> qualifies=True
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 8 - Overbalanced-Drilling Correction
+######################################################################
+============================================================
+Article 8: Overbalanced-Drilling Impact & Correction
+============================================================
+  mud / pore pressure    = 444 / 263 bar
+  overbalance dP         = 181 bar (paper ~220)
+  corrected porosity     = 0.18 (undercall 33%)
+  k-phi fit a/b          = 43.4 / -3.20
+  k at 13 p.u.           = 271 md
+  damage flags           = [False, True, True, False]
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 9 - Integrated Tight-Gas Char. (proxy)
+######################################################################
+============================================================
+Article 9: Integrated Tight-Gas Characterization (proxy)
+============================================================
+  Vsh linear / Larionov  = [0.048 0.429 0.905] / [0.023 0.268 0.827]
+  density porosity       = [0.121 0.061 0.018]
+  Sw Archie / Simandoux  = 0.500 / 0.372
+  Winland r35 lo / hi    = 0.154 / 1.624 um
+  FZI                    = [0.285 0.632 1.486]
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 10 - Resistivity Rock-Physics Wolfcamp (proxy)
+######################################################################
+============================================================
+Article 10: Resistivity Rock-Physics in Wolfcamp (proxy)
+============================================================
+  inverted m (core-free) = 1.900 (true 1.9)
+  Sw Archie / new        = 0.357 / 0.312
+  HCPV Archie / new      = 49923 / 53397 bbl/acre
+  improvement            = 7%
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article01_data_quality_ml  (#.##s)
+  PASS   article02_vae_mineral_spectroscopy  (#.##s)
+  PASS   article03_seat_dip_eigenvectors  (#.##s)
+  PASS   article04_borehole_image_cnn_sedimentary  (#.##s)
+  PASS   article05_density_breakout_behind_casing  (#.##s)
+  PASS   article06_nanotags_cuttings_depth  (#.##s)
+  PASS   article07_multistring_isolation_acoustic  (#.##s)
+  PASS   article08_overbalanced_drilling_correction  (#.##s)
+  PASS   article09_tight_gas_neuquen_integrated  (#.##s)
+  PASS   article10_resistivity_rockphysics_wolfcamp  (#.##s)
+
+  10/10 modules passed

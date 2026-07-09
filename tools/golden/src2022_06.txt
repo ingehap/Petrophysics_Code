@@ -1,0 +1,174 @@
+
+######################################################################
+# Article 1  - NMF + Hierarchical Clustering on T1-T2
+######################################################################
+============================================================
+Article 1: NMF + Hierarchical Clustering on NMR T1-T2 Maps
+============================================================
+  NMF V shape = (1024, 30)   W = (1024, 4)   H = (4, 30)
+  NMF end-member peaks (T1, T2)  ms:
+    em 0:  T1 =  206.93   T2 =  206.93   T1/T2 =  1.00   mobile_water
+    em 1:  T1 =  278.52   T2 =   63.05   T1/T2 =  4.42   mobile_HC
+    em 2:  T1 =    4.35   T2 =    1.33   T1/T2 =  3.28   immobile_water
+    em 3:  T1 =   34.80   T2 =    7.88   T1/T2 =  4.42   immobile_HC
+  Wettability index (Eq. 8) = -0.558
+  Body-to-throat ratio      = 6.76
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2  - Fuzzy + GA + kNN NMR-WD
+######################################################################
+============================================================
+Article 2: Fuzzy + GA + kNN NMR-WD Fluid Typing
+============================================================
+  Water T2_eff at TE=1.2 ms =    0.12 ms
+  Water T2_eff at TE=4.8 ms =    0.01 ms (should be << short)
+  Fuzzy (gas, oil, water) for gas-like sample = (1.00, 0.00, 0.00)
+  GA  3-coef polynomial    test RMSE = 0.126
+  k-NN (k=7)               test RMSE = 0.073
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3  - NMR Logging Data Processing
+######################################################################
+============================================================
+Article 3: NMR Logging Data Processing Toolbox
+============================================================
+  1-D T2 inversion  relative L2 error  = 0.559
+  Bound-fluid fraction  true = 0.607,  recovered = 0.640
+  Timur-Coates K        =     0.01 mD
+  SDR          K        =     0.58 mD  (T2_lm =  8.91 ms)
+  ML log-linear K       RMSLE = 0.000
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4  - BSS-ICA + D-T2 Invasion
+######################################################################
+============================================================
+Article 4: BSS-ICA + D-T2 for Near-Wellbore NMR Analysis
+============================================================
+  T1 (bulk=2000 ms, surf=50 ms) =  48.78 ms
+  T2 (bulk=1500 ms, diff=60 ms, surf=20 ms) =  14.85 ms
+  Porosity undercall d_phi (Eq. 3)         = 0.040 v/v
+  Permeability ratio index KRI (Eq. 5)     = 0.035
+  ICA best-source corrs (3 ICs)            = [np.float64(1.0), np.float64(0.993), np.float64(0.993)]
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5  - NPPM Pore-Size + Kozeny-Carman
+######################################################################
+============================================================
+Article 5: NPPM Gaussian Mixture - Pore Size & Permeability
+============================================================
+  T2_total (multiphase wetted fractions) = 0.525 ms
+  Fitted 4 2-D Gaussian components.  Peak centres (log10 T1, log10 T2):
+    em 0:  ( 1.02,  0.51)   amp=0.412
+    em 1:  ( 1.81,  1.28)   amp=0.271
+    em 2:  ( 2.64,  0.98)   amp=0.187
+    em 3:  ( 2.41,  2.31)   amp=0.149
+  Matched 4 / 4 planted clusters
+  Kozeny-Carman k (with Herron factor) =  0.024 mD
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6  - DDTW NMR + Mud-Gas Integration
+######################################################################
+============================================================
+Article 6: DDTW NMR + Mud-Gas Integrated Porosity
+============================================================
+  Variable matrix density = 2.605 g/cc
+  Gas-zone synthetic   rho_b = 2.137, phi_NMR_app = 0.137
+  DDTW solution        phi = 0.220   Sg = 0.650
+  Truth                phi = 0.220   Sg = 0.650
+  Mud-gas HI            = 0.399
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 7  - Slimhole LWD NMR + Factor Analysis
+######################################################################
+============================================================
+Article 7: Slimhole LWD NMR + Factor Analysis (proxy)
+============================================================
+  Cumulative explained variance (top 3 factors) = [np.float64(0.185), np.float64(0.348), np.float64(0.47)]
+  Per-factor max correlation with truth   = [np.float64(0.987), np.float64(0.988), np.float64(0.972)]
+  Mean LWD-wireline diff inside invaded zone (depth 60-80): 0.012
+  Mean LWD-wireline diff outside invaded zone:                0.000
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 8  - 27Al MAS NMR Mineral Identification
+######################################################################
+============================================================
+Article 8: 27Al MAS NMR Mineral Characterisation (proxy)
+============================================================
+  Top-5 identified minerals (score):
+    kaolinite      17.94
+    smectite       15.09
+    muscovite      12.56
+    K_feldspar     12.49
+    corundum        9.10
+  Detected   = ['kaolinite', 'smectite', 'muscovite', 'K_feldspar', 'corundum']
+  Planted    = ['kaolinite', 'K_feldspar', 'corundum']
+  Matched 3 / 3 planted minerals
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 9  - T2-Imbibition Wettability Index
+######################################################################
+============================================================
+Article 9: T2-Imbibition NMR Wettability Index (proxy)
+============================================================
+  Water-wet rock:  A_w =  5.91   A_o =  1.48   WI = +0.600
+  Oil-wet rock:    A_w =  1.48   A_o =  6.28   WI = -0.619
+  D2O - H2O long-T2 isolated water signal = 5.910
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 10 - PCR Permeability from NMR + MICP
+######################################################################
+============================================================
+Article 10: PCR Permeability from NMR + MICP (proxy)
+============================================================
+  PCR (6 PCs)        RMSE log10 k = 0.417
+  Timur-Coates       RMSE log10 k = 0.485
+  SDR                RMSE log10 k = 0.646
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 11 - NMR Core Analysis Review (VST / SPRITE)
+######################################################################
+============================================================
+Article 11: NMR Core Analysis Review (concept proxies)
+============================================================
+  VST decay  initial = 0.994,  final = 0.002
+  Slice-selective signal  in-slab = 18.425,  off-slab = 0.567
+  SPRITE image peak at z = -0.003 m  (true 0.010)
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_nmf_clustering_t1t2  (#.##s)
+  PASS   article2_fuzzy_genetic_nmr  (#.##s)
+  PASS   article3_nmr_processing_toolbox  (#.##s)
+  PASS   article4_bssica_dt2_invasion  (#.##s)
+  PASS   article5_nppm_pore_size_perm  (#.##s)
+  PASS   article6_ddtw_mudgas_integration  (#.##s)
+  PASS   article7_slimhole_lwd_factor  (#.##s)
+  PASS   article8_highfield_al_nmr  (#.##s)
+  PASS   article9_t2_imbibition_wettability  (#.##s)
+  PASS   article10_pcr_nmr_micp_perm  (#.##s)
+  PASS   article11_core_nmr_review  (#.##s)
+
+  11/11 modules passed

@@ -29,6 +29,9 @@ track-length / FSF perturbation forms anchored to those definitions.
 
 import numpy as np
 
+# np.trapz was renamed to np.trapezoid in NumPy 2.0; support both.
+_trapezoid = getattr(np, "trapezoid", getattr(np, "trapz", None))
+
 
 # ---------------------------------------------- track-length flux -------
 
@@ -57,7 +60,7 @@ def mc_track_length_flux(n_particles, mfp, cell_length, area, seed=0):
 
 def reaction_rate(flux_E, sigma_E, energies, c=1.0):
     """Detector reaction rate  N = c * integral(phi(E)*sigma(E) dE)  (Eq. 4)."""
-    return c * float(np.trapz(np.asarray(flux_E, float) * np.asarray(sigma_E, float),
+    return c * float(_trapezoid(np.asarray(flux_E, float) * np.asarray(sigma_E, float),
                               np.asarray(energies, float)))
 
 

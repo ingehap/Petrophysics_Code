@@ -1,0 +1,170 @@
+
+========================================================================
+ARTICLE 1: Drill-Cuttings-Based Image & Elemental Analysis With AI
+  Kriscautzky et al. — DOI: 10.30632/PJV67N1-2026a1
+========================================================================
+  ✓ Ba contamination: clean
+  ✓ Ba contamination: acceptable
+  ✓ Ba contamination: contaminated
+  ✓ Si/Ca ratio > 1 (siliciclastic-dominant)
+  ✓ All ratios computed
+  ✓ Image features shape (8,)
+  ✓ Tuffaceous peaks detected at high-UV points
+  ✓ Lithotype labels shape matches samples
+  ✓ Multiple clusters assigned
+
+========================================================================
+ARTICLE 2: Real-Time CO2 Injection Monitoring Through Fiber Optics
+  Pirrone & Mantegazza — DOI: 10.30632/PJV67N1-2026a2
+========================================================================
+  ✓ Geothermal gradient applied
+  ✓ Surface temp correct
+  ✓ Injection cools near surface
+  ✓ Temperature profile physical
+  ✓ Brine heat capacity ~4 MJ/K/m³
+  ✓ CO2 heat capacity < brine (liquid phase)
+  ✓ Fluid mapping output shape correct
+  ✓ Physical constraints: values in {-1, 0, 1}
+  ✓ Contact tracking produces results
+
+========================================================================
+ARTICLE 3: Discrete Inversion Method for NMR Data Processing
+  Gao et al. — DOI: 10.30632/PJV67N1-2026a3
+========================================================================
+  ✓ T2 basis log-spaced
+  ✓ CPMG signal decays
+  ✓ Kernel matrix shape
+  ✓ Tikhonov inversion non-negative
+  ✓ Tikhonov detects signal
+  ✓ L1 inversion produces non-negative result
+  ✓ Discrete inversion finds 3 components
+  ✓ Discrete amplitudes positive
+  ✓ Fluid partition keys present
+  ✓ Total porosity > 0
+  ✓ BRD regularization factor positive
+
+========================================================================
+ARTICLE 4: Dynamic Depth Alignment of Well Logs
+  Westeng et al. — DOI: 10.30632/PJV67N1-2026a4
+========================================================================
+  ✓ Bulk shift detects ~2 m offset
+  ✓ Correlation improved after alignment
+  ✓ Shift function has correct length
+  ✓ Gardner transform produces reasonable densities
+
+========================================================================
+ARTICLE 5: Beyond Gas Bubbles — Integrated Fluid Identification
+  Bravo et al. — DOI: 10.30632/PJV67N1-2026a5
+========================================================================
+  ✓ Dry gas wetness < 0.05
+  ✓ Oil wetness > 0.20
+  ✓ Dry gas classified correctly
+  ✓ Oil classified correctly
+  ✓ Gas flag when NPHI < DPHI
+  ✓ GOR is finite and positive
+
+========================================================================
+ARTICLE 6: Multiphysics Inversion for Turbidite Characterization
+  Datir et al. — DOI: 10.30632/PJV67N1-2026a6
+========================================================================
+  ✓ Archie Sw in [0,1]
+  ✓ Density porosity ~0.21
+  ✓ LSA sand Sw < total Sw
+  ✓ Net sand fraction reasonable
+  ✓ MPI returns porosity
+  ✓ MPI returns Sw
+  ✓ MPI m in reasonable range
+
+========================================================================
+ARTICLE 7: NMR Characterization of Secondary Organic Matter
+  Al Mershed et al. — DOI: 10.30632/PJV67N1-2026a7
+========================================================================
+  ✓ Deficit porosity = 0.06
+  ✓ 3 Gaussian components found
+  ✓ Components have positive amplitudes
+  ✓ T2 increases with temperature
+  ✓ Bitumen volume positive
+  ✓ Pyrobitumen fraction in [0,1]
+  ✓ Bitumen reduces permeability
+
+========================================================================
+ARTICLE 8: Effect of CO2 Sequestration on Carbonate Integrity
+  Al-Hamad et al. — DOI: 10.30632/PJV67N1-2026a8
+========================================================================
+  ✓ CO2 solubility positive at reservoir conditions
+  ✓ pH is acidic (< 7)
+  ✓ pH is reasonable (> 3)
+  ✓ Static aging: minimal porosity change
+  ✓ Dynamic aging > static aging
+  ✓ Shear modulus in GPa range
+  ✓ Dolomite-rich sample integrity favorable
+  ✓ Stiffness maintained for dolomite
+
+========================================================================
+ARTICLE 9: Tortuosity Assessment for Permeability Quantification
+  Arrieta et al. — DOI: 10.30632/PJV67N1-2026a9
+========================================================================
+  ✓ Kozeny-Carman permeability positive
+  ✓ Constriction factor > 1 (throats smaller than bodies)
+  ✓ Electrical tortuosity >= 1
+  ✓ Garcia model permeability positive
+  ✓ Hydraulic tortuosity > electrical (microporosity)
+  ✓ Workflow returns electric permeability
+  ✓ Workflow returns hydraulic permeability
+
+========================================================================
+ARTICLE 10: A Novel Type Curve for Sandstone Rock Typing
+  Musu et al. — DOI: 10.30632/PJV67N1-2026a10
+========================================================================
+  ✓ Pore geometry all positive
+  ✓ Pore structure all positive
+  ✓ PGS fitting returns groups
+  ✓ Exponent b is physical (positive)
+  ✓ FZI all positive
+  ✓ Convergence point found
+  ✓ Capillary pressure decreases with Sw
+
+========================================================================
+ARTICLE 11: Robust Joint UDAR/DAR Inversion
+  Wu et al. — DOI: 10.30632/PJV67N1-2026a11
+========================================================================
+  ✓ Forward model returns 5 spacings
+  ✓ All responses positive
+  ✓ Inversion returns resistivities
+  ✓ Inversion cost decreased
+
+========================================================================
+ARTICLE 12: Multidimensional UDAR Inversion
+  Saputra et al. — DOI: 10.30632/PJV67N1-2026a12
+========================================================================
+  ✓ Occam inversion converges (misfit decreases)
+  ✓ Occam model has correct length
+
+========================================================================
+ARTICLE 13: Sand Injectite Geobody Mapping
+  Ahmad et al. — DOI: 10.30632/PJV67N1-2026a13
+========================================================================
+  ✓ Geobody volume positive
+  ✓ Low dip classified as sill
+
+========================================================================
+ARTICLE 14: Active Resistivity Ranging in Near-Parallel Wells
+  Salim et al. — DOI: 10.30632/PJV67N1-2026a14
+========================================================================
+  ✓ Ranging distance is positive
+  ✓ Ranging distance is finite
+  ✓ Azimuth in [0, 360)
+
+========================================================================
+ARTICLE 15: UDAR Look-Ahead Fault Detection
+  Ma et al. — DOI: 10.30632/PJV67N1-2026a15
+========================================================================
+  ✓ Look-ahead returns resistivity array
+  ✓ Distances ahead are positive
+  ✓ Fault detection returns bool
+
+========================================================================
+RESULTS: 89 passed, 0 failed out of 89 tests
+========================================================================
+
+All tests passed!

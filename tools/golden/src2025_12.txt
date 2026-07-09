@@ -1,0 +1,19 @@
+===================================================================
+                  petrophysics_v66n6  —  test_all                 
+===================================================================
+  01 pgs_rock_typing   (Akbar et al.)                       PASS ✓
+  02 dl_permeability   (Youssef et al.)                     PASS ✓
+  03 primary_drainage  (Fernandes et al.)                   PASS ✓
+  04 analog_kr         (Schembre-McCabe et al.)             PASS ✓
+  05 co2_uptake        (Chen et al.)                        PASS ✓
+  06 drp_wettability   (Faisal et al.)                      PASS ✓
+  07 electrokinetic    (Halisch et al.)                     PASS ✓
+  08 dopant_wettability(Nono et al.)                        PASS ✓
+  09 low_salinity_ior  (Karoussi et al.)                    PASS ✓
+  10 nanopore_adsorption(Nguyen et al.)                     PASS ✓
+  11 carbon13_mr       (Ansaribaranghar et al.)             PASS ✓
+  12 kerogen_mr        (Zamiri et al. 2025a)                PASS ✓
+  13 mri_rel_perm      (Zamiri et al. 2025b)                PASS ✓
+-------------------------------------------------------------------
+  13/13 modules passed  —  ALL OK
+===================================================================

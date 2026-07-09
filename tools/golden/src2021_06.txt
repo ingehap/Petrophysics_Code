@@ -1,0 +1,91 @@
+
+######################################################################
+# Article 1 - Tutorial: A Century of Sidewall Coring
+######################################################################
+============================================================
+Article 1: Tutorial - A Century of Sidewall Coring
+============================================================
+  MaxCOR plug volume     = 4.4179 in^3  (expect 4.4179)
+  XL-Rock plug volume    = 6.185 in^3  (expect 6.185)
+  MSCT plug volume       = 1.3295 in^3  (expect 1.3296)
+  MaxCOR per-run (60)    = 265.1 in^3
+  tools >= 30k psi/400F/1.5in = ['Xaminer Core', 'Xaminer Dual-Coring', 'XL-Rock']
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Pore Size/Tortuosity/Perm From NMR
+######################################################################
+============================================================
+Article 2: Pore Size / Tortuosity / Permeability From NMR
+============================================================
+  D/D0 at large L_D      = 0.5000  (expect 1/tau = 0.5)
+  D/D0 curve             = [0.818 0.704 0.629 0.597 0.564 0.54  0.524 0.514]
+  recovered d / tau      = 4.94 / 1.99 (true 5.0 / 2.0)
+  k Carman-Kozeny        = 1.302e-10 (cm^2 units)
+  k Timur-Coates / SDR   = 0.0018 / 0.7290
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Real-Time Acoustic Velocity (AI)
+######################################################################
+============================================================
+Article 3: Real-Time Acoustic-Velocity Prediction (AI)
+============================================================
+  Spearman monotonic     = 1.000
+  AAPE example           = 10.00%  (expect 10.0)
+  Pickett ls Vs(5.9)     = 3.105 km/s
+  Carroll Vs(5.9)        = 3.232 km/s
+  surrogate Vp AAPE / R  = 0.57% / 0.994
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - ML-Enabled Sonic Shear Processing
+######################################################################
+============================================================
+Article 4: Machine-Learning Sonic Shear Processing
+============================================================
+  C55 / C33              = 1.456e+10 / 3.728e+10 Pa
+  Poisson ratio          = 0.1795  (standard 0.1795)
+  RMAD (260 vs 262 us/ft) = 0.0077
+  inverted DTS           = 260.67 us/ft  (true 260.0)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - LWD Co-Located Antenna Anisotropy
+######################################################################
+============================================================
+Article 5: LWD Co-Located Antenna Anisotropy / Dip
+============================================================
+  45deg coil moment      = [0.707 0.    0.707]
+  phase / attenuation    = 31.1 deg / 4.71 dB
+  recovered resistivity  = 10.000 ohm-m  (true 10.0)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - Geosteering & 2D Structural Analysis
+######################################################################
+============================================================
+Article 6: Proactive Geosteering & 2D Structural Analysis
+============================================================
+  TVD over 300 ft @88deg = 10.47 ft
+  fitted fault dip/azim  = 44.0 / 203.0 (true 44.0/23.0)
+  net pay                = 85.0%
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_sidewall_coring_tutorial  (#.##s)
+  PASS   article2_nmr_restricted_diffusion  (#.##s)
+  PASS   article3_ai_acoustic_velocity  (#.##s)
+  PASS   article4_ml_sonic_shear  (#.##s)
+  PASS   article5_lwd_colocated_antenna  (#.##s)
+  PASS   article6_geosteering_2d_structural  (#.##s)
+
+  6/6 modules passed

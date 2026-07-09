@@ -1,0 +1,86 @@
+
+######################################################################
+# Article 1 - Gas Condensate PVT from FPG
+######################################################################
+============================================================
+Article 1: Gas-Condensate PVT From Fluid Pressure Gradient
+============================================================
+  Shearwater  rho   = 0.464 g/cm^3, P = 15400 psi, T = 360 F
+     measured CGR = 144.7 STB/MMscf
+     predicted CGR (Eq. 3) = 145.8 STB/MMscf
+     viscosity from rho        = 0.101 cP
+     viscosity from X_CH4=0.78 = 0.088 cP
+     V_p (Eq. 7, MW=28.0) = 848 m/s
+     K_ad (Eq. 1)         = 0.334 GPa
+     Multivariate rho (Eq. 8) = 0.468 g/cm^3
+     Multivariate V_p (Eq. 9) = 1212 m/s
+     CGR relative error      =  0.7 %
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - DL 2.5D LWD Resistivity Inversion
+######################################################################
+============================================================
+Article 2: Deep-Learning 2.5-D LWD Resistivity Inversion
+============================================================
+  Dataset: 3600 samples, 3 classes, 40 features
+  Classifier  held-out accuracy = 1.000  (paper reports ~ 0.98-0.99)
+  Joint loss (Eq. 2) on a 5 % parameter error = 15.674
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Electric Dipole Bed-Detection
+######################################################################
+============================================================
+Article 3: Electric-Dipole Bed-Detection Sensitivity
+============================================================
+  E(L/D=1, 0.5, 0.25) = 1.0000, 0.1250, 0.0156
+  H(L/D=1, 0.5, 0.25) = 1.0000, 0.2500, 0.0625
+  Detection range, E-field  (1 % cutoff) =  46.4 m
+  Detection range, H_t      (1 % cutoff) = 100.0 m
+  Range gain H_t / E-field               = 2.15x
+  Reflectivity at host->bed: R_0 = +0.9998
+  Reflectivity at bed->host: R_1 = -0.9998
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - Bayesian DB Log Interpretation
+######################################################################
+============================================================
+Article 4: Database-Driven Bayesian Log Interpretation
+============================================================
+  Database size: 20000 realisations x 7 props and 6 tool responses
+  Posterior phi  = 0.171  +/- 0.005   (true 0.18)
+  Posterior Sw   = 0.296  +/- 0.019   (true 0.3)
+  Posterior Vsh  = 0.059  +/- 0.008   (true 0.05)
+  Posterior calc = 0.744  +/- 0.050   (true 0.75)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - CPA + FCM Log-Facies Analysis
+######################################################################
+============================================================
+Article 5: CPA + Fuzzy-C-Means Log-Facies Analysis
+============================================================
+  True breakpoints   [np.int64(305), np.int64(370), np.int64(480)]
+  Picked breakpoints [304, 309, 335, 370, 479]
+  Hits (within +/- 5 samples) = 3 / 3
+  Jump-magnitude theta values  = [np.float64(38.3), np.float64(0.39), np.float64(0.16), np.float64(10.73), np.float64(8.32)]
+  FCM converged in 11 iters; objective dropped by 91.8 %
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_gas_condensate_fpg  (#.##s)
+  PASS   article2_lwd_dl_inversion  (#.##s)
+  PASS   article3_electric_dipole_sensitivity  (#.##s)
+  PASS   article4_bayesian_log_db  (#.##s)
+  PASS   article5_cpa_fcm_logfacies  (#.##s)
+
+  5/5 modules passed

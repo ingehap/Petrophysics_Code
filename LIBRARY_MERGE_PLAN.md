@@ -1,9 +1,9 @@
 # Merging Petrophysics_Code into one common Python library
 
-**A detailed migration plan for extracting a shared `petrolib` package from the 76 issue
+**A detailed migration plan for extracting a shared `petrolib` package from the 75 issue
 directories, so every article script imports common code instead of re-implementing it.**
 
-This plan is based on a full inventory of the repository (all 76 `srcYYYY_MM` directories,
+This plan is based on a full inventory of the repository (all 75 `srcYYYY_MM` directories,
 580 article modules, ~106,500 lines of Python), a cross-cutting duplication analysis of 15
 petrophysics domains that mapped **190 duplicated function families** (~1,550 separate
 implementations of shared concepts), and an evaluation of three competing migration
@@ -27,7 +27,7 @@ ordered by duplication weight, piloted on pure-math code first), each gated by f
 regression checks that make it impossible for a swap to silently change numerics:
 
 1. every issue directory's own test runner stays green,
-2. a golden-stdout diff over all 76 directories,
+2. a golden-stdout diff over all 75 directories,
 3. a shadow equivalence check (`old body == new call` to `rtol=1e-12`) before any local
    body is deleted,
 4. `petrolib`'s own unit + property tests, seeded from the articles' assert constants.
@@ -46,10 +46,10 @@ the repository fully working.
 
 | Fact | Value |
 |---|---|
-| Issue directories | 76 (`src2014_02` … `src2026_06`, one per bimonthly SPWLA *Petrophysics* issue) |
+| Issue directories | 75 (`src2014_02` … `src2026_06`, one per bimonthly SPWLA *Petrophysics* issue) |
 | Article modules | 580 (`.py` files excluding test runners and `__init__.py`) |
 | Total Python | 660 files, ~106,500 lines |
-| Self-test functions | 513 modules define `test_all()` with synthetic data + assertions |
+| Self-test functions | 501 article modules define a module-level `test_all()` (513 files counting runners); the seven package-era dirs test centrally in their runner |
 | Packaging / CI | none — no `pyproject.toml`, no `setup.py`, no CI workflows |
 | Dependencies | numpy everywhere; scipy in 21 dirs; scikit-learn in 7; torch in 3 (`src2023_12`, `src2024_04`, `src2025_12`); xgboost + scikit-image in 1 (`src2023_04`) |
 
@@ -61,9 +61,12 @@ Three generations of conventions coexist:
   inside the directory).
 - **5 package directories** (`src2024_10`, `src2025_12`, `src2026_02`, `src2026_04`,
   `src2026_06`): real packages with `__init__.py` and short snake_case module names.
-  `src2026_02` even names itself `petrophysics_2026` and its test file does
-  `from petrophysics_2026.udar_methods import ...` — the repo's only cross-module import
-  convention. It also contains a dead `sys.path.insert(0, "/home/claude")`.
+  three of them import themselves under a public package name that does not exist in a
+  bare checkout — `src2025_12` as `petrophysics_v66n6`, `src2026_02` as
+  `petrophysics_2026` (whose test file also carried a dead
+  `sys.path.insert(0, "/home/claude")`), and `src2026_04` as
+  `petrophysics_spwla_2026` — so their test suites only ran in the original author's
+  environment until the Phase 0 alias repairs.
 - **6 nonstandard test runners**: `run_all_tests.py` (`src2023_08`, `src2023_10`,
   `src2024_02`, `src2025_06`), `run_all.py` (`src2023_12`), `test_all_modules.py`
   (`src2024_12`). Everything else uses `test_all.py`.
@@ -130,7 +133,8 @@ where a naive "merge by name" would silently change published numbers.
   works with nothing but numpy installed. That property must survive.
 - *Single maintainer*: every PR must be honestly reviewable by one person; the migration
   must be able to stall at any point and leave a healthy repo.
-- *The 513 `test_all()` functions are the regression oracle*. They are never rewritten,
+- *The 501 module-level `test_all()` functions (plus the runner-level suites of the seven
+  package-era dirs) are the regression oracle*. They are never rewritten,
   loosened, or deleted — they gate their own migration.
 
 **Non-goals (for this migration)**
@@ -172,13 +176,13 @@ Petrophysics_Code/
 │   ├── depth_imaging.py            # xcorr_shift(edge="trim"), dtw, sinusoid dip picks, otsu, min-curvature
 │   ├── integrity_drilling.py       # bond_index(method=, input_kind=), impedance classify, casing tools
 │   └── data_qc_io.py               # outliers, despiking, sentinel/NaN handling, synthetic log/image/T2 generators
-├── src2014_02/ … src2026_06/   # ALL 76 dirs stay exactly where they are; filenames unchanged;
+├── src2014_02/ … src2026_06/   # ALL 75 dirs stay exactly where they are; filenames unchanged;
 │   └── test_all.py             #   runners untouched; duplicated bodies become 2-line delegations
 ├── tests/                      # pytest suite for petrolib
 │   ├── petrolib/               # per-domain unit tests + hazard-trap tests + property tests
-│   └── test_articles.py        # subprocess harness: runs each dir's runner with cwd=dir, 76 params
+│   └── test_articles.py        # subprocess harness: runs each dir's runner with cwd=dir, 75 params
 └── tools/
-    ├── run_all_issues.py       # drives all 76 runners (knows the 6 nonstandard runner names)
+    ├── run_all_issues.py       # drives all 75 runners (knows the 6 nonstandard runner names)
     ├── golden_capture.py       # normalized stdout snapshots per directory
     ├── golden_diff.py
     └── shadow_check.py         # old-body vs petrolib-call equivalence to rtol=1e-12
@@ -298,21 +302,27 @@ by publication year) so a reviewer holds one physics context per PR.
 
 - `tools/run_all_issues.py`: subprocess-runs every directory's runner with `cwd=dir`;
   a `RUNNERS` map covers the six nonstandard names (`run_all_tests.py` ×4, `run_all.py`,
-  `test_all_modules.py`). Asserts exit 0 per dir; asserts **exactly 513 `test_all()`
+  `test_all_modules.py`). Asserts a per-dir pass verdict; asserts **exactly 501 module-level `test_all()`
   functions are discovered** repo-wide so coverage loss is loud.
 - `tools/golden_capture.py` / `golden_diff.py`: record normalized stdout (timings
   stripped) per directory into `tools/golden/`. This freezes even *printed-but-unasserted*
   values, which the `test_all` tolerances (typically 1e-6..1e-3) would let drift.
 - `tests/test_articles.py`: the same harness as parametrized pytest.
-- The **only** pre-existing repair allowed now: replace `src2026_02/test_all.py`'s dead
-  `sys.path.insert(0, "/home/claude")` with a `__file__`-relative insert, so the harness
-  runs it uniformly.
+- The **only** pre-existing repairs allowed now are the ones needed to get a green
+  baseline, each behavior-preserving and clearly separated. Phase 0 execution found two
+  kinds: (a) the three self-renaming package dirs (`src2025_12`, `src2026_02`,
+  `src2026_04`) import themselves under public names that don't resolve in a bare
+  checkout — repaired with a `__file__`-relative `sys.modules` alias in each `test_all.py`
+  (replacing `src2026_02`'s dead `sys.path.insert(0, "/home/claude")`); (b) three modules
+  called `np.trapz` directly, which NumPy 2.x removed — repaired with the
+  `_trapezoid = getattr(np, "trapezoid", getattr(np, "trapz", None))` shim already used
+  elsewhere in the repo.
 
 ### Phase 1 — Packaging skeleton (1–2 PRs, nothing imports petrolib yet)
 
 - `pyproject.toml` (§10), `petrolib/{__init__,constants,units,_compat,testing}.py`,
   `CONVENTIONS.md`.
-- CI (GitHub Actions): lint + petrolib unit tests on every PR; the full 76-dir article
+- CI (GitHub Actions): lint + petrolib unit tests on every PR; the full 75-dir article
   suite + golden diff in **both** modes (bare checkout and `pip install -e .`), running
   nightly, on a `run-articles` label, and automatically when a diff touches `src20*`.
 - ruff scoped to `petrolib/`, `tests/`, `tools/` only (`extend-exclude = ["src20*"]`).
@@ -387,7 +397,7 @@ psi/ft-gradient × meters mismatch, and any others the shadow checks surface.
 
 | Gate | What it catches | When it runs |
 |---|---|---|
-| Per-dir runners (all 76, subprocess, `cwd=dir`) | Broken imports, changed asserts — the articles' own tolerances are the final arbiter and are **never loosened**; a failing assert means the facade's defaults are wrong, not the test | every adoption PR + nightly |
+| Per-dir runners (all 75, subprocess, `cwd=dir`) | Broken imports, changed asserts — the articles' own tolerances are the final arbiter and are **never loosened**; a failing assert means the facade's defaults are wrong, not the test | every adoption PR + nightly |
 | Golden stdout diff (normalized) | Drift in printed-but-unasserted values that 1e-3 asserts would miss | every adoption PR + nightly |
 | Shadow equivalence (`tools/shadow_check.py`) | Any numeric difference between the old local body and the new delegation: asserts equality at `rtol=1e-12, atol=0` on the article's own synthetic inputs plus random draws in physical ranges; the old body is kept in the PR's test file until merge; documented fallback `rtol=1e-9` only for float-reassociation from vectorization; where algebra intentionally differs, the facade selects the variant reproducing the old number — still 1e-12 | inside each adoption PR |
 | petrolib unit + property tests | Library-level correctness independent of facades: golden values seeded from article assert constants; round-trip identities (`archie_sw∘archie_rt`, `washburn∘young_laplace`, `psi_to_bar∘bar_to_psi`); hazard-trap fixtures that pin **both** the canonical output *and* the facade output (so facade drift is caught too), e.g. `klinkenberg_apparent(k,b,p) != klinkenberg_corrected(k,b,p)` | every PR (fast lane) |
@@ -476,7 +486,7 @@ scipy = ["scipy>=1.10"]
 ml = ["scikit-learn>=1.2", "xgboost>=1.7"]
 torch = ["torch"]
 image = ["scikit-image>=0.21"]
-articles = ["spwla-petrolib[scipy,ml,torch,image]"]   # everything the 76 dirs need
+articles = ["spwla-petrolib[scipy,ml,torch,image]"]   # everything the 75 dirs need
 dev = ["pytest", "pytest-xdist", "ruff", "mypy"]
 
 [tool.hatch.build.targets.wheel]
@@ -532,8 +542,8 @@ it.
 ## 13. Immediate next steps
 
 1. Merge this plan document (this PR).
-2. Phase 0, PR 1: `tools/run_all_issues.py` + `tests/test_articles.py` (the 76-dir
-   harness with the `RUNNERS` map) — confirm all 76 directories pass today.
+2. Phase 0, PR 1: `tools/run_all_issues.py` + `tests/test_articles.py` (the 75-dir
+   harness with the `RUNNERS` map) — confirm all 75 directories pass today.
 3. Phase 0, PR 2: golden capture + diff; commit `tools/golden/`.
 4. Phase 1: `pyproject.toml` + `petrolib` skeleton + `CONVENTIONS.md` + CI.
 5. Pilot train on `ml_stats` (+ metrics/scaling): PR-A then two adoption chunks; hold a

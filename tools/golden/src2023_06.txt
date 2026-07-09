@@ -1,0 +1,114 @@
+======================================================================
+Petrophysics Vol. 64 No. 3 (June 2023) - run all module tests
+======================================================================
+
+>>> article1_hdt: Hybrid Drainage Technique - Fernandes et al.
+----------------------------------------------------------------------
+[article1] testing centrifuge_pc ...
+[article1] simulating Bentheimer HDT (Swi target 22%) ...
+           Phase 1: mean=0.286  std=0.154  max-min=0.644
+           Phase 2: mean=0.220  std=0.000  max-min=0.001
+[article1] OK
+
+>>> article2_wiri: WiRI vs UFPCRI vs PP - Danielczick et al.
+----------------------------------------------------------------------
+[article2] testing forward Archie law ...
+           noise-free recovery of n=2  OK
+[article2] running Monte-Carlo with 5 s.u. saturation error ...
+           PP       mean(n) = 1.906  std = 0.275  5-95%% = [1.44, 2.34]
+           UFPCRI   mean(n) = 1.906  std = 0.275  5-95%% = [1.44, 2.34]
+           WiRI     mean(n) = 1.951  std = 0.191  5-95%% = [1.63, 2.24]
+[article2] running Monte-Carlo with 5%% resistivity error ...
+           WiRI under resistivity noise -> mean(n)=1.999
+[article2] OK
+
+>>> article3_overburden_frf_ri: FRF / RI at overburden - Nourani et al.
+----------------------------------------------------------------------
+[article3] generating synthetic FRF(P) data with RRM=-2e-9 1/Pa
+           true RRM   = -2.000e-09
+           fitted RRM = -1.875e-09
+[article3] testing forward FRF prediction ...
+[article3] testing Single-FRF compressibility formula ...
+           Single-FRF RRM = -2.535e-09  (m=1.95, Cp=1.5e-09, Cb=2.0e-10)
+[article3] testing RI overburden prediction ...
+[article3] OK
+
+>>> article4_gas_trapping: Gas trapping in sandstone - Gao et al.
+----------------------------------------------------------------------
+[article4] testing Land trapping model ...
+           Sgi=[0.2 0.4 0.6 0.7], Sgr=[0.156 0.255 0.323 0.35 ]
+[article4] testing dissolution / ripening kinetics ...
+           t=0  Sgr=0.300,  t->inf Sgr -> 0.052
+[article4] testing 3-class micro-CT segmentation ...
+           segmented fractions: gas=0.33  brine=0.33  grain=0.33
+           gas saturation Sg = 0.50
+[article4] OK
+
+>>> article5_shale_t1t2star: Shale T1-T2* MR - Zamiri et al.
+----------------------------------------------------------------------
+[article5] testing T2* from T2 + dB0 + dchi*B0 ...
+[article5] testing Look-Locker T1* ...
+           T1=#.##s  alpha=10deg  tau=5ms  -> T1*=#.##s
+[article5] inverting a synthetic 2-D T1-T2* dataset ...
+           true amplitudes      = [1.  0.6 0.4]
+           recovered amplitudes = [1.  0.6 0.4]
+[article5] OK
+
+>>> article6_ultrasonic_reflection: Angle-dependent ultrasonic reflection - Olszowska et al.
+----------------------------------------------------------------------
+[article6] computing reference R(theta) for Berea-like sample ...
+           R(0deg) = 0.678  (normal incidence)
+           critical angles:  P=25.0deg  S=47.7deg
+[article6] running inversion on noisy synthetic measurements ...
+           true   :  Vp=3500  Vs=2000  rho=2200
+           inverted: Vp=3476  Vs=1926  rho=2191
+[article6] OK
+
+>>> article7_dielectric_nmr: NMR-mapped dielectric dispersion - Funk et al.
+----------------------------------------------------------------------
+[article7] testing BPP relaxation behaviour ...
+           T1/T2 line-narrowing rel diff = 3.166e-06
+[article7] testing Debye and Havriliak-Negami permittivity ...
+[article7] testing PCM split using a synthetic T2 distribution ...
+           matrix porosity fraction recovered = 0.550 (target 0.55)
+[article7] OK
+
+>>> article8_thz_porosity: THz microporosity imaging - Eichmann et al.
+----------------------------------------------------------------------
+[article8] testing mass-balance porosity calculations ...
+           phi_total = 0.200, phi_micro = 0.050, phi_macro = 0.150
+[article8] testing THz attenuation -> porosity map workflow ...
+           bulk phi_total = 0.200  (expected 0.200)
+           bulk phi_micro = 0.050  (expected 0.050)
+           porosity map: left mean=0.150  right mean=0.250
+[article8] OK
+
+>>> article9_xray_invasion: X-ray invasion / mudcake - Aerens et al.
+----------------------------------------------------------------------
+[article9] testing Beer-Lambert and attenuation map ...
+[article9] testing 3x3 median filter on a salt-and-pepper image
+[article9] running synthetic time-lapse invasion experiment ...
+           t (s)        observed depth (mm)   predicted (mm)
+               60                 0.870           0.910
+              120                 1.230           1.286
+              240                 1.800           1.819
+              480                 2.550           2.573
+              960                 3.630           3.638
+[article9] OK
+
+======================================================================
+Summary
+======================================================================
+module                                   status   time (s)
+----------------------------------------------------------------------
+article1_hdt                             OK          #.###
+article2_wiri                            OK          #.###
+article3_overburden_frf_ri               OK          #.###
+article4_gas_trapping                    OK          #.###
+article5_shale_t1t2star                  OK          #.###
+article6_ultrasonic_reflection           OK          #.###
+article7_dielectric_nmr                  OK          #.###
+article8_thz_porosity                    OK          #.###
+article9_xray_invasion                   OK          #.###
+----------------------------------------------------------------------
+9/9 modules passed.

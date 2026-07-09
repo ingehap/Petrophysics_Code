@@ -1,0 +1,93 @@
+
+######################################################################
+# Article 1 - Nanoindentation Guide
+######################################################################
+============================================================
+Article 1: Oliver-Pharr Nanoindentation on Woodford Shale
+============================================================
+  Synthetic array: 4 x 25 = 100 indents
+  True   E_s  mean = 31.00  std = 3.40  GPa
+  Recov  E_s  mean = 29.42  std = 3.03  GPa
+  Gupta G  (Eq. 5)               = -0.346 GPa
+  Log-creep coefficient b        =  1.205  (true 1.20)
+  Fracture toughness K_c (Eq. 11) =   0.87 MPa.sqrt(m)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Shale Capillary Pressure Model
+######################################################################
+============================================================
+Article 2: Shale Capillary-Pressure Model Comparison
+============================================================
+  Synthetic dataset: 25 points, Pc range 2.10 - 2679.17 MPa
+  Brooks-Corey    pe= 5.581  lam=0.630  R2= 1.000  MSE=3.849e+01
+  van Genuchten   alpha=0.165  m=0.609  n=1.050  R2= 1.000  MSE=8.610e+00
+  Proposed        pe= 2.148  a1=7.943  a2=1.503  R2= 1.000  MSE=3.307e+00
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Stress-Dependent Tight Permeability
+######################################################################
+============================================================
+Article 3: Stress-Dependent Tight Rock Permeability
+============================================================
+  Q1 (pu/pd=300/100, sig=1500 psi) = 1.064e-09 kg/s
+  Q2 (pu/pd=300/100, sig=2500 psi) = 6.652e-10 kg/s
+  Qa (pu/pd=400/200, sig=1500 psi) = 1.660e-09 kg/s
+  Qb (pu/pd=700/500, sig=1500 psi) = 3.732e-09 kg/s
+  Recovered alpha = 4.700e-04 /psi   (true 4.700e-04)
+  Recovered beta  = 0.830              (true 0.830)
+  Recovered k0    =  100.0 nD       (true  100.0)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - Mud-Filtrate Invasion (Micro-CT)
+######################################################################
+============================================================
+Article 4: Mud-Filtrate Invasion (Micro-CT / Buckley-Leverett)
+============================================================
+  Capillary number  spurt = 2.08e-05   late = 6.94e-07
+  Bond number              = 1.35e-05
+  Buckley-Leverett front Sw_f  = 0.345  fw_f = 0.619
+  t =    0.5 min   x_front =  38.73 cm
+  t =    5.0 min   x_front = 122.47 cm
+  t =   30.0 min   x_front = 300.00 cm
+  t =  120.0 min   x_front = 600.00 cm
+  Mean Sw behind front  = 0.573  (paper reports 0.43 - 0.51)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Cement Corrosion (CO2 + H2S)
+######################################################################
+============================================================
+Article 5: Oilwell Cement Corrosion (CO2 + H2S)
+============================================================
+  Eq. 1 sanity:  k for Q=5e-07, dP=1->2 MPa =    0.367 mD
+  Reaction-front coefficient K = 2.500 mm / sqrt(day)
+
+  Days   corrosion frac    k (mD)         tens (MPa)
+       7      0.778        3.002e-04       11.38
+      14      0.937        1.502e-03       10.04
+      30      1.000        5.954e-02        9.50
+
+  k(30d) / k(7d) =  198.3x  (paper reports ~200x)
+  k(7d)  = 3.002e-04 mD  (paper ~ 3.0e-4)
+  k(30d) = 5.954e-02 mD  (paper ~ 6.5e-2)
+  Tensile strength at 30 d = 9.50 MPa  (paper ~ 9.8 MPa)
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_nanoindentation  (#.##s)
+  PASS   article2_shale_capillary_pressure  (#.##s)
+  PASS   article3_stress_dependent_permeability  (#.##s)
+  PASS   article4_mud_filtrate_invasion_ct  (#.##s)
+  PASS   article5_cement_acid_gas_corrosion  (#.##s)
+
+  5/5 modules passed

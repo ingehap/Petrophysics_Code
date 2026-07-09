@@ -28,6 +28,9 @@ paper.  The DOI suffix (a6) is inferred from the issue's confirmed pattern.
 
 import numpy as np
 
+# np.trapz was renamed to np.trapezoid in NumPy 2.0; support both.
+_trapezoid = getattr(np, "trapezoid", getattr(np, "trapz", None))
+
 
 # ---------------------------------------------- directional averaging --------------
 
@@ -77,7 +80,7 @@ def lorenz_coefficient(perms, phis, thicknesses=None):
     ph = (phi * h)[order]
     fc = np.concatenate([[0], np.cumsum(kh) / kh.sum()])     # flow capacity
     sc = np.concatenate([[0], np.cumsum(ph) / ph.sum()])     # storage capacity
-    area = np.trapz(fc, sc)                                   # area under the curve
+    area = _trapezoid(fc, sc)                                   # area under the curve
     return 2.0 * (area - 0.5)
 
 

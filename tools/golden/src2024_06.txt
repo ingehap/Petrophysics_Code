@@ -1,0 +1,75 @@
+========================================================================
+Running article1_nuclear_logging_ccs.test_all()
+------------------------------------------------------------------------
+Article 1 (Nuclear logging for CCS): all tests passed.
+  recovered sigma  =  24.90 c.u. (true 25.0)
+  sigma(Sw=1)      =  21.25 c.u.
+  sigma(Sw=0)      =   7.51 c.u.
+  C/O nb @20%CO2   =  0.271
+  C/O bt @20%CO2   =  0.320
+========================================================================
+Running article2_claystone_repository.test_all()
+------------------------------------------------------------------------
+Article 2 (Claystone repository): all tests passed.
+  variogram gamma(1)  =   32.19
+  variogram gamma(30) =  555.70
+  layer boundary hits = 5/5
+  residual cutoff P90 =   3.53
+  recovered m*        = 2.300 (true 2.3)
+========================================================================
+Running article3_hydrogen_storage.test_all()
+------------------------------------------------------------------------
+Article 3 (Underground hydrogen storage): all tests passed.
+  Newman Cf(phi=0.1)    = 6.586e-06 1/psi
+  base gas rate         = 442 Sm^3/day
+  productivity index    = 1.67e+04
+  MC tau at sigma_n=10  = 11.50 MPa
+  Schedule: 441 days, end inv = 3.3e+07 Sm^3
+========================================================================
+Running article4_facies_classification.test_all()
+------------------------------------------------------------------------
+Article 4 (Automatic facies analysis): all tests passed.
+  FaciesSpect purity = 1.000
+  CBML        purity = 1.000
+  HRA         purity = 1.000
+  HRA transitions    = 2
+  CBML transitions   = 2
+========================================================================
+Running article5_lwd_image_deeplearning.test_all()
+------------------------------------------------------------------------
+Article 5 (LWD deep learning): all tests passed.
+  true  A = 1.250, phase = +5.49
+  est   A = 1.161, phase = -0.79
+  dip (A=0.5) = 14.04 deg
+  dip (A=3.0) = 56.31 deg
+  MC dip      = 30.58 +/- 1.03 deg
+========================================================================
+Running article6_nmr_t1t2_saturation.test_all()
+------------------------------------------------------------------------
+Article 6 (2D T1-T2 NMR saturation): all tests passed.
+  recovered water amp  = 4.004  (true 0.500)
+  recovered oil   amp  = 11.700  (true 1.000)
+  oil/water ratio      = 2.922
+  phi_o, phi_w         = 1.1700, 0.4004
+  S_o,  S_w            = 11.700, 4.004
+========================================================================
+Running article7_shale_fracture_damage.test_all()
+------------------------------------------------------------------------
+Article 7 (Shale fracture damage): all tests passed.
+  tip stress angle 0/50/90 deg = 0.00 / 1232.33 / 2100.00
+  E (0->90 deg)   = 12.0 -> 25.0 GPa
+  sigma_c (0/45/90 deg) = 110.0 / 55.0 / 110.0 MPa
+  DIC field peak / baseline = 7.00
+========================================================================
+Running article8_r35_fractal_rock_typing.test_all()
+------------------------------------------------------------------------
+  synth mean=0.3  um -> R35= 0.439 um, Type I
+  synth mean=1.0  um -> R35= 1.464 um, Type I
+  synth mean=4.0  um -> R35= 5.850 um, Type III
+Article 8 (R35 + fractal rock typing): all tests passed.
+  Washburn r(100 psi) = 1.067 um
+  Winland R35(10 md, 20%) = 1.57 um
+  Dn of synthetic curve = 1.228 (R^2=0.913)
+  Joint rock type       = Type II (complex)
+========================================================================
+All 8 modules passed.

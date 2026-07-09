@@ -1,0 +1,14 @@
+==============================================================================
+article_01_laronga_ccs_evaluation: OK  (CCSScreeningResult(storage_mass_Mt=6.084543814400518, max_column_m=179.82215150927942, injectivity_kg_s_per_bar=8.153327392332665))
+article_02_desroches_stress: OK  (FCP_sqrt=54.94, FCP_G=56.18, true=55.0)
+article_03_okwoli_probe_screening: OK  (R^2=0.78, shift=-6.9 cm)
+article_04_karadimitriou_relperm_scaling: OK (krw_pnm=0.199, krn_pnm=0.351)
+article_05_laronga_pulsed_neutron_ccs: OK  (errs=0.032, 0.050, 0.094, QC pass = 12%)
+article_06_hill_potash_pid_plot: OK  (sylvite_run h=1.50 m, avg grade=51.0% K2O, bins={'commercial_potash': 67, 'noncommercial_potash': 346, 'non_potash_evaporite': 39, 'halite_anhydrite': 19, 'shale_or_marker': 29})
+article_07_aerens_xray_mud_invasion: OK  (mudcake@1h=0.21 mm, BL front t=600s=1.0 mm)
+article_08_zhao_sp_resistivity_inversion: OK  (MAE Sw=0.000, MAE Qv=0.000)
+article_09_bennis_corelogs_simulation: OK  (chi^2 before=9.06, after=0.03, bias=(a=1.100, b=4.98))
+article_10_mohamed_rfg_connectivity: OK  (asph 0.50->50.00%, mu 2.32->6538034.74 cp, segs=2)
+article_11_shafiq_chelating_acidizing: OK  (phi: HEDTA=0.375, EDTA=0.326, GLDA=0.280; k mD: 169.86, 96.30, 53.57)
+==============================================================================
+11 passed, 0 failed (of 11 modules)

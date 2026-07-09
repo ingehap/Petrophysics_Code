@@ -1,0 +1,41 @@
+========================================================================
+  Petrophysics Vol. 66 No. 5 (October 2025) – Full Test Suite
+========================================================================
+
+▶ Article 1: Log Interpretation for Petrophysical & Elastic Properties
+    ✓ 11 checks passed
+
+▶ Article 2: M-integral Damage Constitutive Model
+    ✓ 7 checks passed
+
+▶ Article 3: Young's Modulus Without Shear-Wave Traveltime
+    ✓ 7 checks passed
+
+▶ Article 4: ETIN Multimodal Permeability Prediction
+    ✓ 3 checks passed
+
+▶ Article 5: Hybrid U-Net + LSTM Missing-Log Prediction
+    ✓ 4 checks passed
+
+▶ Article 6: Carbonate Petrophysics Workflow
+    ✓ 10 checks passed
+
+▶ Article 7: NMR T2 Spectrum & Porosity Correction
+    ✓ 8 checks passed
+
+▶ Article 8: Digital-Core Conductivity Simulation
+    ✓ 8 checks passed
+
+▶ Article 9: Slip Interface Cementing Quality Evaluation
+    ✓ 8 checks passed
+
+▶ Article 10: Neutron Log Response in Shales
+    ✓ 6 checks passed
+
+▶ Article 11: Automatic Fracture Identification from Image Logs
+    ✓ 9 checks passed
+
+========================================================================
+  RESULTS: 81 passed, 0 failed
+  All modules validated successfully.
+========================================================================

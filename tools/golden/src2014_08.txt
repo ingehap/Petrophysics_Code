@@ -1,0 +1,84 @@
+
+######################################################################
+# Article 1 - Three-Phase Rel-Perm on Oil-Wet Carbonate
+######################################################################
+============================================================
+Article 1: Three-Phase Rel-Perm on Oil-Wet Carbonate
+============================================================
+  krocw = 1.000
+  kro: Stone I=0.2921  Stone II=0.2656  Baker=0.5625
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Direct Hydrodynamic Multiphase Simulation
+######################################################################
+============================================================
+Article 2: Direct Hydrodynamic Multiphase Simulation
+============================================================
+  interface: rho(-inf)=0.000  rho(+inf)=1.000
+  Ca = 4.40e-08
+  kr(full single-phase flux) = 1.000
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Micro-CT Haines Jumps & Energy Balance
+######################################################################
+============================================================
+Article 3: Micro-CT Haines Jumps & Energy Balance
+============================================================
+  Ncap = 4.40e-08
+  W = 5.900e-05 J
+  interfacial fraction = 0.36
+  event exponent n = 1.000
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - Wettability & Capillary Desaturation
+######################################################################
+============================================================
+Article 4: Wettability & Capillary Desaturation Curves
+============================================================
+  N_Ca = 3.33e-07
+  Sor(low N)=0.497  Sor(high N)=0.150
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Dielectric Permittivity of Shales
+######################################################################
+============================================================
+Article 5: Dielectric Permittivity of Shales
+============================================================
+  eps''_eq(10kHz)=53931.5  eps''_eq(100MHz)=10.39
+  CEC=17.87 cmol/kg  SSA=118.5 m2/g  Vp=1949 m/s
+  analytic SSA = 109.4 m2/g
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - Siliceous-Ooze (Opal-A) Petrophysics
+######################################################################
+============================================================
+Article 6: Siliceous-Ooze (Opal-A) Petrophysics
+============================================================
+  opal volume fraction = 0.565
+  structural water moles n = 0.121
+  phi(opal)=0.520  phi(quartz)=0.585
+  Biot coefficient = 0.940
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_threephase_relperm_carbonate  (#.##s)
+  PASS   article2_dhd_multiphase_simulation  (#.##s)
+  PASS   article3_microct_haines_jumps  (#.##s)
+  PASS   article4_wettability_capillary_desaturation  (#.##s)
+  PASS   article5_dielectric_permittivity_shales  (#.##s)
+  PASS   article6_siliceous_ooze_petrophysics  (#.##s)
+
+  6/6 modules passed

@@ -1,0 +1,114 @@
+
+######################################################################
+# Article 1 - In-Situ Raman Composition Logging Tool
+######################################################################
+============================================================
+Article 1: In-Situ Raman Composition Logging Tool
+============================================================
+  total number density   = 6.876e+27 1/m^3
+  channel signals X      = [4.02e+27 3.54e+26 1.78e+26 3.92e+26 2.42e+26]
+  recovered gain  G      = 0.7300  (true 0.73)
+    f[CH4 ] true=0.800  est=0.800
+    f[C2H6] true=0.050  est=0.050
+    f[C3H8] true=0.030  est=0.030
+    f[CO2 ] true=0.070  est=0.070
+    f[N2  ] true=0.050  est=0.050
+  refractivity factor    = 1.00100
+  Beer-Lambert X (att.)  = [2.02e+27 1.78e+26 8.96e+25 1.97e+26 1.22e+26]
+  zone-2 CH4 contribution = 159136.4 (std)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - CNN vs Cross-Correlation Depth Matching
+######################################################################
+============================================================
+Article 2: CNN vs Cross-Correlation Depth Matching
+============================================================
+  CNN  shift MAE        = 0.75 samples
+  Xcorr shift MAE       = 0.00 samples
+  mean Pearson before   = 0.560
+  mean Pearson after CNN= 0.980
+  Ind1% (CNN improves)  = 98%
+  Ind4% (CNN > Xcorr)   = 0%
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Log Analytics: Cross-Correlation / DTW + QC
+######################################################################
+============================================================
+Article 3: Cross-Correlation / DTW Depth Matching + QC
+============================================================
+  first/last valid index = 5, 399
+  cross-corr lag         = 13 samples (applied -13)
+  Pearson   before/after = 0.645 / 0.998
+  PEP (P)   before/after = 0.359 / 0.997
+  Euclidean before/after = 288.7 / 19.9
+  alpha search           = alpha=1.00, shift=13
+  DTW distance           = 14.41 over 132 steps
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - Ultrasonic Logging of Creeping Shale
+######################################################################
+============================================================
+Article 4: Ultrasonic Logging of Creeping Shale
+============================================================
+  v_p from f_min         = 5789 m/s
+  f_min (Eq. 2)          = 5.00 MHz
+  group-delay min at     = 3.00 MHz
+  PE: |tau|=0.66us -> Z  = 1.36 MRayl
+  PE: |tau|=0.80us -> Z  = 0.80 MRayl
+  PC: alpha=839 dB/m -> Z = 4.32 MRayl
+  R (kerosene gap)       = -0.95
+  R (bonded shale)       = -0.82
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Sand-Injectite Thomas-Stieber Volumetrics
+######################################################################
+============================================================
+Article 5: Sand-Injectite Petrophysics & Volumetrics
+============================================================
+  PHIT  range            = 0.325 - 0.377
+  RHOMA range            = 2.652 - 2.685
+  Swt (sand phase)       = 0.060
+  FNTG range             = 0.500 - 0.970
+  Archie SwtSand (gas)   = 0.000
+  Herron K (clean sand)  = 2143.1 (relative mD)
+  net thickness  BCA/TS  = 15.00 / 10.10 m
+  HVOLH          BCA/TS  = 3.373 / 3.608 m
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - Closed-Retort Core-Based Quantification
+######################################################################
+============================================================
+Article 6: Closed-Retort Core-Based Quantification
+============================================================
+  phi  Boyle's law       = 0.059
+  phi  fluid summation   = 0.059
+  crushing fluid loss    = 1.40 cc (17.5%)
+  Sw / So                = 0.76 / 0.24
+  water/oil ratio        = 3.2 : 1
+  free / bound water     = 0.030 / 0.015
+  Schmoker TOC @2.45/2.65 = 5.80 / 1.04 wt%
+  closed efficiency      = 0.95 (open 0.8)
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_raman_logging_eor_gas_storage  (#.##s)
+  PASS   article2_cnn_xcorr_depth_matching  (#.##s)
+  PASS   article3_log_analytics_dtw_xcorr  (#.##s)
+  PASS   article4_ultrasonic_creeping_shale  (#.##s)
+  PASS   article5_sand_injectite_thomas_stieber  (#.##s)
+  PASS   article6_closed_retort_core_quant  (#.##s)
+
+  6/6 modules passed

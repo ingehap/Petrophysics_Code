@@ -1,0 +1,179 @@
+
+######################################################################
+# Article 1 - RFG + Petroleum System Modeling
+######################################################################
+============================================================
+Article 1: RFG + Petroleum-System Modeling Case Study
+============================================================
+  After 20 Ma biodegradation: n-alkane fraction 0.113 (was 0.450)
+  West (downstructure)    : f_cond=0.10  asph=0.085  deposited_asph=0.023  WAT=54.4 C
+  Central (upstructure)   : f_cond=0.35  asph=0.080  deposited_asph=0.000  WAT=42.0 C
+  FHZ asphaltene ratio vs height above reference:
+     h_above= +0.0 m   phi_a / phi_a_ref = 1.000
+     h_above=+20.0 m   phi_a / phi_a_ref = 0.935
+     h_above=+40.0 m   phi_a / phi_a_ref = 0.874
+     h_above=+60.0 m   phi_a / phi_a_ref = 0.817
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Carbonate Rock-Type Permeability
+######################################################################
+============================================================
+Article 2: Carbonate Rock-Type Permeability Modeling
+============================================================
+  Global FZI fit:    factor-of-2 hit = 0.11
+  Per-RRT fits:
+    grainy  FZI= 3.58  RFN=2.50  r35= 9.12 um
+            within x2  FZI=0.74  Lucia=0.06  Winland=0.61
+    mixed   FZI= 0.95  RFN=3.21  r35= 1.29 um
+            within x2  FZI=0.80  Lucia=0.18  Winland=0.62
+    muddy   FZI= 0.36  RFN=3.96  r35= 0.30 um
+            within x2  FZI=0.73  Lucia=0.51  Winland=0.62
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Swin-Style Fracture Extraction
+######################################################################
+============================================================
+Article 3: Swin-Style Borehole-Image Fracture Extraction
+============================================================
+  FLOPs MSA      (64x64, C=96)        = 3.37e+09
+  FLOPs W-MSA    (window M=8)             = 2.01e+08
+  Baseline threshold:
+     precision  = 0.154
+     recall     = 0.644
+     iou        = 0.142
+     dice       = 0.248
+  Dual-branch predictor:
+     precision  = 0.687
+     recall     = 0.684
+     iou        = 0.522
+     dice       = 0.686
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - Hexa-Combo LWD Case Study
+######################################################################
+============================================================
+Article 4: Hexa-Combo LWD Case Study (Marrat-style)
+============================================================
+  Interval summary  (n samples = 800)
+    GR        mean      pay =  21.9 API
+    Phi_e     mean      pay = 0.094
+    Sw        mean      pay = 0.139
+    FFI/Phi_e mean      pay = 8.221
+    Brittleness mean    pay = 0.689
+    Young's  E mean     pay =  42.2 GPa
+    Poisson  nu mean    pay = 0.297
+  Picked perforation intervals (>= 4 ft, phi_e>0.06, Sw<0.40, BI>0.55):
+      8080.0 -  8097.5  (17.5 ft)
+      8098.0 -  8109.5  (11.5 ft)
+      8110.0 -  8135.0  (25.0 ft)
+      8135.5 -  8230.0  (94.5 ft)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 5 - Digital-Core Poisson's Ratio
+######################################################################
+============================================================
+Article 5: Digital-Core Poisson's Ratio Sensitivity
+============================================================
+  Porosity in cube           = 0.041
+  Two-point autocorr lag=1   = -0.00002
+  Two-point autocorr lag=5   = 0.00030
+  Baseline composite  K= 31.9 GPa  G= 23.4 GPa  rho= 2563 kg/m^3
+  Baseline Poisson's ratio  nu = 0.206  (paper target ~ 0.24)
+
+  Sensitivity sweep (vary calcite fraction):
+    f_calcite=0.00  nu=0.181
+    f_calcite=0.05  nu=0.194
+    f_calcite=0.10  nu=0.206
+    f_calcite=0.15  nu=0.217
+    f_calcite=0.20  nu=0.229
+
+  Minimum-nu bedding angle = 45 deg (paper reports ~45 deg)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 6 - LM-EnRML Geosteering
+######################################################################
+============================================================
+Article 6: LM-EnRML Geosteering Inversion
+============================================================
+  True forward (R_sh, R_dp, rho_b) = 11.48, 20.42, 2.256
+  Prior  reduced misfit chi^2/N = 41537.32
+  Posterior reduced misfit      = 133.36
+  Posterior mean phi_layers = 0.079, 0.197, 0.090   (true [0.05, 0.22, 0.08])
+  Posterior mean boundaries = [np.float64(40.627691142242355), np.float64(58.095441613188974)]   (true [44.0, 56.0])
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 7 - Data-Mining Carbonate Permeability
+######################################################################
+============================================================
+Article 7: Data-Mining Permeability for Complex Carbonates
+============================================================
+  Dataset: 600 samples, 7 features, 3 classes
+  Feature ranking (mutual information):
+    Phi            MI = 0.501
+    GR             MI = 0.470
+    NPHI           MI = 0.404
+    DT             MI = 0.324
+    RHOB           MI = 0.293
+    log10_Rt       MI = 0.272
+    FractureIdx    MI = 0.268
+  Global linear  MAE log10 k    = 0.457 dex
+  Per-class (true labels)       = 0.207 dex
+  Per-class (k-means)           = 0.212 dex
+  Random Forest                 = 0.101 dex
+  Improvement vs global         =  54.7 %  (paper reports ~18 %)
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 8 - Hot-Water Injection T Optimisation
+######################################################################
+============================================================
+Article 8: Hot-Water Injection Temperature Optimisation
+============================================================
+  Relaxation depth A   bare =  2142.4 m
+  Relaxation depth A   insul (upper 750 m) = 10712.1 m
+  Required T_inj  bare tubing     = 77.20 degC
+  Required T_inj  with insulation = 63.25 degC
+  Energy saving (delta T)         = 13.96 degC
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 9 - Depth-Matching DTW / CDTW / COW
+######################################################################
+============================================================
+Article 9: Depth-Matching Algorithm Benchmark
+============================================================
+  Raw  correlation  ref vs tgt = 0.425
+  DTW  correlation              = 0.996
+  CDTW (10% Sakoe-Chiba band)   = 0.977
+  COW  (20 segments, slack=12)  = 0.490
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_rfg_petroleum_system  (#.##s)
+  PASS   article2_carbonate_phi_k  (#.##s)
+  PASS   article3_swin_fracture  (#.##s)
+  PASS   article4_hexa_combo_lwd  (#.##s)
+  PASS   article5_digital_core_poisson  (#.##s)
+  PASS   article6_geosteering_enrml  (#.##s)
+  PASS   article7_dm_permeability  (#.##s)
+  PASS   article8_hot_water_injection  (#.##s)
+  PASS   article9_depth_matching  (#.##s)
+
+  9/9 modules passed

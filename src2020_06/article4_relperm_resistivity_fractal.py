@@ -26,6 +26,9 @@ rmax/rmin = 1000; limestone Dt = 2.25 (phi = 0.19); Boise Dt = 2.1 (phi = 0.32).
 
 import numpy as np
 
+# np.trapz was renamed to np.trapezoid in NumPy 2.0; support both.
+_trapezoid = getattr(np, "trapezoid", getattr(np, "trapz", None))
+
 
 # ---------------------------------------------- fractal geometry --------
 
@@ -94,7 +97,7 @@ def test_all():
 
     # Pore-size PDF integrates to ~1 over [rmin, inf)
     r = np.linspace(1.0, 5000.0, 400000)
-    integral = np.trapz(pore_size_pdf(r, 1.0, Df), r)
+    integral = _trapezoid(pore_size_pdf(r, 1.0, Df), r)
     print(f"  PDF integral           = {integral:.3f}")
     assert abs(integral - 1.0) < 0.02
 

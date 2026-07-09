@@ -1,0 +1,152 @@
+
+======================================================================
+  Module 1: Probe Permeameter (Jensen & Uroza, pp. 665-681)
+======================================================================
+    [PASS] Geometric factor positive: 0.005907
+    [PASS] GF in reasonable range (mm): 5.907
+    [PASS] DOI increases with response level
+    [PASS] DOI at 50% ≈ 0.7*ri
+    [PASS] Silicone-tip perms < o-ring perms
+    [PASS] Calibration factor = 0.63
+    [PASS] Corrected perms positive
+    [PASS] Correction factor plausible: 1.047
+    [PASS] Measurement time decreases with higher perm
+    [PASS] Time range OK: #.## s
+    [PASS] Perm increases with grain size
+    [PASS] CO2 injectivity index positive: 849.86
+    [PASS] Trapping capacity plausible: 0.0544
+
+======================================================================
+  Module 2: Dean-Stark Saturation (Zhang et al., pp. 682-698)
+======================================================================
+    [PASS] PVE increases Sw: 38.50
+    [PASS] PVE increases So: 49.50
+    [PASS] Clay dehydration reduces Sw: 38.43
+    [PASS] Degasification Sw positive: 168.67
+    [PASS] Degasification increases So: 56.93
+    [PASS] Normalized sats sum to 100%
+    [PASS] Workflow: Sw=74.8, So=25.2
+    [PASS] Estimated kw in range: 20.00
+    [PASS] Estimated ko positive: 0.13
+
+======================================================================
+  Module 3: Relative Permeability MRI (Zamiri et al., pp. 699-710)
+======================================================================
+    [PASS] Krw in [0,1]
+    [PASS] Kro in [0,1]
+    [PASS] Krw increases with Sw
+    [PASS] Kro decreases with Sw
+    [PASS] Krw at Sw_irr ≈ 0: 0.0000
+    [PASS] Pc values finite
+    [PASS] Pc decreases with increasing Sw
+    [PASS] fnw decreases as water increases
+    [PASS] fnw in [0,1]
+    [PASS] Profile shape: (10, 50)
+    [PASS] Saturation decreases with time (drainage)
+
+======================================================================
+  Module 4: Permeability Anisotropy (Silva Jr et al., pp. 711-738)
+======================================================================
+    [PASS] RQI all positive
+    [PASS] FZI all non-negative
+    [PASS] HFU classes ≤ 4: [0 1 2 3]
+    [PASS] Harmonic ≤ Geometric ≤ Arithmetic: 27.0 ≤ 100.0 ≤ 370.0
+    [PASS] Kv/Kh < 1 (typical for layered media)
+    [PASS] Stats computed for both facies
+    [PASS] Counts sum to n
+
+======================================================================
+  Module 5: Sw Equations (Acosta et al., pp. 739-764)
+======================================================================
+    [PASS] Archie: Sw in [0,1]
+    [PASS] Indonesian: Sw in [0,1]
+    [PASS] Modified Indonesian: Sw in [0,1]
+    [PASS] Simandoux: Sw in [0,1]
+    [PASS] Waxman-Smits: Sw in [0,1]
+    [PASS] Suriname Clay-Silt: Sw in [0,1]
+    [PASS] Suriname Laminar: Sw in [0,1]
+    [PASS] BPPI non-negative
+    [PASS] Swirr in [0,1]
+
+======================================================================
+  Module 6: Thin-Bed NMR (Ramadan et al., pp. 765-771)
+======================================================================
+    [PASS] Kernel normalised to 1
+    [PASS] Kernel peak at centre
+    [PASS] Depths and porosity same length
+    [PASS] Apparent porosity ≤ true max (smoothing)
+    [PASS] Apparent porosity ≈ true min (smoothing widens range)
+    [PASS] Thin-bed correction increases phi: 0.300
+    [PASS] Stand-off correction reduces phi: 0.150
+    [PASS] Detected 8 bed boundaries
+
+======================================================================
+  Module 7: Lateral Permeability NMR (Fouda et al., pp. 772-788)
+======================================================================
+    [PASS] Timur-Coates perm all positive
+    [PASS] SDR perm all positive
+    [PASS] SDR: higher phi+T2 → higher perm
+    [PASS] Lower pressure drop → higher perm
+    [PASS] Heterogeneity index positive: 0.3238
+    [PASS] Lateral profile has 8 azimuths
+    [PASS] All azimuthal perms positive
+
+======================================================================
+  Module 8: ML Permeability (Raheem et al., pp. 789-812)
+======================================================================
+    [PASS] Timur-Coates perm all positive
+    [PASS] Archie Sw in [0,1]
+    [PASS] Rs ≥ Rt after shale correction
+    [PASS] Augmented features: 20
+    [PASS] PCA output shape: (100, 2)
+    [PASS] Explained variance sum ≤ 1: 0.606
+    [PASS] SVD output shape OK
+    [PASS] Ridge prediction length correct
+    [PASS] kNN prediction length correct
+    [PASS] MAE non-negative: 0.8444
+    [PASS] RSE non-negative: 1.0739
+    [PASS] R² plausible: -0.3381
+    [PASS] 3 CV folds returned
+
+======================================================================
+  Module 9: Lithofacies Prediction (Satti et al., pp. 813-834)
+======================================================================
+    [PASS] Facies in {0,1,2}: {np.int64(0), np.int64(1), np.int64(2)}
+    [PASS] Feature matrix rows = n
+    [PASS] At least 6 features: 9
+    [PASS] ET accuracy > chance: 0.720
+    [PASS] GB accuracy > chance: 0.980
+    [PASS] CM entries sum to test size
+    [PASS] F1 scores in [0,1]
+    [PASS] 3-fold CV returns 3 values
+    [PASS] CV accuracies in [0,1]
+
+======================================================================
+  Module 10: RDDTW Depth Matching (Fang et al., pp. 835-851)
+======================================================================
+    [PASS] Synthetic data generated
+    [PASS] Derivative same length as input
+    [PASS] Derivative values finite
+    [PASS] PCC shift close to truth: 5 (true=5)
+    [PASS] PCC in [-1,1]: 0.9573
+    [PASS] DTW distance non-negative: 0.7707
+    [PASS] Path length ≥ max(n,m): 38
+    [PASS] CDTW ≥ DTW (constrained can't be cheaper)
+    [PASS] RDDTW distance non-negative: 3.6026
+    [PASS] RDDTW path length adequate
+    [PASS] EWRF reduces warping: 0.028 vs 0.109
+    [PASS] PSO shift estimate: -4.8 (true=5)
+    [PASS] PSO cost non-negative
+    [PASS] RMSE non-negative: 0.0576
+    [PASS] R² plausible: 0.2491
+
+======================================================================
+  TEST SUMMARY
+======================================================================
+  Passed : 101
+  Failed : 0
+  Errors : 0
+
+  ALL 101 CHECKS PASSED ✓
+======================================================================
+

@@ -1,0 +1,63 @@
+
+######################################################################
+# Article 1 - Flexural Attenuation Technique
+######################################################################
+============================================================
+Article 1: Flexural Attenuation Technique
+============================================================
+  optimal incidence angle = 30.0 deg  (expect 30)
+  phase velocity         = 2650 m/s
+  attenuation            = 8.69 dB
+  annulus slant / thick  = 4.09 / 3.54 mm
+  eccentricity A / phi   = 0.800 / 35.0 deg
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 2 - Saturation Exponent (Clay/Digital Rock)
+######################################################################
+============================================================
+Article 2: Saturation Exponent of Clay-Bearing Sandstone
+============================================================
+  formation factor       = 25.4
+  Qv (CEC=6)             = 0.642 mmol/cm^3
+  apparent n clean/clay/montmor = 2.00 / 1.16 / 1.04
+  apparent n  lowCw/hiCw = 1.13 / 1.59
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 3 - Thermochemical Stimulation
+######################################################################
+============================================================
+Article 3: Thermochemical Stimulation of Tight Rocks
+============================================================
+  heat (2 mol)           = 738 kJ
+  porosity +80%  perm +321%  UCS -55%
+  E before/after         = 0.02 / 0.02 GPa
+  Pc 0.5um / 1.5um       = 86603 / 28868 Pa
+  PASS
+  -> #.##s
+
+######################################################################
+# Article 4 - KDHC Facies Detection
+######################################################################
+============================================================
+Article 4: KDHC Facies Detection
+============================================================
+  ND clean / dense       = 0.010 / 0.163
+  indicator              = [0.   0.5  1.   0.25]
+  reservoir F1           = 0.986
+  best cluster count     = 2  (silhouette 0.813)
+  PASS
+  -> #.##s
+
+======================================================================
+ SUMMARY
+======================================================================
+  PASS   article1_flexural_attenuation_casing  (#.##s)
+  PASS   article2_saturation_exponent_clay_digitalrock  (#.##s)
+  PASS   article3_thermochemical_stimulation  (#.##s)
+  PASS   article4_kdhc_facies_clustering  (#.##s)
+
+  4/4 modules passed
