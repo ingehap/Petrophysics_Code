@@ -338,3 +338,232 @@ def fit_corey(
         "krnw_max": float(krnw_max),
         "nnw": float(nnw),
     }
+
+
+# --------------------------------------------------------------------------
+# Dimensionless numbers and desaturation
+# --------------------------------------------------------------------------
+
+
+def capillary_number(*, mu: float, v: ArrayLike, sigma: float) -> _Float:
+    """Capillary number ``Nca = mu*v/sigma`` (viscous / capillary).
+
+    Keyword-only on purpose: the ~14 article definitions disagree on positional
+    order (four put velocity first) though all compute the same ratio.  For the
+    volumetric-rate form ``Q*mu/(A*sigma)`` pass ``v=Q/A``.  Sources:
+    src2025_12/analog_kr, src2017_02/article1, src2014_08 (velocity-first).
+    """
+    return np.asarray(mu * np.asarray(v, np.float64) / sigma)
+
+
+def bond_number(*, drho: ArrayLike, k: ArrayLike, sigma: float, g: float = 9.81) -> _Float:
+    """Bond number ``Nb = drho*g*k/sigma`` (gravity / capillary).
+
+    ``k`` is the characteristic area — permeability (m2) in the Darcy form, or
+    a squared length (pass ``k=R**2``) in the pore-radius form.  Sources:
+    src2014_08/article4 (k form, g passed as acceleration), src2022_10/article4
+    (R**2 form, g=9.81).
+    """
+    drho_arr = np.asarray(drho, np.float64)
+    k_arr = np.asarray(k, np.float64)
+    return np.asarray(drho_arr * g * k_arr / sigma)
+
+
+def trapping_number(nca: ArrayLike, nb: ArrayLike) -> _Float:
+    """Total trapping number ``Nt = Nca + Nb`` (the additive form used repo-wide).
+
+    Sources: src2014_08/article4 (trapping_number).
+    """
+    return np.asarray(np.asarray(nca, np.float64) + np.asarray(nb, np.float64))
+
+
+def capillary_desaturation(
+    n: ArrayLike,
+    *,
+    sor_max: float,
+    sor_min: float,
+    n_crit: float,
+    exponent: float = 1.0,
+) -> _Float:
+    """Capillary desaturation curve ``Sor(N)``.
+
+    ``Sor = Sor_min + (Sor_max - Sor_min)/(1 + (N/N_crit)**exponent)`` — the
+    residual falls from the plateau ``Sor_max`` toward the floor ``Sor_min`` as
+    the trapping number rises past ``N_crit``.  Articles that write the exponent
+    as ``1/width`` pass ``exponent=1.0/width``.  Sources:
+    src2019_04/article3, src2014_08/article4 (exponent = 1/width).
+    """
+    n_arr = np.asarray(n, np.float64)
+    return np.asarray(sor_min + (sor_max - sor_min) / (1.0 + (n_arr / n_crit) ** exponent))
+
+
+# --------------------------------------------------------------------------
+# Land trapping
+# --------------------------------------------------------------------------
+
+
+def land_c(s_i_max: float, s_r_max: float) -> float:
+    """Land trapping coefficient ``C = 1/Sr_max - 1/Si_max``.
+
+    The single-endpoint form ``1/Sgt_max - 1`` (Si_max = 1) is ``land_c(1.0,
+    Sgt_max)``.  Sources: src2016_02/article1, src2023_06/article4,
+    src2025_02/scal_model_ccs, src2014_12/article3 (Si_max default 1).
+    """
+    return 1.0 / s_r_max - 1.0 / s_i_max
+
+
+def land_trapped(
+    s_i: ArrayLike,
+    *,
+    C: float | None = None,
+    s_r_max: float | None = None,
+) -> _Float:
+    """Land trapped saturation ``Sr = Si/(1 + C*Si)``.
+
+    Pass the coefficient ``C`` directly, or ``s_r_max`` to use the
+    ``C = 1/Sr_max - 1`` (Si_max = 1) reduced form.  Sources:
+    src2016_10/article2 (s_r_max form), src2025_02 (C form).
+    """
+    if C is None:
+        if s_r_max is None:
+            raise ValueError("land_trapped needs either C or s_r_max")
+        C = 1.0 / s_r_max - 1.0
+    si = np.asarray(s_i, np.float64)
+    return np.asarray(si / (1.0 + C * si))
+
+
+# --------------------------------------------------------------------------
+# Wettability indices
+# --------------------------------------------------------------------------
+
+
+def amott_indices(
+    vw_spont: float,
+    vw_forced: float,
+    vo_spont: float,
+    vo_forced: float,
+) -> tuple[float, float, float]:
+    """Amott-Harvey indices ``(Iw, Io, Iah)`` from displaced volumes.
+
+    ``Iw = Vw_spont/(Vw_spont+Vw_forced)``, ``Io`` likewise, and the
+    Amott-Harvey index ``Iah = Iw - Io``.  Accepts imbibed volumes or the
+    equivalent saturation changes; each ratio is zero-guarded.  Sources:
+    src2016_02/article4 (amott_harvey_index), src2025_02/dopant_impact_scal.
+    """
+    dw = vw_spont + vw_forced
+    do = vo_spont + vo_forced
+    iw = vw_spont / dw if dw > 0 else 0.0
+    io = vo_spont / do if do > 0 else 0.0
+    return iw, io, iw - io
+
+
+def usbm_index(area_drainage: float, area_imbibition: float) -> float:
+    """USBM wettability index ``W = log10(A_drainage / A_imbibition)``.
+
+    Positive is water-wet.  Sources: src2018_02/article8 (usbm_index).
+    """
+    return float(np.log10(area_drainage / area_imbibition))
+
+
+def nmr_wettability_index(w_signal: ArrayLike, o_signal: ArrayLike) -> _Float:
+    """NMR wettability index ``Iw = (w - o)/(w + o)``.
+
+    Works on any matched water/oil pair — signal amplitudes, surface relaxation
+    rates, or T2 peak areas.  Sources: src2018_06/article3, src2019_08/article4
+    (relaxation rates), src2022_06/article9 (T2 areas).
+    """
+    w = np.asarray(w_signal, np.float64)
+    o = np.asarray(o_signal, np.float64)
+    return np.asarray((w - o) / (w + o))
+
+
+# --------------------------------------------------------------------------
+# Contact angle
+# --------------------------------------------------------------------------
+
+
+def young_contact_angle(sigma_so: float, sigma_sw: float, sigma_wo: float) -> _Float:
+    """Young's-law contact angle (degrees) from the three interfacial tensions.
+
+    ``cos(theta) = (sigma_so - sigma_sw)/sigma_wo``; the cosine is clipped to
+    [-1, 1] before ``arccos``.  Sources: src2014_02/article3.
+    """
+    cos_t = np.clip((sigma_so - sigma_sw) / sigma_wo, -1.0, 1.0)
+    return np.asarray(np.degrees(np.arccos(cos_t)))
+
+
+def wenzel_angle(theta_young_deg: ArrayLike, roughness: float) -> _Float:
+    """Wenzel apparent contact angle (degrees): ``cos(theta_app) = r*cos(theta)``.
+
+    Roughness ``r >= 1`` amplifies the intrinsic wettability; the cosine is
+    clipped to [-1, 1].  Sources: src2020_04/article5 (wenzel_contact_angle).
+    """
+    c = np.clip(roughness * np.cos(np.radians(np.asarray(theta_young_deg, np.float64))), -1.0, 1.0)
+    return np.asarray(np.degrees(np.arccos(c)))
+
+
+def work_of_adhesion(sigma_wo: float, contact_angle_deg: ArrayLike) -> _Float:
+    """Young-Dupre work of adhesion ``W = sigma_wo*(1 + cos(theta))``.
+
+    Sources: src2014_02/article3 (work_of_adhesion).
+    """
+    theta = np.asarray(contact_angle_deg, np.float64)
+    return np.asarray(sigma_wo * (1.0 + np.cos(np.radians(theta))))
+
+
+# --------------------------------------------------------------------------
+# Classification and displacement efficiency
+# --------------------------------------------------------------------------
+
+
+def classify_wettability_angle(
+    theta_deg: float, *, cuts: tuple[float, float] = (75.0, 105.0)
+) -> str:
+    """Classify wettability from the contact angle: water-wet / intermediate / oil-wet.
+
+    Default cuts 75 deg / 105 deg (src2014_02/article3); pass ``cuts`` to shift
+    the boundaries.  Articles using different labels (e.g. wetting/non-wetting)
+    keep their own classifier.
+    """
+    if theta_deg < cuts[0]:
+        return "water-wet"
+    if theta_deg <= cuts[1]:
+        return "intermediate"
+    return "oil-wet"
+
+
+def classify_wettability_index(i: float, *, scheme: str = "3class") -> str:
+    """Classify wettability from an Amott/USBM-style index in [-1, 1].
+
+    ``scheme="3class"``: water-wet / mixed-wet / oil-wet at +-0.3.
+    ``scheme="5class"``: adds weakly water-/oil-wet bands at +-0.1.  Sources:
+    src2026_04/a02 (3class), src2025_02/dopant_impact_scal (5class).
+    """
+    if scheme == "3class":
+        if i > 0.3:
+            return "water-wet"
+        if i < -0.3:
+            return "oil-wet"
+        return "mixed-wet"
+    if scheme == "5class":
+        if i > 0.3:
+            return "water-wet"
+        if i > 0.1:
+            return "weakly water-wet"
+        if i >= -0.1:
+            return "intermediate"
+        if i >= -0.3:
+            return "weakly oil-wet"
+        return "oil-wet"
+    raise ValueError(f"scheme must be '3class' or '5class', got {scheme!r}")
+
+
+def displacement_efficiency(soi: ArrayLike, sor: ArrayLike) -> _Float:
+    """Microscopic displacement efficiency ``Ed = (Soi - Sor)/Soi``.
+
+    The same ``(Soi-Sor)/Soi`` form is also written ``recovery_factor`` in
+    several articles.  Sources: src2019_08/article6, src2021_10/article2.
+    """
+    soi_arr = np.asarray(soi, np.float64)
+    sor_arr = np.asarray(sor, np.float64)
+    return np.asarray((soi_arr - sor_arr) / soi_arr)
