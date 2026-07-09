@@ -25,6 +25,13 @@ Bv as fractions, permeability in mD, radius in microns, T2 in ms.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 WASHBURN_AIRHG = 107.6      # r[um] ~ 107.6 / Pc[psia]  (sigma=480 dyne/cm, theta=140)
 T2_CUTOFF_MS = 14.0         # bedded-facies free/bound NMR T2 cutoff
 R_CUTOFF_UM = 0.3           # free/bound pore-throat-radius cutoff (all facies)
@@ -34,9 +41,9 @@ R_CUTOFF_UM = 0.3           # free/bound pore-throat-radius cutoff (all facies)
 
 def thomeer_shg(Pc, Bv, G, Pd):
     """Thomeer mercury saturation  Shg = Bv*exp(-G/(logPc-logPd))  (Eq. 1)."""
-    Pc = np.asarray(Pc, float)
-    out = Bv * np.exp(-G / (np.log10(Pc) - np.log10(Pd)))
-    return np.where(Pc > Pd, out, 0.0)
+    # Base-10 Thomeer (G defined on log10); the library takes log_base explicitly.
+    return petrolib.capillary_pressure.thomeer_shg(
+        Pc, bv_inf=Bv, g=G, pd=Pd, log_base=10.0)
 
 
 # ---------------------------------------------- Eqs. 2-3: PhiN / FZI ----
