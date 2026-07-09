@@ -372,11 +372,46 @@ def test_buoyancy_round_trip_and_oilfield() -> None:
     )
 
 
+def _original_centrifuge_rpm_r1r2_2020_08(drho, rpm, r1, r2):
+    # src2020_08/article3 centrifuge_pc: rpm -> omega at the facade, radii r1,r2
+    w = 2.0 * np.pi * rpm / 60.0
+    return 0.5 * drho * w**2 * (r2**2 - r1**2)
+
+
+def _original_centrifuge_rpm_llr_2020_06(drho, rpm, length, lr):
+    # src2020_06/article3 centrifuge_pc: two radii as (LR - L) inner and LR outer
+    w = 2.0 * np.pi * rpm / 60.0
+    return 0.5 * drho * w**2 * (lr**2 - (lr - length) ** 2)
+
+
+def _original_washburn_length_cliptozero_2020_04(sigma, r, theta_deg, mu, t):
+    # src2020_04/article8 washburn_length: Lucas-Washburn with clip-to-zero for
+    # oil-wet pores (cos < 0) instead of the library's NaN.
+    c = np.cos(np.radians(theta_deg))
+    drive = sigma * r * c * np.asarray(t, float) / (2.0 * mu)
+    return np.sqrt(np.clip(drive, 0.0, None))
+
+
 def test_centrifuge_and_rise_and_lucas_washburn() -> None:
     # centrifuge: 3000 rpm, water-air, r1=0.10 m, r2=0.13 m
     omega = 3000.0 * 2.0 * np.pi / 60.0
     pc = cap.centrifuge_pc(omega, delta_rho=1000.0, r1=0.10, r2=0.13)
     assert pc == pytest.approx(0.5 * 1000.0 * omega**2 * (0.13**2 - 0.10**2))
+    # rpm-at-facade centrifuge forms (src2020_08 r1/r2, src2020_06 L/LR)
+    assert_matches_original(
+        _original_centrifuge_rpm_r1r2_2020_08,
+        lambda drho, rpm, r1, r2: cap.centrifuge_pc(
+            2.0 * np.pi * rpm / 60.0, delta_rho=drho, r1=r1, r2=r2
+        ),
+        [(300.0, 2500.0, 0.08, 0.12)],
+    )
+    assert_matches_original(
+        _original_centrifuge_rpm_llr_2020_06,
+        lambda drho, rpm, length, lr: cap.centrifuge_pc(
+            2.0 * np.pi * rpm / 60.0, delta_rho=drho, r1=lr - length, r2=lr
+        ),
+        [(200.0, 3000.0, 0.05, 0.13)],
+    )
     # wetting fluid rises, mercury is depressed
     assert cap.capillary_rise_height(1e-4, sigma=0.072, delta_rho=1000.0) > 0
     assert cap.capillary_rise_height(1e-4, sigma=0.485, theta_deg=140.0, delta_rho=13546.0) < 0
@@ -386,4 +421,13 @@ def test_centrifuge_and_rise_and_lucas_washburn() -> None:
     assert length_4 == pytest.approx(2.0 * length_1)
     assert np.isnan(
         cap.lucas_washburn_length(1.0, sigma=0.03, radius=1e-6, theta_deg=120.0, mu=1e-3)
+    )
+    # src2020_04/article8: clip-to-zero facade (nan_to_num) matches, both wettings
+    t = RNG.uniform(0.5, 12.0, size=30)
+    assert_matches_original(
+        _original_washburn_length_cliptozero_2020_04,
+        lambda s, r_, th, mu, t_: np.nan_to_num(
+            cap.lucas_washburn_length(t_, sigma=s, radius=r_, theta_deg=th, mu=mu), nan=0.0
+        ),
+        [(0.03, 1e-6, 40.0, 1e-3, t), (0.03, 1e-6, 120.0, 1e-3, t)],
     )
