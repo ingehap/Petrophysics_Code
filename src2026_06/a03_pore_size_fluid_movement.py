@@ -130,26 +130,17 @@ def partition_porosity(t2_ms: np.ndarray, amplitude: np.ndarray,
     -------
     dict with 'micro', 'meso', 'macro' porosity fractions summing to 1.0.
     """
-    t2 = np.asarray(t2_ms, float)
     amp = np.asarray(amplitude, float)
     total = amp.sum()
     if total <= 0.0:
         return {"micro": 0.0, "meso": 0.0, "macro": 0.0}
-    c1, c2 = t2_cutoffs
-    micro = amp[t2 < c1].sum()
-    meso = amp[(t2 >= c1) & (t2 < c2)].sum()
-    macro = amp[t2 >= c2].sum()
+    micro, meso, macro = petrolib.nmr.t2_partition(t2_ms, amplitude, cutoffs_ms=t2_cutoffs)
     return {"micro": micro / total, "meso": meso / total, "macro": macro / total}
 
 
 def t2_logmean(t2_ms: np.ndarray, amplitude: np.ndarray) -> float:
     """Logarithmic mean of the T2 distribution (T2LM), ms."""
-    t2 = np.asarray(t2_ms, float)
-    amp = np.asarray(amplitude, float)
-    w = amp.sum()
-    if w <= 0.0:
-        return float("nan")
-    return float(np.exp(np.sum(amp * np.log(t2)) / w))
+    return petrolib.nmr.t2_logmean(t2_ms, amplitude)
 
 
 # ---------------------------------------------------------------------------
@@ -165,7 +156,7 @@ def sdr_permeability(phi: float, t2lm_ms: float,
 
     The T2 logarithmic mean is used as a proxy for average pore size.
     """
-    return a * phi ** m * t2lm_ms ** n
+    return float(petrolib.nmr.sdr(phi, t2lm_ms, a=a, m=m, n=n))
 
 
 def timur_coates_permeability(phi: float, ffi: float, bvi: float,
@@ -184,7 +175,7 @@ def timur_coates_permeability(phi: float, ffi: float, bvi: float,
     """
     if bvi <= 0.0:
         return float("inf")
-    return (phi / C) ** 4 * (ffi / bvi) ** 2
+    return float(petrolib.nmr.timur_coates(phi, ffi, bvi, C=C))
 
 
 # ---------------------------------------------------------------------------

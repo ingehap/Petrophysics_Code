@@ -87,7 +87,7 @@ def timur_permeability(phi: float, Swi: float,
     """
     if phi <= 0 or Swi <= 0:
         return float("nan")
-    return a * (phi**b) / (Swi**c)
+    return float(petrolib.nmr.timur(phi, Swi, a=a, b=b, c=c))
 
 
 def neutron_porosity_correction(phi_n: float,

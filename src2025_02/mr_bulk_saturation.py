@@ -15,6 +15,13 @@ Implements:
 import numpy as np
 from dataclasses import dataclass
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 @dataclass
 class MRCalibration:
     """Reference sample calibration data."""
@@ -25,10 +32,7 @@ class MRCalibration:
 
 def cpmg_decay(t, S0_components, T2_components):
     """Multi-exponential CPMG decay (Eq. 1): S(t) = Σ Si·exp(-t/T2i)."""
-    signal = np.zeros_like(t, dtype=float)
-    for S0, T2 in zip(S0_components, T2_components):
-        signal += S0 * np.exp(-t / T2)
-    return signal
+    return petrolib.nmr.multiexp_decay(t, S0_components, T2_components)
 
 def oil_volume_from_C13(C13_signal_sample, cal: MRCalibration):
     """Oil volume from 13C MR measurement (Eq. 3).
@@ -58,8 +62,8 @@ def compute_saturation(V_oil, V_water, pore_volume=None):
         pore_volume = V_oil + V_water
     if pore_volume <= 0:
         return dict(Sw=0, So=0, PV=0)
-    Sw = V_water / pore_volume
-    So = V_oil / pore_volume
+    Sw = float(petrolib.nmr.nmr_saturation(V_water, pore_volume))
+    So = float(petrolib.nmr.nmr_saturation(V_oil, pore_volume))
     return dict(Sw=Sw, So=So, PV=pore_volume)
 
 def saturation_workflow(H1_signal, C13_signal, cal: MRCalibration,

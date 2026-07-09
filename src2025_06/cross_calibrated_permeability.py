@@ -25,6 +25,13 @@ import numpy as np
 from dataclasses import dataclass
 from typing import Tuple, Optional
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ============================================================
 # Permeability equations
@@ -51,7 +58,7 @@ def timur_permeability(phi: np.ndarray, sw: np.ndarray,
     """
     phi = np.clip(np.asarray(phi, dtype=float), 1e-6, 1.0)
     sw = np.clip(np.asarray(sw, dtype=float), 1e-6, 1.0)
-    return a * phi ** b / sw ** c
+    return petrolib.nmr.timur(phi, sw, a=a, b=b, c=c)
 
 
 def coates_permeability(phi: np.ndarray, sw: np.ndarray,
