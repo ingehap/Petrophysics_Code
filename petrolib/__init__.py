@@ -24,6 +24,7 @@ _SUBMODULES = frozenset(
         "borehole_image",
         "capillary_pressure",
         "constants",
+        "data_qc_io",
         "depth_correction",
         "depth_matching",
         "em_dielectric",
