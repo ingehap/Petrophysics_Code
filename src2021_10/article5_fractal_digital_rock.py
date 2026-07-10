@@ -53,9 +53,8 @@ def box_counting_dimension(binary, box_sizes):
         blocks = trimmed.reshape(shape)
         axes = tuple(range(1, 2 * binary.ndim, 2))   # the within-block axes
         counts.append(int(blocks.any(axis=axes).sum()))
-    logs = np.log(np.asarray(box_sizes, float))
-    logn = np.log(np.asarray(counts, float))
-    slope = np.polyfit(logs, logn, 1)[0]
+    slope = petrolib.inversion_numerics.fitting.fit_line(
+        box_sizes, counts, xform="log", yform="log").slope
     return -slope
 
 

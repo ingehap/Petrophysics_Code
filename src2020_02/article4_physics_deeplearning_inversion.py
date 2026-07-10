@@ -26,6 +26,13 @@ physics-constrained optimizer).
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- forward / misfit --------
 
@@ -50,9 +57,7 @@ def objective(G, m, d, lam):
 
 def ridge_inverse(G, d, lam):
     """Closed-form Tikhonov inversion  m = (G^T G + lambda I)^-1 G^T d."""
-    G = np.asarray(G, float)
-    n = G.shape[1]
-    return np.linalg.solve(G.T @ G + lam * np.eye(n), G.T @ np.asarray(d, float))
+    return petrolib.inversion_numerics.linear.tikhonov_solve(G, d, lam)
 
 
 def gd_inverse(G, d, lam, iters=4000, lr=None, seed=0):

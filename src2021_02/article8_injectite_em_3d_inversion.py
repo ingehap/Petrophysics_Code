@@ -94,9 +94,7 @@ def laplacian_operator(nx, ny):
 
 def tikhonov_inverse(G, d, L, lam):
     """Smoothness-regularized least squares  m = (G^T G + lam L^T L)^-1 G^T d."""
-    GtG = G.T @ G
-    LtL = L.T @ L
-    return np.linalg.solve(GtG + lam * LtL, G.T @ d)
+    return petrolib.inversion_numerics.linear.tikhonov_solve(G, d, lam, reg_op=L)
 
 
 # ---------------------------------------------- tests --------------
