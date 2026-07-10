@@ -51,7 +51,7 @@ def zscore(x):
 
 def zscore_outliers(x, threshold=3.0):
     """Boolean outlier mask using |z| > threshold (default 3 -> 99.7%)."""
-    return np.abs(zscore(x)) > threshold
+    return petrolib.data_qc_io.clean.outlier_mask(x, "zscore", threshold=threshold)
 
 
 # ---------------------------------------------- Eq. 2: IQR --------------
@@ -64,9 +64,7 @@ def iqr_bounds(x, k=1.5):
 
 
 def iqr_outliers(x, k=1.5):
-    lo, hi = iqr_bounds(x, k)
-    x = np.asarray(x, float)
-    return (x < lo) | (x > hi)
+    return petrolib.data_qc_io.clean.outlier_mask(x, "iqr", k=k)
 
 
 # ---------------------------------------------- Eqs. 3-4: normalize -----
@@ -82,8 +80,8 @@ def normalize_reference(v, R_min, R_max, W_min, W_max):
     V_norm = R_min + (R_max - R_min) * (V - W_min)/(W_max - W_min).
     R_* are reference-well 5th/95th percentiles, W_* the target well's.
     """
-    v = np.asarray(v, float)
-    return R_min + (R_max - R_min) * (v - W_min) / (W_max - W_min)
+    return petrolib.data_qc_io.scale.normalize_to_reference(
+        v, R_min, R_max, in_lo=W_min, in_hi=W_max)
 
 
 # ---------------------------------------------- Eqs. 5-6: P / R ---------
@@ -114,10 +112,7 @@ def rmse(y_true, y_pred):
 
 def add_gaussian_noise(x, sigma_fraction, rng=None):
     """Add N(0, sigma^2) noise with sigma = fraction * mean(|x|) (Eqs. 9-10)."""
-    x = np.asarray(x, float)
-    rng = rng or np.random.default_rng(0)
-    sigma = sigma_fraction * np.abs(x).mean()
-    return x + rng.normal(0.0, sigma, size=x.shape)
+    return petrolib.data_qc_io.signal.add_gaussian_noise(x, sigma_fraction, rng)
 
 
 # ---------------------------------------------- Eq. 11: Pearson ---------
@@ -132,10 +127,7 @@ def pearson(x, y):
 
 def sentinels_to_nan(x, sentinels=SENTINELS):
     """Replace LAS/DLIS no-data sentinels with NaN."""
-    x = np.asarray(x, float).copy()
-    for s in sentinels:
-        x[np.isclose(x, s)] = np.nan
-    return x
+    return petrolib.data_qc_io.clean.sentinels_to_nan(x, sentinels)
 
 
 # ---------------------------------------------- tests --------------
