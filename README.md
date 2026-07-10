@@ -20,8 +20,10 @@ described in [LIBRARY_MERGE_PLAN.md](LIBRARY_MERGE_PLAN.md) is **complete**: eve
 function identified as a duplicate now delegates to petrolib while keeping its historical
 name, signature, and — bit for bit — its published numeric output.
 
-- **Docs:** [docs/petrolib.md](docs/petrolib.md) (guide) and
-  [docs/petrolib-api.md](docs/petrolib-api.md) (generated API reference);
+- **Docs:** [docs/petrolib.md](docs/petrolib.md) (guide),
+  [docs/petrolib-api.md](docs/petrolib-api.md) (generated API reference), and the
+  [Petrophysics Handbook](docs/Petrophysics_Handbook.pdf) (PDF user manual — every function
+  with purpose, parameters, and full journal sources);
   [CONVENTIONS.md](CONVENTIONS.md) has the API rules.
 - Running article scripts needs **no install step** — every directory keeps working from
   a bare clone (`cd src2019_06 && python test_all.py`).

@@ -96,6 +96,13 @@ ends with a *References* section resolving those tags to complete SPWLA
 *Petrophysics* citations (title, authors, year, volume/issue/pages, DOI).
 `help(petrolib.<module>)` therefore shows the full bibliography of a domain.
 
+For a print-ready reference, the **Petrophysics Handbook**
+([Petrophysics_Handbook.pdf](Petrophysics_Handbook.pdf)) documents every
+public function alphabetically — purpose, input parameters, output, and full
+journal sources — and is regenerated with
+`python tools/gen_petrolib_handbook.py` (needs `pip install reportlab`, or
+`pip install -e ".[docs]"`).
+
 ## Testing and regression gates
 
 ```bash
