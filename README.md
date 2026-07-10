@@ -9,20 +9,29 @@ article into self-contained Python code with synthetic-data demonstrations.
 The implementations are meant for learning and experimentation, not as a
 replacement for the original papers.
 
-## Common library (`petrolib`) — migration in progress
+## Common library (`petrolib`)
 
-Shared physics and utilities are being consolidated into the [`petrolib/`](petrolib/)
-package so that article scripts import one canonical implementation instead of
-re-implementing it. See [LIBRARY_MERGE_PLAN.md](LIBRARY_MERGE_PLAN.md) for the plan and
-[CONVENTIONS.md](CONVENTIONS.md) for the API and migration rules.
+Shared physics and utilities live in the [`petrolib/`](petrolib/) package: one canonical,
+tested implementation per petrophysics domain (porosity/lithology, saturation/resistivity,
+capillary pressure, relative permeability, flow, NMR, acoustics/geomechanics, geochemistry
+and fluids, EM/dielectric, nuclear, inversion numerics, depth matching and corrections,
+borehole images, wellbore geometry, well integrity/drilling, data QC/IO). The migration
+described in [LIBRARY_MERGE_PLAN.md](LIBRARY_MERGE_PLAN.md) is **complete**: every article
+function identified as a duplicate now delegates to petrolib while keeping its historical
+name, signature, and — bit for bit — its published numeric output.
 
+- **Docs:** [docs/petrolib.md](docs/petrolib.md) (guide) and
+  [docs/petrolib-api.md](docs/petrolib-api.md) (generated API reference);
+  [CONVENTIONS.md](CONVENTIONS.md) has the API rules.
 - Running article scripts needs **no install step** — every directory keeps working from
   a bare clone (`cd src2019_06 && python test_all.py`).
-- `pip install -e .` (Python 3.10+) is optional; it installs `petrolib`, and
-  `pip install -e ".[dev]"` adds pytest/ruff/mypy.
+- `pip install -e .` (Python 3.10+) is optional; it installs `petrolib` (numpy-only core),
+  and `pip install -e ".[dev]"` adds pytest/ruff/mypy.
 - Repo-wide test harness: `python tools/run_all_issues.py` runs every directory's own
   test suite; `python tools/golden_diff.py` additionally compares each suite's printed
   output against the frozen baselines in `tools/golden/`.
+- Every petrolib docstring cites its source articles, and each module docstring ends with
+  a References section giving the complete SPWLA *Petrophysics* citations.
 
 ## Requirements
 
@@ -37,6 +46,10 @@ re-implementing it. See [LIBRARY_MERGE_PLAN.md](LIBRARY_MERGE_PLAN.md) for the p
 
 ```
 Petrophysics_Code/
+├── petrolib/     Common library — one canonical module per petrophysics domain
+├── docs/         petrolib guide + generated API reference
+├── tests/        pytest suite for petrolib + repo-wide harness tests
+├── tools/        run_all_issues / golden_diff harness, golden baselines, doc generator
 ├── src2014_02/   Vol. 55 No. 1 (Feb 2014)  —  5 modules + test suite
 ├── src2014_04/   Vol. 55 No. 2 (Apr 2014)  —  6 modules + test suite
 ├── src2015_02/   Vol. 56 No. 1 (Feb 2015)  —  5 modules + test suite
@@ -106,7 +119,8 @@ Petrophysics_Code/
 ├── src2025_10/   Vol. 66 No. 5 (Oct 2025)  — 11 modules + test suite
 ├── src2025_12/   Vol. 66 No. 6 (Dec 2025)  — 13 modules + test suite
 ├── src2026_02/   Vol. 67 No. 1 (Feb 2026)  — 11 modules + test suite
-└── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules + test suite
+├── src2026_04/   Vol. 67 No. 2 (Apr 2026)  — 12 modules + test suite
+└── src2026_06/   Vol. 67 No. 3 (Jun 2026)  — 10 modules + test suite
 ```
 
 ---
@@ -1407,6 +1421,7 @@ python -m src2025_10.a1_log_interpretation
 python -m src2025_12.pgs_rock_typing
 python -m src2026_02.depth_alignment
 python -m src2026_04.a01_sponge_core_saturation_uncertainty
+python -m src2026_06.a01_carbonate_pore_type_dielectric
 ```
 
 Each package includes a master test runner:
@@ -1431,6 +1446,7 @@ python -m src2025_10.test_all
 python -m src2025_12.test_all
 python -m src2026_02.test_all
 python -m src2026_04.test_all
+python -m src2026_06.test_all
 ```
 
 The `src2026_04` modules each export an `example_workflow()` function that
@@ -1440,6 +1456,19 @@ demonstrates the key algorithms with synthetic data:
 from src2026_04 import a12_depth_shifting_ml
 
 a12_depth_shifting_ml.example_workflow()
+```
+
+The shared physics can also be used directly (see
+[docs/petrolib.md](docs/petrolib.md) and the
+[API reference](docs/petrolib-api.md)):
+
+```python
+import petrolib
+
+petrolib.units.convert(7.0, "bar", "psi")            # 101.526...
+petrolib.porosity_lithology.pay_flag(
+    phi=[0.05, 0.12], vsh=[0.2, 0.3], phi_cut=0.08)  # [False, True]
+help(petrolib.nmr)  # docstrings carry full SPWLA Petrophysics citations
 ```
 
 ## Disclaimer
