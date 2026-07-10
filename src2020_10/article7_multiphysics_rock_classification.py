@@ -49,31 +49,17 @@ def glcm(image, levels, offset=(0, 1)):
     image is quantized to [0, levels); counts co-occurrences for the given
     (drow, dcol) offset.  Returns an (levels x levels) probability matrix.
     """
-    img = np.asarray(image)
-    q = np.clip((img - img.min()) / (img.max() - img.min() + 1e-12) * (levels - 1),
-                0, levels - 1).astype(int)
-    G = np.zeros((levels, levels))
-    dr, dc = offset
-    nr, nc = q.shape
-    for r in range(nr - max(dr, 0)):
-        for c in range(nc - max(dc, 0)):
-            i, j = q[r, c], q[r + dr, c + dc]
-            G[i, j] += 1
-            G[j, i] += 1
-    s = G.sum()
-    return G / s if s > 0 else G
+    return petrolib.borehole_image.glcm(image, levels=levels, offset=offset)
 
 
 def glcm_contrast(G):
     """GLCM contrast  sum_ij G(i,j)*(i-j)^2  (Eq. 2)."""
-    n = G.shape[0]
-    i, j = np.meshgrid(np.arange(n), np.arange(n), indexing="ij")
-    return float(np.sum(G * (i - j) ** 2))
+    return petrolib.borehole_image.glcm_features(G)["contrast"]
 
 
 def glcm_energy(G):
     """GLCM energy (angular second moment)  sum_ij G(i,j)^2  (Eq. 3)."""
-    return float(np.sum(G ** 2))
+    return petrolib.borehole_image.glcm_features(G)["energy"]
 
 
 def experimental_variogram(trace, max_lag):

@@ -24,27 +24,24 @@ the segmentation / uncertainty-propagation method the paper applies.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- segmentation -----------
 
 def porosity_from_threshold(image, threshold):
     """Porosity = fraction of voxels below the threshold (pore = dark)."""
-    return float(np.mean(np.asarray(image, float) < threshold))
+    return petrolib.borehole_image.porosity_from_mask(np.asarray(image, float) < threshold)
 
 
 def otsu_threshold(image, bins=256):
     """Otsu threshold maximizing between-class variance of the histogram."""
-    img = np.asarray(image, float).ravel()
-    hist, edges = np.histogram(img, bins=bins, range=(img.min(), img.max()))
-    p = hist / hist.sum()
-    centers = 0.5 * (edges[:-1] + edges[1:])
-    omega = np.cumsum(p)
-    mu = np.cumsum(p * centers)
-    mu_t = mu[-1]
-    denom = omega * (1.0 - omega)
-    denom[denom == 0] = 1e-12
-    sigma_b2 = (mu_t * omega - mu) ** 2 / denom
-    return float(centers[np.argmax(sigma_b2)])
+    return petrolib.borehole_image.otsu_threshold(image, bins=bins)
 
 
 def porosity_uncertainty(image, threshold, threshold_std):
@@ -61,11 +58,8 @@ def porosity_uncertainty(image, threshold, threshold_std):
 
 def three_phase_fractions(image, t_pore, t_clay):
     """Pore (<t_pore), clay (t_pore..t_clay), grain (>=t_clay) fractions."""
-    img = np.asarray(image, float)
-    pore = float(np.mean(img < t_pore))
-    clay = float(np.mean((img >= t_pore) & (img < t_clay)))
-    grain = float(np.mean(img >= t_clay))
-    return pore, clay, grain
+    pore, clay, grain = petrolib.borehole_image.class_fractions(image, [t_pore, t_clay])
+    return float(pore), float(clay), float(grain)
 
 
 # ---------------------------------------------- tests --------------

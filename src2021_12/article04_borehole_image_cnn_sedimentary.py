@@ -29,6 +29,13 @@ classification primitives, so the module runs with numpy alone.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # 4-level bedform classification hierarchy (Rubin 1987 / Fig. 2)
 SHAPE = ["2D", "3D"]                 # planform shape
 TIME = ["inv", "var"]                # variability through time
@@ -44,9 +51,7 @@ def bed_sinusoid(phi_deg, z0, radius, dip_deg, azimuth_deg):
     z(phi) = z0 - radius*tan(dip) * cos(phi - azimuth).
     Amplitude = radius*tan(dip); minimum (deepest) at the dip azimuth.
     """
-    phi = np.radians(np.asarray(phi_deg, float))
-    a = np.radians(azimuth_deg)
-    return z0 - radius * np.tan(np.radians(dip_deg)) * np.cos(phi - a)
+    return petrolib.borehole_image.bed_sinusoid(phi_deg, z0, radius, dip_deg, azimuth_deg)
 
 
 def fit_sinusoid(phi_deg, z, radius):
