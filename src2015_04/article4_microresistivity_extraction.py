@@ -37,9 +37,7 @@ except ImportError:  # bare clone, not installed
 
 def histogram_scale(image, ref_min, ref_max):
     """Linear min-max histogram scaling of an image array onto [ref_min, ref_max]."""
-    img = np.asarray(image, float)
-    lo, hi = np.min(img), np.max(img)
-    return ref_min + (img - lo) * (ref_max - ref_min) / (hi - lo)
+    return petrolib.data_qc_io.scale.normalize_to_reference(image, ref_min, ref_max, pct=None)
 
 
 def median_curve(image_array):

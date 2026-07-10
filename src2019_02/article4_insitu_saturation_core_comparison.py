@@ -60,7 +60,7 @@ def reconstruct_insitu(so_measured, sg_measured, retention):
 
 def closure(sw, so, sg):
     """Saturation closure residual  Sw + So + Sg - 1 (should be ~0)."""
-    return sw + so + sg - 1.0
+    return float(petrolib.data_qc_io.clean.closure_residual(sw, so, sg))
 
 
 # ---------------------------------------------- tests --------------

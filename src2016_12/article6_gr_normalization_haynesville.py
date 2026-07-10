@@ -26,13 +26,20 @@ API.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- normalization --------------
 
 def histogram_normalize(gr, gr_min, gr_max, ref_min, ref_max):
     """Linear histogram normalization of a GR log onto a reference [ref_min, ref_max]."""
-    gr = np.asarray(gr, float)
-    return ref_min + (gr - gr_min) * (ref_max - ref_min) / (gr_max - gr_min)
+    return petrolib.data_qc_io.scale.normalize_to_reference(
+        gr, ref_min, ref_max, in_lo=gr_min, in_hi=gr_max)
 
 
 def tst_projection(gr_vertical, tst_vertical, tst_query):
@@ -47,8 +54,7 @@ def affine_normalize(gr_raw, target_mean, target_std):
 
         GR_norm = (GR_raw - mean)/std * target_std + target_mean.
     """
-    gr = np.asarray(gr_raw, float)
-    return (gr - gr.mean()) / gr.std() * target_std + target_mean
+    return petrolib.data_qc_io.scale.match_moments(gr_raw, target_mean, target_std)
 
 
 def max_percent_shift(gr_raw, gr_norm):

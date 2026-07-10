@@ -50,17 +50,12 @@ def zscore_outliers(x, thresh=3.0):
 
 def iqr_outliers(x, k=1.5):
     """Boolean mask of IQR outliers (outside Q1 - k*IQR, Q3 + k*IQR)."""
-    x = np.asarray(x, float)
-    q1, q3 = np.percentile(x, [25, 75]); iqr = q3 - q1
-    return (x < q1 - k * iqr) | (x > q3 + k * iqr)
+    return petrolib.data_qc_io.clean.outlier_mask(x, "iqr", k=k)
 
 
 def impute_gaps(x):
     """Fill NaN gaps by linear interpolation over the index."""
-    x = np.asarray(x, float).copy()
-    idx = np.arange(len(x)); good = ~np.isnan(x)
-    x[~good] = np.interp(idx[~good], idx[good], x[good])
-    return x
+    return petrolib.data_qc_io.clean.impute_gaps(x)
 
 
 # ---------------------------------------------- tests --------------
