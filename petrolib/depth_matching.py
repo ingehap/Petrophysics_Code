@@ -14,6 +14,39 @@ parameters so a caller can reproduce its exact variant:
 Sign convention: a returned lag/shift is the value to feed back into
 :func:`apply_integer_shift` / :func:`apply_depth_shift` to align the target onto
 the reference; a positive integer lag moves the target to greater depth (index).
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2018_12/article10_ml_depth_matching -- Article 10: Machine-Learning-Based Automatic Well-Log
+  Depth Matching. Zimmermann, Liang, Zeroug (2018). DOI: 10.30632/PJV59N6Y2018a9. Petrophysics Vol.
+  59 No. 6 (Dec 2018) — Special Issue: Data-Driven Analytics in Logging and Petrophysics.
+src2019_08/article1_ml_well_log_correlation -- Article 1: A Machine-Learning-Based Approach to
+  Assistive Well-Log Correlation. Brazell, Bayeh, Ashby, Burton (2019). DOI:
+  10.30632/PJV60N4-2019a1. Petrophysics Vol. 60 No. 4 (Aug 2019).
+src2019_10/article3_ml_depth_matching -- Article 3: A Machine-Learning Framework for Automating
+  Well-Log Depth Matching. Le, Liang, Zimmermann, Zeroug, Heliot (2019). DOI:
+  10.30632/PJV60N5-2019a3. Petrophysics Vol. 60 No. 5 (Oct 2019).
+src2022_02/article3_log_analytics_dtw_xcorr -- Article 3: Automated Log Data Analytics Workflow -
+  The Value of Data Access and Management to Reduced Turnaround Time for Log Analysis. Torres
+  Caceres, Duffaut, Westad, Stovas, Johansen, Jenssen (2022). DOI: 10.30632/PJV63N1-2022a3.
+  Petrophysics Vol. 63 No. 1 (Feb 2022).
+src2023_02/article9_depth_matching -- Article 9: Automated Well-Log Pattern Alignment and Depth-
+  Matching Techniques: An Empirical Review and Recommendations. Ezenkwu, Guntoro, Starkey, Vaziri,
+  Addario (2023). DOI: 10.30632/PJV64N1-2023a9. Petrophysics Vol. 64 No. 1 (Feb 2023).
+src2025_06/toc_prediction -- Comparative Analysis of TOC Logging Evaluation Methods Using Machine
+  Learning Implements the methodology from: Dong, M., Shang, J., Tian, L., Wu, M., and Nie, X.,
+  2025, "Comparative Analysis of TOC Logging Evaluation Methods Using Machine Learning – A Case
+  Study of the Ordos Basin-Yanchang Formation," Petrophysics, Vol. 66, No. 3, pp. 425–448.
+src2026_02/depth_alignment -- Article 4: Dynamic Depth Alignment of Well Logs: A Continuous
+  Optimization Framework for Enhanced Petrophysical and Rock Physics Interpretation. Westeng et al.
+  (2026), Petrophysics, 67(1), 54-67. DOI: 10.30632/PJV67N1-2026a4.
+src2026_04/a12_depth_shifting_ml -- Pan, W., Fu, L., Xu, C., Ashby, M., Lee, H., Lee, J., Meng, F.,
+  Chen, S., Ye, Y., Jiang, H., Kim, H., Kong, H., Baek, I., Baek, J., Sun, X., Sun, H., Li, S.,
+  Zhao, Z., Ke, Y., ... and Park, J. (2026). Automatic Well-Log Depth Shifting With Data-Driven
+  Approaches: A Contest Summary. Petrophysics, 67(2), 437–462. DOI: 10.30632/PJV67N2-2026a12.
 """
 
 from __future__ import annotations
@@ -74,6 +107,10 @@ def dtw(
     (``cost='absdiff'``) difference.  ``band`` is the Sakoe-Chiba half-width
     (``None`` = full).  Returns the total ``distance`` (``sqrt`` of it if
     ``root=True``), the backtracked 0-based ``path`` and the accumulated matrix.
+
+    Sources: src2018_12/article10_ml_depth_matching,
+    src2019_08/article1_ml_well_log_correlation, src2019_10/article3_ml_depth_matching,
+    src2022_02/article3_log_analytics_dtw_xcorr, src2023_02/article9_depth_matching.
     """
     x = _arr(ref)
     y = _arr(target)
@@ -162,6 +199,8 @@ def warp_to_reference(
     For each reference index the matched ``target`` samples are combined
     (``reduce='mean'``); reference indices absent from the path are filled from
     the nearest populated index.
+
+    Sources: src2023_02/article9_depth_matching.
     """
     if reduce != "mean":
         raise ValueError(f"unknown reduce {reduce!r}; use 'mean'")
@@ -183,7 +222,10 @@ def warp_to_reference(
 def path_depth_shifts(
     path: list[tuple[int, int]], depth_ref: ArrayLike, depth_target: ArrayLike
 ) -> tuple[_Float, _Float]:
-    """Per-depth correction from a DTW path: ``(depth_ref[i], depth_target[j]-depth_ref[i])``."""
+    """Per-depth correction from a DTW path: ``(depth_ref[i], depth_target[j]-depth_ref[i])``.
+
+    Sources: src2026_04/a12_depth_shifting_ml.
+    """
     dref = _arr(depth_ref)
     dtgt = _arr(depth_target)
     depths = np.array([dref[i] for i, _ in path])
@@ -209,6 +251,8 @@ def cow(
     Greedily adjusts ``n_segments`` interior segment boundaries of ``target``
     within +/-``slack`` to maximise the piecewise segment correlation with
     ``ref``, then piecewise-linearly remaps ``target`` onto the reference grid.
+
+    Sources: src2023_02/article9_depth_matching.
     """
     x = _arr(ref)
     y = _arr(target)
@@ -249,6 +293,10 @@ def xcorr_shift(
     ``edge='trim'`` correlates only the overlapping samples; ``edge='wrap'`` uses
     a circular ``np.roll``.  Returns the best ``lag``, its correlation and (if
     ``return_curve``) the full correlation-vs-lag curve.
+
+    Sources: src2018_12/article10_ml_depth_matching,
+    src2019_08/article1_ml_well_log_correlation, src2019_10/article3_ml_depth_matching,
+    src2026_04/a12_depth_shifting_ml.
     """
     x = _arr(ref)
     y = _arr(target)
@@ -290,6 +338,8 @@ def xcorr_shift_depth(
     the shifted ``depth_a`` and maximising the Pearson correlation (its absolute
     value if ``use_abs_corr``).  ``b`` may be a single curve or ``(n, k)``
     multi-curve array.  Returns ``(best_shift, best_corr)``.
+
+    Sources: src2025_06/toc_prediction.
     """
     da = _arr(depth_a)
     av = _arr(a)
@@ -323,6 +373,8 @@ def local_shifts(
     Over sliding windows (length ``window``, stride ``step``) picks the lag that
     maximises the mean-removed full cross-correlation, clipped to
     ``[-max_lag, max_lag]``.
+
+    Sources: src2018_12/article10_ml_depth_matching.
     """
     r = _arr(ref)
     t = _arr(target)
@@ -345,6 +397,8 @@ def apply_integer_shift(log: ArrayLike, lag: int, *, fill: float = np.nan) -> _F
 
     A positive ``lag`` moves samples to greater depth (index); the exposed edge
     is filled with ``fill``.
+
+    Sources: src2026_04/a12_depth_shifting_ml.
     """
     x = _arr(log)
     n = x.size
@@ -362,6 +416,8 @@ def apply_depth_shift(values: ArrayLike, depth: ArrayLike, shift: ArrayLike) -> 
     Resamples ``values`` from ``depth + shift`` back onto ``depth`` with
     endpoint clamping; ``shift`` may be a scalar bulk shift or a per-sample
     array.
+
+    Sources: src2026_02/depth_alignment.
     """
     v = _arr(values)
     z = _arr(depth)

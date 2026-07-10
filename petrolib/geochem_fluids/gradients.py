@@ -6,6 +6,25 @@ fluid contact (GOC/OWC) from the intersection of two gradients.
 SI by default: depth in m, pressure in Pa (``density_from_gradient`` accepts other
 gradient units via ``p_unit=``).  Sources: src2017_08/article4,
 src2021_02/article6, src2023_10/article_10.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2017_08/article4 -- Article 4: The Impact of Depth and Pressure Measurement Errors on the
+  Estimation of Pressure Gradients. Bowers, Schnacke, Hermance (2017). Petrophysics Vol. 58, No. 4
+  (August 2017), pp. 376-396. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2021_02/article6 -- Article 6: Formation Evaluation With NMR, Resistivity, and Pressure Data - A
+  Case Study of a Carbonate Oil Field Offshore West Africa. Li, Drinkwater, Whittlesey, Condon
+  (2021). DOI: 10.30632/PJV62N1-2021a5. Petrophysics Vol. 62 No. 1 (Feb 2021).
+src2021_02/article6_nmr_resistivity_pressure_carbonate -- Article 6: Formation Evaluation With NMR,
+  Resistivity, and Pressure Data - A Case Study of a Carbonate Oil Field Offshore West Africa. Li,
+  Drinkwater, Whittlesey, Condon (2021). DOI: 10.30632/PJV62N1-2021a5. Petrophysics Vol. 62 No. 1
+  (Feb 2021).
+src2023_10/article_10 -- Mohamed, T. S., Torres-Verdin, C., and Mullins, O. C. (2023). "Enhanced
+  Reservoir Description via Areal Data Integration and Reservoir Fluid Geodynamics: A Case Study
+  From Deepwater Gulf of Mexico." Petrophysics, 64(5), 773-795. DOI: 10.30632/PJV64N5-2023a10.
 """
 
 from __future__ import annotations
@@ -22,7 +41,10 @@ _BAR_TO_PA = 1.0e5
 
 
 def fit_pressure_gradient(depth_m: ArrayLike, p: ArrayLike) -> tuple[float, float]:
-    """Least-squares pressure-depth gradient -> ``(dP/dz, P0)`` (slope, intercept)."""
+    """Least-squares pressure-depth gradient -> ``(dP/dz, P0)`` (slope, intercept).
+
+    Sources: src2021_02/article6_nmr_resistivity_pressure_carbonate.
+    """
     d = np.asarray(depth_m, np.float64)
     pa = np.asarray(p, np.float64)
     a = np.vstack([d, np.ones_like(d)]).T
@@ -52,6 +74,8 @@ def fluid_contact(depth_a: ArrayLike, p_a: ArrayLike, depth_b: ArrayLike, p_b: A
 
     ``(depth_a, p_a)`` and ``(depth_b, p_b)`` are the point sets for the two
     fluid columns; each is fit to a line and the intersection depth returned.
+
+    Sources: src2021_02/article6_nmr_resistivity_pressure_carbonate.
     """
     s1, b1 = fit_pressure_gradient(depth_a, p_a)
     s2, b2 = fit_pressure_gradient(depth_b, p_b)

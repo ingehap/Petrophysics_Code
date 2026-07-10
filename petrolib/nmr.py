@@ -28,6 +28,145 @@ Units follow the article convention: T1/T2 in ms, surface relaxivity rho in
 um/s, S/V in 1/um, diffusivity D in um2/ms, gradient G in T/m, echo spacing TE
 in ms, permeability in mD, porosity a fraction.  numpy-only at import; any
 fit/inversion routine imports scipy lazily.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2014_06/article3 -- Article 3: Magnetic Resonance Core-Plug Analysis with the Three-Magnet Array
+  Unilateral Magnet Juan C. Garcia-Naranjo, Pan Guo, Florin Marica, Guangzhi Liao, Bruce J. Balcom
+  (2014). Petrophysics Vol. 55, No. 3 (June 2014), pp. 229-239. DOI: none assigned (this issue
+  predates SPWLA DOI assignment).
+src2014_06/article4 -- Article 4: Method for Predicting Permeability of Complex Carbonate
+  Reservoirs Using NMR Logging Measurements Willian Trevizan, Paulo Neto, Bernardo Coutinho,
+  Vinicius F. Machado, Edmilson H. Rios, Songhua Chen, Wei Shao, Pedro Romero (2014). Petrophysics
+  Vol. 55, No. 3 (June 2014), pp. 240-252. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2014_12/article3 -- Article 3: Experimental Study of the Effects of Wettability and Fluid
+  Saturation on NMR and Dielectric Measurements in Limestone Lalitha Venkataramanan, Martin D.
+  Hurlimann, Jeffrey A. Tarvin, Kamilla Fellah, Diana Acero-Allard, Nikita V. Seleznev (2014).
+  Petrophysics Vol. 55, No. 6 (December 2014), pp. 572-586. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2015_02/article3 -- Article 3: Coupling Multiphase Hydrodynamic and NMR Pore-Scale Modeling for
+  Advanced Characterization of Saturated Rocks. Evseev, Dinariev, Hurlimann, Safonov (2015).
+  Petrophysics Vol. 56, No. 1 (February 2015), pp. 32-44. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2015_04/article5 -- Article 5: New Method to Estimate Porosity More Accurately from NMR Data
+  with Short Relaxation Times. Venkataramanan, Gruber, LaVigne, Habashy, Iglesias, Cohorn, Anand,
+  Rampurawala, Jain, Heaton, Akkurt, Rylander, Lewis (2015). Petrophysics Vol. 56, No. 2 (April
+  2015), pp. 147-157. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_08/article1 -- Article 1: Subsurface Fluid Characterization Using Downhole and Core NMR
+  T1-T2 Maps Combined with Pore-Scale Imaging Techniques. Lessenger, Merkel, Medina, Ramakrishna,
+  Chen, Balliet, Xie, Bhattad, Carnerup, Knackstedt (2015). Petrophysics Vol. 56, No. 4 (August
+  2015), pp. 313-333. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_10/article3 -- Article 3: Using Advanced Logging Measurements to Develop a Robust
+  Petrophysical Model for the Bakken Petroleum System. Simpson, Hohman, Pirie, Horkowitz (2015).
+  Petrophysics Vol. 56, No. 5 (October 2015), pp. 457-478. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2015_12/article1 -- Article 1: Reservoir Characterization Challenges Due to the Multiscale
+  Spatial Heterogeneity in the Presalt Carbonate Sag Formation, North Campos Basin, Brazil.
+  Chitale, Alabi, Gramin, Lepley, Piccoli (2015). Petrophysics Vol. 56, No. 6 (December 2015), pp.
+  552-576. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2016_02/article2 -- Article 2: Estimating Saturations in Organic Shales Using 2D NMR. Nicot,
+  Vorapalawut, Rousseau, Madariaga, Hamon, Korb (2016). Petrophysics Vol. 57, No. 1 (February
+  2016), pp. 19-29. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2016_08/article1 -- Article 1: NMR Relaxometry in Shale and Implications for Logging. Kausik,
+  Fellah, Rylander, Singer, Lewis, Sinclair (2016). Petrophysics Vol. 57, No. 4 (August 2016), pp.
+  339-350. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2016_08/article2 -- Article 2: Predicting Carbonate Rock Properties Using NMR Data and
+  Generalized Interpolation-Based Techniques. Kwak, Hursan, Shao, Chen, Balliet, Eid, Guergueb
+  (2016). Petrophysics Vol. 57, No. 4 (August 2016), pp. 351-368. DOI: none assigned (this issue
+  predates SPWLA DOI assignment).
+src2016_12/article4 -- Article 4: Fluid Typing and Pore Size in Organic Shale Using 2D NMR in
+  Saturated Kerogen Isolates. Singer, Chen, Hirasaki (2016). Petrophysics Vol. 57, No. 6 (December
+  2016), pp. 604-619. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2017_04/article3 -- Article 3: A Laboratory Study of the Link Between NMR Relaxation Data and
+  Pore Size In Carbonate Skeletal Grains and Micrite. El-Husseiny, Knight (2017). Petrophysics Vol.
+  58, No. 2 (April 2017), pp. 116-125. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2017_04/article4 -- Article 4: Low-Field NMR Spectrometry of Chalk and Argillaceous Sandstones:
+  Rock-Fluid Affinity Assessed from T1/T2 Ratio. Katika, Saidian, Prasad, Fabricius (2017).
+  Petrophysics Vol. 58, No. 2 (April 2017), pp. 126-140. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2017_06/article2 -- Article 2: A Novel Determination of Total Gas-In-Place (TGIP) for Gas Shale
+  From Magnetic Resonance Logs. Kausik, Kleinberg, Rylander, Lewis, Sibbit, Westacott (2017).
+  Petrophysics Vol. 58, No. 3 (June 2017), pp. 232-241. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2017_08/article1 -- Article 1: High- and Low-Field NMR Relaxometry and Diffusometry of the
+  Bakken Petroleum System. Kausik, Fellah, Feng, Simpson (2017). Petrophysics Vol. 58, No. 4
+  (August 2017), pp. 341-351. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2017_10/article2 -- Article 2: Effects of Bitumen Extraction on the 2D NMR Response of Saturated
+  Kerogen Isolates. Chen, Singer, Kuang, Vargas, Hirasaki (2017). Petrophysics Vol. 58, No. 5
+  (October 2017), pp. 470-484. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2018_04/article3 -- Article 3: Nuclear Magnetic Resonance and Pore Coupling in Clay-Coated
+  Sandstones With Anomalous Porosity Preservation, Agua Grande Formation, Reconcavo Basin, Brazil.
+  Jacomo, Trindade, de Oliveira, Leite, Montrazi, Andreeta, Bonagamba (2018). DOI:
+  10.30632/PJV59N2-2018a2. Petrophysics Vol. 59 No. 2 (Apr 2018).
+src2019_02/article3 -- Article 3: Frequency and Temperature Dependence of 2D NMR T1-T2 Maps of
+  Shale. Kausik, Freed, Fellah, Feng, Ling, Simpson (2019). DOI: 10.30632/PJV60N1Y2019a2.
+  Petrophysics Vol. 60 No. 1 (Feb 2019).
+src2019_06/article5 -- Article 5: Application of a Fast NMR T1 Relaxation Time Measurement to
+  Sedimentary Rock Cores. Mitchell, Valori (2019). DOI: 10.30632/PJV60N3-2019a4. Petrophysics Vol.
+  60 No. 3 (Jun 2019).
+src2019_12/article5 -- Article 5: NMR Evaluation of Light-Hydrocarbon Composition, Pore Size, and
+  Tortuosity in Organic-Rich Chalks. Chen, Singer, Wang, Vinegar, Nguyen, Hirasaki (2019). DOI:
+  10.30632/PJV60N6-2019a5. Petrophysics Vol. 60 No. 6 (Dec 2019).
+src2019_12/article6 -- Article 6: Influence of Magnetic Susceptibility Contrast on NMR Studies -
+  Experimental Analysis From Siliciclastic Reservoirs. Sarkar, Chatterjee, Lal, Kumar, Deo (2019).
+  DOI: 10.30632/PJV60N6-2019a6. Petrophysics Vol. 60 No. 6 (Dec 2019).
+src2020_04/article2 -- Article 2: A New Apparatus for Coupled Low-Field NMR and Ultrasonic
+  Measurements in Rocks at Reservoir Conditions. Connolly, Sarout, Dautriat, May, Johns (2020).
+  DOI: 10.30632/PJV61N2-2020a2. Petrophysics Vol. 61 No. 2 (Apr 2020).
+src2021_04/article1 -- Article 1: Pore-Structure Characterization of a Complex Carbonate Reservoir
+  in South Iraq Using Advanced Interpretation of NMR Logs. Saidian, Jain, Milad (2021). DOI:
+  10.30632/PJV62N2-2021a1. Petrophysics Vol. 62 No. 2 (Apr 2021).
+src2021_04/article5 -- Article 5: An Integrated Petrophysical Workflow for Fluid Characterization
+  and Contacts Identification Using NMR Continuous and Stationary Measurements in a High-Porosity
+  Sandstone Formation, Offshore Norway. Kozlowski, Chakraborty, Jambunathan, Lowrey, Balliet,
+  Engelman, Anensen, Kotwicki, Johansen (2021). DOI: 10.30632/PJV62N2-2021a5. Petrophysics Vol. 62
+  No. 2 (Apr 2021).
+src2021_06/article2 -- Article 2: Pore Size, Tortuosity, and Permeability From NMR Restricted
+  Diffusion in Organic-Rich Chalks. Wang, Singer, Liu, Chen, Hirasaki, Vinegar (2021). DOI:
+  10.30632/PJV62N3-2021a1. Petrophysics Vol. 62 No. 3 (Jun 2021).
+src2021_08/article3 -- Article 3: NMR Fluid Substitution - A New Method of Reconstructing T2
+  Distributions Under Primary Drainage and Imbibition Conditions. Li, Kesserwan, Jin, Ma (2021).
+  DOI: 10.30632/PJV62N4-2021a2. Petrophysics Vol. 62 No. 4 (Aug 2021).
+src2022_06/article1 -- Article 1: Integrated Reservoir Characterization Using Unsupervised Learning
+  on Nuclear Magnetic Resonance (NMR) T1-T2 Logs. Jiang, Bonnie, Correa, Krueger, Kelly, Wasson
+  (2022). DOI: 10.30632/PJV63N3-2022a1. Petrophysics Vol. 63 No. 3 (Jun 2022) — NMR SIG Special
+  Issue.
+src2022_06/article3 -- Article 3: NMR Logging Data Processing. Shao, Balliet (2022). DOI:
+  10.30632/PJV63N3-2022a3. Petrophysics Vol. 63 No. 3 (Jun 2022) — NMR SIG Special Issue.
+src2022_06/article5 -- Article 5: NMR T1-T2 Logging in Unconventional Reservoirs: Pore-Size.
+  Distribution, Permeability, and Reservoir Quality. Ijasan, Macquaker, Luycx, Alzobaidi, Oyewole,
+  Rudnicki (2022). DOI: 10.30632/PJV63N3-2022a5. Petrophysics Vol. 63 No. 3 (Jun 2022) — NMR SIG
+  Special Issue.
+src2024_06/article6 -- Althaus, S., Chen, J., Sun, Q., and Broyles, J. D. (2024). "Determine Oil
+  and Water Saturations in Preserved Source Rocks From 2D T1-T2 NMR." Petrophysics 65(3), 388-396.
+  DOI: 10.30632/PJV65N3-2024a6.
+src2025_02/mr_bulk_saturation -- Bulk Saturation Measurement Using 13C and 1H Magnetic Resonance.
+  Ansaribaranghar et al., 2025, Petrophysics 66(1), 155-168. DOI:10.30632/PJV66N1-2025a11.
+src2025_04/unconventional_porosity -- Laboratory Measurement of Total Porosity and Fluid
+  Saturations for Unconventional Tight Rocks. Based on: Cheng et al., "Laboratory Measurement of
+  Total Porosity and Fluid Saturations for Unconventional Tight Rocks: Methodologies, Challenges,
+  and Comparison", Petrophysics, Vol. 66, No. 2, April 2025, pp. 250–266.
+src2025_06/cross_calibrated_permeability -- Cross-Calibrated Permeabilities: A Reliable and
+  Physically Coherent Methodology Implements the methodology from: Sifontes, V., Leal, L.A.,
+  Farfan, M., and Mussio Arias, A., 2025, "Cross-Calibrated Permeabilities: A Reliable and
+  Physically Coherent Methodology," Petrophysics, Vol. 66, No. 3, pp. 449–466.
+src2025_10/a6 -- Article 6: Enhanced Learning Experience for New Petrophysicists Using Open-Source
+  Carbonate Data and Python Programming Author: Imran M. Fadhil Ref: Petrophysics, Vol. 66, No. 5
+  (October 2025), pp. 807-838. DOI: 10.30632/PJV66N5-2025a6.
+src2026_02/nmr_discrete_inversion -- Article 3: Discrete Inversion Method for Nuclear Magnetic
+  Resonance Data Processing and Its Applications to Fluid Typing and Quantification. Gao et al.
+  (2026), Petrophysics, 67(1), 38-53. DOI: 10.30632/PJV67N1-2026a3.
+src2026_04/a07 -- Yu, H., Pan, B., Guo, Y., Wang, Y., Zhou, Y., and Li, Y. (2026). A Knowledge-
+  Guided Data-Driven Method for Predicting Reservoir Parameters. Petrophysics, 67(2), 351–373. DOI:
+  10.30632/PJV67N2-2026a7.
+src2026_06/a03 -- Manuaba, I. B. G. H., Najrani, H., Cavalleri, C., Moge, A., and Chapura, M.
+  (2026). Effect of Pore-Size Distribution on Fluid Movement in Complex Reservoirs. Petrophysics,
+  67(3), 509-524. DOI: 10.30632/PJV67N3-2026a3 (orig. SPE-227259-MS).
 """
 
 from __future__ import annotations

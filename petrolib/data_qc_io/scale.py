@@ -4,6 +4,21 @@ Only the reference-based normalizations live here; plain feature scaling is
 already canon in :mod:`petrolib.ml_stats` (``zscore``, ``minmax``,
 ``affine_rescale``).  Population std (``ddof=0``) throughout, matching every
 article copy.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2015_04/article4 -- Article 4: Microresistivity Curve Extraction from Borehole Microimager Data.
+  Roslin (2015). Petrophysics Vol. 56, No. 2 (April 2015), pp. 140-146. DOI: none assigned (this
+  issue predates SPWLA DOI assignment).
+src2016_12/article6 -- Article 6 (Technical Note): Normalizing Gamma-Ray Logs Acquired from a
+  Mixture of Vertical and Horizontal Wells in the Haynesville Shale. Xu, Bayer, Wunderle, Bansal
+  (2016). Petrophysics Vol. 57, No. 6 (December 2016), pp. 638-643. DOI: none assigned (this issue
+  predates SPWLA DOI assignment).
+src2021_12/article01 -- Article 1: Data Quality Considerations for Petrophysical Machine-Learning
+  Models. McDonald (2021). DOI: 10.30632/PJV62N6-2021a1. Petrophysics Vol. 62 No. 6 (Dec 2021).
 """
 
 from __future__ import annotations

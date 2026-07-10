@@ -24,6 +24,82 @@ Aug-2025 Well Integrity and Aug-2024 mud-gas special issues):
 SI in/out unless a suffix says otherwise (``*_psi``, ``*_bar``); acoustic
 impedance is in MRayl; keyword defaults are the most common values observed in
 the articles.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2014_04/article1_deepwater_gom_overview -- Article 1: Deepwater Exploration and Production in
+  the Gulf of Mexico - Challenges and Opportunities. Hani Elshahawi (2014). Petrophysics Vol. 55,
+  No. 2 (April 2014), pp. 81-87. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2014_04/article5_deepwater_formation_evaluation -- Article 5: Formation-Evaluation Challenges
+  and Opportunities in Deepwater Roland Chemali, Wade Samec, Ron Balliet, Paul Cooper, David
+  Torres, Chris Jones (2014). Petrophysics Vol. 55, No. 2 (April 2014), pp. 124-135. DOI: none
+  assigned (this issue predates SPWLA DOI assignment).
+src2019_02/article5_composite_cement_well_integrity -- Article 5: Novel Composite Cement for
+  Improved Well Integrity Evaluation. Elshahawi, Huang, Pollock, Veedu (2019). DOI:
+  10.30632/PJV60N1Y2019a4. Petrophysics Vol. 60 No. 1 (Feb 2019).
+src2019_10/article6_microct_invasion_mudcake -- Article 6: Experimental Method for Time-Lapse
+  Micro-CT Imaging of Mud-Filtrate Invasion and Mudcake Deposition. Schroeder, Torres-Verdin
+  (2019). DOI: 10.30632/PJV60N5-2019a6. Petrophysics Vol. 60 No. 5 (Oct 2019).
+src2020_08/article1_flexural_attenuation_casing -- Article 1: A Study of the Flexural Attenuation
+  Technique Through Laboratory Measurements and Numerical Simulations. Sirevaag, Johansen, Larsen,
+  Holt (2020). DOI: 10.30632/PJV61N4-2020a1. Petrophysics Vol. 61 No. 4 (Aug 2020).
+src2021_02/article1_mudlog_net_pay_tutorial -- Article 1 (Tutorial): Maximizing Value From Mudlogs
+  - Integrated Approach to Determine Net Pay. Malik, Hanson, Clinch (2021). DOI:
+  10.30632/PJV62N1-2021t1. Petrophysics Vol. 62 No. 1 (Feb 2021).
+src2021_12/article07_multistring_isolation_acoustic -- Article 7: Case Studies on Multistring
+  Isolation Evaluation in P&A Operations. Zhang, Mueller, Bryce, Brockway, Iskander (2021). DOI:
+  10.30632/PJV62N6-2021a7. Petrophysics Vol. 62 No. 6 (Dec 2021).
+src2021_12/article08_overbalanced_drilling_correction -- Article 8: The Impact of Overbalanced
+  Drilling From Exploration/Appraisal Wells to Field Development Plan. Mohammadlou, Reppert, Del
+  Negro, Jones (2021). DOI: 10.30632/PJV62N6-2021a8. Petrophysics Vol. 62 No. 6 (Dec 2021).
+src2022_02/article4_ultrasonic_creeping_shale -- Article 4: Ultrasonic Logging of Creeping Shale.
+  Diez, Johansen, Larsen (2022). DOI: 10.30632/PJV63N1-2022a4. Petrophysics Vol. 63 No. 1 (Feb
+  2022).
+src2022_04/article4_microct_filtercake -- Article 4: In-Situ Visualization and Characterization of
+  Filter-Cake Deposition Using Time-Lapse Micro-CT Imaging. Schroeder, Torres-Verdin (2022). DOI:
+  10.30632/PJV63N2-2022a4. Petrophysics Vol. 63 No. 2 (Apr 2022).
+src2022_10/article5_cement_acid_gas_corrosion -- Article 5: Corrosion Behavior and Mechanism
+  Analysis of Oilwell Cement Under CO2 and H2S Conditions. Zhou, Zeng, Sun, Zhou, Lei, Wan, Luo,
+  Wu, Zhang, Xiao (2022). DOI: 10.30632/PJV63N5-2022a5. Petrophysics Vol. 63 No. 5 (Oct 2022).
+src2023_08/article2_invasion_simulation -- Implements the rock/fluid/mudcake equations and the
+  radial 1-D mud-filtrate invasion + Archie-resistivity workflow described in: Merletti, G., Al
+  Hajri, S., Rabinovich, M., Farmer, R., Bennis, M., Torres-Verdín, C. (2023). "Assessment of True
+  Formation Resistivity and Water Saturation in Deeply Invaded Tight-Gas Sandstones Based on the
+  Combined Numerical Simulation of Mud-Filtrate Invasion and Resistivity Logs", Petrophysics, Vol.
+  64, No. 4, pp. 502-517. DOI: 10.30632/PJV64N4-2023a2.
+src2024_08/mudgas_response -- What Causes Mud-Logging Mud Gas Response to Vary and Two Techniques
+  to Quantify. Based on: Donovan, W.S. (2024), "What Causes Mud-Logging Mud Gas Response to Vary
+  and Two Techniques to Quantify Mud Gas," Petrophysics, 65(4), pp. 565-584. DOI:
+  10.30632/PJV65N4-2024a10.
+src2024_12/m04_well_integrity_ccs -- Well Integrity Measurements Throughout the CCS Project Life
+  Cycle. Based on: Valstar, Nettleton, Borchardt, Costeno, Landry, and Laronga (2024), Petrophysics
+  65(6), pp. 896-912. DOI: 10.30632/PJV65N6-2024a4.
+src2024_12/m05_casing_cement_inspection -- Casing and Cement Inspection: Logging Two Casing Sizes
+  Simultaneously. Based on: Hawthorn, Ingebretson, Girneata, Delabroy, Winther, Steinsiek, and
+  Leslie (2024), Petrophysics 65(6), pp. 913-918. DOI: 10.30632/PJV65N6-2024a5.
+src2025_04/microannuli_leak_rate -- Advanced Ultrasonic Log Analysis and Mechanistic Modeling for
+  Leak Rate Quantification Through Microannuli. Based on: Machicote et al., "The Road Through
+  Microannuli: Advanced Ultrasonic Log Analysis and Mechanistic Modeling for Leak Rate
+  Quantification", Petrophysics, Vol. 66, No. 2, April 2025, pp. 331–347.
+src2025_04/overpressure_isotope -- Genetic Analysis of Overpressure While Drilling Based on Isotope
+  Logging. Based on: Hu et al., "Genetic Analysis of Overpressure While Drilling Based on Isotope
+  Logging Technology", Petrophysics, Vol. 66, No. 2, April 2025, pp. 283–293.
+src2025_08/cement_snhr_emi -- Module 10: Through-Tubing Cement Evaluation (SNHR + EMI + ML)
+  Implements ideas from: Zeghlache et al., "Challenges and Solutions for Advanced Through- Tubing
+  Cement Evaluation," Petrophysics, vol. 66, no. 4, pp. 677–688, August 2025.
+src2025_08/seven_pipe_em_corrosion -- Module 3: Seven-Pipe Electromagnetic Corrosion Evaluation
+  Implements ideas from: Fouda et al., "First-Ever Seven-Pipe Corrosion Evaluation for
+  Comprehensive Assessment of Pipe Integrity in Complex Well Completions," Petrophysics, vol. 66,
+  no. 4, pp. 566–577, August 2025.
+src2026_04/a11_awi_cement_evaluation -- Zhang, X., Zhang, X., Zhang, T., Li, X., Mei, C., Li, B.,
+  Jiang, M., Liu, K., and Bai, Y. (2026). New Equipment and Method for Evaluating Anti-Water-
+  Invasion Ability of Cement Slurry. Petrophysics, 67(2), 421–435. DOI: 10.30632/PJV67N2-2026a11.
+src2026_06/a08_mud_gas_ratio_fluid_id -- Luo, P., Li, W., Lu, P., and Qubaisi, K. (2026). An
+  Improved Mud Gas Ratio Method for Enhanced Fluid Identification While Drilling. Petrophysics,
+  67(3), 582-593. DOI: 10.30632/PJV67N3-2026a8.
 """
 
 from __future__ import annotations
@@ -59,6 +135,8 @@ def acoustic_impedance(rho: ArrayLike, v: ArrayLike, *, rho_unit: str = "kg/m3")
 
     ``rho_unit='kg/m3'`` takes SI density; ``'g/cc'`` takes g/cm^3 (the CBL
     articles' convention, ``Z = rho_gcc * v / 1000``).
+
+    Sources: src2019_02/article5_composite_cement_well_integrity.
     """
     if rho_unit == "kg/m3":
         return acoustic_geomech.acoustic_impedance(rho, v, out="mrayl")
@@ -78,7 +156,10 @@ def transmission_energy(z1: ArrayLike, z2: ArrayLike) -> _Float:
 
 
 def attenuation_db(a_near: ArrayLike, a_far: ArrayLike, spacing_m: float | None = None) -> _Float:
-    """Amplitude attenuation ``20*log10(A_near/A_far)`` in dB (dB/m if ``spacing_m`` given)."""
+    """Amplitude attenuation ``20*log10(A_near/A_far)`` in dB (dB/m if ``spacing_m`` given).
+
+    Sources: src2020_08/article1_flexural_attenuation_casing.
+    """
     db = 20.0 * np.log10(_arr(a_near) / _arr(a_far))
     if spacing_m is not None:
         db = db / spacing_m
@@ -86,7 +167,10 @@ def attenuation_db(a_near: ArrayLike, a_far: ArrayLike, spacing_m: float | None 
 
 
 def attenuation_coefficient(a0: ArrayLike, ax: ArrayLike, x_m: ArrayLike) -> _Float:
-    """Exponential attenuation coefficient ``ln(A0/Ax)/x`` (1/m) from ``A = A0*exp(-alpha*x)``."""
+    """Exponential attenuation coefficient ``ln(A0/Ax)/x`` (1/m) from ``A = A0*exp(-alpha*x)``.
+
+    Sources: src2020_08/article1_flexural_attenuation_casing.
+    """
     return acoustic_geomech.attenuation_coefficient(a0, ax, x_m)
 
 
@@ -108,6 +192,9 @@ def bond_index(
     free_pipe)``.  ``method='log'`` (amplitude only) uses the logarithmic CBL
     convention ``BI = log(free_pipe/A) / log(free_pipe/well_bonded)`` with
     0.01 floors on the amplitudes.  The result is clipped to ``clip``.
+
+    Sources: src2019_02/article5_composite_cement_well_integrity,
+    src2025_04/microannuli_leak_rate.
     """
     m = _arr(measured)
     if method == "linear":
@@ -142,6 +229,8 @@ def bond_index_combined(
 
     ``corrector`` (optional callable) maps the raw combination to a corrected
     value before clipping -- e.g. an eccentricity-correction model.
+
+    Sources: src2025_08/cement_snhr_emi.
     """
     combined = weights[0] * _arr(bi_a) + weights[1] * _arr(bi_b)
     if corrector is not None:
@@ -157,6 +246,9 @@ def classify_annulus(
     ``'gas'`` below ``gas_max``, ``'liquid'`` below ``liquid_max``, ``'cement'``
     at or above ``cement_min``, else ``'transition'``.  Pass
     ``cement_min=liquid_max`` to remove the transition band.
+
+    Sources: src2019_02/article5_composite_cement_well_integrity,
+    src2021_12/article07_multistring_isolation_acoustic.
     """
     if z_mrayl < gas_max:
         return "gas"
@@ -186,6 +278,8 @@ def cement_quality_score(
     Above the ``good`` threshold the score is 1; between ``fair`` and ``good``
     it ramps 0.5..1; below ``fair`` it ramps toward 0.  Thresholds default per
     ``cement_type`` (:data:`CEMENT_QUALITY_THRESHOLDS`).
+
+    Sources: src2024_12/m04_well_integrity_ccs.
     """
     imp = _arr(z_mrayl)
     good, fair = (
@@ -224,6 +318,9 @@ def casing_resonance_frequency(
 
     ``correction`` absorbs mode corrections (e.g. 0.95 for the S1
     negative-group-velocity minimum).
+
+    Sources: src2021_12/article07_multistring_isolation_acoustic,
+    src2022_02/article4_ultrasonic_creeping_shale.
     """
     return np.asarray(correction * n * v / (2.0 * _arr(thickness_m)))
 
@@ -236,7 +333,10 @@ def casing_thickness_from_resonance(
 
 
 def metal_loss_pct(measured: ArrayLike, nominal: ArrayLike) -> _Float:
-    """Casing metal loss ``(1 - measured/nominal)*100``, clipped to [0, 100] %."""
+    """Casing metal loss ``(1 - measured/nominal)*100``, clipped to [0, 100] %.
+
+    Sources: src2025_08/seven_pipe_em_corrosion.
+    """
     return np.asarray(np.clip((1.0 - _arr(measured) / _arr(nominal)) * 100.0, 0, 100))
 
 
@@ -246,6 +346,8 @@ def casing_condition(
     """Casing condition class from metal loss %: good / fair / poor / critical.
 
     Strict ``<`` at each band edge, matching the corpus convention.
+
+    Sources: src2024_12/m05_casing_cement_inspection.
     """
     loss = _arr(loss_pct)
     return np.asarray(
@@ -270,7 +372,10 @@ def remaining_life_years(
 
 
 def corrosion_front_depth(t: ArrayLike, K: float = 2.5) -> _Float:
-    """Diffusion-limited corrosion front ``x = K*sqrt(t)`` (units follow ``K``)."""
+    """Diffusion-limited corrosion front ``x = K*sqrt(t)`` (units follow ``K``).
+
+    Sources: src2022_10/article5_cement_acid_gas_corrosion.
+    """
     return np.asarray(K * np.sqrt(np.maximum(_arr(t), 0.0)))
 
 
@@ -283,6 +388,8 @@ def microannulus_omega(r_casing_m: float, aperture_m: float) -> float:
     For the gap between ``R1 = r_casing_m`` and ``R2 = R1 + aperture``:
     ``Omega = R2^4 - R1^4 - (R2^2 - R1^2)^2 / ln(R2/R1)``; zero for a closed
     (non-positive) aperture.
+
+    Sources: src2025_04/microannuli_leak_rate.
     """
     if aperture_m <= 0:
         return 0.0
@@ -309,6 +416,8 @@ def leak_rate_liquid(
     ``Q = (pi / (8 mu L)) * Omega * (dP - rho g L cos(theta))`` with ``theta``
     the well inclination from horizontal (90 deg = vertical).  Returns 0 when
     the applied pressure cannot overcome gravity (or the gap is closed).
+
+    Sources: src2025_04/microannuli_leak_rate.
     """
     if aperture_m <= 0 or length_m <= 0:
         return 0.0
@@ -333,6 +442,8 @@ def leak_rate_gas(
     """Gas microannulus leak rate (m^3/s at outlet), isothermal compressible flow.
 
     ``Q = (pi / (16 mu L P2)) * Omega * (P1^2 - P2^2)``; gravity neglected.
+
+    Sources: src2025_04/microannuli_leak_rate.
     """
     if aperture_m <= 0 or length_m <= 0 or p_out_pa <= 0:
         return 0.0
@@ -344,7 +455,10 @@ def leak_rate_gas(
 def cubic_law_conductivity(
     aperture_m: ArrayLike, *, rho: float = 1000.0, mu: float = 1e-3, g: float = 9.81
 ) -> _Float:
-    """Parallel-plate crack hydraulic conductivity ``K = rho g w^3 / (12 mu)`` (m/s)."""
+    """Parallel-plate crack hydraulic conductivity ``K = rho g w^3 / (12 mu)`` (m/s).
+
+    Sources: src2026_04/a11_awi_cement_evaluation.
+    """
     return np.asarray(rho * g * _arr(aperture_m) ** 3 / (12.0 * mu))
 
 
@@ -359,6 +473,8 @@ def haworth_ratios(
     ``Wh = (C2+..+C5)/total`` (x100 if ``percent``), ``Bh = (C1+C2)/(C3+C4+C5)``,
     ``Ch = (C4+C5)/C3``.  Any consistent gas units.  Empty gas returns NaN
     wetness; zero denominators return +inf.
+
+    Sources: src2026_06/a08_mud_gas_ratio_fluid_id.
     """
     total = c1 + c2 + c3 + c4 + c5
     if total <= 0.0:
@@ -375,6 +491,8 @@ def pixler_ratios(c1: float, c2: float, c3: float, c4: float, c5: float) -> dict
     """Pixler component ratios ``C1/C2 .. C1/C5`` plus the Bernard ratio ``C1/(C2+C3)``.
 
     Zero denominators return +inf.
+
+    Sources: src2021_02/article1_mudlog_net_pay_tutorial.
     """
     c1f = float(c1)
     out: dict[str, float] = {}
@@ -394,6 +512,9 @@ def classify_fluid_haworth(
     ``n_classes=4`` uses the classic bands (dry gas < 0.5 %, gas /
     gas-condensate < 17.5 % split on ``bh > wh``, oil < 40 %, else residual
     oil).  ``n_classes=8`` uses the extended 2026 scheme (requires ``ch``).
+
+    Sources: src2021_02/article1_mudlog_net_pay_tutorial,
+    src2026_06/a08_mud_gas_ratio_fluid_id.
     """
     if n_classes == 4:
         if wh < 0.5:
@@ -439,6 +560,8 @@ def normalize_gas(
     divides the reading by the ratio-to-``reference`` factors
     ``(ROP/ROP0)*(Q/Q0)*(MW/MW0)^2`` (ft/hr, gpm, ppg; ``bit_diameter`` unused)
     to bring it to reference conditions.
+
+    Sources: src2021_02/article1_mudlog_net_pay_tutorial, src2024_08/mudgas_response.
     """
     if units == "metric":
         area = np.pi * (_arr(bit_diameter) * 0.0254 / 2.0) ** 2
@@ -464,12 +587,18 @@ def hydrostatic_pressure(tvd_m: ArrayLike, *, rho: float = 1030.0) -> _Float:
 
 
 def hydrostatic_pressure_psi(tvd_ft: ArrayLike, *, sg: float = 1.0) -> _Float:
-    """Hydrostatic pressure in psi from TVD in ft: ``0.433 * SG * TVD``."""
+    """Hydrostatic pressure in psi from TVD in ft: ``0.433 * SG * TVD``.
+
+    Sources: src2014_04/article1_deepwater_gom_overview.
+    """
     return np.asarray(PSI_PER_FT_PER_SG * sg * _arr(tvd_ft))
 
 
 def hydrostatic_pressure_bar(tvd_m: ArrayLike, *, sg: float = 1.0) -> _Float:
-    """Hydrostatic pressure in bar from TVD in m: ``0.0980665 * SG * TVD``."""
+    """Hydrostatic pressure in bar from TVD in m: ``0.0980665 * SG * TVD``.
+
+    Sources: src2021_12/article08_overbalanced_drilling_correction.
+    """
     return np.asarray(BAR_PER_SG_M * sg * _arr(tvd_m))
 
 
@@ -491,7 +620,10 @@ def overburden_pressure_psi(
     sw_sg: float = 1.025,
     sediment_sg: float = 2.3,
 ) -> _Float:
-    """Deepwater overburden in psi: ``0.433 * (SG_sw*wd + SG_sed*sd)``."""
+    """Deepwater overburden in psi: ``0.433 * (SG_sw*wd + SG_sed*sd)``.
+
+    Sources: src2014_04/article1_deepwater_gom_overview.
+    """
     return np.asarray(
         PSI_PER_FT_PER_SG * (sw_sg * _arr(water_depth_ft) + sediment_sg * _arr(sediment_depth_ft))
     )
@@ -514,6 +646,9 @@ def eaton_pore_pressure(
     uses ``ratio = observed/normal``.  Works in pressure or gradient space (the
     output follows the input units).  ``clip_ratio`` optionally bounds the
     ratio (e.g. ``(0.01, 100.0)``).
+
+    Sources: src2014_04/article5_deepwater_formation_evaluation,
+    src2025_04/overpressure_isotope.
     """
     ob = _arr(overburden)
     hyd = _arr(hydrostatic)
@@ -545,6 +680,8 @@ def bowers_pore_pressure(
     (floored at 0.01) and subtracts it from the overburden; ``unloading=True``
     uses the flatter unloading branch with maximum stress ``sigma_max`` and
     exponent ``U``.
+
+    Sources: src2025_04/overpressure_isotope.
     """
     v = _arr(velocity)
     ob = _arr(overburden)
@@ -556,12 +693,18 @@ def bowers_pore_pressure(
 
 
 def drilling_window_margin(pore: ArrayLike, frac: ArrayLike) -> _Float:
-    """Drilling-window width ``frac - pore`` (same units as the inputs)."""
+    """Drilling-window width ``frac - pore`` (same units as the inputs).
+
+    Sources: src2014_04/article5_deepwater_formation_evaluation.
+    """
     return np.asarray(_arr(frac) - _arr(pore))
 
 
 def within_drilling_window(ecd: float, pore: float, frac: float) -> bool:
-    """True when the ECD sits strictly inside the pore/frac window."""
+    """True when the ECD sits strictly inside the pore/frac window.
+
+    Sources: src2014_04/article5_deepwater_formation_evaluation.
+    """
     return bool(pore < ecd < frac)
 
 
@@ -587,6 +730,9 @@ def mudcake_thickness(
     ``model='chin_ode'`` integrates the Chin thickness ODE with a
     pressure-decaying cake permeability ``K(t) = k_mc * ((t + 1e-3)/1e-3)^-v``
     (10-micron seed cake, ``solids_ratio`` is the mud solid fraction ``fs``).
+
+    Sources: src2019_10/article6_microct_invasion_mudcake,
+    src2022_04/article4_microct_filtercake, src2023_08/article2_invasion_simulation.
     """
     t = _arr(t_s)
     if model == "sqrt_k":

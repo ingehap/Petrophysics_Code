@@ -6,6 +6,43 @@ Edge conventions differ per idiom and are preserved: kernel smoothing
 smoother and the feature stack edge-pad (``np.pad(mode='edge')``, i.e.
 scipy's ``'nearest'``); moving statistics shrink the window at the edges.
 All spreads are population (``ddof=0``).
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2020_10/article3 -- Article 3: Automatic Detection of Anomalous Density Measurements due to
+  Wellbore Cave-in. Sen, Ong, Kainkaryam, Sharma (2020). DOI: 10.30632/PJV61N5-2020a3. Petrophysics
+  Vol. 61 No. 5 (Oct 2020).
+src2023_04/article10 -- Article 10: Machine-Learning-Based Deconvolution Method Provides High-
+  Resolution Fast Inversion of Induction Log Data. Hagiwara (2023). DOI: 10.30632/PJV64N2-2023a10.
+  Petrophysics Vol. 64 No. 2 (Apr 2023) — SPWLA AI/ML Special Issue.
+src2023_06/article9 -- Aerens, P., Torres-Verdin, C., Espinoza, N. "Experimental Time-Lapse
+  Visualization of Mud-Filtrate Invasion and Mudcake Deposition Using X-Ray Radiography"
+  Petrophysics, Vol. 64, No. 3 (June 2023), pp. 448-461 DOI: 10.30632/PJV64N3-2023a9.
+src2023_08/article5 -- Merletti, G., Rabinovich, M., Al Hajri, S., Dawson, W., Farmer, R., Ambia,
+  J., Torres-Verdín, C. (2023). "New Iterative Resistivity Modeling Workflow Reduces Uncertainty in
+  the Assessment of Water Saturation in Deeply Invaded Reservoirs", Petrophysics, Vol. 64, No. 4,
+  pp. 555-567. DOI: 10.30632/PJV64N4-2023a5.
+src2023_10/article_03 -- Okwoli, E. and Potter, D. K. (2023). "Probe Screening Techniques for
+  Rapid, High-Resolution Core Analysis and Their Potential Usefulness for Energy Transition
+  Applications." Petrophysics, 64(5), 640-655. DOI: 10.30632/PJV64N5-2023a3.
+src2023_10/article_09 -- Bennis, M. and Torres-Verdin, C. (2023). "Numerical Simulation of Well
+  Logs Based on Core Measurements: An Effective Method for Data Quality Control and Improved
+  Petrophysical Interpretation." Petrophysics, 64(5), 753-772. DOI: 10.30632/PJV64N5-2023a9.
+src2024_06/article2 -- Strobel, J. (2024). "Petrophysical Analyses for Supporting the Search for a
+  Claystone-Hosted Nuclear Repository." Petrophysics 65(3), 302-316. DOI: 10.30632/PJV65N3-2024a2.
+src2024_10/ml_permeability -- Automatic Permeability Estimation: ML Methods vs Conventional Models.
+  Based on: Raheem et al. (2024), "Best Practices in Automatic Permeability Estimation: Machine-
+  Learning Methods vs. Conventional Petrophysical Models", Petrophysics, Vol. 65, No. 5, pp.
+  789-812.
+src2024_10/thin_bed_nmr -- Thin-Bed NMR Response Characterisation in Horizontal Wells. Based on:
+  Ramadan et al. (2024), "Characterizing Thin-Bed Responses in Horizontal Wells Using LWD NMR
+  Tools: Insights From a Water Tank Experiment", Petrophysics, Vol. 65, No. 5, pp. 765-771.
+src2026_04/a04 -- Liu, Z., Zhang, X., Fan, Q., Zhou, L., Zhang, Y., Zhao, Z., and Zhang, Z. (2026).
+  Intelligent Sensors and Algorithms for Diagnosing Downhole Operating Conditions of Wireline
+  Logging Instruments. Petrophysics, 67(2), 295–317. DOI: 10.30632/PJV67N2-2026a4.
 """
 
 from __future__ import annotations

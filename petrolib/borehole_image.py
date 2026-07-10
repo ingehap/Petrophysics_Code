@@ -8,6 +8,33 @@ and a Sobel gradient.
 
 Azimuths and dips are in **degrees** at the interface (converted internally);
 images are indexed ``[depth, azimuth]`` (rows = depth, columns = azimuth).
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2019_04/article4_image_segmentation_uncertainty -- Article 4: Uncertainty Quantification in
+  Image Segmentation for Image-Based Rock Physics in a Shaly Sandstone. Howard, Lin, Zhang (2019).
+  DOI: 10.30632/PJV60N2-2019a2. Petrophysics Vol. 60 No. 2 (Apr 2019).
+src2020_10/article7_multiphysics_rock_classification -- Article 7: Integrated Multiphysics Workflow
+  for Automatic Rock Classification and Formation Evaluation Using Multiscale Image Analysis and
+  Conventional Well Logs. Gonzalez, Kanyan, Heidari, Lopez (2020). DOI: 10.30632/PJV61N5-2020a7.
+  Petrophysics Vol. 61 No. 5 (Oct 2020).
+src2021_06/article6_geosteering_2d_structural -- Article 6: Maximizing Net Pay in Penta-Lateral
+  Well With Advanced Proactive Geosteering and 2D Structural Analysis Using Azimuthal Resistivity
+  Measurements. Antonov, Kushnir, Martakov, Pazos, Small, Tropin, Maraj, Itter, Nelson, Rabinovich
+  (2021). DOI: 10.30632/PJV62N3-2021a5. Petrophysics Vol. 62 No. 3 (Jun 2021).
+src2021_10/article2_image_processing_petrophysics -- Article 2: Enhanced Learning of Fundamental
+  Petrophysical Concepts Through Image Processing and 3D Printing. Alyafei, Al Musleh, Bautista,
+  Idris, Seers (2021). DOI: 10.30632/PJV62N5-2021a2. Petrophysics Vol. 62 No. 5 (Oct 2021).
+src2021_12/article04_borehole_image_cnn_sedimentary -- Article 4: Deep-Learning-Based Automated
+  Sedimentary Geometry Characterization From Borehole Images. Lefranc, Bayraktar, Kristensen,
+  Driss, Le Nir, Marza, Kherroubi (2021). DOI: 10.30632/PJV62N6-2021a4. Petrophysics Vol. 62 No. 6
+  (Dec 2021).
+src2025_04/ultrasonic_pore_characterization -- Ultrasonic Microscopy Imaging of Carbonate Reservoir
+  Pore Structure. Based on: Chen et al., "New Methodology for Ultrasonic Microscopy Imaging of
+  Carbonate Reservoirs' Pore Structure", Petrophysics, Vol. 66, No. 2, April 2025, pp. 267–282.
 """
 
 from __future__ import annotations
@@ -37,6 +64,8 @@ def bed_sinusoid(
     ``z(phi) = z0 - radius*tan(dip)*cos(phi - dip_azimuth)`` -- a sinusoid of
     amplitude ``radius*tan(dip)`` whose deepest point is at the dip azimuth.
     All angles in degrees.
+
+    Sources: src2021_12/article04_borehole_image_cnn_sedimentary.
     """
     phi = np.radians(_arr(azimuth_deg))
     a = np.radians(dip_azimuth_deg)
@@ -73,7 +102,10 @@ def dip_from_amplitude(amplitude: float, radius: float, *, sample_spacing: float
 
 
 def apparent_dip(true_dip_deg: float, section_azimuth_deg: float) -> float:
-    """Apparent dip at section angle ``beta`` to true dip: ``tan(app)=tan(true)cos(beta)`` (deg)."""
+    """Apparent dip at section angle ``beta`` to true dip: ``tan(app)=tan(true)cos(beta)`` (deg).
+
+    Sources: src2021_06/article6_geosteering_2d_structural.
+    """
     return float(
         np.degrees(
             np.arctan(np.tan(np.radians(true_dip_deg)) * np.cos(np.radians(section_azimuth_deg)))
@@ -87,6 +119,8 @@ def fit_plane(points_enz: ArrayLike) -> tuple[float, float]:
     The plane normal is the smallest-singular-value direction of the centred
     points; ``dip = arccos(|n_z|)`` and ``dip_azimuth = atan2(n_E, n_N) mod 360``
     (clockwise from North).
+
+    Sources: src2021_06/article6_geosteering_2d_structural.
     """
     p = _arr(points_enz)
     centroid = p.mean(axis=0)
@@ -108,6 +142,8 @@ def otsu_threshold(image: ArrayLike, *, bins: int = 256) -> float:
     ``sigma_b^2(t) = (mu_T*omega - mu)^2 / [omega(1-omega)]`` over the histogram
     of ``image`` (``bins`` bins spanning ``[min, max]``) and returns the value at
     the optimal bin centre.
+
+    Sources: src2019_04/article4_image_segmentation_uncertainty.
     """
     img = _arr(image).ravel()
     hist, edges = np.histogram(img, bins=bins, range=(float(img.min()), float(img.max())))
@@ -128,6 +164,8 @@ def class_fractions(image: ArrayLike, thresholds: ArrayLike) -> _Float:
     For ``thresholds = [t0, t1, ...]`` returns ``[mean(img<t0),
     mean(t0<=img<t1), ..., mean(img>=t_last)]`` -- e.g. pore / clay / grain from
     two thresholds (dark = pore convention).
+
+    Sources: src2019_04/article4_image_segmentation_uncertainty.
     """
     img = _arr(image).ravel()
     fracs = []
@@ -140,14 +178,20 @@ def class_fractions(image: ArrayLike, thresholds: ArrayLike) -> _Float:
 
 
 def phase_saturation(phase: ArrayLike, pore: ArrayLike) -> float:
-    """Saturation of a phase within the pore space: ``|phase & pore| / |pore|``."""
+    """Saturation of a phase within the pore space: ``|phase & pore| / |pore|``.
+
+    Sources: src2021_10/article2_image_processing_petrophysics.
+    """
     ph = np.asarray(phase)
     po = np.asarray(pore)
     return float(np.logical_and(ph, po).sum()) / float(po.sum())
 
 
 def porosity_from_mask(pore: ArrayLike) -> float:
-    """Porosity as the fraction of voxels flagged pore: ``pore.sum()/pore.size``."""
+    """Porosity as the fraction of voxels flagged pore: ``pore.sum()/pore.size``.
+
+    Sources: src2019_04/article4_image_segmentation_uncertainty.
+    """
     m = np.asarray(pore)
     return float(m.sum()) / float(m.size)
 
@@ -163,6 +207,8 @@ def glcm(
     Quantises ``image`` to ``levels`` grey levels by min-max scaling, then counts
     co-occurrences at ``offset = (drow, dcol)``.  ``symmetric=True`` counts both
     directions; the result is normalised to sum to one.
+
+    Sources: src2020_10/article7_multiphysics_rock_classification.
     """
     img = _arr(image)
     rng = img.max() - img.min()
@@ -181,7 +227,10 @@ def glcm(
 
 
 def glcm_features(p: ArrayLike) -> dict[str, float]:
-    """Haralick contrast / energy / correlation of a normalised GLCM ``p``."""
+    """Haralick contrast / energy / correlation of a normalised GLCM ``p``.
+
+    Sources: src2020_10/article7_multiphysics_rock_classification.
+    """
     p_arr = _arr(p)
     n = p_arr.shape[0]
     i, j = np.meshgrid(np.arange(n), np.arange(n), indexing="ij")
@@ -202,6 +251,8 @@ def sobel_gradient(image: ArrayLike) -> tuple[_Float, _Float, _Float]:
     ``gx`` is the horizontal (column) derivative, ``gy`` the vertical (row)
     derivative; ``magnitude = sqrt(gx^2 + gy^2)``.  Interior pixels only; the
     one-pixel border stays zero.
+
+    Sources: src2025_04/ultrasonic_pore_characterization.
     """
     img = _arr(image)
     kx = np.array([[-1.0, 0.0, 1.0], [-2.0, 0.0, 2.0], [-1.0, 0.0, 1.0]])

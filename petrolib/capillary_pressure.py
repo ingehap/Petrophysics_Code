@@ -27,6 +27,101 @@ section 9):
 Units: SI throughout — Pa, N/m, m, kg/m3, Pa*s, rad/s; ``theta_deg`` in
 degrees.  The one deliberate exception is :func:`buoyancy_pc_gradient`, the
 oilfield psi/ft form, whose 0.433 psi/ft/SG gradient is a visible default.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2014_02/article2 -- Article 2: Capillary Pressure and Resistivity Index Measurements in a Mixed-
+  Wet Carbonate Reservoir Moustafa R. Dernaika, Mohamed S. Efnik, Safouh Koronfol, Svein M.
+  Skjaeveland, Maisoon M. Al Mansoori, Hafez Hafez, Mohammed Z. Kalam (2014). Petrophysics Vol. 55,
+  No. 1 (February 2014), pp. 24-30. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_02/article4 -- Article 4: Petrophysical Characterization of the Pore Space in Permian
+  Wolfcamp Rocks. Rafatian, Capsan (2015). Petrophysics Vol. 56, No. 1 (February 2015), pp. 45-57.
+  DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2016_02/article1 -- Article 1: The Impact of Reservoir Conditions and Rock Heterogeneity on
+  CO2-Brine Multiphase Flow in Permeable Sandstone. Krevor, Reynolds, Al-Menhali, Niu (2016).
+  Petrophysics Vol. 57, No. 1 (February 2016), pp. 12-18. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2016_06/article1 -- Article 1: Heterogeneous Carbonate Reservoirs: Ensuring Consistency of
+  Subsurface Models by Maximizing the use of Saturation-Height Models and Dynamic Data. Hulea,
+  Frese, Ramaswami (2016). Petrophysics Vol. 57, No. 3 (June 2016), pp. 223-232. DOI: none assigned
+  (this issue predates SPWLA DOI assignment).
+src2016_10 -- Petrophysics Vol. 57 No. 5 (Oct 2016) (issue-level reference).
+src2016_10/article2 -- Article 2: How Pore-Scale Attributes May Be Used to Derive Robust Drainage
+  and Imbibition Water-Saturation Models in Complex Tight-Gas Reservoirs. Merletti, Gramin,
+  Salunke, Hamman, Spain, Shabro, Armitage, Torres-Verdin, Salter, Dacy (2016). Petrophysics Vol.
+  57, No. 5 (October 2016), pp. 447-464. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2017_02 -- Petrophysics Vol. 58 No. 1 (Feb 2017) (issue-level reference).
+src2017_08/article3 -- Article 3: An Analytical Model for Analysis of Capillary Pressure
+  Measurements by Centrifuge. Andersen, Skjaeveland, Standnes (2017). Petrophysics Vol. 58, No. 4
+  (August 2017), pp. 366-375. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2018_02 -- Petrophysics Vol. 59 No. 1 (Feb 2018) (issue-level reference).
+src2018_06/article8 -- Article 8: Saturation-Height Modeling: Assessing Capillary Pressure Stress
+  Corrections. Hulea (2018). DOI: 10.30632/PJV59N3-2018a7 (inferred - see note). Petrophysics Vol.
+  59 No. 3 (Jun 2018).
+src2018_06/article8_saturation_height_stress_correction -- Article 8: Saturation-Height Modeling:
+  Assessing Capillary Pressure Stress Corrections. Hulea (2018). DOI: 10.30632/PJV59N3-2018a7
+  (inferred - see note). Petrophysics Vol. 59 No. 3 (Jun 2018).
+src2018_08/article1 -- Article 1 (Tutorial): Capillary Pressure Tutorial Part 1 - It's a Jungle in
+  Here. Thomas (2018). DOI: 10.30632/PJV59V4-2018t1. Petrophysics Vol. 59 No. 4 (Aug 2018) -
+  Special Issue on Flow Diagnostics.
+src2018_10 -- Petrophysics Vol. 59 No. 5 (Oct 2018) - "Best of 2018 SPWLA Symposium" issue (issue-
+  level reference).
+src2018_10/article1 -- Article 1 (Tutorial): Capillary Pressure Tutorial Part 2 - The Path Out of
+  the Jungle. Thomas (2018). DOI: 10.30632/PJV59N5-2018t1. Petrophysics Vol. 59 No. 5 (Oct 2018) -
+  "Best of 2018 SPWLA Symposium" issue.
+src2018_10/article1_capillary_pressure_tutorial_part2 -- Article 1 (Tutorial): Capillary Pressure
+  Tutorial Part 2 - The Path Out of the Jungle. Thomas (2018). DOI: 10.30632/PJV59N5-2018t1.
+  Petrophysics Vol. 59 No. 5 (Oct 2018) - "Best of 2018 SPWLA Symposium" issue.
+src2018_12 -- Petrophysics Vol. 59 No. 6 (Dec 2018) — Special Issue: Data-Driven Analytics in
+  Logging and Petrophysics (issue-level reference).
+src2018_12/article1_capillary_pressure_tutorial_part3 -- Article 1 (Tutorial): Capillary Pressure
+  Tutorial Part 3 - The Jungle Gives Us Many Things. Murphy (2018). DOI: 10.30632/PJV59N6Y2018t1.
+  Petrophysics Vol. 59 No. 6 (Dec 2018) — Special Issue: Data-Driven Analytics in Logging and
+  Petrophysics.
+src2019_06/article8 -- Article 8: Perched Water Contacts: Understanding Fundamental Controls. Hulea
+  (2019). DOI: 10.30632/PJV60N3-2019a7. Petrophysics Vol. 60 No. 3 (Jun 2019).
+src2019_06/article8_perched_water_contacts -- Article 8: Perched Water Contacts: Understanding
+  Fundamental Controls. Hulea (2019). DOI: 10.30632/PJV60N3-2019a7. Petrophysics Vol. 60 No. 3 (Jun
+  2019).
+src2020_04 -- Petrophysics Vol. 61 No. 2 (Apr 2020) (issue-level reference).
+src2020_04/article7 -- Article 7: Effect of Injection Pressure on the Imbibition Relative
+  Permeability and Capillary Pressure Curves of Shale Gas Matrix. Al-Ameri, Mazeel (2020). DOI:
+  10.30632/PJV61N2-2020a7. Petrophysics Vol. 61 No. 2 (Apr 2020).
+src2020_04/article8 -- Article 8: Spontaneous Gas-Water Imbibition in Mixed-Wet Pores. Wang, He,
+  Xiao, Wang, Ma (2020). DOI: 10.30632/PJV61N2-2020a8. Petrophysics Vol. 61 No. 2 (Apr 2020).
+src2020_06 -- Petrophysics Vol. 61 No. 3 (Jun 2020) (issue-level reference).
+src2020_08 -- Petrophysics Vol. 61 No. 4 (Aug 2020) (issue-level reference).
+src2021_04 -- Petrophysics Vol. 62 No. 2 (Apr 2021) (issue-level reference).
+src2021_04/article3 -- Article 3: Free or Bound? Thomeer and NMR Porosity Partitioning in Carbonate
+  Reservoirs, Alta Discovery, Southwestern Barents Sea. Gianotten, Rameil, Foyn, Kollien, Marre,
+  Looyestijn, Zhang, Hebing (2021). DOI: 10.30632/PJV62N2-2021a3. Petrophysics Vol. 62 No. 2 (Apr
+  2021).
+src2021_08 -- Petrophysics Vol. 62 No. 4 (Aug 2021) (issue-level reference).
+src2021_08/article1 -- Article 1: Tutorial - Petrophysics of Thinly Bedded Formations. Aldred
+  (2021). DOI: 10.30632/PJV62N4-2021t1.
+src2022_10 -- Petrophysics Vol. 63 No. 5 (Oct 2022) (issue-level reference).
+src2022_10/article2 -- Article 2: Empirical Relation for Capillary Pressure in Shale. Alipour K.,
+  Kasha, Sakhaee-Pour, Sadooni, Al-Kuwari (2022). DOI: 10.30632/PJV63N5-2022a2. Petrophysics Vol.
+  63 No. 5 (Oct 2022).
+src2023_06 -- Petrophysics Vol. 64 No. 3 (June 2023) — Best Papers of the 2022 SCA International
+  Symposium (issue-level reference).
+src2023_08 -- Petrophysics Vol. 64 No. 4 (Aug 2023) (issue-level reference).
+src2023_10 -- Petrophysics Vol. 64 No. 5 (Oct 2023) — Energy Transition Special Issue (issue-level
+  reference).
+src2023_10/article_01_laronga_ccs_evaluation -- Laronga, R., Borchardt, E., Hill, B., Velez, E.,
+  Klemin, D., Haddad, S., Haddad, E., Chadwick, C., Mahmoodaghdam, E., and Hamichi, F. (2023).
+  "Integrated Formation Evaluation for Site-Specific Evaluation, Optimization, and Permitting of
+  Carbon Storage Projects." Petrophysics, 64(5), 580-620. DOI: 10.30632/PJV64N5-2023a1.
+src2024_12 -- Petrophysics Vol. 65 No. 6 (Dec 2024) (issue-level reference).
+src2025_02 -- Petrophysics Vol. 66 No. 1 (Feb 2025) (issue-level reference).
+src2025_12 -- Petrophysics Vol. 66 No. 6 (Dec 2025) — Best Papers of the 2024 SCA International
+  Symposium (issue-level reference).
+src2025_12/nanopore_adsorption -- Wettability Effect on Adsorption and Capillary Condensation in
+  Nanopores. Petrophysics, 66(6), 1061–1071. DOI: 10.30632/PJV66N6-2025a10.
 """
 
 from __future__ import annotations
@@ -269,7 +364,13 @@ def buoyancy_pc(height: ArrayLike, *, delta_rho: ArrayLike, g: float = G_STD) ->
 
 
 def height_above_fwl(pc: ArrayLike, *, delta_rho: ArrayLike, g: float = G_STD) -> _Float:
-    """Height above the free-water level from Pc: inverse of :func:`buoyancy_pc`."""
+    """Height above the free-water level from Pc: inverse of :func:`buoyancy_pc`.
+
+    Sources: src2018_06/article8_saturation_height_stress_correction,
+    src2018_10/article1_capillary_pressure_tutorial_part2,
+    src2018_12/article1_capillary_pressure_tutorial_part3,
+    src2019_06/article8_perched_water_contacts, src2023_10/article_01_laronga_ccs_evaluation.
+    """
     pc_arr = np.asarray(pc, np.float64)
     drho = np.asarray(delta_rho, np.float64)
     return np.asarray(pc_arr / (drho * g))

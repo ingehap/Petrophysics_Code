@@ -10,6 +10,24 @@ Sign convention for :func:`corrected_depth`: the ``'tally'`` convention treats
 the surface tally as reading short (pipe/cable is longer downhole) and **adds**
 the corrections, while ``'payout'`` treats paid-out cable length as overstating
 the tool depth and **subtracts** them -- both are used in the corpus.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2016_06/article5_wireline_depth_elastic_stretch -- Article 5: Wireline Logging Depth Quality
+  Improvement: Methodology Review and Elastic-Stretch Correction. Bolt (2016). Petrophysics Vol.
+  57, No. 3 (June 2016), pp. 294-310. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2017_12/article2_drillers_depth_waypoint -- Article 2: Driller's Depth Quality Improvement: Way-
+  Point Methodology. Bolt (2017). Petrophysics Vol. 58, No. 6 (December 2017), pp. 564-575. DOI:
+  none assigned (this issue predates SPWLA DOI assignment).
+src2019_02/article6_depth_love_hate_essay -- Article 6: Depth: A Love and Hate Story. Theys (2019).
+  DOI: 10.30632/PJV60N1Y2019a5. Petrophysics Vol. 60 No. 1 (Feb 2019).
+src2019_02/article8_drillers_depth_correction -- Article 8: Correction of Driller's Depth: Field
+  Example Using Driller's Way-Point Depth Correction Methodology. Bolt (2019). DOI:
+  10.30632/PJV60N1Y2019a7. Petrophysics Vol. 60 No. 1 (Feb 2019).
 """
 
 from __future__ import annotations
@@ -36,6 +54,9 @@ def elastic_stretch(
 
     ``force`` is the axial load (N), ``length`` the suspended length (m),
     ``area`` the metal cross-section (m^2), ``E`` Young's modulus (Pa).
+
+    Sources: src2017_12/article2_drillers_depth_waypoint,
+    src2019_02/article6_depth_love_hate_essay, src2019_02/article8_drillers_depth_correction.
     """
     return np.asarray(_arr(force) * _arr(length) / (E * _arr(area)))
 
@@ -54,6 +75,9 @@ def distributed_stretch(
     ``w`` carrying an ``end_load`` ``F`` at the bottom: the linear term is the
     end load, the quadratic term the string's own weight (scaled by the
     ``buoyancy`` factor).  ``ea`` is the lumped ``E*A`` stiffness.
+
+    Sources: src2016_06/article5_wireline_depth_elastic_stretch,
+    src2019_02/article8_drillers_depth_correction.
     """
     length_a = _arr(length)
     return np.asarray(
@@ -67,6 +91,9 @@ def thermal_elongation(length: ArrayLike, dT: ArrayLike, *, alpha: float = ALPHA
 
     ``dT`` is the temperature rise over the calibration temperature; ``alpha``
     the linear expansion coefficient (1/K).
+
+    Sources: src2017_12/article2_drillers_depth_waypoint,
+    src2019_02/article6_depth_love_hate_essay, src2019_02/article8_drillers_depth_correction.
     """
     return np.asarray(alpha * _arr(length) * _arr(dT))
 
@@ -82,6 +109,8 @@ def cable_tension(
     The tension at depth ``z`` supports the tool weight plus the buoyant weight
     of the cable hanging below it (``L = total_depth``), so it is greatest at
     surface and equals ``tool_weight`` at the tool.
+
+    Sources: src2016_06/article5_wireline_depth_elastic_stretch.
     """
     return np.asarray(tool_weight + cable_weight_per_length * (total_depth - _arr(depth)))
 
@@ -97,6 +126,8 @@ def corrected_depth(
 
     ``convention='tally'`` adds the corrections (surface tally reads short);
     ``convention='payout'`` subtracts them (paid-out length overstates depth).
+
+    Sources: src2016_06/article5_wireline_depth_elastic_stretch.
     """
     measured_a = _arr(measured)
     total = _arr(stretch) + _arr(thermal)

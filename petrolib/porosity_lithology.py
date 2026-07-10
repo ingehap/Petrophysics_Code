@@ -33,6 +33,186 @@ Units follow the corpus convention: densities g/cc, porosity/volumes/
 saturations v/v fractions, GR in API, resistivity ohm-m, TOC in the unit each
 function's docstring states.  numpy-broadcastable; scipy is imported lazily
 only by the nnls mineral solver.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2014_06/article1 -- Article 1: A Case Study about Formation Evaluation and Rock Physics Modeling
+  of the Bazhenov Shale. Pavel Kulyapin and Tatiana F. Sokolova (2014). Petrophysics Vol. 55, No. 3
+  (June 2014), pp. 211-218. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2014_08/article3 -- Article 3: Multiphase Flow in Porous Rock Imaged Under Dynamic Flow
+  Conditions with Fast X-Ray Computed Microtomography S. Berg, R. Armstrong, H. Ott, A. Georgiadis,
+  S. A. Klapp, A. Schwing, R. Neiteler, N. Brussee, A. Makurat, L. Leu, F. Enzmann, J.-O. Schwarz,
+  M. Wolf, F. Khan, M. Kersten, S. Irvine, M. Stampanoni (2014). Petrophysics Vol. 55, No. 4
+  (August 2014), pp. 304-312. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2014_10/article2 -- Article 2: Application and Quality Control of Core Data for the Development
+  and Validation of Elemental Spectroscopy Log Interpretation Susan Herron, Michael Herron, Iain
+  Pirie, Pablo Saldungaray, Paul Craddock, Alyssa Charsky, Marina Polyakov, Frank Shray, Ting Li
+  (2014). Petrophysics Vol. 55, No. 5 (October 2014), pp. 392-414. DOI: none assigned (this issue
+  predates SPWLA DOI assignment).
+src2014_12/article1 -- Article 1: Review of Existing Shaly-Sand Models and Introduction of a New
+  Method Based on Dry-Clay Parameters. Max Peeters and Antony Holmes (2014). Petrophysics Vol. 55,
+  No. 6 (December 2014), pp. 543-553. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2015_02/article5 -- Article 5: Recharacterization and Validation of Through-the-Bit-Logging Tool
+  Measurements. Slocombe, Bammi, Hunka, Reischman, Schmid (2015). Petrophysics Vol. 56, No. 1
+  (February 2015), pp. 58-71. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_06/article1 -- Article 1: Improvement in Heavy-Oil Reservoir Evaluation Using Nuclear
+  Magnetic Resonance: Long Lake and Kinosis SAGD Projects, Alberta, Canada. Cheng, Kotov, Pyke,
+  Hanif (2015). Petrophysics Vol. 56, No. 3 (June 2015), pp. 239-250. DOI: none assigned (this
+  issue predates SPWLA DOI assignment).
+src2015_08/article4 -- Article 4: Petrophysical Interpretation of LWD, Neutron-Induced Gamma-Ray
+  Spectroscopy Measurements: An Inversion-Based Approach. Ajayi, Torres-Verdin, Preeg (2015).
+  Petrophysics Vol. 56, No. 4 (August 2015), pp. 358-378. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2015_10/article3 -- Article 3: Using Advanced Logging Measurements to Develop a Robust
+  Petrophysical Model for the Bakken Petroleum System. Simpson, Hohman, Pirie, Horkowitz (2015).
+  Petrophysics Vol. 56, No. 5 (October 2015), pp. 457-478. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2015_10/article6 -- Article 6: Applying a Consistent Evaluation Approach to Thin-Bedded Sands in
+  a Gulf of Mexico Deepwater Field. Salunke, Hamman (2015). Petrophysics Vol. 56, No. 5 (October
+  2015), pp. 511-520. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_12/article3 -- Article 3: Petrophysical Characterization of Bitumen-Saturated Karsted
+  Carbonates: Case Study of the Multibillion Barrel Upper Devonian Grosmont Formation, Northern
+  Alberta, Canada. MacNeil (2015). Petrophysics Vol. 56, No. 6 (December 2015), pp. 592-614. DOI:
+  none assigned (this issue predates SPWLA DOI assignment).
+src2016_04/article2 -- Article 2: Integrated Petrofacies Characterization and Interpretation of
+  Depositional Environment of the Bakken Shale in the Williston Basin, North America. Bhattacharya,
+  Carr (2016). Petrophysics Vol. 57, No. 2 (April 2016), pp. 96-111. DOI: none assigned (this issue
+  predates SPWLA DOI assignment).
+src2016_04/article3 -- Article 3: A New Approach to Measuring Organic Density. Dang, Sondergeld,
+  Rai (2016). Petrophysics Vol. 57, No. 2 (April 2016), pp. 112-120. DOI: none assigned (this issue
+  predates SPWLA DOI assignment).
+src2016_10/article3 -- Article 3: On Error Calculation and Use of First-Order Error Propagation as
+  Integral Part of Petrophysical Calculation. Stalheim (2016). Petrophysics Vol. 57, No. 5 (October
+  2016), pp. 465-478. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2017_04/article2 -- Article 2: Characterizing Hydrocarbon Storage in Organic-Rich Mudstones by
+  Integrating Core Measurements, Kinetic Modeling, and Pore-Scale Observations: Application to
+  South Texas Organic-Rich Mudstones. Capsan, Sanchez-Ramirez (2017). Petrophysics Vol. 58, No. 2
+  (April 2017), pp. 97-115. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2017_06/article6 -- Article 6: A Case Study on Integrated Petrophysical Characterization of a
+  Carbonate Reservoir Pore System in the Offshore Red River Basin of Vietnam. Giao, Chung (2017).
+  Petrophysics Vol. 58, No. 3 (June 2017), pp. 289-301. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2017_10/article4 -- Article 4: Imaging Near-Wellbore Petrophysical Properties by Joint Inversion
+  of Sonic, Resistivity, and Density Logging Data. Shetty, Liang, Simoes, Canesin, Boyd, Zeroug,
+  Sinha, Habashy, Domingues, Amorim, Abbots (2017). Petrophysics Vol. 58, No. 5 (October 2017), pp.
+  501-516. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2017_10/article5 -- Article 5: Lessons Learned in Permian Core Analysis: Comparison Between
+  Retort, GRI, and Routine Methodologies. Blount, Croft, Driskill, Tepper (2017). Petrophysics Vol.
+  58, No. 5 (October 2017), pp. 517-527. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2017_12/article4 -- Article 4: 3D Printing Berea Sandstone: Testing a New Tool for Petrophysical
+  Analysis of Reservoirs. Ishutov, Hasiuk (2017). Petrophysics Vol. 58, No. 6 (December 2017), pp.
+  592-602. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2017_12/article5 -- Article 5: Experimental Quantification of the Impact of Thermal Maturity on
+  Kerogen Density. Jagadisan, Yang, Heidari (2017). Petrophysics Vol. 58, No. 6 (December 2017),
+  pp. 603-612. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2017_12/article6 -- Article 6: Impact of Different Cleaning Methods on Petrophysical
+  Measurements. Gupta, Rai, Tinni, Sondergeld (2017). Petrophysics Vol. 58, No. 6 (December 2017),
+  pp. 613-622. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2018_04/article2 -- Article 2: The Problem With Silt in Low-Resistivity Low-Contrast (LRLC) Pay
+  Reservoirs. Belevich, Bal (2018). DOI: 10.30632/PJV59N2-2018a1. Petrophysics Vol. 59 No. 2 (Apr
+  2018).
+src2018_06/article2 -- Article 2: Matrix-Adjusted Shale Porosity Measured in Horizontal Wells.
+  Craddock, Mosse, Bernhardt, Ortiz, Gonzalez Tomassini, Pirie, Saldungaray, Pomerantz (2018). DOI:
+  10.30632/PJV59N3-2018a1. Petrophysics Vol. 59 No. 3 (Jun 2018).
+src2018_10/article3 -- Article 3: Integrating Measured Kerogen Properties With Log Analysis for
+  Petrophysics and Geomechanics in Unconventional Resources. Craddock, Mosse, Prioul, Miles, Loan,
+  Pirie, Rylander, Lewis, Pomerantz (2018). DOI: 10.30632/PJV59N5-2018a2.
+src2018_10/article9 -- Article 9: Upscaling of Digital Rock Porosities by Correlation With Whole-
+  Core CT-Scan Histograms. Hertel, Rydzy, Anger, Berg, Appel, de Jong (2018). DOI:
+  10.30632/PJV59N5-2018a8. Petrophysics Vol. 59 No. 5 (Oct 2018) - "Best of 2018 SPWLA Symposium"
+  issue.
+src2019_02/article2 -- Article 2: Defining Net-Pay Cutoffs in Carbonates Using Advanced
+  Petrophysical Methods. Skalinski, Mallan, Edwards, Sun, Toumelin, Kelly, Wushur, Sullivan (2019).
+  DOI: 10.30632/PJV60N1Y2019a1. Petrophysics Vol. 60 No. 1 (Feb 2019).
+src2019_04/article1 -- Article 1 (Tutorial): Organic Mudstone Petrophysics, Part 2: Workflow to
+  Estimate Storage Capacity. Newsham, Comisky, Chemali (2019). DOI: 10.30632/PJV60N2-2019t1.
+src2019_06/article1 -- Article 1 (Tutorial): Organic-Mudstone Petrophysics: Part 3: Workflow to
+  Estimate Storage Capacity. Newsham, Comisky, Chemali (2019). DOI: 10.30632/PJV60N3-2019t1.
+src2019_08/article2 -- Article 2: Total Organic Carbon Characterization Using Neural-Network
+  Analysis of XRF Data. Lawal, Mahmoud, Alade, Abdulraheem (2019). DOI: 10.30632/PJV60N4-2019a2.
+  Petrophysics Vol. 60 No. 4 (Aug 2019).
+src2019_10/article1 -- Article 1: Thermal Maturity-Adjusted Log Interpretation (TMALI) in Organic
+  Shales. Craddock, Miles, Lewis, Pomerantz (2019). DOI: 10.30632/PJV60N5-2019a1. Petrophysics Vol.
+  60 No. 5 (Oct 2019).
+src2019_10/article6 -- Article 6: Experimental Method for Time-Lapse Micro-CT Imaging of Mud-
+  Filtrate Invasion and Mudcake Deposition. Schroeder, Torres-Verdin (2019). DOI:
+  10.30632/PJV60N5-2019a6. Petrophysics Vol. 60 No. 5 (Oct 2019).
+src2019_12/article4 -- Article 4: Crushed-Rock Analysis Workflow Based on Advanced Fluid
+  Characterization for Improved Interpretation of Core Data. Nikitin, Durand, McMullen, Blount,
+  Driskill, Hows (2019). DOI: 10.30632/PJV60N6-2019a4. Petrophysics Vol. 60 No. 6 (Dec 2019).
+src2020_02/article6 -- Article 6: Untangle Shale and Gas Effects to Estimate Porosity and Net/Gross
+  Ratio Using a Boomerang Workflow - A Case Study in Shoreface Reservoirs in Brunei. Xu, Sharif
+  (2020). DOI: 10.30632/PJV61N1-2020a5. Petrophysics Vol. 61 No. 1 (Feb 2020).
+src2020_12/article5 -- Article 5: Integration of Nuclear Spectroscopy Technology and Core Data
+  Results for Through-Casing TOC Measurement and Saturation Analysis - A Case Study in Najmah-
+  Sargelu Reservoir, South Kuwait. Bouchou, Abughneej, Ghioca, Alarcon, Mendez (2020). DOI:
+  10.30632/PJV61N6-2020a5. Petrophysics Vol. 61 No. 6 (Dec 2020).
+src2021_02/article1 -- Article 1 (Tutorial): Maximizing Value From Mudlogs - Integrated Approach to
+  Determine Net Pay. Malik, Hanson, Clinch (2021). DOI: 10.30632/PJV62N1-2021t1. Petrophysics Vol.
+  62 No. 1 (Feb 2021).
+src2021_10/article4 -- Article 4: 3D Printing Mudrocks: Experiments in Validating Clay as a Build
+  Material for 3D Printing Porous Micromodels. Hasiuk, Harding (2021). DOI:
+  10.30632/PJV62N5-2021a4. Petrophysics Vol. 62 No. 5 (Oct 2021).
+src2021_12/article02 -- Article 2: Enhanced Mineral Quantification and Uncertainty Analysis From
+  Downhole Spectroscopy Logs Using Variational Autoencoders. Craddock, Srivastava, Datir, Rose,
+  Zhou, Mosse, Venkataramanan (2021). DOI: 10.30632/PJV62N6-2021a2. Petrophysics Vol. 62 No. 6 (Dec
+  2021).
+src2021_12/article09 -- Article 9: An Integrated Petrophysical Characterization of a Siliciclastic
+  Tight Gas Reservoir in Neuquen Basin, Western Argentina. Carrizo, Santiago, Saldungaray (2021).
+  DOI: 10.30632/PJV62N6-2021a9. Petrophysics Vol. 62 No. 6 (Dec 2021).
+src2022_02/article5 -- Article 5: Evaluating Petrophysical Properties and Volumetrics Uncertainties
+  of Sand Injectite Reservoirs - Norwegian North Sea. Kotwicki, Baig, Johansen, Leirdal, Aftret,
+  Sandstad, Anthonsen, Gianotten, Hansen, Firinu (2022). DOI: 10.30632/PJV63N1-2022a5. Petrophysics
+  Vol. 63 No. 1 (Feb 2022).
+src2022_02/article6 -- Article 6: Investigating Delaware Basin Bone Spring and Wolfcamp
+  Observations Through Core-Based Quantification: Case Study in the Integrated Workflow, Including
+  Closed Retort Comparisons. Perry, Zumberge, Cheng (2022). DOI: 10.30632/PJV63N1-2022a6.
+  Petrophysics Vol. 63 No. 1 (Feb 2022).
+src2022_04/article7 -- Article 7: Application of Digital Core Technology in Wellbore Stability
+  Research. Zhou, Ye, Zhu, Cheng, Song, Wang, Cai (2022). DOI: 10.30632/PJV63N2-2022a7.
+  Petrophysics Vol. 63 No. 2 (Apr 2022).
+src2022_08/article4 -- Article 4: A Fast and Transparent Bayesian Log Interpretation Method.
+  Spalburg (2022). DOI: 10.30632/PJV63N4-2022a4. Petrophysics Vol. 63 No. 4 (Aug 2022).
+src2022_12/article7 -- Article 7: Using Digital Rock Physics to Evaluate Novel Percussion Core
+  Quality. Lakshtanov, Zapata, Saucier, Cook, Eve, Lancaster, Lane, Gettemy, Sincock, Liu, Geetan,
+  Draper, Gill (2022). DOI: 10.30632/PJV63N6-2022a7. Petrophysics Vol. 63 No. 6 (Dec 2022) — Best
+  Papers of the 2022 SPWLA Annual Symposium special issue.
+src2023_02/article4 -- Article 4: First Hexa-Combo Logging-While-Drilling Run in Kuwait: A Case
+  Study. Saleh, Al-Khudari, Al-Azmi, Al-Otaibi, Patnaik, Joshi, Abdulkarim, Aki, Fahri, Sanyal,
+  Sainuddin (2023). DOI: 10.30632/PJV64N1-2023a4. Petrophysics Vol. 64 No. 1 (Feb 2023).
+src2023_02/article6 -- Article 6: Enhancing the Detectability of Deep-Sensing Borehole EM
+  Instruments by Joint Inversion of Multiple Logs Within a Probabilistic Geosteering Workflow.
+  Jahani, Alyaev, Ambia, Fossum, Suter, Torres-Verdín (2023). DOI: 10.30632/PJV64N1-2023a6.
+  Petrophysics Vol. 64 No. 1 (Feb 2023).
+src2023_06/article8 -- Eichmann, S.L., Bouchard, J., Ow, H., Petkie, D., Poitzsch, M.E. "THz
+  Imaging to Map the Lateral Microporosity Distribution in Carbonate Rocks" Petrophysics, Vol. 64,
+  No. 3 (June 2023), pp. 438-447 DOI: 10.30632/PJV64N3-2023a8.
+src2023_08/article1 -- Fitz, D.E. (2023). "Evolution of Casedhole Nuclear Surveillance Logging
+  Through Time", Petrophysics, Vol. 64, No. 4 (August 2023), pp. 473-501. DOI:
+  10.30632/PJV64N4-2023a1.
+src2023_08/article3 -- Jácomo, M.H., Hartmann, G.A., Rebelo, T.B., Mattos, N.H., Batezelli, A.,
+  Leite, E.P. (2023). "Mineralogical Modeling and Petrophysical Properties of the Barra Velha
+  Formation, Santos Basin, Brazil", Petrophysics, Vol. 64, No. 4, pp. 518-543. DOI:
+  10.30632/PJV64N4-2023a3.
+src2025_06/toc_prediction -- Comparative Analysis of TOC Logging Evaluation Methods Using Machine
+  Learning Implements the methodology from: Dong, M., Shang, J., Tian, L., Wu, M., and Nie, X.,
+  2025, "Comparative Analysis of TOC Logging Evaluation Methods Using Machine Learning – A Case
+  Study of the Ordos Basin-Yanchang Formation," Petrophysics, Vol. 66, No. 3, pp. 425–448.
+src2025_10/a3 -- Article 3: An Efficient Approach for Predicting Young's Modulus of Sandstones
+  Using Well Logs Without Shear-Wave Traveltime Authors: Mabkhout M. Al-Dousari, Yousef M. Al-
+  Enezi, Ali A. Garrouch Ref: Petrophysics, Vol. 66, No. 5 (October 2025), pp. 741-762. DOI:
+  10.30632/PJV66N5-2025a3.
+src2025_10/a6 -- Article 6: Enhanced Learning Experience for New Petrophysicists Using Open-Source
+  Carbonate Data and Python Programming Author: Imran M. Fadhil Ref: Petrophysics, Vol. 66, No. 5
+  (October 2025), pp. 807-838. DOI: 10.30632/PJV66N5-2025a6.
+src2026_04/a03 -- Zhao, Y. (2026). Effect of Water-Rock Interactions on Mechanical Properties and
+  Acoustic Emission Characteristics of Sandstones. Petrophysics, 67(2), 280–293. DOI:
+  10.30632/PJV67N2-2026a3.
 """
 
 from __future__ import annotations

@@ -8,6 +8,25 @@ convention (the corpus uses both, and classifier thresholds assume one or the
 other -- the ``classify_*`` helpers below take a matching flag).  Components are
 the light-alkane readings C1..C5 (any consistent unit).  Sources:
 src2021_02/article1, src2023_12/cely, src2024_08/*, src2026_02, src2026_06/a08.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2021_02/article1 -- Article 1 (Tutorial): Maximizing Value From Mudlogs - Integrated Approach to
+  Determine Net Pay. Malik, Hanson, Clinch (2021). DOI: 10.30632/PJV62N1-2021t1. Petrophysics Vol.
+  62 No. 1 (Feb 2021).
+src2023_12/cely -- Cely et al. (2023), Petrophysics 64(6): 919-930. Reservoir oil viscosity
+  estimation in the Breidablikk Field from advanced mud-gas ratios + cuttings geochemistry,
+  compared against PVT.
+src2024_08 -- Petrophysics Vol. 65 No. 4 (Aug 2024) — Special Issue on Advancements in Mud Logging
+  (issue-level reference).
+src2026_02 -- Petrophysics Vol. 67 No. 1 (Feb 2026) — SPWLA 66th Annual Symposium best papers
+  (issue-level reference).
+src2026_06/a08 -- Luo, P., Li, W., Lu, P., and Qubaisi, K. (2026). An Improved Mud Gas Ratio Method
+  for Enhanced Fluid Identification While Drilling. Petrophysics, 67(3), 582-593. DOI:
+  10.30632/PJV67N3-2026a8.
 """
 
 from __future__ import annotations

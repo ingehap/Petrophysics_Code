@@ -41,6 +41,126 @@ in the empirical poro-perm / rock-typing transforms — that is how their
 correlation constants are defined — and square metres in the Darcy-law and
 Kozeny-Carman functions; porosity is a fraction, RQI/r35 in um.  numpy-only at
 import; the ``fit_*`` routines use ``numpy.polyfit``.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2014_04/article3 -- Article 3: The Dynamics of Reservoir Fluids and their Substantial Systematic
+  Variations Oliver C. Mullins, Julian Y. Zuo, Kang Wang, Paul S. Hammond, Ilaria De Santo, Hadrien
+  Dumont, Vinay K. Mishra, Li Chen, Andrew E. Pomerantz, Chengli Dong, Hani Elshahawi, Douglas J.
+  Seifert (2014). Petrophysics Vol. 55, No. 2 (April 2014), pp. 96-112. DOI: none assigned (this
+  issue predates SPWLA DOI assignment).
+src2014_10/article5 -- Article 5: Quantifying the Impact of Petrophysical Properties on Spatial
+  Distribution of Contrasting Nanoparticle Agents in the Near-Wellbore Region. Kai Cheng, Aderonke
+  Aderibigbe, Masoud Alfi, Zoya Heidari, John Killough (2014). Petrophysics Vol. 55, No. 5 (October
+  2014), pp. 447-460. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_02/article2 -- Article 2: CO2 EOR by Diffusive Mixing in Fractured Reservoirs. Eide,
+  Ersland, Brattekas, Haugen, Graue, Ferno (2015). Petrophysics Vol. 56, No. 1 (February 2015), pp.
+  23-31. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_02/article4 -- Article 4: Petrophysical Characterization of the Pore Space in Permian
+  Wolfcamp Rocks. Rafatian, Capsan (2015). Petrophysics Vol. 56, No. 1 (February 2015), pp. 45-57.
+  DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_04/article2 -- Article 2: Steady-State Stress-Dependent Permeability Measurements of Tight
+  Oil-Bearing Rocks. Chhatre, Braun, Sinha, Determan, Passey, Zirkle, Wood, Boros, Berry, Leonardi,
+  Kudva (2015). Petrophysics Vol. 56, No. 2 (April 2015), pp. 116-124. DOI: none assigned (this
+  issue predates SPWLA DOI assignment).
+src2015_04/article3 -- Article 3: Estimation of Permeability in the McMurray Formation Using High-
+  Resolution Data Sources. Manchuk, Garner, Deutsch (2015). Petrophysics Vol. 56, No. 2 (April
+  2015), pp. 125-139. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_08/article3 -- Article 3: Gas Diffusion into Oil, Reservoir Baffling and Tar Mats Analyzed
+  by Downhole Fluid Analysis, Pressure Transients, Core Extracts and DSTs. Achourov, Pfeiffer,
+  Kollien, Betancourt, Zuo, di Primio, Mullins (2015). Petrophysics Vol. 56, No. 4 (August 2015),
+  pp. 346-357. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_10/article2 -- Article 2: Differing Equilibration Times of GOR, Asphaltenes and Biomarkers
+  as Determined by Charge History and Reservoir Fluid Geodynamics. Wang, Kauerauf, Zuo, Chen, Dong,
+  Elshahawi, Mullins (2015). Petrophysics Vol. 56, No. 5 (October 2015), pp. 440-456. DOI: none
+  assigned (this issue predates SPWLA DOI assignment).
+src2015_10/article5 -- Article 5: Integrated Petrophysical Rock Classification in the McElroy
+  Field, West Texas, USA. Saneifar, Skalinski, Theologou, Kenter, Cuffey, Salazar-Tio (2015).
+  Petrophysics Vol. 56, No. 5 (October 2015), pp. 493-510. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2015_12/article4 -- Article 4: Petrophysical Challenges in Giant Carbonate Tengiz Field,
+  Republic of Kazakhstan. Skalinski, Se, Playton, Theologou, Narr, Sullivan, Mallan (2015).
+  Petrophysics Vol. 56, No. 6 (December 2015), pp. 615-647. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2016_02/article3 -- Article 3: Low-Permeability Measurements: Insights. Profice, Hamon, Nicot
+  (2016). Petrophysics Vol. 57, No. 1 (February 2016), pp. 30-40. DOI: none assigned (this issue
+  predates SPWLA DOI assignment).
+src2016_06/article1 -- Article 1: Heterogeneous Carbonate Reservoirs: Ensuring Consistency of
+  Subsurface Models by Maximizing the use of Saturation-Height Models and Dynamic Data. Hulea,
+  Frese, Ramaswami (2016). Petrophysics Vol. 57, No. 3 (June 2016), pp. 223-232. DOI: none assigned
+  (this issue predates SPWLA DOI assignment).
+src2017_02/article3 -- Article 3: Wettability Effects on Osmosis as an Oil-Mobilization Mechanism
+  During Low-Salinity Waterflooding. Fredriksen, Rognmo, Sandengen, Ferno (2017). Petrophysics Vol.
+  58, No. 1 (February 2017), pp. 28-35. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2017_02/article5 -- Article 5: Comparison of Four Numerical Simulators for SCAL Experiments.
+  Lenormand, Lorentzen, Maas, Ruth (2017). Petrophysics Vol. 58, No. 1 (February 2017), pp. 48-56.
+  DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2018_02/article3 -- Article 3: Stress Sensitivity of Mercury-Injection Measurements. Guise,
+  Grattoni, Allshorn, Fisher, Schiffer (2018). DOI: 10.30632/petro_059_1_a2. Petrophysics Vol. 59
+  No. 1 (Feb 2018).
+src2018_02/article4 -- Article 4: Microstructural Investigation of Stress-Dependent Permeability in
+  Tight-Oil Rocks. King, Sansone, Kortunov, Xu, Callen, Chhatre, Sahoo, Buono (2018). DOI:
+  10.30632/petro_059_1_a3. Petrophysics Vol. 59 No. 1 (Feb 2018).
+src2018_06/article8 -- Article 8: Saturation-Height Modeling: Assessing Capillary Pressure Stress
+  Corrections. Hulea (2018). DOI: 10.30632/PJV59N3-2018a7 (inferred - see note). Petrophysics Vol.
+  59 No. 3 (Jun 2018).
+src2018_08/article8 -- Article 8: Incorporating Flow Regimes Into Crushed-Rock Analysis to Better
+  Understand Matrix Permeability and Pore Structure in Shales. Royer, Hobbs, Bonar (2018). DOI:
+  10.30632/PJV59V4-2018a7. Petrophysics Vol. 59 No. 4 (Aug 2018) - Special Issue on Flow
+  Diagnostics.
+src2019_02/article2 -- Article 2: Defining Net-Pay Cutoffs in Carbonates Using Advanced
+  Petrophysical Methods. Skalinski, Mallan, Edwards, Sun, Toumelin, Kelly, Wushur, Sullivan (2019).
+  DOI: 10.30632/PJV60N1Y2019a1. Petrophysics Vol. 60 No. 1 (Feb 2019).
+src2019_04/article11 -- Article 11: Loading Effects on Gas Relative Permeability of a Low-
+  Permeability Sandstone. Agostini, Egermann, Jeannin, Portier, Skoczylas, Wang (2019). DOI:
+  10.30632/PJV60N2-2019a9. Petrophysics Vol. 60 No. 2 (Apr 2019).
+src2019_06/article4 -- Article 4: Finite-Volume Computations of Shale Tortuosity and Permeability
+  From 3D Pore Networks Extracted From Scanning Electron Tomographic Images. Almasoodi, Reza
+  (2019). DOI: 10.30632/PJV60N3-2019a3. Petrophysics Vol. 60 No. 3 (Jun 2019).
+src2019_06/article6 -- Article 6: Reconsidering Klinkenberg's Permeability Data. Ruth, Arabjamaloei
+  (2019). DOI: 10.30632/PJV60N3-2019a5. Petrophysics Vol. 60 No. 3 (Jun 2019).
+src2019_10/article8 -- Article 8: Presenting a Multifaceted Approach to Unconventional Rock Typing
+  and Technical Validation - Case Study in the Permian Basin and Impacts on Reservoir
+  Characterization Workflows. Perry, Hayes (2019). DOI: 10.30632/PJV60N5-2019a8. Petrophysics Vol.
+  60 No. 5 (Oct 2019).
+src2019_12/article10 -- Article 10: Review of Micro/Nanofluidic Insights on Fluid Transport
+  Controls in Tight Rocks. Mehmani, Kelly, Torres-Verdin (2019). DOI: 10.30632/PJV60N6-2019a10.
+  Petrophysics Vol. 60 No. 6 (Dec 2019).
+src2020_04/article3 -- Article 3: Low-Permeability Measurement on Crushed Rock: Insights. Profice,
+  Lenormand (2020). DOI: 10.30632/PJV61N2-2020a3. Petrophysics Vol. 61 No. 2 (Apr 2020).
+src2020_04/article9 -- Article 9: Chemically Induced Formation Damage in Shale. Wick, Taneja,
+  Gupta, Sondergeld, Rai (2020). DOI: 10.30632/PJV61N2-2020a9. Petrophysics Vol. 61 No. 2 (Apr
+  2020).
+src2020_06/article3 -- Article 3: Reliable Measurement of Saturation-Dependent Relative
+  Permeability in Tight Gas Sand Formations. Gonzalez, Tandon, Heidari, Gramin, Merle (2020). DOI:
+  10.30632/PJV61N3-2020a3. Petrophysics Vol. 61 No. 3 (Jun 2020).
+src2021_12 -- Petrophysics Vol. 62 No. 6 (Dec 2021) (issue-level reference).
+src2021_12/article08 -- Article 8: The Impact of Overbalanced Drilling From Exploration/Appraisal
+  Wells to Field Development Plan. Mohammadlou, Reppert, Del Negro, Jones (2021). DOI:
+  10.30632/PJV62N6-2021a8. Petrophysics Vol. 62 No. 6 (Dec 2021).
+src2022_04/article2 -- Article 2: Permeability Modeling in Clay-Rich Carbonate Reservoir. Storebo,
+  Meireles, Fabricius (2022). DOI: 10.30632/PJV63N2-2022a2. Petrophysics Vol. 63 No. 2 (Apr 2022).
+src2022_04/article4 -- Article 4: In-Situ Visualization and Characterization of Filter-Cake
+  Deposition Using Time-Lapse Micro-CT Imaging. Schroeder, Torres-Verdin (2022). DOI:
+  10.30632/PJV63N2-2022a4. Petrophysics Vol. 63 No. 2 (Apr 2022).
+src2022_12/article7 -- Article 7: Using Digital Rock Physics to Evaluate Novel Percussion Core
+  Quality. Lakshtanov, Zapata, Saucier, Cook, Eve, Lancaster, Lane, Gettemy, Sincock, Liu, Geetan,
+  Draper, Gill (2022). DOI: 10.30632/PJV63N6-2022a7. Petrophysics Vol. 63 No. 6 (Dec 2022) — Best
+  Papers of the 2022 SPWLA Annual Symposium special issue.
+src2023_02/article2 -- Article 2: Modeling Permeability in Different Carbonate Rock Types.
+  Dernaika, Masalmeh, Mansour, Al Jallad, Koronfol (2023). DOI: 10.30632/PJV64N1-2023a2.
+  Petrophysics Vol. 64 No. 1 (Feb 2023).
+src2023_10/article_11 -- Shafiq, M. U., Ben Mahmud, H., Khan, M., Gishkori, S. N., Wang, L., and
+  Jamil, M. (2023). "Effect of Chelating Agents on Tight Sandstone Formation Mineralogy During
+  Sandstone Acidizing." Petrophysics, 64(5), 796-817. DOI: 10.30632/PJV64N5-2023a11.
+src2024_10/permeability_anisotropy -- Permeability Anisotropy in Carbonates via Digital Rock
+  Petrophysics. Based on: Silva Junior et al. (2024), "Permeability Anisotropy in Brazilian Presalt
+  Carbonates at Core Scale Using Digital Rock Petrophysics", Petrophysics, Vol. 65, No. 5, pp.
+  711-738.
 """
 
 from __future__ import annotations

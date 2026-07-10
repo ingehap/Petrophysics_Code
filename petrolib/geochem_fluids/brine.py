@@ -10,6 +10,40 @@ cross-section in capture units (c.u.).  Temperature is passed with an explicit
 Celsius (the corpus uses a 7.0 variant in one file -- pass it via ``c=``).
 Sources: src2015_06/article4, src2015_08/article5, src2020_12/article2,
 src2023_08/article1, src2023_10/article_01, src2026_06/a03.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2015_06/article4 -- Article 4 (Technical Note): The Bateman-Konen Resistivity-Salinity
+  Transform. Kennedy (2015). Petrophysics Vol. 56, No. 3 (June 2015), pp. 282-283. DOI: none
+  assigned (this issue predates SPWLA DOI assignment).
+src2015_06/article4_bateman_konen_transform -- Article 4 (Technical Note): The Bateman-Konen
+  Resistivity-Salinity Transform. Kennedy (2015). Petrophysics Vol. 56, No. 3 (June 2015), pp.
+  282-283. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_08/article5 -- Article 5 (Technical Note): The Bateman-Konen Resistivity-Salinity Transform
+  II. Kennedy (2015). Petrophysics Vol. 56, No. 4 (August 2015), pp. 379-381. DOI: none assigned
+  (this issue predates SPWLA DOI assignment).
+src2015_08/article5_bateman_konen_resistivity_salinity -- Article 5 (Technical Note): The Bateman-
+  Konen Resistivity-Salinity Transform II. Kennedy (2015). Petrophysics Vol. 56, No. 4 (August
+  2015), pp. 379-381. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2020_12/article2 -- Article 2: Formation Chlorine Measurement From Spectroscopy Enables Water
+  Salinity Interpretation: Theory, Modeling, and Applications. Miles, Mosse, Grau (2020). DOI:
+  10.30632/PJV61N6-2020a2. Petrophysics Vol. 61 No. 6 (Dec 2020).
+src2023_08/article1 -- Fitz, D.E. (2023). "Evolution of Casedhole Nuclear Surveillance Logging
+  Through Time", Petrophysics, Vol. 64, No. 4 (August 2023), pp. 473-501. DOI:
+  10.30632/PJV64N4-2023a1.
+src2023_10/article_01 -- Laronga, R., Borchardt, E., Hill, B., Velez, E., Klemin, D., Haddad, S.,
+  Haddad, E., Chadwick, C., Mahmoodaghdam, E., and Hamichi, F. (2023). "Integrated Formation
+  Evaluation for Site-Specific Evaluation, Optimization, and Permitting of Carbon Storage
+  Projects." Petrophysics, 64(5), 580-620. DOI: 10.30632/PJV64N5-2023a1.
+src2025_10/a1_log_interpretation -- Article 1: Log Interpretation for Petrophysical and Elastic
+  Properties of Fine-Grained Sedimentary Rocks Authors: Ermis Proestakis and Ida Lykke Fabricius
+  Ref: Petrophysics, Vol. 66, No. 5 (October 2025), pp. 705-727. DOI: 10.30632/PJV66N5-2025a1.
+src2026_06/a03 -- Manuaba, I. B. G. H., Najrani, H., Cavalleri, C., Moge, A., and Chapura, M.
+  (2026). Effect of Pore-Size Distribution on Fluid Movement in Complex Reservoirs. Petrophysics,
+  67(3), 509-524. DOI: 10.30632/PJV67N3-2026a3 (orig. SPE-227259-MS).
 """
 
 from __future__ import annotations
@@ -33,13 +67,19 @@ def _arps_c(unit: str) -> float:
 
 
 def rw75_from_salinity(nacl_ppm: ArrayLike) -> _Float:
-    """Bateman-Konen water resistivity at 75 degF ``R75 = 0.0123 + 3647.5/C**0.955``."""
+    """Bateman-Konen water resistivity at 75 degF ``R75 = 0.0123 + 3647.5/C**0.955``.
+
+    Sources: src2015_06/article4_bateman_konen_transform.
+    """
     c = np.asarray(nacl_ppm, np.float64)
     return np.asarray(0.0123 + 3647.5 / c**0.955)
 
 
 def salinity_from_rw75(rw75_ohmm: ArrayLike) -> _Float:
-    """NaCl ppm from the 75 degF resistivity -- exact inverse of ``rw75_from_salinity``."""
+    """NaCl ppm from the 75 degF resistivity -- exact inverse of ``rw75_from_salinity``.
+
+    Sources: src2015_06/article4_bateman_konen_transform.
+    """
     r = np.asarray(rw75_ohmm, np.float64)
     return np.asarray((3647.5 / (r - 0.0123)) ** (1.0 / 0.955))
 
@@ -49,6 +89,8 @@ def arps_correct(r1: ArrayLike, t1: ArrayLike, t2: ArrayLike, *, unit: str = "F"
 
     ``c`` is 6.77 for ``unit="F"`` or 21.5 for ``unit="C"``.  Applies equally to
     conductivity with the roles of R inverted by the caller.
+
+    Sources: src2015_06/article4_bateman_konen_transform, src2025_10/a1_log_interpretation.
     """
     c = _arps_c(unit)
     r1a = np.asarray(r1, np.float64)
@@ -60,6 +102,8 @@ def rw_from_salinity(nacl_ppm: ArrayLike, temp: ArrayLike, *, unit: str = "F") -
 
     Computes R75 (Bateman-Konen) then Arps-corrects from 75 degF to ``temp``.
     ``unit="C"`` converts ``temp`` to Fahrenheit first (75 degF reference kept).
+
+    Sources: src2015_08/article5_bateman_konen_resistivity_salinity.
     """
     rw75 = rw75_from_salinity(nacl_ppm)
     t = np.asarray(temp, np.float64)
@@ -68,7 +112,10 @@ def rw_from_salinity(nacl_ppm: ArrayLike, temp: ArrayLike, *, unit: str = "F") -
 
 
 def salinity_from_rw(rw: ArrayLike, temp: ArrayLike, *, unit: str = "F") -> _Float:
-    """NaCl ppm from water resistivity at ``temp`` -- inverse of ``rw_from_salinity``."""
+    """NaCl ppm from water resistivity at ``temp`` -- inverse of ``rw_from_salinity``.
+
+    Sources: src2015_08/article5_bateman_konen_resistivity_salinity.
+    """
     t = np.asarray(temp, np.float64)
     t_f = t if unit == "F" else t * 9.0 / 5.0 + 32.0
     rw75 = arps_correct(rw, t_f, 75.0, unit="F")

@@ -3,6 +3,27 @@
 Data-misfit measures (L2, RMS, relative, chi-square) and the two regularization
 schedules the corpus uses: Habashy-Abubakar multiplicative cooling and the
 discrepancy-principle (BRD) bisection.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2014_10/article1_lwd_inversion_anisotropy -- Article 1: Inversion-Based Interpretation of
+  Logging-While-Drilling Resistivity and Nuclear Measurements: Field Examples in High-Angle and
+  Horizontal Wells Olabode Ijasan, Carlos Torres-Verdin, William E. Preeg, John Rasmus, Edward J.
+  Stockhausen (2014). Petrophysics Vol. 55, No. 5 (October 2014), pp. 374-391. DOI: none assigned
+  (this issue predates SPWLA DOI assignment).
+src2014_12/article2_obm_imager_inversion -- Article 2: Inversion-Based Workflow for Quantitative
+  Interpretation of the New-Generation Oil-Based-Mud Resistivity Imager Yong-Hua Chen, Dzevat
+  Omeragic, Tarek Habashy, Richard Bloemenkamp, Tianhua Zhang, Phillip Cheung, Robert Laronga
+  (2014). Petrophysics Vol. 55, No. 6 (December 2014), pp. 554-571. DOI: none assigned (this issue
+  predates SPWLA DOI assignment).
+src2017_10/article4_joint_inversion_nearwellbore -- Article 4: Imaging Near-Wellbore Petrophysical
+  Properties by Joint Inversion of Sonic, Resistivity, and Density Logging Data. Shetty, Liang,
+  Simoes, Canesin, Boyd, Zeroug, Sinha, Habashy, Domingues, Amorim, Abbots (2017). Petrophysics
+  Vol. 58, No. 5 (October 2017), pp. 501-516. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
 """
 
 from __future__ import annotations
@@ -37,6 +58,9 @@ def misfit(
       * ``'chi2'``   -- ``sum(w*(sim-obs)^2)`` with ``w = 1/sigma^2``
 
     ``log_space=True`` compares ``log10`` of the values first.
+
+    Sources: src2014_10/article1_lwd_inversion_anisotropy,
+    src2017_10/article4_joint_inversion_nearwellbore.
     """
     s = _arr(sim)
     o = _arr(obs)
@@ -61,7 +85,10 @@ def misfit(
 def reg_lambda_multiplicative(
     misfit_value: float, alpha: float, beta: float, lam_max: float = np.inf
 ) -> float:
-    """Habashy-Abubakar multiplicative cooling ``lam = min(alpha*misfit^beta, lam_max)``."""
+    """Habashy-Abubakar multiplicative cooling ``lam = min(alpha*misfit^beta, lam_max)``.
+
+    Sources: src2014_12/article2_obm_imager_inversion.
+    """
     return float(min(alpha * misfit_value**beta, lam_max))
 
 

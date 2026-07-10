@@ -8,6 +8,46 @@ operators.
 
 ``lam`` (regularization weight) is applied **once** everywhere -- never squared.
 scipy is imported lazily inside the functions that need it (NNLS).
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2014_06/article4_nmr_carbonate_permeability -- Article 4: Method for Predicting Permeability of
+  Complex Carbonate Reservoirs Using NMR Logging Measurements Willian Trevizan, Paulo Neto,
+  Bernardo Coutinho, Vinicius F. Machado, Edmilson H. Rios, Songhua Chen, Wei Shao, Pedro Romero
+  (2014). Petrophysics Vol. 55, No. 3 (June 2014), pp. 240-252. DOI: none assigned (this issue
+  predates SPWLA DOI assignment).
+src2015_04/article5_nmr_short_t2_porosity -- Article 5: New Method to Estimate Porosity More
+  Accurately from NMR Data with Short Relaxation Times. Venkataramanan, Gruber, LaVigne, Habashy,
+  Iglesias, Cohorn, Anand, Rampurawala, Jain, Heaton, Akkurt, Rylander, Lewis (2015). Petrophysics
+  Vol. 56, No. 2 (April 2015), pp. 147-157. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2015_08/article4_spectroscopy_inversion -- Article 4: Petrophysical Interpretation of LWD,
+  Neutron-Induced Gamma-Ray Spectroscopy Measurements: An Inversion-Based Approach. Ajayi, Torres-
+  Verdin, Preeg (2015). Petrophysics Vol. 56, No. 4 (August 2015), pp. 358-378. DOI: none assigned
+  (this issue predates SPWLA DOI assignment).
+src2017_06/article3_forward_mineral_svd -- Article 3: Forward Mineral Modeling Using Regularized
+  Least-Squares Regression With Singular Value Decomposition: Case Study From Qusaiba Shale. Xu,
+  McCormick, Herron, Cheshire, Al-Salim, Almarzouq (2017). Petrophysics Vol. 58, No. 3 (June 2017),
+  pp. 242-269. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2019_06/article3_wellsite_tomography_bayesian -- Article 3: Accelerated Whole-Core Analysis
+  Optimization With Wellsite Tomography Instrumentation and Bayesian Inversion. Mendoza, Roininen,
+  Girolami, Heikkinen, Haario (2019). DOI: 10.30632/PJV60N3-2019a2. Petrophysics Vol. 60 No. 3 (Jun
+  2019).
+src2019_12/article1_sonic_inversion_deconvolution -- Article 1: Inversion of High-Resolution High-
+  Quality Sonic Compressional and Shear Logs for Unconventional Reservoirs. Lei, Zeroug, Bose,
+  Prioul, Donald (2019). DOI: 10.30632/PJV60N6-2019a1. Petrophysics Vol. 60 No. 6 (Dec 2019).
+src2020_02/article4_physics_deeplearning_inversion -- Article 4: A Physics-Driven Deep-Learning
+  Network for Solving Nonlinear Inverse Problems. Jin, Shen, Wu, Chen, Huang (2020). DOI:
+  10.30632/PJV61N1-2020a3. Petrophysics Vol. 61 No. 1 (Feb 2020).
+src2021_02/article8_injectite_em_3d_inversion -- Article 8: Mapping Complex Injectite Bodies With
+  Multiwell Electromagnetic 3D Inversion Data. Clegg, Eriksen, Best, Tollefsen, Kowicki, Marchant
+  (2021). DOI: 10.30632/PJV62N1-2021a7. Petrophysics Vol. 62 No. 1 (Feb 2021).
+src2026_02/nmr_discrete_inversion -- Article 3: Discrete Inversion Method for Nuclear Magnetic
+  Resonance Data Processing and Its Applications to Fluid Typing and Quantification. Gao et al.
+  (2026), Petrophysics, 67(1), 38-53. DOI: 10.30632/PJV67N1-2026a3.
 """
 
 from __future__ import annotations
@@ -40,7 +80,10 @@ def difference_operator(n: int, order: int = 1) -> _Float:
 
 
 def condition_number(a: ArrayLike) -> float:
-    """2-norm condition number ``s_max/s_min`` from the singular values."""
+    """2-norm condition number ``s_max/s_min`` from the singular values.
+
+    Sources: src2017_06/article3_forward_mineral_svd.
+    """
     s = np.linalg.svd(_arr(a), compute_uv=False)
     return float(s[0] / s[-1])
 
@@ -71,6 +114,12 @@ def tikhonov_solve(
     ``argmin_x ||W(Ax - b)||^2 + lam*||L(x - x_ref)||^2`` with ``L = reg_op``
     (identity by default), data weights ``W = diag(1/sigma)``, and ``lam`` applied
     **once**.  ``nonneg=True`` solves the augmented system with :func:`nnls_solve`.
+
+    Sources: src2014_06/article4_nmr_carbonate_permeability,
+    src2015_04/article5_nmr_short_t2_porosity, src2015_08/article4_spectroscopy_inversion,
+    src2017_06/article3_forward_mineral_svd,
+    src2020_02/article4_physics_deeplearning_inversion,
+    src2021_02/article8_injectite_em_3d_inversion, src2026_02/nmr_discrete_inversion.
     """
     a_arr = _arr(a)
     b_arr = _arr(b)
@@ -229,7 +278,11 @@ def convolution_matrix(kernel: ArrayLike, n: int) -> _Float:
 
 
 def deconvolve(d: ArrayLike, g: ArrayLike, rank: int | None = None) -> _Float:
-    """Deconvolve ``d = G x`` for ``x`` via (rank-limited) pseudo-inverse."""
+    """Deconvolve ``d = G x`` for ``x`` via (rank-limited) pseudo-inverse.
+
+    Sources: src2019_06/article3_wellsite_tomography_bayesian,
+    src2019_12/article1_sonic_inversion_deconvolution.
+    """
     g_arr = _arr(g)
     d_arr = _arr(d)
     if rank is None:
