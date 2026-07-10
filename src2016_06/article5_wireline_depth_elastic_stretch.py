@@ -29,6 +29,13 @@ E*A in consistent force units.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- cable mechanics --------------
 
@@ -40,7 +47,8 @@ def cable_tension(depth, total_depth, tool_weight, cable_weight_per_length):
     with L the tool depth, W_tool the (buoyant) tool-string weight and w_cable
     the (buoyant) cable weight per unit length.
     """
-    return tool_weight + cable_weight_per_length * (total_depth - np.asarray(depth, float))
+    return petrolib.depth_correction.cable_tension(
+        depth, total_depth, tool_weight, cable_weight_per_length)
 
 
 def stretch_coefficient(youngs_modulus, cross_section_area):
@@ -56,8 +64,8 @@ def elastic_stretch(total_depth, tool_weight, cable_weight_per_length, ea):
 
     integrating the tension T(z) = W_tool + w_cable*(L - z) along the cable.
     """
-    return (tool_weight * total_depth
-            + 0.5 * cable_weight_per_length * total_depth ** 2) / ea
+    return petrolib.depth_correction.distributed_stretch(
+        total_depth, cable_weight_per_length, ea, end_load=tool_weight)
 
 
 def stretch_corrected_depth(measured_depth, total_depth, tool_weight,
@@ -69,7 +77,7 @@ def stretch_corrected_depth(measured_depth, total_depth, tool_weight,
     adding the elastic stretch (the cable reads short because it is stretched).
     """
     dL = elastic_stretch(total_depth, tool_weight, cable_weight_per_length, ea)
-    return measured_depth + dL
+    return petrolib.depth_correction.corrected_depth(measured_depth, stretch=dL)
 
 
 # ---------------------------------------------- tests --------------

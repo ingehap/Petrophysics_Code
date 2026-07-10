@@ -26,6 +26,13 @@ standard-form reconstructions from the surviving variable definitions.  SI units
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 E_STEEL = 2.0e11             # Young's modulus, steel (Pa)
 ALPHA_STEEL = 1.5e-5         # linear thermal-expansion coefficient, steel (1/K)
 
@@ -39,7 +46,7 @@ def thermal_correction(length, t_top, t_btm, t_calib, alpha=ALPHA_STEEL):
     the tally length was measured.
     """
     t_mean = 0.5 * (np.asarray(t_top, float) + np.asarray(t_btm, float))
-    return length * alpha * (t_mean - t_calib)
+    return petrolib.depth_correction.thermal_elongation(length, t_mean - t_calib, alpha=alpha)
 
 
 def cross_section_area(od, id_):
@@ -54,7 +61,7 @@ def stretch_coefficient(area, youngs=E_STEEL):
 
 def elastic_stretch(force, length, area, youngs=E_STEEL):
     """Elastic stretch of a segment under axial load  dL = F*L/(E*A)  (Eqs. 2-8)."""
-    return force * length / (youngs * area)
+    return petrolib.depth_correction.elastic_stretch(force, length, area, E=youngs)
 
 
 def waypoint_correction(lengths, t_top, t_btm, tension, area,
