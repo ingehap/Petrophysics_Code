@@ -64,8 +64,8 @@ def correct_porosity(phi_measured, delta_phi):
 
 def fit_kphi(phi, k):
     """Fit semilog poro-perm trend  log10(k) = a*phi + b.  Returns (a, b)."""
-    a, b = np.polyfit(np.asarray(phi, float), np.log10(np.asarray(k, float)), 1)
-    return float(a), float(b)
+    lf = petrolib.inversion_numerics.fitting.fit_line(phi, k, yform="log10")
+    return float(lf.slope), float(lf.intercept)
 
 
 def kphi_permeability(phi, a, b):

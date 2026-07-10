@@ -88,7 +88,8 @@ def apparent_n(sw, Cw, B, Qv, Fstar, n_star=2.0):
     c0 = waxman_smits_c0(Cw, B, Qv, Fstar)
     ct = waxman_smits_ct(sw, Cw, B, Qv, Fstar, n_star)
     I = c0 / ct
-    return float(np.polyfit(np.log(1.0 / np.asarray(sw, float)), np.log(I), 1)[0])
+    return float(petrolib.inversion_numerics.fitting.fit_line(
+        1.0 / np.asarray(sw, float), I, xform="log", yform="log").slope)
 
 
 # ---------------------------------------------- tests --------------
