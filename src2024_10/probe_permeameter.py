@@ -18,6 +18,13 @@ Reference: DOI:10.30632/PJV65N5-2024a1
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from typing import Tuple, Optional
 
 
@@ -142,9 +149,9 @@ def surface_impairment_correction(kp: np.ndarray,
         return kp * factor, factor
 
     # Log-space regression: log10(kc) = a + b * log10(kp)
-    log_kp = np.log10(kp_valid)
-    log_kc = np.log10(kc_valid)
-    b, a = np.polyfit(log_kp, log_kc, 1)
+    lf = petrolib.inversion_numerics.fitting.fit_line(
+        kp_valid, kc_valid, xform="log10", yform="log10")
+    b, a = lf.slope, lf.intercept
     kp_corrected = 10.0 ** (a + b * np.log10(np.maximum(kp, 1e-6)))
     return kp_corrected, b
 

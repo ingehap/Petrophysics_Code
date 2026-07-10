@@ -87,8 +87,8 @@ def sigma_from_decay(time_us: np.ndarray, counts: np.ndarray,
         t0, t1 = fit_window
         mask &= (t_us >= t0) & (t_us <= t1)
     t_s = t_us[mask] * 1e-6
-    log_n = np.log(n[mask])
-    slope, _intercept = np.polyfit(t_s, log_n, 1)       # s^-1
+    slope = petrolib.inversion_numerics.fitting.fit_line(
+        t_s, n[mask], yform="log").slope                # s^-1
     sigma_cm_inv = -slope / THERMAL_NEUTRON_VELOCITY_CM_S
     return sigma_cm_inv * 1e3                           # -> c.u.
 

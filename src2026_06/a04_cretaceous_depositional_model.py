@@ -31,6 +31,13 @@ from typing import Dict, List, Sequence, Tuple
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # 1. Dunham (1962) carbonate texture classification
@@ -182,7 +189,7 @@ def trend_regressive(grain_size_proxy: np.ndarray) -> str:
     of a grain-size proxy versus depth index.
     """
     y = np.asarray(grain_size_proxy, float)
-    slope = np.polyfit(np.arange(len(y)), y, 1)[0]
+    slope = petrolib.inversion_numerics.fitting.fit_line(np.arange(len(y)), y).slope
     return "regressive" if slope > 0 else "transgressive"
 
 
