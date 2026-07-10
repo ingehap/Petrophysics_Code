@@ -49,10 +49,7 @@ def porosity_from_binary(pore_mask):
 
 def phase_saturation(phase_mask, pore_mask):
     """Saturation = phase pore-pixels / total pore-pixels."""
-    phase = np.asarray(phase_mask, bool)
-    pore = np.asarray(pore_mask, bool)
-    occupied = np.logical_and(phase, pore).sum()
-    return float(occupied) / float(pore.sum())
+    return petrolib.borehole_image.phase_saturation(phase_mask, pore_mask)
 
 
 def irreducible_water_saturation(post_drainage_phase_fraction):
