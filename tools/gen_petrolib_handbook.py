@@ -352,8 +352,8 @@ def build_pdf(entries: list[Entry]) -> None:
     story.append(Spacer(1, 10 * mm))
     story.append(
         Paragraph(
-            "User manual for <b>petrolib</b> — the common petrophysics library of the "
-            "Petrophysics_Code repository",
+            "User manual for <b>petrolib</b> — the main code for <i>Petrophysics</i> "
+            "Jan/Feb 2014 - Jun/Jul 2026",
             ParagraphStyle("Sub", fontName="DejaVuSans", fontSize=13, leading=18, alignment=1),
         )
     )
@@ -407,14 +407,15 @@ def build_pdf(entries: list[Entry]) -> None:
     story.append(toc)
     story.append(PageBreak())
 
-    # ---- one section per entry
+    # ---- one page per entry
     for i, e in enumerate(entries):
         key = f"e{i}"
         suffix = " (class)" if e.kind == "class" else ""
         head = Paragraph(f'<a name="{key}"/>{esc(e.name)}{suffix}', func_heading)
         head._toc_key = key
         head._toc_text = f"{e.name}{suffix}  ({e.module})"
-        block: list[object] = [head, Paragraph(esc(e.module), mod_line)]
+        block: list[object] = [] if i == 0 else [PageBreak()]
+        block += [head, Paragraph(esc(e.module), mod_line)]
         block.append(Paragraph(esc(e.signature), mono))
         if e.purpose:
             block.append(Paragraph("Purpose", label))
