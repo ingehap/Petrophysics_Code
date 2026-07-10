@@ -81,29 +81,8 @@ def dtw_distance(x, y, band=50):
     minimized over all admissible warping paths within a Sakoe-Chiba band of
     half-width `band` (Eqs. 3-4).  Returns (distance, path).
     """
-    x = np.asarray(x, dtype=float)
-    y = np.asarray(y, dtype=float)
-    n, m = len(x), len(y)
-    D = np.full((n + 1, m + 1), np.inf)
-    D[0, 0] = 0.0
-    for i in range(1, n + 1):
-        j0 = max(1, i - band)
-        j1 = min(m, i + band)
-        for j in range(j0, j1 + 1):
-            cost = (x[i - 1] - y[j - 1]) ** 2
-            D[i, j] = cost + min(D[i - 1, j], D[i, j - 1], D[i - 1, j - 1])
-    # backtrace the optimal path
-    i, j, path = n, m, []
-    while i > 0 and j > 0:
-        path.append((i - 1, j - 1))
-        step = np.argmin([D[i - 1, j - 1], D[i - 1, j], D[i, j - 1]])
-        if step == 0:
-            i, j = i - 1, j - 1
-        elif step == 1:
-            i -= 1
-        else:
-            j -= 1
-    return float(np.sqrt(D[n, m])), path[::-1]
+    res = petrolib.depth_matching.dtw(x, y, band=band, root=True)
+    return res.distance, res.path
 
 
 # ---------------------------------------------- Appendix 1: QC metrics --
