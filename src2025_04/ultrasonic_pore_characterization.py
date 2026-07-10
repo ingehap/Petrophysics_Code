@@ -135,23 +135,7 @@ def sobel_gradient(image: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarra
     -------
     Tuple of (Gx, Gy, magnitude)
     """
-    # Sobel kernels
-    Kx = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], dtype=float)
-    Ky = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]], dtype=float)
-
-    # Simple convolution
-    h, w = image.shape
-    Gx = np.zeros_like(image, dtype=float)
-    Gy = np.zeros_like(image, dtype=float)
-
-    for i in range(1, h - 1):
-        for j in range(1, w - 1):
-            patch = image[i - 1:i + 2, j - 1:j + 2].astype(float)
-            Gx[i, j] = np.sum(patch * Kx)
-            Gy[i, j] = np.sum(patch * Ky)
-
-    magnitude = np.sqrt(Gx ** 2 + Gy ** 2)
-    return Gx, Gy, magnitude
+    return petrolib.borehole_image.sobel_gradient(image)
 
 
 def segment_pores(image: np.ndarray,

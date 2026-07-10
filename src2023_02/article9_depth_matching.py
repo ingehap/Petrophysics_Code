@@ -19,6 +19,13 @@ The expert "ground truth" alignment is the inverse of the imposed warp.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------- synthetic data ---
 
@@ -46,50 +53,13 @@ def dtw(x, y, window=None):
 
     Returns the warping path as a list of (i, j) tuples and the cost.
     """
-    n, m = len(x), len(y)
-    INF = np.inf
-    D = np.full((n + 1, m + 1), INF)
-    D[0, 0] = 0.0
-    for i in range(1, n + 1):
-        lo = 1 if window is None else max(1, i - window)
-        hi = m + 1 if window is None else min(m + 1, i + window + 1)
-        for j in range(lo, hi):
-            cost = (x[i - 1] - y[j - 1]) ** 2
-            D[i, j] = cost + min(D[i - 1, j - 1], D[i - 1, j], D[i, j - 1])
-
-    # backtrace
-    path = []
-    i, j = n, m
-    while i > 0 and j > 0:
-        path.append((i - 1, j - 1))
-        step = np.argmin([D[i - 1, j - 1], D[i - 1, j], D[i, j - 1]])
-        if step == 0:
-            i, j = i - 1, j - 1
-        elif step == 1:
-            i -= 1
-        else:
-            j -= 1
-    path.reverse()
-    return path, float(D[n, m])
+    res = petrolib.depth_matching.dtw(x, y, band=window)
+    return res.path, res.distance
 
 
 def warped_target(target, path, n_ref):
     """Reconstruct a length-n_ref vector by indexing the target along the path."""
-    out = np.full(n_ref, np.nan)
-    counts = np.zeros(n_ref, dtype=int)
-    acc = np.zeros(n_ref)
-    for i, j in path:
-        acc[i] += target[j]
-        counts[i] += 1
-    mask = counts > 0
-    out[mask] = acc[mask] / counts[mask]
-    if np.any(~mask):
-        # forward-fill / back-fill
-        idx = np.where(mask)[0]
-        for k in np.where(~mask)[0]:
-            nearest = idx[np.argmin(np.abs(idx - k))]
-            out[k] = out[nearest]
-    return out
+    return petrolib.depth_matching.warp_to_reference(target, path, n_ref)
 
 
 # ---------------------------------------------------------- COW ------------
@@ -104,30 +74,7 @@ def cow(x, y, n_segments=10, slack=8):
     Boundary search is greedy and sequential (a faithful low-cost
     approximation of Nielsen's COW dynamic programme).
     """
-    n, m = len(x), len(y)
-    ref_bounds = np.linspace(0, n, n_segments + 1, dtype=int)
-    tgt_bounds = np.linspace(0, m, n_segments + 1, dtype=int).astype(int)
-
-    for k in range(1, n_segments):
-        best_score = -np.inf
-        best_b = tgt_bounds[k]
-        for db in range(-slack, slack + 1):
-            b = int(np.clip(tgt_bounds[k] + db, tgt_bounds[k - 1] + 2,
-                            tgt_bounds[k + 1] - 2))
-            score = (_segment_corr(x[ref_bounds[k - 1]:ref_bounds[k]],
-                                   y[tgt_bounds[k - 1]:b])
-                     + _segment_corr(x[ref_bounds[k]:ref_bounds[k + 1]],
-                                     y[b:tgt_bounds[k + 1]]))
-            if score > best_score:
-                best_score = score
-                best_b = b
-        tgt_bounds[k] = best_b
-
-    # Build the alignment as a piecewise linear map ref index -> target index
-    warp = np.interp(np.arange(n), ref_bounds.astype(float),
-                     tgt_bounds.astype(float))
-    aligned = np.interp(warp, np.arange(m), y)
-    return aligned, warp
+    return petrolib.depth_matching.cow(x, y, n_segments=n_segments, slack=slack)
 
 
 def _segment_corr(a, b):

@@ -22,6 +22,13 @@ References:
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from typing import Tuple, Optional, Dict, List
 
 
@@ -159,20 +166,9 @@ def sliding_window_core_homing(core_depths: np.ndarray,
     -------
     adjusted_depths, best_shift
     """
-    shifts = np.arange(-max_shift, max_shift + step, step)
-    best_corr = -1
-    best_shift = 0
-
-    for s in shifts:
-        shifted = core_depths + s
-        # Interpolate log curves at shifted core depths
-        for c in range(log_curves.shape[1]):
-            interp_vals = np.interp(shifted, log_depths, log_curves[:, c])
-            r = np.corrcoef(core_values, interp_vals)[0, 1]
-            if abs(r) > best_corr:
-                best_corr = abs(r)
-                best_shift = s
-
+    best_shift, _ = petrolib.depth_matching.xcorr_shift_depth(
+        core_depths, core_values, log_depths, log_curves,
+        max_shift=max_shift, step=step, use_abs_corr=True)
     return core_depths + best_shift, best_shift
 
 

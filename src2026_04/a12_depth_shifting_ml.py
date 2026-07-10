@@ -67,36 +67,14 @@ def cross_correlation_shift(log_ref: np.ndarray,
     -------
     best_shift : Optimal integer sample shift (positive → shift target down)
     """
-    best_corr  = -np.inf
-    best_shift = 0
-    n          = len(log_ref)
-
-    for shift in range(-max_shift, max_shift + 1):
-        if shift >= 0:
-            r = log_ref[shift:]
-            t = log_target[:n - shift]
-        else:
-            r = log_ref[:n + shift]
-            t = log_target[-shift:]
-        if len(r) == 0:
-            continue
-        corr = float(np.corrcoef(r, t)[0, 1])
-        if corr > best_corr:
-            best_corr  = corr
-            best_shift = shift
-
-    return best_shift
+    return petrolib.depth_matching.xcorr_shift(
+        log_ref, log_target, max_lag=max_shift, edge="trim").lag
 
 
 def apply_bulk_shift(log: np.ndarray, shift: int,
                      fill_value: float = np.nan) -> np.ndarray:
     """Apply an integer depth shift to a log array."""
-    result = np.full_like(log, fill_value, dtype=float)
-    if shift >= 0:
-        result[shift:] = log[:len(log) - shift]
-    else:
-        result[:len(log) + shift] = log[-shift:]
-    return result
+    return petrolib.depth_matching.apply_integer_shift(log, shift, fill=fill_value)
 
 
 # ---------------------------------------------------------------------------
@@ -171,9 +149,8 @@ def dtw_depth_shift_at_each_point(path_i: np.ndarray,
     depths_ref  : Reference depth values along path
     depth_corr  : Depth correction applied to target at each reference point
     """
-    depths_ref = depth_ref[path_i]
-    depths_tgt = depth_target[path_j]
-    return depths_ref, depths_tgt - depths_ref
+    return petrolib.depth_matching.path_depth_shifts(
+        list(zip(path_i, path_j)), depth_ref, depth_target)
 
 
 # ---------------------------------------------------------------------------

@@ -88,8 +88,7 @@ def apply_depth_shift(g: np.ndarray,
     np.ndarray
         Shifted log values (via linear interpolation).
     """
-    shifted_z = z + shift
-    return np.interp(z, shifted_z, g, left=g[0], right=g[-1])
+    return petrolib.depth_matching.apply_depth_shift(g, z, shift)
 
 
 def bulk_shift(f: np.ndarray,
