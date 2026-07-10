@@ -23,6 +23,13 @@ essay discusses (typeset glyphs were dropped in extraction).  SI units.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 E_STEEL = 2.0e11         # Pa, cable effective Young's modulus
 ALPHA_STEEL = 1.2e-5     # 1/K, thermal expansion coefficient
 
@@ -31,12 +38,12 @@ ALPHA_STEEL = 1.2e-5     # 1/K, thermal expansion coefficient
 
 def elastic_stretch(tension, length, area, E=E_STEEL):
     """Elastic cable stretch  dL = T*L/(E*A)  (m)."""
-    return tension * length / (E * area)
+    return petrolib.depth_correction.elastic_stretch(tension, length, area, E=E)
 
 
 def thermal_expansion(length, dT, alpha=ALPHA_STEEL):
     """Thermal cable expansion  dL = alpha*L*dT  (m)."""
-    return alpha * length * dT
+    return petrolib.depth_correction.thermal_elongation(length, dT, alpha=alpha)
 
 
 def true_depth(apparent_depth, tension, area, dT, E=E_STEEL, alpha=ALPHA_STEEL):

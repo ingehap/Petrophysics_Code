@@ -24,6 +24,13 @@ the driller's-depth-correction methodology the paper presents.  SI units.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 E_STEEL = 2.0e11
 ALPHA_STEEL = 1.2e-5
 G = 9.81
@@ -37,17 +44,18 @@ def own_weight_stretch(length, weight_per_m, area, buoyancy=0.85, E=E_STEEL):
         dL = (buoyancy*w*g*L^2)/(2*E*A)
     (the L/2 average tension acts over length L).
     """
-    return buoyancy * weight_per_m * G * length ** 2 / (2.0 * E * area)
+    return petrolib.depth_correction.distributed_stretch(
+        length, weight_per_m * G, E * area, buoyancy=buoyancy)
 
 
 def hookload_stretch(hook_load, length, area, E=E_STEEL):
     """Elastic stretch from an added hook/overpull load  dL = F*L/(E*A)."""
-    return hook_load * length / (E * area)
+    return petrolib.depth_correction.elastic_stretch(hook_load, length, area, E=E)
 
 
 def thermal_elongation(length, dT, alpha=ALPHA_STEEL):
     """Thermal elongation  dL = alpha*L*dT."""
-    return alpha * length * dT
+    return petrolib.depth_correction.thermal_elongation(length, dT, alpha=alpha)
 
 
 def corrected_depth(raw_depth, weight_per_m, area, dT, hook_load=0.0):

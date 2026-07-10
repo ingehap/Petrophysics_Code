@@ -27,6 +27,13 @@ relies on (flagged).  Depths in ft, dip/azimuth in degrees, net pay in percent.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- borehole geometry -------
 
@@ -47,8 +54,7 @@ def boundary_tvd(tvd_well, d2b, inc_deg, side=1.0):
 def apparent_dip(true_dip_deg, section_angle_deg):
     """Apparent dip in a section at angle beta from true-dip azimuth:
     tan(app) = tan(true)*cos(beta)."""
-    return np.degrees(np.arctan(np.tan(np.radians(true_dip_deg)) *
-                                np.cos(np.radians(section_angle_deg))))
+    return petrolib.borehole_image.apparent_dip(true_dip_deg, section_angle_deg)
 
 
 def structural_dip(d_tvd, d_horizontal):
@@ -73,11 +79,7 @@ def fit_fault_plane(points):
     The plane normal is the smallest-singular-value direction of the centered
     coordinates.
     """
-    P = np.asarray(points, float)
-    centroid = P.mean(axis=0)
-    _, _, vh = np.linalg.svd(P - centroid)
-    normal = vh[-1]
-    return _normal_to_dip_azimuth(normal)
+    return petrolib.borehole_image.fit_plane(points)
 
 
 # ---------------------------------------------- net pay -----------------
