@@ -24,46 +24,37 @@ applies.  Angles in degrees; depths/positions in metres.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------- minimum curvature -------
 
 def dogleg(inc1, azi1, inc2, azi2):
     """Dogleg angle (rad) between two stations from inclinations/azimuths."""
-    i1, a1, i2, a2 = (np.radians(x) for x in (inc1, azi1, inc2, azi2))
-    cos_dl = (np.cos(i2 - i1)
-              - np.sin(i1) * np.sin(i2) * (1.0 - np.cos(a2 - a1)))
-    return float(np.arccos(np.clip(cos_dl, -1.0, 1.0)))
+    return petrolib.wellbore_geometry.dogleg_angle(inc1, azi1, inc2, azi2)
 
 
 def ratio_factor(dl):
     """Minimum-curvature ratio factor  RF = (2/DL)*tan(DL/2)  (1 if DL=0)."""
-    if dl < 1e-9:
-        return 1.0
-    return (2.0 / dl) * np.tan(dl / 2.0)
+    return petrolib.wellbore_geometry.ratio_factor(dl)
 
 
 def station_increment(md1, inc1, azi1, md2, inc2, azi2):
     """Minimum-curvature (dTVD, dNorth, dEast) between two survey stations."""
-    dmd = md2 - md1
-    dl = dogleg(inc1, azi1, inc2, azi2)
-    rf = ratio_factor(dl)
-    i1, a1, i2, a2 = (np.radians(x) for x in (inc1, azi1, inc2, azi2))
-    half = dmd / 2.0 * rf
-    dN = half * (np.sin(i1) * np.cos(a1) + np.sin(i2) * np.cos(a2))
-    dE = half * (np.sin(i1) * np.sin(a1) + np.sin(i2) * np.sin(a2))
-    dV = half * (np.cos(i1) + np.cos(i2))
-    return dV, dN, dE
+    return petrolib.wellbore_geometry.minimum_curvature_step(
+        md1, inc1, azi1, md2, inc2, azi2)
 
 
 def compute_path(survey):
     """Cumulative (TVD, North, East) path from a list of (MD, inc, azi) stations."""
-    tvd = nth = est = 0.0
-    path = [(tvd, nth, est)]
-    for (md1, i1, a1), (md2, i2, a2) in zip(survey[:-1], survey[1:]):
-        dV, dN, dE = station_increment(md1, i1, a1, md2, i2, a2)
-        tvd += dV; nth += dN; est += dE
-        path.append((tvd, nth, est))
-    return np.array(path)
+    survey_arr = np.asarray(survey, float)
+    return petrolib.wellbore_geometry.survey_to_path(
+        survey_arr[:, 0], survey_arr[:, 1], survey_arr[:, 2])
 
 
 def position_uncertainty(md, error_rate=0.0015):
