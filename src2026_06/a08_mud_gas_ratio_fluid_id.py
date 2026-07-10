@@ -26,6 +26,13 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # 1. The three key gas-ratio parameters (Haworth ratios)
@@ -51,9 +58,7 @@ def wetness_ratio(g: GasReading) -> float:
 
         Wh = (C2+C3+C4+C5) / (C1+C2+C3+C4+C5) * 100
     """
-    if g.total <= 0.0:
-        return float("nan")
-    return (g.c2 + g.c3 + g.c4 + g.c5) / g.total * 100.0
+    return petrolib.integrity_drilling.haworth_ratios(g.c1, g.c2, g.c3, g.c4, g.c5)[0]
 
 
 def balance_ratio(g: GasReading) -> float:
@@ -62,10 +67,7 @@ def balance_ratio(g: GasReading) -> float:
 
         Bh = (C1+C2) / (C3+C4+C5)
     """
-    denom = g.c3 + g.c4 + g.c5
-    if denom <= 0.0:
-        return float("inf")
-    return (g.c1 + g.c2) / denom
+    return petrolib.integrity_drilling.haworth_ratios(g.c1, g.c2, g.c3, g.c4, g.c5)[1]
 
 
 def character_ratio(g: GasReading) -> float:
@@ -74,9 +76,7 @@ def character_ratio(g: GasReading) -> float:
 
         Ch = (C4+C5) / C3
     """
-    if g.c3 <= 0.0:
-        return float("inf")
-    return (g.c4 + g.c5) / g.c3
+    return petrolib.integrity_drilling.haworth_ratios(g.c1, g.c2, g.c3, g.c4, g.c5)[2]
 
 
 # ---------------------------------------------------------------------------
@@ -107,25 +107,7 @@ def classify_fluid(g: GasReading) -> str:
     wh = wetness_ratio(g)
     bh = balance_ratio(g)
     ch = character_ratio(g)
-    if np.isnan(wh):
-        return "no gas"
-
-    if wh < 0.5:
-        return "very dry gas"
-    if wh < 5.0:
-        return "dry gas" if bh > 100 else "wet gas"
-    if wh < 17.5:
-        # Gas window; condensate when heavier ends present (Ch up, Bh moderate).
-        if ch >= 0.5 and bh < 30:
-            return "gas condensate"
-        return "wet gas"
-    if wh < 25.0:
-        return "volatile oil"
-    if wh < 32.5:
-        return "light oil"
-    if wh < 40.0:
-        return "medium/black oil"
-    return "heavy/residual oil"
+    return petrolib.integrity_drilling.classify_fluid_haworth(wh, bh, ch, n_classes=8)
 
 
 def fluid_density_index(g: GasReading) -> float:

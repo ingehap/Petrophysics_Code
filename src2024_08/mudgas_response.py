@@ -13,6 +13,13 @@ Implements:
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass
 from typing import Tuple, Optional
 
@@ -90,21 +97,20 @@ def normalize_gas_response(gas_reading: MudGasReading,
       - Flow rate: higher flow dilutes gas
       - Mud weight: heavier mud suppresses gas liberation
     """
-    # Correction factors
-    rop_factor = drilling.rop / reference_rop
-    flow_factor = drilling.flow_rate / reference_flow
-    mw_factor = (drilling.mud_weight / reference_mw) ** 2  # quadratic effect
-
-    correction = rop_factor * flow_factor * mw_factor
+    def norm(channel):
+        return petrolib.integrity_drilling.normalize_gas(
+            channel, drilling.rop, drilling.flow_rate, 0.0,
+            mud_weight=drilling.mud_weight, units="field",
+            reference=(reference_rop, reference_flow, reference_mw))
 
     return MudGasReading(
         depth=gas_reading.depth,
-        total_gas=gas_reading.total_gas / correction,
-        c1=gas_reading.c1 / correction,
-        c2=gas_reading.c2 / correction,
-        c3=gas_reading.c3 / correction,
-        c4=gas_reading.c4 / correction,
-        c5=gas_reading.c5 / correction,
+        total_gas=norm(gas_reading.total_gas),
+        c1=norm(gas_reading.c1),
+        c2=norm(gas_reading.c2),
+        c3=norm(gas_reading.c3),
+        c4=norm(gas_reading.c4),
+        c5=norm(gas_reading.c5),
     )
 
 

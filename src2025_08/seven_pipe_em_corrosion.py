@@ -16,6 +16,13 @@ Key concepts:
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass, field
 from typing import List, Optional, Tuple
 
@@ -205,7 +212,7 @@ def estimate_metal_loss(
     nominal: np.ndarray, estimated: np.ndarray,
 ) -> np.ndarray:
     """Metal loss as percentage of nominal wall thickness."""
-    return np.clip((1.0 - estimated / nominal) * 100.0, 0, 100)
+    return petrolib.integrity_drilling.metal_loss_pct(estimated, nominal)
 
 
 # ---------------------------------------------------------------------------

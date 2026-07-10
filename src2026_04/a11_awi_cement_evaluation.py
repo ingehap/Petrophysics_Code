@@ -19,6 +19,13 @@ Implements:
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 
@@ -220,8 +227,8 @@ def hydraulic_conductivity_crack(w_mm: float,
     -------
     K_h : Hydraulic conductivity, m/s
     """
-    w_m = w_mm * 1e-3
-    return rho_water * g * w_m**3 / (12.0 * mu)
+    return petrolib.integrity_drilling.cubic_law_conductivity(
+        w_mm * 1e-3, rho=rho_water, mu=mu, g=g)
 
 
 # ---------------------------------------------------------------------------

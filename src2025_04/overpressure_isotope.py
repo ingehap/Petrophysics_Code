@@ -16,6 +16,13 @@ Reference: https://doi.org/10.30632/PJV66N2-2025a7 (SPWLA)
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass
 from typing import Tuple, Optional, List
 from enum import Enum
@@ -88,11 +95,9 @@ def eaton_pore_pressure(depth_m: np.ndarray,
     -------
     np.ndarray : Pore pressure gradient (psi/ft equivalent)
     """
-    depth_ft = depth_m * 3.28084
-    ratio = np.clip(dt_normal / sonic_dt, 0.01, 100.0)
-    Pp = overburden_gradient - (overburden_gradient - hydrostatic_gradient) * \
-         ratio ** eaton_exponent
-    return Pp
+    return petrolib.integrity_drilling.eaton_pore_pressure(
+        overburden_gradient, hydrostatic_gradient, sonic_dt, dt_normal,
+        exponent=eaton_exponent, log_type="sonic", clip_ratio=(0.01, 100.0))
 
 
 def bowers_pore_pressure(depth_m: np.ndarray,
@@ -124,21 +129,12 @@ def bowers_pore_pressure(depth_m: np.ndarray,
     -------
     np.ndarray : Pore pressure in psi.
     """
-    V0 = 5000.0  # Mudline velocity (ft/s)
     depth_ft = depth_m * 3.28084
-
     if overburden_psi is None:
         overburden_psi = 1.0 * depth_ft  # ~1.0 psi/ft
-
-    if not unloading:
-        # Loading curve: sigma_eff = ((V - V0) / A)^(1/B)
-        sigma_eff = np.clip((sonic_velocity_ft_s - V0) / A, 0.01, None) ** (1.0 / B)
-    else:
-        # Unloading curve
-        sigma_eff = sigma_max * ((sonic_velocity_ft_s - V0) / (A * sigma_max ** B)) ** U
-
-    Pp = overburden_psi - sigma_eff
-    return Pp
+    return petrolib.integrity_drilling.bowers_pore_pressure(
+        sonic_velocity_ft_s, overburden_psi,
+        A=A, B=B, unloading=unloading, U=U, sigma_max=sigma_max)
 
 
 def loading_unloading_classification(sonic_dt: np.ndarray,

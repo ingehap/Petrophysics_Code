@@ -13,6 +13,13 @@ drillpipe while conducting ongoing operations, including:
   3. Cement plug quality verification.
 """
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass
 from typing import Tuple, Dict
 
@@ -48,7 +55,7 @@ def evaluate_dual_casing(inner_t, outer_t, inner_nom, outer_nom):
     """Evaluate condition of both casing strings."""
     inner_loss = (inner_nom - inner_t) / inner_nom * 100
     outer_loss = (outer_nom - outer_t) / outer_nom * 100
-    def condition(loss): return np.where(loss < 10, 'good', np.where(loss < 25, 'fair', np.where(loss < 42.5, 'poor', 'critical')))
+    condition = petrolib.integrity_drilling.casing_condition
     return {
         'inner_max_loss_pct': float(np.max(inner_loss)),
         'outer_max_loss_pct': float(np.max(outer_loss)),
