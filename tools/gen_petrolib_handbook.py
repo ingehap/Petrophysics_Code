@@ -7,16 +7,19 @@ Layout (fixed by request):
   "Code for Petrophysics Jan/Feb 2014 - Jun/Jul 2026", and
   "https://github.com/ingehap/Petrophysics_Code";
 * one blank page;
+* a table of acronyms (CBL, NMR, ...) and a table of non-SI units
+  (MRayl, mD, ...) used in the manual;
 * an alphabetical table of contents of every public petrolib function;
-* one page per function: Python path, purpose, input parameters (each with
-  its meaning), output parameters, and the sources as full SPWLA
-  *Petrophysics* journal citations resolved from the module References
-  sections.
+* one page per function: general call format, Python path, purpose, input
+  parameters (each with its meaning), output parameters, and the sources
+  as full SPWLA *Petrophysics* journal citations resolved from the module
+  References sections.
 
 Parameter meanings and output descriptions live in
 tools/handbook_descriptions.json (keyed module -> function -> params /
-returns); keep it in sync when the petrolib API changes — missing entries
-are reported on stderr.  Requires reportlab:
+returns); the acronym and unit tables live in tools/handbook_glossary.json.
+Keep both in sync when the petrolib API changes — missing entries are
+reported on stderr.  Requires reportlab:
 
     pip install reportlab
     python tools/gen_petrolib_handbook.py
@@ -34,6 +37,7 @@ from dataclasses import dataclass, field
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 OUT = ROOT / "doc" / "Petrophysics_Handbook.pdf"
 DESCRIPTIONS = pathlib.Path(__file__).with_name("handbook_descriptions.json")
+GLOSSARY = pathlib.Path(__file__).with_name("handbook_glossary.json")
 
 RETURN_ALIASES = {
     "_Float": "numpy.ndarray of float64",
@@ -78,6 +82,20 @@ class Entry:
     returns: str = ""
     returns_meaning: str = ""
     sources: list[str] = field(default_factory=list)
+
+    @property
+    def signature(self) -> str:
+        """General call format, e.g. ``f(x, y, *, clip=None)``."""
+        bits: list[str] = []
+        star_done = False
+        for p in self.params:
+            if p.kw_only and not star_done:
+                bits.append("*")
+                star_done = True
+            if p.name.startswith("*"):
+                star_done = True
+            bits.append(p.name + (f"={p.default}" if p.default is not None else ""))
+        return f"{self.name}({', '.join(bits)})"
 
 
 def parse_references(module_doc: str) -> dict[str, str]:
@@ -278,8 +296,8 @@ def build_pdf(entries: list[Entry]) -> None:
     func_heading = ParagraphStyle(
         "FuncHeading",
         fontName="DejaVuSansMono",
-        fontSize=13,
-        leading=16,
+        fontSize=11.5,
+        leading=14.5,
         spaceAfter=0,
         textColor=navy,
     )
@@ -353,19 +371,46 @@ def build_pdf(entries: list[Entry]) -> None:
     story.append(NextPageTemplate("normal"))
     story.append(PageBreak())
 
-    # ---- table of contents
-    story.append(
-        Paragraph(
-            "Table of Contents",
-            ParagraphStyle(
-                "TocTitle",
-                fontName="DejaVuSans-Bold",
-                fontSize=18,
-                textColor=navy,
-                spaceAfter=10,
-            ),
-        )
+    section_title = ParagraphStyle(
+        "SectionTitle",
+        fontName="DejaVuSans-Bold",
+        fontSize=18,
+        textColor=navy,
+        spaceAfter=10,
     )
+    glossary_style = TableStyle(
+        [
+            ("FONTNAME", (0, 0), (-1, 0), "DejaVuSans-Bold"),
+            ("FONTSIZE", (0, 0), (-1, 0), 8.6),
+            ("FONTSIZE", (0, 1), (-1, -1), 8.6),
+            ("TEXTCOLOR", (0, 0), (-1, 0), navy),
+            ("LINEBELOW", (0, 0), (-1, 0), 0.6, navy),
+            ("LINEBELOW", (0, 1), (-1, -2), 0.25, colors.Color(0.85, 0.85, 0.88)),
+            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+            ("TOPPADDING", (0, 0), (-1, -1), 2),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
+            ("LEFTPADDING", (0, 0), (-1, -1), 2),
+        ]
+    )
+    term = ParagraphStyle("Term", parent=body, fontName="DejaVuSans-Bold", fontSize=8.8)
+
+    def glossary_table(title: str, col0: str, items: dict[str, str]) -> None:
+        story.append(Paragraph(title, section_title))
+        rows: list[list[object]] = [[col0, "Meaning"]]
+        for k in sorted(items, key=str.lower):
+            rows.append([Paragraph(esc(k), term), Paragraph(rich(items[k]), body)])
+        t = Table(rows, colWidths=[38 * mm, 128 * mm], repeatRows=1)
+        t.setStyle(glossary_style)
+        story.append(t)
+        story.append(PageBreak())
+
+    # ---- acronyms, then non-SI units
+    glossary = json.loads(GLOSSARY.read_text())
+    glossary_table("Acronyms", "Acronym", glossary["acronyms"])
+    glossary_table("Non-SI Units", "Unit", glossary["units"])
+
+    # ---- table of contents
+    story.append(Paragraph("Table of Contents", section_title))
     toc = TableOfContents()
     toc.levelStyles = [
         ParagraphStyle(
@@ -382,15 +427,23 @@ def build_pdf(entries: list[Entry]) -> None:
 
     # ---- one page per function
     blank_line = Spacer(1, 12.4)  # one body-height line with no text
+    mono_line = ParagraphStyle(
+        "MonoLine", parent=body, fontName="DejaVuSansMono", fontSize=9.4, leading=12.4
+    )
     for i, e in enumerate(entries):
         key = f"e{i}"
         path = f"{e.module}.{e.name}"
-        head = Paragraph(f'<a name="{key}"/>{esc(path)}', func_heading)
+        story.append(Paragraph(f'<a name="{key}"/>Call format', label))
+        head = Paragraph(esc(e.signature), func_heading)
         head._toc_key = key
         head._toc_text = f"{e.name}  —  {e.module}"
         story.append(head)
 
         block: list[object] = [blank_line]
+        block.append(Paragraph("Python path", label))
+        block.append(Paragraph(esc(path), mono_line))
+
+        block.append(blank_line)
         block.append(Paragraph("Purpose", label))
         if e.purpose:
             for para in e.purpose.split("\n\n"):
@@ -455,7 +508,8 @@ def build_pdf(entries: list[Entry]) -> None:
                 block.append(Paragraph("• " + rich(s), src_style))
 
         # shrink-to-fit so every function occupies exactly one page
-        story.append(KeepInFrame(frame_w, frame_h - 14 * mm, block, mode="shrink", hAlign="LEFT"))
+        # (28 mm reserved for the call-format heading, which can wrap)
+        story.append(KeepInFrame(frame_w, frame_h - 28 * mm, block, mode="shrink", hAlign="LEFT"))
         story.append(PageBreak())
 
     doc.multiBuild(story)
