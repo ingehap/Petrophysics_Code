@@ -1,10 +1,22 @@
 #!/usr/bin/env python3
-"""Generate docs/Petrophysics_Handbook.pdf — the petrolib user manual.
+"""Generate doc/Petrophysics_Handbook.pdf — the petrolib user manual.
 
-Title page, an alphabetical table of contents of every public petrolib
-function, and one section per function giving its purpose, input parameters,
-output, and the full SPWLA *Petrophysics* journal citations resolved from the
-module References sections.  Requires reportlab:
+Layout (fixed by request):
+
+* title page carrying exactly three lines — "Petrophysics Handbook",
+  "Code for Petrophysics Jan/Feb 2014 - Jun/Jul 2026", and
+  "https://github.com/ingehap/Petrophysics_Code";
+* one blank page;
+* an alphabetical table of contents of every public petrolib function;
+* one page per function: Python path, purpose, input parameters (each with
+  its meaning), output parameters, and the sources as full SPWLA
+  *Petrophysics* journal citations resolved from the module References
+  sections.
+
+Parameter meanings and output descriptions live in
+tools/handbook_descriptions.json (keyed module -> function -> params /
+returns); keep it in sync when the petrolib API changes — missing entries
+are reported on stderr.  Requires reportlab:
 
     pip install reportlab
     python tools/gen_petrolib_handbook.py
@@ -13,12 +25,15 @@ module References sections.  Requires reportlab:
 from __future__ import annotations
 
 import ast
+import json
 import pathlib
 import re
+import sys
 from dataclasses import dataclass, field
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-OUT = ROOT / "docs" / "Petrophysics_Handbook.pdf"
+OUT = ROOT / "doc" / "Petrophysics_Handbook.pdf"
+DESCRIPTIONS = pathlib.Path(__file__).with_name("handbook_descriptions.json")
 
 RETURN_ALIASES = {
     "_Float": "numpy.ndarray of float64",
@@ -51,19 +66,18 @@ class Param:
     annotation: str
     default: str | None
     kw_only: bool
+    meaning: str = ""
 
 
 @dataclass
 class Entry:
     name: str
     module: str
-    kind: str  # "function" | "class"
-    signature: str
     purpose: str
     params: list[Param] = field(default_factory=list)
     returns: str = ""
+    returns_meaning: str = ""
     sources: list[str] = field(default_factory=list)
-    methods: list[tuple[str, str]] = field(default_factory=list)
 
 
 def parse_references(module_doc: str) -> dict[str, str]:
@@ -88,16 +102,32 @@ def parse_references(module_doc: str) -> dict[str, str]:
 
 
 def split_purpose_sources(doc: str) -> tuple[str, list[str]]:
-    """Return (purpose prose, src tags) from a function docstring."""
+    """Return (purpose prose, src tags) from a function docstring.
+
+    Tags are taken from the ``Sources:`` clause only, so incidental
+    src-tag mentions in the prose (e.g. "the src2018_10/src2018_02
+    convention") do not leak into the citation list.
+    """
     # rejoin tags wrapped across lines ("src2024_10/\n    ml_permeability")
     joined = re.sub(r"(src20\d\d_\d\d/)\s*\n\s*", r"\1", doc)
     tags: list[str] = []
-    for tok in re.findall(r"src20\d\d_\d\d(?:/[A-Za-z0-9_]+)?", joined):
-        if tok not in tags:
-            tags.append(tok)
+    for m in re.finditer(r"Sources?:(.*?)(?=\n\n|\Z)", joined, flags=re.S):
+        for tok in re.findall(r"src20\d\d_\d\d(?:/[A-Za-z0-9_]+)?", m.group(1)):
+            if tok not in tags:
+                tags.append(tok)
     purpose = re.sub(r"Sources?:.*?(?=\n\n|\Z)", "", joined, flags=re.S)
     paragraphs = [" ".join(seg.split()) for seg in purpose.split("\n\n") if seg.strip()]
     return "\n\n".join(paragraphs), tags
+
+
+def resolve_source(tag: str, refs: dict[str, str]) -> str | None:
+    """Full citation for a src tag; tolerate a missing /article suffix."""
+    if tag in refs:
+        return refs[tag]
+    hits = [k for k in refs if k.startswith(tag + "/")]
+    if len(hits) == 1:
+        return refs[hits[0]]
+    return None
 
 
 def params_of(node: ast.FunctionDef | ast.AsyncFunctionDef) -> list[Param]:
@@ -130,22 +160,10 @@ def params_of(node: ast.FunctionDef | ast.AsyncFunctionDef) -> list[Param]:
     return out
 
 
-def signature_of(node: ast.FunctionDef | ast.AsyncFunctionDef, params: list[Param]) -> str:
-    bits: list[str] = []
-    star_done = False
-    for p in params:
-        if p.kw_only and not star_done and not p.name.startswith("*"):
-            bits.append("*")
-            star_done = True
-        if p.name.startswith("*"):
-            star_done = True
-        bits.append(p.name + (f"={p.default}" if p.default is not None else ""))
-    return f"{node.name}({', '.join(bits)})"
-
-
-def collect_entries() -> tuple[list[Entry], dict[str, dict[str, str]]]:
+def collect_entries() -> list[Entry]:
+    descriptions = json.loads(DESCRIPTIONS.read_text()) if DESCRIPTIONS.exists() else {}
+    missing: list[str] = []
     entries: list[Entry] = []
-    all_refs: dict[str, dict[str, str]] = {}
     files = sorted(
         p
         for p in ROOT.glob("petrolib/**/*.py")
@@ -156,62 +174,45 @@ def collect_entries() -> tuple[list[Entry], dict[str, dict[str, str]]]:
         modname = "petrolib." + str(rel.with_suffix("")).removeprefix("petrolib/").replace("/", ".")
         tree = ast.parse(pfile.read_text())
         refs = parse_references(ast.get_docstring(tree) or "")
-        all_refs[modname] = refs
+        mod_desc = descriptions.get(modname, {})
         for node in tree.body:
-            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                if node.name.startswith("_"):
-                    continue
-                doc = ast.get_docstring(node) or ""
-                purpose, tags = split_purpose_sources(doc)
-                params = params_of(node)
-                ret = ast.unparse(node.returns) if node.returns else ""
-                entries.append(
-                    Entry(
-                        name=node.name,
-                        module=modname,
-                        kind="function",
-                        signature=signature_of(node, params),
-                        purpose=purpose,
-                        params=params,
-                        returns=pretty_annotation(ret),
-                        sources=[refs.get(t, t) for t in tags],
-                    )
+            if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                continue
+            if node.name.startswith("_"):
+                continue
+            doc = ast.get_docstring(node) or ""
+            purpose, tags = split_purpose_sources(doc)
+            params = params_of(node)
+            fdesc = mod_desc.get(node.name, {})
+            for p in params:
+                p.meaning = fdesc.get("params", {}).get(p.name, "")
+                if not p.meaning:
+                    missing.append(f"{modname}.{node.name}({p.name})")
+            ret = ast.unparse(node.returns) if node.returns else ""
+            sources = []
+            for t in tags:
+                cite = resolve_source(t, refs)
+                if cite is None:
+                    missing.append(f"{modname}.{node.name} citation {t}")
+                    cite = t
+                sources.append(cite)
+            entries.append(
+                Entry(
+                    name=node.name,
+                    module=modname,
+                    purpose=purpose,
+                    params=params,
+                    returns=pretty_annotation(ret),
+                    returns_meaning=fdesc.get("returns", ""),
+                    sources=sources,
                 )
-            elif isinstance(node, ast.ClassDef) and not node.name.startswith("_"):
-                doc = ast.get_docstring(node) or ""
-                purpose, tags = split_purpose_sources(doc)
-                init = next(
-                    (
-                        n
-                        for n in node.body
-                        if isinstance(n, ast.FunctionDef) and n.name == "__init__"
-                    ),
-                    None,
-                )
-                params = params_of(init) if init else []
-                methods = []
-                for m in node.body:
-                    if isinstance(m, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                        if m.name.startswith("_"):
-                            continue
-                        mdoc = (ast.get_docstring(m) or "").split("\n\n")[0]
-                        methods.append((signature_of(m, params_of(m)), " ".join(mdoc.split())))
-                sig = f"{node.name}({', '.join(p.name for p in params)})"
-                entries.append(
-                    Entry(
-                        name=node.name,
-                        module=modname,
-                        kind="class",
-                        signature=sig,
-                        purpose=purpose,
-                        params=params,
-                        returns=f"{node.name} instance",
-                        sources=[refs.get(t, t) for t in tags],
-                        methods=methods,
-                    )
-                )
-    entries.sort(key=lambda e: (e.name.lower(), e.module))
-    return entries, all_refs
+            )
+    if missing:
+        print(f"WARNING: {len(missing)} unresolved descriptions/citations:", file=sys.stderr)
+        for m in missing:
+            print("  " + m, file=sys.stderr)
+    entries.sort(key=lambda e: (e.name.lower(), e.name, e.module))
+    return entries
 
 
 # ------------------------------------------------------------- rendering
@@ -239,6 +240,7 @@ def build_pdf(entries: list[Entry]) -> None:
     from reportlab.platypus import (
         BaseDocTemplate,
         Frame,
+        KeepInFrame,
         NextPageTemplate,
         PageBreak,
         PageTemplate,
@@ -261,44 +263,28 @@ def build_pdf(entries: list[Entry]) -> None:
         )
     )
 
+    navy = colors.Color(0.10, 0.20, 0.36)
+    grey = colors.Color(0.35, 0.35, 0.40)
     body = ParagraphStyle("Body", fontName="DejaVuSans", fontSize=9.2, leading=12.4, spaceAfter=4)
     label = ParagraphStyle(
         "Label",
         parent=body,
         fontName="DejaVuSans-Bold",
-        fontSize=9.2,
-        spaceBefore=5,
-        spaceAfter=2,
-    )
-    mono = ParagraphStyle(
-        "Mono",
-        parent=body,
-        fontName="DejaVuSansMono",
-        fontSize=8.4,
-        leading=10.8,
-        backColor=colors.Color(0.955, 0.955, 0.965),
-        borderPadding=3,
-        spaceAfter=5,
+        fontSize=9.6,
+        textColor=navy,
+        spaceBefore=0,
+        spaceAfter=3,
     )
     func_heading = ParagraphStyle(
         "FuncHeading",
-        fontName="DejaVuSans-Bold",
-        fontSize=12.5,
-        leading=15,
-        spaceBefore=14,
-        spaceAfter=1,
-        textColor=colors.Color(0.10, 0.20, 0.36),
-    )
-    mod_line = ParagraphStyle(
-        "ModLine",
-        parent=body,
-        fontName="DejaVuSans-Oblique",
-        fontSize=8.4,
-        textColor=colors.Color(0.35, 0.35, 0.40),
-        spaceAfter=4,
+        fontName="DejaVuSansMono",
+        fontSize=13,
+        leading=16,
+        spaceAfter=0,
+        textColor=navy,
     )
     src_style = ParagraphStyle(
-        "Src", parent=body, fontSize=8.6, leading=11.4, leftIndent=10, spaceAfter=2
+        "Src", parent=body, fontSize=8.6, leading=11.4, leftIndent=10, spaceAfter=3
     )
 
     class Handbook(BaseDocTemplate):
@@ -315,12 +301,14 @@ def build_pdf(entries: list[Entry]) -> None:
         author="Petrophysics_Code / petrolib",
         subject="User manual for the petrolib common petrophysics library",
     )
-    frame = Frame(22 * mm, 20 * mm, A4[0] - 44 * mm, A4[1] - 40 * mm, id="main")
+    frame_h = A4[1] - 40 * mm
+    frame_w = A4[0] - 44 * mm
+    frame = Frame(22 * mm, 20 * mm, frame_w, frame_h, id="main")
 
     def on_page(canvas: object, _doc: object) -> None:
         canvas.saveState()
         canvas.setFont("DejaVuSans", 8)
-        canvas.setFillColor(colors.Color(0.35, 0.35, 0.40))
+        canvas.setFillColor(grey)
         canvas.drawString(22 * mm, A4[1] - 13 * mm, "Petrophysics Handbook")
         canvas.drawRightString(A4[0] - 22 * mm, A4[1] - 13 * mm, "petrolib reference")
         canvas.drawCentredString(A4[0] / 2, 11 * mm, str(canvas.getPageNumber()))
@@ -328,15 +316,16 @@ def build_pdf(entries: list[Entry]) -> None:
 
     doc.addPageTemplates(
         [
-            PageTemplate(id="title", frames=[frame]),
+            # 'front' pages (title, blank) carry no header/footer text at all
+            PageTemplate(id="front", frames=[frame]),
             PageTemplate(id="normal", frames=[frame], onPage=on_page),
         ]
     )
 
     story: list[object] = []
 
-    # ---- title page
-    story.append(Spacer(1, 70 * mm))
+    # ---- title page: exactly three lines of text, nothing else
+    story.append(Spacer(1, 80 * mm))
     story.append(
         Paragraph(
             "Petrophysics Handbook",
@@ -349,35 +338,18 @@ def build_pdf(entries: list[Entry]) -> None:
             ),
         )
     )
-    story.append(Spacer(1, 10 * mm))
-    story.append(
-        Paragraph(
-            "User manual for <b>petrolib</b> — the common petrophysics library of the "
-            "Petrophysics_Code repository",
-            ParagraphStyle("Sub", fontName="DejaVuSans", fontSize=13, leading=18, alignment=1),
-        )
+    story.append(Spacer(1, 14 * mm))
+    subtitle = ParagraphStyle(
+        "Sub", fontName="DejaVuSans", fontSize=14, leading=19, alignment=1, textColor=grey
     )
-    story.append(Spacer(1, 55 * mm))
-    n_funcs = sum(1 for e in entries if e.kind == "function")
-    n_classes = len(entries) - n_funcs
-    story.append(
-        Paragraph(
-            f"{n_funcs} functions and {n_classes} classes across "
-            f"{len({e.module for e in entries})} modules.<br/>"
-            "Generated from the petrolib docstrings by "
-            "tools/gen_petrolib_handbook.py.<br/>"
-            "Source articles are published in <i>Petrophysics</i>, the journal of the "
-            "Society of Petrophysicists and Well Log Analysts (SPWLA).",
-            ParagraphStyle(
-                "Col",
-                fontName="DejaVuSans",
-                fontSize=9,
-                leading=13,
-                alignment=1,
-                textColor=colors.Color(0.35, 0.35, 0.40),
-            ),
-        )
-    )
+    story.append(Paragraph("Code for Petrophysics Jan/Feb 2014 - Jun/Jul 2026", subtitle))
+    story.append(Spacer(1, 6 * mm))
+    story.append(Paragraph("https://github.com/ingehap/Petrophysics_Code", subtitle))
+
+    # ---- blank page
+    story.append(NextPageTemplate("front"))
+    story.append(PageBreak())
+    story.append(Spacer(1, 1))
     story.append(NextPageTemplate("normal"))
     story.append(PageBreak())
 
@@ -389,6 +361,7 @@ def build_pdf(entries: list[Entry]) -> None:
                 "TocTitle",
                 fontName="DejaVuSans-Bold",
                 fontSize=18,
+                textColor=navy,
                 spaceAfter=10,
             ),
         )
@@ -407,46 +380,53 @@ def build_pdf(entries: list[Entry]) -> None:
     story.append(toc)
     story.append(PageBreak())
 
-    # ---- one section per entry
+    # ---- one page per function
+    blank_line = Spacer(1, 12.4)  # one body-height line with no text
     for i, e in enumerate(entries):
         key = f"e{i}"
-        suffix = " (class)" if e.kind == "class" else ""
-        head = Paragraph(f'<a name="{key}"/>{esc(e.name)}{suffix}', func_heading)
+        path = f"{e.module}.{e.name}"
+        head = Paragraph(f'<a name="{key}"/>{esc(path)}', func_heading)
         head._toc_key = key
-        head._toc_text = f"{e.name}{suffix}  ({e.module})"
-        block: list[object] = [head, Paragraph(esc(e.module), mod_line)]
-        block.append(Paragraph(esc(e.signature), mono))
+        head._toc_text = f"{e.name}  —  {e.module}"
+        story.append(head)
+
+        block: list[object] = [blank_line]
+        block.append(Paragraph("Purpose", label))
         if e.purpose:
-            block.append(Paragraph("Purpose", label))
             for para in e.purpose.split("\n\n"):
                 block.append(Paragraph(rich(para), body))
+        else:
+            block.append(Paragraph("(No docstring.)", body))
+
+        block.append(blank_line)
+        block.append(Paragraph("Input parameters", label))
         if e.params:
-            block.append(Paragraph("Input parameters", label))
-            rows = [["Parameter", "Type", "Default"]]
+            rows = [["Parameter", "Type", "Default", "Meaning"]]
             for p in e.params:
                 rows.append(
                     [
                         Paragraph(
-                            f'<font face="DejaVuSansMono" size="8.4">{esc(p.name)}</font>'
-                            + (" (kw-only)" if p.kw_only else ""),
+                            f'<font face="DejaVuSansMono" size="8.2">{esc(p.name)}</font>'
+                            + (" <i>(kw)</i>" if p.kw_only else ""),
                             body,
                         ),
-                        Paragraph(esc(p.annotation) or "—", body),
+                        Paragraph(esc(pretty_annotation(p.annotation)) or "—", body),
                         Paragraph(
                             esc(p.default) if p.default is not None else "required",
                             body,
                         ),
+                        Paragraph(rich(p.meaning) or "—", body),
                     ]
                 )
-            t = Table(rows, colWidths=[52 * mm, 72 * mm, 42 * mm], repeatRows=1)
+            t = Table(rows, colWidths=[30 * mm, 32 * mm, 22 * mm, 82 * mm], repeatRows=1)
             t.setStyle(
                 TableStyle(
                     [
                         ("FONTNAME", (0, 0), (-1, 0), "DejaVuSans-Bold"),
-                        ("FONTSIZE", (0, 0), (-1, 0), 8.6),
-                        ("FONTSIZE", (0, 1), (-1, -1), 8.6),
-                        ("TEXTCOLOR", (0, 0), (-1, 0), colors.Color(0.10, 0.20, 0.36)),
-                        ("LINEBELOW", (0, 0), (-1, 0), 0.6, colors.Color(0.10, 0.20, 0.36)),
+                        ("FONTSIZE", (0, 0), (-1, 0), 8.4),
+                        ("FONTSIZE", (0, 1), (-1, -1), 8.4),
+                        ("TEXTCOLOR", (0, 0), (-1, 0), navy),
+                        ("LINEBELOW", (0, 0), (-1, 0), 0.6, navy),
                         ("LINEBELOW", (0, 1), (-1, -2), 0.25, colors.Color(0.85, 0.85, 0.88)),
                         ("VALIGN", (0, 0), (-1, -1), "TOP"),
                         ("TOPPADDING", (0, 0), (-1, -1), 1.5),
@@ -457,33 +437,34 @@ def build_pdf(entries: list[Entry]) -> None:
             )
             block.append(t)
         else:
-            block.append(Paragraph("Input parameters", label))
             block.append(Paragraph("None.", body))
-        block.append(Paragraph("Output", label))
-        block.append(Paragraph(esc(e.returns) or "None (procedure).", body))
-        if e.methods:
-            block.append(Paragraph("Methods", label))
-            for msig, msum in e.methods:
-                block.append(
-                    Paragraph(
-                        f'<font face="DejaVuSansMono" size="8.4">{esc(msig)}</font>'
-                        + (f" — {rich(msum)}" if msum else ""),
-                        body,
-                    )
-                )
+
+        block.append(blank_line)
+        block.append(Paragraph("Output parameters", label))
+        out_bits = []
+        if e.returns:
+            out_bits.append(f'<font face="DejaVuSansMono" size="8.4">{esc(e.returns)}</font>')
+        if e.returns_meaning:
+            out_bits.append(rich(e.returns_meaning))
+        block.append(Paragraph(" — ".join(out_bits) if out_bits else "None.", body))
+
         if e.sources:
+            block.append(blank_line)
             block.append(Paragraph("Sources", label))
             for s in e.sources:
                 block.append(Paragraph("• " + rich(s), src_style))
-        story.extend(block)
+
+        # shrink-to-fit so every function occupies exactly one page
+        story.append(KeepInFrame(frame_w, frame_h - 14 * mm, block, mode="shrink", hAlign="LEFT"))
+        story.append(PageBreak())
 
     doc.multiBuild(story)
-    print(f"wrote {OUT.relative_to(ROOT)}: {len(entries)} entries")
+    print(f"wrote {OUT.relative_to(ROOT)}: {len(entries)} functions")
 
 
 def main() -> None:
-    entries, _ = collect_entries()
-    build_pdf(entries)
+    OUT.parent.mkdir(exist_ok=True)
+    build_pdf(collect_entries())
 
 
 if __name__ == "__main__":
