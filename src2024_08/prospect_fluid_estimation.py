@@ -13,6 +13,13 @@ Implements:
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass
 from typing import Tuple, List
 
@@ -76,7 +83,8 @@ def c2_c3_gor_correlation(pvt_samples: List[PVTSample]) -> Tuple[float, float, f
     c2_c3 = np.array([s.c2_norm / (s.c3_norm + 1e-10) for s in pvt_samples])
     gor = np.array([s.gor for s in pvt_samples])
 
-    coeffs = np.polyfit(c2_c3, gor, 1)
+    lf = petrolib.inversion_numerics.fitting.fit_line(c2_c3, gor)
+    coeffs = [lf.slope, lf.intercept]
     gor_pred = np.polyval(coeffs, c2_c3)
     ss_res = np.sum((gor - gor_pred) ** 2)
     ss_tot = np.sum((gor - gor.mean()) ** 2)

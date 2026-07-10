@@ -59,8 +59,7 @@ def fluid_density_from_pressure_gradient(pressures_psi, depths_m, g=9.81):
     z = np.asarray(depths_m, dtype=float)
     if len(p) < 2: return 1.0
     # Linear regression for gradient
-    coeffs = np.polyfit(z, p, 1)
-    grad_psi_per_m = coeffs[0]
+    grad_psi_per_m = petrolib.inversion_numerics.fitting.fit_line(z, p).slope
     # Convert: 1 psi = 6894.76 Pa, 1 g/cc = 9810 Pa/m
     density_gcc = grad_psi_per_m * 6894.76 / (g * 1000)
     return float(np.clip(density_gcc, 0.9, 1.3))

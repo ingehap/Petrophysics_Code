@@ -143,14 +143,9 @@ def fractal_dimension_Dn(pressure_psi: np.ndarray,
     if mask.sum() < 3:
         # fall back to whatever positive points we have
         mask = (s > 0) & (r > 0)
-    x = np.log10(r[mask])
-    y = np.log10(s[mask])
-    slope, intercept = np.polyfit(x, y, 1)
-    y_pred = slope * x + intercept
-    ss_res = np.sum((y - y_pred) ** 2)
-    ss_tot = np.sum((y - y.mean()) ** 2)
-    r2 = 1.0 - ss_res / ss_tot if ss_tot > 0 else 0.0
-    return float(-slope), float(r2)
+    lf = petrolib.inversion_numerics.fitting.fit_line(
+        r[mask], s[mask], xform="log10", yform="log10")
+    return float(-lf.slope), float(lf.r2)
 
 
 # ---------------------------------------------------------------------------

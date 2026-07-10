@@ -140,13 +140,10 @@ def inversion_tikhonov(signal: np.ndarray,
     np.ndarray
         T2 distribution f(T2), shape (n_bins,).
     """
-    n_bins = kernel.shape[1]
     AtA = kernel.T @ kernel
-    Atb = kernel.T @ signal
-    I = np.eye(n_bins)
 
     # Closed-form Tikhonov solution
-    f = np.linalg.solve(AtA + alpha * I, Atb)
+    f = petrolib.inversion_numerics.linear.tikhonov_solve(kernel, signal, alpha)
 
     if non_negative:
         # Iterative projected gradient for non-negativity

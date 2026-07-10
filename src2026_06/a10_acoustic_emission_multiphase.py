@@ -29,6 +29,13 @@ from typing import Dict, List, Sequence, Tuple
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # 1. AE feature extraction
@@ -105,10 +112,9 @@ def fit_energy_rate(rates: Sequence[float], energies: Sequence[float]
 
     Returns (a, b).
     """
-    q = np.log(np.asarray(rates, float))
-    e = np.log(np.asarray(energies, float))
-    b, loga = np.polyfit(q, e, 1)
-    return float(math.exp(loga)), float(b)
+    lf = petrolib.inversion_numerics.fitting.fit_line(
+        rates, energies, xform="log", yform="log")
+    return float(math.exp(lf.intercept)), float(lf.slope)
 
 
 def rate_from_energy(energy: float, a: float, b: float) -> float:

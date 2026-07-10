@@ -13,6 +13,13 @@ Implements:
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass
 from typing import Tuple, List, Optional
 from enum import Enum
@@ -103,8 +110,7 @@ def pressure_gradient_density(pressures: np.ndarray, depths: np.ndarray) -> floa
     if len(pressures) < 2:
         return 0.85  # default oil density
     # Linear regression P vs depth
-    coeffs = np.polyfit(depths, pressures, 1)
-    gradient_bar_per_m = coeffs[0]
+    gradient_bar_per_m = petrolib.inversion_numerics.fitting.fit_line(depths, pressures).slope
     density = gradient_bar_per_m / 0.0981
     return np.clip(density, 0.7, 1.1)
 
