@@ -65,7 +65,7 @@ def hydrocarbon_pore_volume(phi, sw):
 
 def relative_discrepancy(value_a, value_b):
     """Relative discrepancy between two method results  |a - b|/mean(a, b)."""
-    return abs(value_a - value_b) / (0.5 * (value_a + value_b))
+    return float(petrolib.data_qc_io.clean.relative_discrepancy(value_a, value_b))
 
 
 # ---------------------------------------------- tests --------------

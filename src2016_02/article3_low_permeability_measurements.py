@@ -112,7 +112,7 @@ def deviation_indicator(x1, x2):
     the fractional discrepancy used to compare permeability/porosity from
     different techniques.
     """
-    return 2.0 * abs(x1 - x2) / (x1 + x2)
+    return float(petrolib.data_qc_io.clean.relative_discrepancy(x1, x2))
 
 
 # ---------------------------------------------- tests --------------
