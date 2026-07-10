@@ -11,6 +11,8 @@ from __future__ import annotations
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 
+from .. import ml_stats
+
 _Float = NDArray[np.float64]
 
 
@@ -34,16 +36,17 @@ def normalize_to_reference(
     ``in_lo``/``in_hi`` are the input-well endpoints; when omitted they are
     taken as the ``pct`` percentiles of ``x`` (the Shier 5th/95th convention),
     or the min/max when ``pct=None`` (the image-histogram convention).  No
-    clipping is applied.  Sources: src2021_12/article01 (normalize_reference),
-    src2016_12/article6 (histogram_normalize), src2015_04/article4
-    (histogram_scale).
+    clipping is applied.  The affine map itself is
+    :func:`petrolib.ml_stats.affine_rescale` (bit-identical arrangement).
+    Sources: src2021_12/article01 (normalize_reference), src2016_12/article6
+    (histogram_normalize), src2015_04/article4 (histogram_scale).
     """
     v = _arr(x)
     if in_lo is None:
         in_lo = float(np.percentile(v, pct[0])) if pct is not None else float(np.min(v))
     if in_hi is None:
         in_hi = float(np.percentile(v, pct[1])) if pct is not None else float(np.max(v))
-    return np.asarray(ref_lo + (ref_hi - ref_lo) * (v - in_lo) / (in_hi - in_lo))
+    return ml_stats.affine_rescale(v, src_lo=in_lo, src_hi=in_hi, dst_lo=ref_lo, dst_hi=ref_hi)
 
 
 def match_moments(x: ArrayLike, target_mean: float, target_std: float) -> _Float:

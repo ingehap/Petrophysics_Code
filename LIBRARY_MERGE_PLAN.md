@@ -10,6 +10,22 @@ implementations of shared concepts), and an evaluation of three competing migrat
 architectures scored independently for migration safety, end-state quality, and
 single-maintainer execution realism.
 
+> **Status — July 2026: executed to completion.** All eleven domain trains are merged:
+> `flow_transport`, `nmr`, `porosity_lithology`, `acoustic_geomech`, `geochem_fluids`,
+> `em_dielectric`, `nuclear`, `inversion_numerics`, the depth/imaging group
+> (`depth_matching`, `depth_correction`, `borehole_image`, `wellbore_geometry`),
+> `integrity_drilling`, and `data_qc_io` — plus the earlier foundation modules
+> (`constants`, `units`, `ml_stats`, `saturation_resistivity`, `capillary_pressure`,
+> `relperm_wettability`, `testing`). Every adoption PR was verified byte-identical on
+> stdout against the pre-change article, alongside the four regression gates below.
+> Scope deltas vs. the section-7 sketches are documented in the PR bodies; the largest:
+> the planned `data_qc_io` `units.py`/`metrics.py`/`align.py`/`pay.py` files were
+> dropped because `petrolib.units`, `petrolib.ml_stats`, `petrolib.depth_matching`,
+> and `petrolib.porosity_lithology` already covered them (`detect_bed_boundaries`
+> lives in `data_qc_io.filt`). Corpus forms that are not bit-reproducible from the
+> canonical API (e.g. `+1e-10`/`+1e-12` guard variants, scipy-kernel smoothers,
+> legacy `RandomState` generators) deliberately remain local to their articles.
+
 ---
 
 ## 1. Summary of the recommendation
