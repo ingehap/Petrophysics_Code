@@ -35,6 +35,13 @@ from typing import Dict
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Mineral / fluid library
@@ -128,8 +135,8 @@ def detect_bias(measured: np.ndarray, synthetic: np.ndarray
                 ) -> tuple[float, float]:
     """Linear regression measured = a*synthetic + b - returns (a, b).
     a != 1 or b != 0 indicates an environmental-correction bias."""
-    a, b = np.polyfit(synthetic, measured, 1)
-    return float(a), float(b)
+    lf = petrolib.inversion_numerics.fitting.fit_line(synthetic, measured)
+    return float(lf.slope), float(lf.intercept)
 
 
 # ---------------------------------------------------------------------------

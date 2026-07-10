@@ -36,6 +36,13 @@ from dataclasses import dataclass
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Flory-Huggins-Zuo equation of state for asphaltene gradient
@@ -107,9 +114,11 @@ def fit_pressure_gradients(z_m: np.ndarray, p_psi: np.ndarray,
     n = z_m.size
     while i < n - min_pts:
         j = i + min_pts
-        a, b = np.polyfit(z_m[i:j], p_psi[i:j], 1)
+        lf = petrolib.inversion_numerics.fitting.fit_line(z_m[i:j], p_psi[i:j])
+        a, b = lf.slope, lf.intercept
         while j < n:
-            a2, b2 = np.polyfit(z_m[i:j + 1], p_psi[i:j + 1], 1)
+            lf2 = petrolib.inversion_numerics.fitting.fit_line(z_m[i:j + 1], p_psi[i:j + 1])
+            a2, b2 = lf2.slope, lf2.intercept
             # Compute residual for the trial fit
             resid = np.std(p_psi[i:j + 1] - (a2 * z_m[i:j + 1] + b2))
             if resid > 2.0 and (z_m[j] - z_m[i]) > min_seg_len_m:

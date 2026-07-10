@@ -27,6 +27,13 @@ faithfully reproduced on a synthetic Brownian trajectory.  This module:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # --------------------------------------------- Brownian slit-pore -------
 
@@ -107,7 +114,7 @@ def diffusion_from_msd(msd, dt, d_dim=1, fit_window=(0.3, 0.9)):
     lo = int(fit_window[0] * n)
     hi = int(fit_window[1] * n)
     t = np.arange(n) * dt
-    slope_nm2_s, _ = np.polyfit(t[lo:hi], msd[lo:hi], 1)
+    slope_nm2_s = petrolib.inversion_numerics.fitting.fit_line(t[lo:hi], msd[lo:hi]).slope
     return float(slope_nm2_s * 1e-18 / (2 * d_dim))
 
 

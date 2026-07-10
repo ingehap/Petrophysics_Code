@@ -78,8 +78,8 @@ def casing_velocity_from_fmin(f_min, d, correction=F_MIN_CORRECTION):
 
 def _fit_line(x_pts, y_pts):
     """Two-or-more point least-squares line  y = a*x + b -> (a, b)."""
-    a, b = np.polyfit(np.asarray(x_pts, float), np.asarray(y_pts, float), 1)
-    return float(a), float(b)
+    lf = petrolib.inversion_numerics.fitting.fit_line(x_pts, y_pts)
+    return float(lf.slope), float(lf.intercept)
 
 
 # PE bench anchors quoted in the paper: (|tau_min| [us], Z [MRayl])
