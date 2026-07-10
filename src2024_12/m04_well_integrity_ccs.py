@@ -12,6 +12,13 @@ Implements a well integrity assessment framework for CCS projects:
   4. Impact of CO2-resistant materials on measurement interpretation.
 """
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass
 from typing import List, Dict
 from enum import Enum
@@ -50,13 +57,7 @@ def compute_cement_bond_index(amplitude, free_pipe_amp=80.0, bonded_amp=5.0):
 
 def evaluate_acoustic_impedance(impedance, cement_type='Portland'):
     """Evaluate cement quality from ultrasonic acoustic impedance (MRayl)."""
-    thresholds = {
-        'Portland': (4.0, 2.5), 'CO2_resistant': (3.5, 2.0), 'epoxy_resin': (2.5, 1.5),
-    }
-    good, fair = thresholds.get(cement_type, (4.0, 2.5))
-    imp = np.asarray(impedance, dtype=float)
-    q = np.where(imp >= good, 1.0, np.where(imp >= fair, 0.5 + 0.5*(imp-fair)/(good-fair), 0.25*imp/fair))
-    return np.clip(q, 0, 1)
+    return petrolib.integrity_drilling.cement_quality_score(impedance, cement_type=cement_type)
 
 def assess_casing_corrosion(measured_thickness, nominal_thickness=12.0, rate_mmpy=0.1):
     """Assess casing corrosion from wall thickness measurements (mm)."""

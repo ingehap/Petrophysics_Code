@@ -17,6 +17,13 @@ Key concepts:
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from typing import Tuple, Optional
 
 
@@ -242,7 +249,8 @@ def combined_bond_index(
         inp = np.array([[snhr_bi, emi_bi, eccentricity]])
         corrected = float(correction_model.forward(inp)[0, 0])
         return np.clip(corrected, 0, 1)
-    return np.clip(w_snhr * snhr_bi + w_emi * emi_bi, 0, 1)
+    return petrolib.integrity_drilling.bond_index_combined(
+        snhr_bi, emi_bi, weights=(w_snhr, w_emi))
 
 
 # ---------------------------------------------------------------------------

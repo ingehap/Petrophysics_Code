@@ -131,15 +131,9 @@ def mudcake_thickness(t_array, fs, kmc0, mu_f, dp, v=0.5):
     """Integrate dRmc/dt = (fs * Kmc(t) * dp) / (mu_f * Rmc) (assuming no
     invasion of solids).  Returns Rmc(t) [m] at every time in t_array.
     """
-    t_array = np.asarray(t_array, dtype=float)
-    rmc = np.zeros_like(t_array)
-    rmc[0] = 1.0e-5  # 10 micron seed cake
-    for i in range(1, len(t_array)):
-        dt = t_array[i] - t_array[i - 1]
-        kmc = mudcake_permeability(t_array[i], kmc0, dp, v)
-        # dRmc/dt * Rmc = fs*Kmc*dp/mu_f  =>  d(Rmc^2)/dt = 2*fs*Kmc*dp/mu_f
-        rmc[i] = np.sqrt(rmc[i - 1] ** 2 + 2.0 * fs * kmc * dp * dt / mu_f)
-    return rmc
+    return petrolib.integrity_drilling.mudcake_thickness(
+        t_array, k_mc_m2=kmc0, dp_pa=dp, mu_pa_s=mu_f, solids_ratio=fs,
+        model="chin_ode", v=v)
 
 
 # ---------------------------------------------------------------------------

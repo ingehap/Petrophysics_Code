@@ -19,6 +19,13 @@ Reference: https://doi.org/10.30632/PJV66N2-2025a10 (SPWLA)
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass
 from typing import Tuple, Optional
 from enum import Enum
@@ -151,21 +158,7 @@ def omega_function(R_csg: float, tau: float) -> float:
     -------
     float : Ω value (m⁴)
     """
-    R1 = R_csg
-    R2 = R_csg + tau
-
-    if tau <= 0:
-        return 0.0
-
-    # Annular flow cross section integral
-    # Q = (π * ΔP) / (8μL) * Ω
-    # Ω = R2⁴ - R1⁴ - (R2² - R1²)² / ln(R2/R1)
-    ln_ratio = np.log(R2 / R1)
-    if ln_ratio < 1e-12:
-        return 0.0
-
-    omega = R2 ** 4 - R1 ** 4 - (R2 ** 2 - R1 ** 2) ** 2 / ln_ratio
-    return omega
+    return petrolib.integrity_drilling.microannulus_omega(R_csg, tau)
 
 
 def liquid_leak_rate(tau: float,
@@ -194,22 +187,9 @@ def liquid_leak_rate(tau: float,
     -------
     float : Flow rate Q (m³/s). Positive = upward flow.
     """
-    if tau <= 0 or L <= 0:
-        return 0.0
-
-    g = 9.81
-    theta = np.radians(theta_deg)
-
-    # Gravitational correction (reduces upward flow)
-    gravity_dp = fluid.density_kg_m3 * g * L * np.cos(theta)
-    effective_dp = delta_P - gravity_dp
-
-    if effective_dp <= 0:
-        return 0.0
-
-    omega = omega_function(R_csg, tau)
-    Q = (np.pi / (8.0 * fluid.viscosity_Pa_s * L)) * omega * effective_dp
-    return Q
+    return petrolib.integrity_drilling.leak_rate_liquid(
+        tau, R_csg, delta_P, L, fluid.viscosity_Pa_s,
+        rho=fluid.density_kg_m3, inclination_deg=theta_deg)
 
 
 def gas_leak_rate(tau: float,
@@ -239,13 +219,7 @@ def gas_leak_rate(tau: float,
     -------
     float : Flow rate Q at outlet conditions (m³/s).
     """
-    if tau <= 0 or L <= 0 or P2 <= 0:
-        return 0.0
-
-    omega = omega_function(R_csg, tau)
-    Q = (np.pi / (16.0 * fluid.viscosity_Pa_s * L * P2)) * \
-        omega * (P1 ** 2 - P2 ** 2)
-    return max(Q, 0.0)
+    return petrolib.integrity_drilling.leak_rate_gas(tau, R_csg, P1, P2, L, fluid.viscosity_Pa_s)
 
 
 def bond_index(cbl_amplitude_mV: float,
@@ -269,16 +243,9 @@ def bond_index(cbl_amplitude_mV: float,
     -------
     float : Bond index (0 to 1).
     """
-    if cbl_free_pipe_mV <= cbl_well_bonded_mV:
-        return 1.0
-
-    num = np.log(cbl_free_pipe_mV / max(cbl_amplitude_mV, 0.01))
-    den = np.log(cbl_free_pipe_mV / max(cbl_well_bonded_mV, 0.01))
-
-    if den <= 0:
-        return 0.0
-
-    return np.clip(num / den, 0.0, 1.0)
+    return petrolib.integrity_drilling.bond_index(
+        cbl_amplitude_mV, cbl_free_pipe_mV, cbl_well_bonded_mV,
+        method="log")
 
 
 def sensitivity_analysis(tau_range_um: np.ndarray,
