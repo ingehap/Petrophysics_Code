@@ -18,6 +18,8 @@ image = ["scikit-image>=0.21"]
 # Everything the 75 issue directories collectively need.
 articles = ["spwla-petrolib[scipy,ml,torch,image]"]
 dev = ["pytest>=7", "pytest-xdist", "ruff", "mypy"]
+# PDF handbook generator (tools/gen_petrolib_handbook.py).
+docs = ["reportlab>=4"]
 
 [tool.hatch.build.targets.wheel]
 # Only the library is packaged; the 75 srcYYYY_MM issue directories stay
