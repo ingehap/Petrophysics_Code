@@ -42,28 +42,14 @@ def pearson(a, b):
 
 def cross_correlation_lag(reference, other, max_lag=80):
     """Integer lag aligning `other` to `reference` by maximum correlation."""
-    reference = np.asarray(reference, float); other = np.asarray(other, float)
-    best_lag, best_c = 0, -np.inf
-    for lag in range(-max_lag, max_lag + 1):
-        c = np.corrcoef(reference, np.roll(other, lag))[0, 1]
-        if c > best_c:
-            best_c, best_lag = c, lag
-    return best_lag, float(best_c)
+    r = petrolib.depth_matching.xcorr_shift(reference, other, max_lag=max_lag, edge="wrap")
+    return r.lag, r.corr
 
 
 def dtw(a, b, band=None):
     """Dynamic time warping: returns (distance, accumulated-cost matrix)."""
-    a = np.asarray(a, float); b = np.asarray(b, float)
-    n, m = len(a), len(b)
-    D = np.full((n + 1, m + 1), np.inf)
-    D[0, 0] = 0.0
-    for i in range(1, n + 1):
-        jlo = 1 if band is None else max(1, i - band)
-        jhi = m if band is None else min(m, i + band)
-        for j in range(jlo, jhi + 1):
-            cost = (a[i - 1] - b[j - 1]) ** 2
-            D[i, j] = cost + min(D[i - 1, j], D[i, j - 1], D[i - 1, j - 1])
-    return float(np.sqrt(D[n, m])), D
+    res = petrolib.depth_matching.dtw(a, b, band=band, root=True)
+    return res.distance, res.cost
 
 
 def warping_path(D):

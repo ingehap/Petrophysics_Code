@@ -38,27 +38,13 @@ def pearson(a, b):
 
 def cross_correlation_lag(reference, target, max_lag=60):
     """Integer lag aligning `target` to `reference` by maximum correlation."""
-    reference = np.asarray(reference, float); target = np.asarray(target, float)
-    best_lag, best_c = 0, -np.inf
-    for lag in range(-max_lag, max_lag + 1):
-        c = np.corrcoef(reference, np.roll(target, lag))[0, 1]
-        if c > best_c:
-            best_c, best_lag = c, lag
-    return best_lag, float(best_c)
+    r = petrolib.depth_matching.xcorr_shift(reference, target, max_lag=max_lag, edge="wrap")
+    return r.lag, r.corr
 
 
 def dtw_distance(a, b, band=None):
     """Dynamic time warping distance (Euclidean local cost)."""
-    a = np.asarray(a, float); b = np.asarray(b, float)
-    n, m = len(a), len(b)
-    D = np.full((n + 1, m + 1), np.inf); D[0, 0] = 0.0
-    for i in range(1, n + 1):
-        jlo = 1 if band is None else max(1, i - band)
-        jhi = m if band is None else min(m, i + band)
-        for j in range(jlo, jhi + 1):
-            cost = (a[i - 1] - b[j - 1]) ** 2
-            D[i, j] = cost + min(D[i - 1, j], D[i, j - 1], D[i - 1, j - 1])
-    return float(np.sqrt(D[n, m]))
+    return petrolib.depth_matching.dtw(a, b, band=band, root=True).distance
 
 
 def local_shifts(reference, target, window=60, step=30, max_lag=20):
@@ -67,14 +53,8 @@ def local_shifts(reference, target, window=60, step=30, max_lag=20):
     Uses a non-wrapping full cross-correlation per window (np.roll would wrap
     short windows and corrupt the lag estimate).
     """
-    reference = np.asarray(reference, float); target = np.asarray(target, float)
-    shifts = []
-    for s in range(0, len(reference) - window, step):
-        r = reference[s:s + window]; t = target[s:s + window]
-        corr = np.correlate(r - r.mean(), t - t.mean(), mode="full")
-        lag = int(corr.argmax() - (len(t) - 1))
-        shifts.append(int(np.clip(lag, -max_lag, max_lag)))
-    return np.array(shifts)
+    return petrolib.depth_matching.local_shifts(
+        reference, target, window=window, step=step, max_lag=max_lag).astype(int)
 
 
 # ---------------------------------------------- tests --------------

@@ -44,31 +44,13 @@ def cross_correlation_lag(reference, shifted, max_lag=50):
 
     Positive lag means `shifted` must move up (toward smaller index) to align.
     """
-    reference = np.asarray(reference, float)
-    shifted = np.asarray(shifted, float)
-    best_lag, best_c = 0, -np.inf
-    for lag in range(-max_lag, max_lag + 1):
-        s = np.roll(shifted, lag)
-        c = np.corrcoef(reference, s)[0, 1]
-        if c > best_c:
-            best_c, best_lag = c, lag
-    return best_lag, float(best_c)
+    r = petrolib.depth_matching.xcorr_shift(reference, shifted, max_lag=max_lag, edge="wrap")
+    return r.lag, r.corr
 
 
 def dtw_distance(a, b, band=None):
     """Dynamic time warping distance (Euclidean local cost)."""
-    a = np.asarray(a, float); b = np.asarray(b, float)
-    n, m = len(a), len(b)
-    INF = np.inf
-    D = np.full((n + 1, m + 1), INF)
-    D[0, 0] = 0.0
-    for i in range(1, n + 1):
-        jlo = 1 if band is None else max(1, i - band)
-        jhi = m if band is None else min(m, i + band)
-        for j in range(jlo, jhi + 1):
-            cost = (a[i - 1] - b[j - 1]) ** 2
-            D[i, j] = cost + min(D[i - 1, j], D[i, j - 1], D[i - 1, j - 1])
-    return float(np.sqrt(D[n, m]))
+    return petrolib.depth_matching.dtw(a, b, band=band, root=True).distance
 
 
 def estimate_shift(reference, shifted, max_lag=50):
