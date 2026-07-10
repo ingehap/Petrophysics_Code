@@ -21,8 +21,11 @@ __version__ = "0.1.0"
 _SUBMODULES = frozenset(
     {
         "acoustic_geomech",
+        "borehole_image",
         "capillary_pressure",
         "constants",
+        "depth_correction",
+        "depth_matching",
         "em_dielectric",
         "flow_transport",
         "geochem_fluids",
@@ -35,6 +38,7 @@ _SUBMODULES = frozenset(
         "saturation_resistivity",
         "testing",
         "units",
+        "wellbore_geometry",
     }
 )
 
