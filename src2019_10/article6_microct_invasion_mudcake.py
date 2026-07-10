@@ -65,7 +65,7 @@ def ct_saturation(mu_voxel, mu_dry, mu_sat):
 
 def mudcake_thickness(t, rate_const):
     """Static-filtration mudcake thickness  h = rate_const*sqrt(t)."""
-    return rate_const * np.sqrt(np.asarray(t, float))
+    return petrolib.integrity_drilling.mudcake_thickness(t, rate_const=rate_const, model="sqrt_k")
 
 
 def invasion_front(t, q_flux, phi):

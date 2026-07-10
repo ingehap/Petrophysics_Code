@@ -39,7 +39,7 @@ def acoustic_impedance(rho, v):
 
     rho(g/cc)*1000 -> kg/m^3, times v -> rayl, /1e6 -> Mrayl, i.e. rho*v/1000.
     """
-    return petrolib.acoustic_geomech.acoustic_impedance(rho, v) / 1000.0
+    return petrolib.integrity_drilling.acoustic_impedance(rho, v, rho_unit="g/cc")
 
 
 def reflection_coefficient(Z1, Z2):
@@ -54,11 +54,8 @@ def classify_annulus(Z, gas_max=0.5, liquid_max=2.6):
       Z < liquid_max  -> liquid (mud/water)
       otherwise       -> set cement
     """
-    if Z < gas_max:
-        return "gas"
-    if Z < liquid_max:
-        return "liquid"
-    return "cement"
+    return petrolib.integrity_drilling.classify_annulus(
+        Z, gas_max=gas_max, liquid_max=liquid_max, cement_min=liquid_max)
 
 
 def bond_index(attenuation, atten_free_pipe, atten_well_bonded):
@@ -66,8 +63,8 @@ def bond_index(attenuation, atten_free_pipe, atten_well_bonded):
 
         BI = (atten - atten_free_pipe)/(atten_well_bonded - atten_free_pipe)
     """
-    return np.clip((attenuation - atten_free_pipe)
-                   / (atten_well_bonded - atten_free_pipe), 0.0, 1.0)
+    return petrolib.integrity_drilling.bond_index(
+        attenuation, atten_free_pipe, atten_well_bonded, input_kind="attenuation")
 
 
 # ---------------------------------------------- tests --------------

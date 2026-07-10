@@ -60,12 +60,13 @@ def within_ecd_window(ecd_pressure, pore_pressure, fracture_pressure):
 
     i.e. above pore pressure (no influx) and below fracture pressure (no losses).
     """
-    return bool(pore_pressure < ecd_pressure < fracture_pressure)
+    return petrolib.integrity_drilling.within_drilling_window(
+        ecd_pressure, pore_pressure, fracture_pressure)
 
 
 def ecd_margin(pore_pressure, fracture_pressure):
     """Width of the drilling window  frac - pore  (psi), the deepwater margin."""
-    return fracture_pressure - pore_pressure
+    return petrolib.integrity_drilling.drilling_window_margin(pore_pressure, fracture_pressure)
 
 
 # ---------------------------------------------- pore pressure --------------
@@ -82,7 +83,9 @@ def eaton_pore_pressure(overburden, hydrostatic, observed, normal, exponent=1.2)
     Eaton expression, differing only in which log supplies the ratio and the
     exponent (~1.2 resistivity, ~3 sonic velocity).
     """
-    return overburden - (overburden - hydrostatic) * (observed / normal) ** exponent
+    return petrolib.integrity_drilling.eaton_pore_pressure(
+        overburden, hydrostatic, observed, normal,
+        exponent=exponent, log_type="resistivity")
 
 
 # ---------------------------------------------- anisotropy --------------

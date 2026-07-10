@@ -33,6 +33,13 @@ Pressures in psi, depths in ft, densities in g/cm^3.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 PSI_PER_FT_FRESH = 0.433     # hydrostatic gradient of fresh water, psi/ft
 SEAWATER_SG = 1.025          # seawater specific gravity
 
@@ -112,7 +119,7 @@ def seawater_hydrostatic_pressure(water_depth_ft):
 
         P = 0.433*SG_sw*water_depth   [psi].
     """
-    return PSI_PER_FT_FRESH * SEAWATER_SG * np.asarray(water_depth_ft, float)
+    return petrolib.integrity_drilling.hydrostatic_pressure_psi(water_depth_ft, sg=SEAWATER_SG)
 
 
 def overburden_pressure(water_depth_ft, sediment_depth_ft, sediment_sg=2.3):
@@ -124,8 +131,8 @@ def overburden_pressure(water_depth_ft, sediment_depth_ft, sediment_sg=2.3):
     (referenced to total depth) relative to an onshore well - the deepwater
     narrow-margin challenge.
     """
-    return PSI_PER_FT_FRESH * (SEAWATER_SG * np.asarray(water_depth_ft, float)
-                               + sediment_sg * np.asarray(sediment_depth_ft, float))
+    return petrolib.integrity_drilling.overburden_pressure_psi(
+        water_depth_ft, sediment_depth_ft, sw_sg=SEAWATER_SG, sediment_sg=sediment_sg)
 
 
 def overburden_gradient(water_depth_ft, sediment_depth_ft, sediment_sg=2.3):
@@ -177,7 +184,7 @@ def dual_gradient_mudline_pressure(water_depth_ft, mud_sg):
     solution).  Compare with the single-gradient riser pressure that would
     instead carry the full mud column to surface.
     """
-    return PSI_PER_FT_FRESH * SEAWATER_SG * np.asarray(water_depth_ft, float)
+    return petrolib.integrity_drilling.hydrostatic_pressure_psi(water_depth_ft, sg=SEAWATER_SG)
 
 
 def single_gradient_mudline_pressure(water_depth_ft, mud_sg):
