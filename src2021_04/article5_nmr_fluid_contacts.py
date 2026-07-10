@@ -88,7 +88,7 @@ def classify_fluid(D, gas_D=1e-8, oil_D=5e-10):
 
 def stacking_snr(base_snr, n_stacks):
     """Station stacking improves SNR as sqrt(number of stacked acquisitions)."""
-    return base_snr * np.sqrt(n_stacks)
+    return float(base_snr * petrolib.data_qc_io.signal.stack_gain(n_stacks))
 
 
 # ---------------------------------------------- tests --------------

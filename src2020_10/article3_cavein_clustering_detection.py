@@ -39,15 +39,7 @@ except ImportError:  # bare clone, not installed
 
 def rolling_cv(rhob, wr):
     """Rolling coefficient of variation of bulk density over +/- wr  (Eq. 5)."""
-    rhob = np.asarray(rhob, float)
-    n = len(rhob)
-    cv = np.zeros(n)
-    for i in range(n):
-        lo, hi = max(0, i - wr), min(n, i + wr + 1)
-        w = rhob[lo:hi]
-        m = w.mean()
-        cv[i] = w.std() / m if m != 0 else 0.0
-    return cv
+    return petrolib.data_qc_io.filt.moving_stat(rhob, 2 * wr + 1, "cv")
 
 
 def caliper_excess(caliper, bit_size):

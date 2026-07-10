@@ -25,6 +25,13 @@ solution converges in a few tens of iterations.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # -------------------------------------------- CPA (Eqs. 1-5) --------------
 
@@ -135,26 +142,10 @@ def fcm(X, c=5, m=2.0, n_iter=200, tol=1e-5, seed=0):
 
 def synth_log_suite(n=600, n_facies=4, seed=0):
     """Five-log suite (GR, RD, DEN, AT, NP) with `n_facies` blocks."""
-    rng = np.random.default_rng(seed)
-    bp_true = sorted(rng.choice(np.arange(40, n - 40), n_facies - 1,
-                                replace=False))
-    bp_full = [0] + list(bp_true) + [n]
-    facies_props = np.array([
-        [ 22.0,  80.0, 2.45, 75.0, 0.08],   # facies 0: granitic, low GR
-        [ 75.0,  10.0, 2.20, 95.0, 0.30],   # facies 1: shale
-        [ 35.0, 200.0, 2.60, 65.0, 0.05],   # facies 2: fractured granite
-        [ 50.0,  30.0, 2.40, 80.0, 0.15],   # facies 3: weathered
-    ])
-    facies_labels = np.zeros(n, dtype=int)
-    out = np.zeros((n, 5))
-    for k, (a, b) in enumerate(zip(bp_full[:-1], bp_full[1:])):
-        fac = k % n_facies
-        facies_labels[a:b] = fac
-        for j in range(5):
-            mu = facies_props[fac, j]
-            sigma = 0.05 * abs(mu) + 1e-3
-            out[a:b, j] = rng.normal(mu, sigma, b - a)
-    return out, np.array(bp_true), facies_labels
+    logs, bp_true, facies_labels = petrolib.data_qc_io.synth.log_suite(
+        n, n_facies, rng=np.random.default_rng(seed))
+    out = np.column_stack([logs[c] for c in petrolib.data_qc_io.synth.LOG_SUITE_CURVES])
+    return out, bp_true, facies_labels
 
 
 # -------------------------------------------- tests ----------------------
