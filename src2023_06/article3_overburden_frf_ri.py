@@ -38,6 +38,13 @@ from __future__ import annotations
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Multi-FRF model:  fit RRM from FRF measurements at multiple pressures
@@ -69,8 +76,8 @@ def estimate_rrm_from_frf(pressures: np.ndarray,
     # then the reference FRF1 is recomputed by extrapolating to the
     # lowest pressure, which avoids letting a single noisy measurement
     # bias the slope estimate (cf. discussion of Fig. 3 of the paper).
-    log_frf = np.log(frf_measured)
-    slope, intercept = np.polyfit(pressures, log_frf, 1)
+    lf = petrolib.inversion_numerics.fitting.fit_line(pressures, frf_measured, yform="log")
+    slope, intercept = lf.slope, lf.intercept
     rrm = float(-slope)
     frf1 = float(np.exp(intercept + slope * pressures[0]))
     return rrm, frf1

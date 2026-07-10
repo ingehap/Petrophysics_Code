@@ -27,6 +27,13 @@ Synthetic demo reproduces the paper's Woodford-shale array statistic
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # --------------------------------------------- Oliver-Pharr core --------
 
@@ -104,8 +111,8 @@ def fit_unloading_stiffness(h, P, h_max_idx, frac=0.25):
     h_un = h[h_max_idx:]
     P_un = P[h_max_idx:]
     n_fit = max(3, int(frac * len(h_un)))
-    coef = np.polyfit(h_un[:n_fit], P_un[:n_fit], 1)
-    return float(coef[0])
+    return float(petrolib.inversion_numerics.fitting.fit_line(
+        h_un[:n_fit], P_un[:n_fit]).slope)
 
 
 # --------------------------------------------- Gupta (Eq. 5) ----------
@@ -120,9 +127,8 @@ def gupta_shear_modulus(slope_late_load_GPa_nm):
 def fit_log_creep(t_s, h_nm):
     """Linear fit of h(t) - h0 vs log10(t) (Eqs. 9-10).  t_s is the
     hold-time array starting at t > 0 (skip the t=0 point)."""
-    log_t = np.log10(t_s)
-    coef = np.polyfit(log_t, h_nm - h_nm[0], 1)
-    return float(coef[0]), float(coef[1])  # (b, intercept)
+    lf = petrolib.inversion_numerics.fitting.fit_line(t_s, h_nm - h_nm[0], xform="log10")
+    return float(lf.slope), float(lf.intercept)  # (b, intercept)
 
 
 # --------------------------------------------- toughness (Eq. 11) ----

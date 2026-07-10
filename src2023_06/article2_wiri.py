@@ -50,10 +50,8 @@ def archie_ri(sw: np.ndarray, n: float) -> np.ndarray:
 # ---------------------------------------------------------------------------
 def estimate_n_pp(sw: np.ndarray, ri: np.ndarray) -> float:
     """Estimate n by least-squares fit of log(RI) = -n * log(Sw)."""
-    log_sw = np.log(sw)
-    log_ri = np.log(ri)
-    # n is -slope of log(RI) vs log(Sw)
-    slope, _ = np.polyfit(log_sw, log_ri, 1)
+    slope = petrolib.inversion_numerics.fitting.fit_line(
+        sw, ri, xform="log", yform="log").slope
     return float(-slope)
 
 

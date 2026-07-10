@@ -94,8 +94,10 @@ def fcp_from_sqrt_time(t: np.ndarray, p: np.ndarray,
     n = len(p_si)
     early = slice(2, n // 3)
     late = slice(int(0.66 * n), n - 2)
-    a1, b1 = np.polyfit(s_si[early], p_si[early], 1)
-    a2, b2 = np.polyfit(s_si[late], p_si[late], 1)
+    lf1 = petrolib.inversion_numerics.fitting.fit_line(s_si[early], p_si[early])
+    a1, b1 = lf1.slope, lf1.intercept
+    lf2 = petrolib.inversion_numerics.fitting.fit_line(s_si[late], p_si[late])
+    a2, b2 = lf2.slope, lf2.intercept
     if abs(a1 - a2) < 1e-12:
         return float(p_si[-1])
     s_int = (b2 - b1) / (a1 - a2)
