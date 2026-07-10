@@ -18,6 +18,13 @@ Key concepts:
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from typing import List, Tuple, Optional
 from dataclasses import dataclass
 
@@ -262,10 +269,8 @@ def compute_snr_improvement(
     original: np.ndarray, mode_signal: np.ndarray,
 ) -> float:
     """Estimate SNR improvement (dB) of extracted mode vs. original."""
-    noise_est = original - mode_signal
-    sig_power = np.mean(mode_signal ** 2)
-    noise_power = np.mean(noise_est ** 2) + 1e-30
-    return 10.0 * np.log10(sig_power / noise_power)
+    return petrolib.data_qc_io.signal.snr_db(
+        mode_signal, noise=original - mode_signal, guard=1e-30)
 
 
 # ---------------------------------------------------------------------------

@@ -39,6 +39,13 @@ from __future__ import annotations
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # 1. Bed-boundary detection (variance + first-derivative sliding window)
@@ -50,23 +57,8 @@ def detect_bed_boundaries(log_curve, depth, win=11, threshold=None):
     sliding window computes (a) the first derivative magnitude and
     (b) the local variance of the log; their product is thresholded.
     """
-    log_curve = np.asarray(log_curve, dtype=float)
-    n = len(log_curve)
-    half = win // 2
-    deriv = np.gradient(log_curve)
-    variance = np.zeros(n)
-    for i in range(half, n - half):
-        variance[i] = np.var(log_curve[i - half:i + half + 1])
-    metric = np.abs(deriv) * np.sqrt(variance)
-    if threshold is None:
-        threshold = np.mean(metric) + 2.0 * np.std(metric)
-    # Local maxima of metric above threshold
-    boundaries = []
-    for i in range(1, n - 1):
-        if metric[i] > threshold and metric[i] >= metric[i - 1] \
-                and metric[i] >= metric[i + 1]:
-            boundaries.append(i)
-    return np.array(boundaries, dtype=int)
+    return petrolib.data_qc_io.filt.detect_bed_boundaries(
+        log_curve, window=win, threshold=threshold)
 
 
 # ---------------------------------------------------------------------------

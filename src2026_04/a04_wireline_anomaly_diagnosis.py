@@ -119,29 +119,17 @@ def winch_acceleration(tension_variation: np.ndarray,
 
 def moving_average(x: np.ndarray, window: int) -> np.ndarray:
     """Moving average MA_t over past N points (Eq. 13)."""
-    kernel = np.ones(window) / window
-    return np.convolve(x, kernel, mode='same')
+    return petrolib.data_qc_io.filt.smooth(x, window, "boxcar")
 
 
 def moving_msd(x: np.ndarray, window: int) -> np.ndarray:
     """Moving mean-squared deviation MSD_t (Eq. 14)."""
-    n = len(x)
-    out = np.zeros(n)
-    for i in range(n):
-        lo = max(0, i - window + 1)
-        seg = x[lo:i+1]
-        out[i] = np.mean((seg - seg.mean())**2)
-    return out
+    return petrolib.data_qc_io.filt.moving_stat(x, window, "var", center=False)
 
 
 def moving_std(x: np.ndarray, window: int) -> np.ndarray:
     """Moving standard deviation σ_t (Eq. 15)."""
-    n = len(x)
-    out = np.zeros(n)
-    for i in range(n):
-        lo = max(0, i - window + 1)
-        out[i] = np.std(x[lo:i+1])
-    return out
+    return petrolib.data_qc_io.filt.moving_stat(x, window, "std", center=False)
 
 
 def moving_abs_deviation(x: np.ndarray, ma: np.ndarray) -> np.ndarray:

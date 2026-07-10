@@ -36,6 +36,13 @@ from __future__ import annotations
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Beer-Lambert
@@ -57,15 +64,7 @@ def attenuation_map(I_now: np.ndarray, I_dry: np.ndarray) -> np.ndarray:
 # ---------------------------------------------------------------------------
 def median_filter_3x3(image: np.ndarray) -> np.ndarray:
     """Pure-numpy 3x3 median filter (with edge replication)."""
-    pad = np.pad(image, 1, mode="edge")
-    H, W = image.shape
-    stack = np.empty((9, H, W))
-    k = 0
-    for dy in (0, 1, 2):
-        for dx in (0, 1, 2):
-            stack[k] = pad[dy:dy + H, dx:dx + W]
-            k += 1
-    return np.median(stack, axis=0)
+    return petrolib.data_qc_io.filt.median_filter2d(image, size=3)
 
 
 # ---------------------------------------------------------------------------

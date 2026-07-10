@@ -16,6 +16,13 @@ and pore-size statistics. We provide:
 import numpy as np
 
 try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
+try:
     from scipy import ndimage as ndi
 except Exception as e:
     raise SystemExit("scipy is required: " + str(e))
@@ -23,16 +30,7 @@ except Exception as e:
 
 def synthetic_sem_image(size=128, n_pores=40, rng=None):
     rng = rng or np.random.default_rng(4)
-    img = 0.6 + 0.05 * rng.standard_normal((size, size))
-    mask = np.zeros((size, size), dtype=bool)
-    yy, xx = np.mgrid[:size, :size]
-    for _ in range(n_pores):
-        cy, cx = rng.integers(0, size, size=2)
-        r = rng.integers(2, 8)
-        m = (yy - cy) ** 2 + (xx - cx) ** 2 <= r * r
-        mask |= m
-    img[mask] = 0.15 + 0.05 * rng.standard_normal(mask.sum())
-    return np.clip(img, 0, 1), mask
+    return petrolib.data_qc_io.synth.disk_image(size, n_pores, rng=rng)
 
 
 def porenet_segment(img, threshold=0.35):

@@ -115,12 +115,7 @@ def synthetic_logs(s: CoreSample) -> dict:
 # ---------------------------------------------------------------------------
 def vertical_response(x: np.ndarray, dz_m: float, fwhm_m: float) -> np.ndarray:
     """Convolve x with a Gaussian whose FWHM matches the tool aperture."""
-    sigma = fwhm_m / (2.0 * np.sqrt(2.0 * np.log(2.0)))
-    n = max(3, int(round(6 * sigma / dz_m)) | 1)
-    t = (np.arange(n) - n // 2) * dz_m
-    g = np.exp(-0.5 * (t / sigma) ** 2)
-    g /= g.sum()
-    return np.convolve(x, g, mode="same")
+    return petrolib.data_qc_io.filt.tool_response(x, dz_m, fwhm_m)
 
 
 # ---------------------------------------------------------------------------

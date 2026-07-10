@@ -12,6 +12,13 @@ the paper).
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 import xgboost as xgb
 
 from article10_induction_deconvolution import (
@@ -24,10 +31,8 @@ from article10_induction_deconvolution import (
 # ----------------------- linear convolution baseline (Eq. 2) ---
 
 def fit_linear_conv_weights(R_model, R_app, window=101):
-    pad = window // 2
     log_model = np.log(np.maximum(R_model, 1e-9))
-    log_pad = np.pad(log_model, pad, mode="edge")
-    rows = np.lib.stride_tricks.sliding_window_view(log_pad, window)
+    rows = petrolib.data_qc_io.filt.window_features(log_model, window)
     coef, *_ = np.linalg.lstsq(rows, np.log(np.maximum(R_app, 1e-9)), rcond=None)
     return coef
 
@@ -52,10 +57,8 @@ class MLConvolution:
                                       verbosity=0)
 
     def _features(self, R_model):
-        pad = self.window // 2
         log_m = np.log(np.maximum(R_model, 1e-9))
-        log_pad = np.pad(log_m, pad, mode="edge")
-        return np.lib.stride_tricks.sliding_window_view(log_pad, self.window).copy()
+        return petrolib.data_qc_io.filt.window_features(log_m, self.window)
 
     def fit(self, R_model, R_app):
         X = self._features(R_model)
