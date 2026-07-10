@@ -29,6 +29,118 @@ Everything is numpy-only and deterministic (k-means uses the repository's
 farthest-point init, not a random one).  The single-hidden-layer NN trainers
 and non-farthest k-means inits found in some articles stay article-local
 until an adoption PR proves an exact-equivalence mapping.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2014_06/article4 -- Article 4: Method for Predicting Permeability of Complex Carbonate
+  Reservoirs Using NMR Logging Measurements Willian Trevizan, Paulo Neto, Bernardo Coutinho,
+  Vinicius F. Machado, Edmilson H. Rios, Songhua Chen, Wei Shao, Pedro Romero (2014). Petrophysics
+  Vol. 55, No. 3 (June 2014), pp. 240-252. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2014_08/article3 -- Article 3: Multiphase Flow in Porous Rock Imaged Under Dynamic Flow
+  Conditions with Fast X-Ray Computed Microtomography S. Berg, R. Armstrong, H. Ott, A. Georgiadis,
+  S. A. Klapp, A. Schwing, R. Neiteler, N. Brussee, A. Makurat, L. Leu, F. Enzmann, J.-O. Schwarz,
+  M. Wolf, F. Khan, M. Kersten, S. Irvine, M. Stampanoni (2014). Petrophysics Vol. 55, No. 4
+  (August 2014), pp. 304-312. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_02/article1 -- Article 1: Onset of Oil Mobilization and Nonwetting-Phase Cluster-Size
+  Distribution. Berg, Armstrong, Georgiadis, Ott, Schwing, Neiteler, Brussee, Makurat, Rucker, Leu,
+  Wolf, Khan, Enzmann, Kersten (2015). Petrophysics Vol. 56, No. 1 (February 2015), pp. 15-22. DOI:
+  none assigned (this issue predates SPWLA DOI assignment).
+src2015_04/article1 -- Article 1: Automatically Quantifying Wireline and LWD Pressure-Test Quality.
+  Proett, Musharfi, Gill, Ma, Meridji, Eyuboglu (2015). Petrophysics Vol. 56, No. 2 (April 2015),
+  pp. 101-115. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_04/article4 -- Article 4: Microresistivity Curve Extraction from Borehole Microimager Data.
+  Roslin (2015). Petrophysics Vol. 56, No. 2 (April 2015), pp. 140-146. DOI: none assigned (this
+  issue predates SPWLA DOI assignment).
+src2015_10 -- Petrophysics Vol. 56 No. 5 (Oct 2015) (issue-level reference).
+src2016_08/article2 -- Article 2: Predicting Carbonate Rock Properties Using NMR Data and
+  Generalized Interpolation-Based Techniques. Kwak, Hursan, Shao, Chen, Balliet, Eid, Guergueb
+  (2016). Petrophysics Vol. 57, No. 4 (August 2016), pp. 351-368. DOI: none assigned (this issue
+  predates SPWLA DOI assignment).
+src2016_12/article6 -- Article 6 (Technical Note): Normalizing Gamma-Ray Logs Acquired from a
+  Mixture of Vertical and Horizontal Wells in the Haynesville Shale. Xu, Bayer, Wunderle, Bansal
+  (2016). Petrophysics Vol. 57, No. 6 (December 2016), pp. 638-643. DOI: none assigned (this issue
+  predates SPWLA DOI assignment).
+src2017_08/article4 -- Article 4: The Impact of Depth and Pressure Measurement Errors on the
+  Estimation of Pressure Gradients. Bowers, Schnacke, Hermance (2017). Petrophysics Vol. 58, No. 4
+  (August 2017), pp. 376-396. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2018_10/article11 -- Article 11: A New Hierarchical Method for Rock Classification Using Well-
+  Log-Based Rock Fabric Quantification. Purba, Garcia, Heidari (2018). DOI:
+  10.30632/PJV59N5-2018a10. Petrophysics Vol. 59 No. 5 (Oct 2018) - "Best of 2018 SPWLA Symposium"
+  issue.
+src2018_10/article5 -- Article 5: An Unsupervised Learning Algorithm to Compute Fluid Volumes From
+  NMR T1-T2 Logs in Unconventional Reservoirs. Venkataramanan, Evirgen, Allen, Mutina, Cai,
+  Johnson, Green, Jiang (2018). DOI: 10.30632/PJV59N5-2018a4. Petrophysics Vol. 59 No. 5 (Oct 2018)
+  - "Best of 2018 SPWLA Symposium" issue.
+src2018_12 -- Petrophysics Vol. 59 No. 6 (Dec 2018) — Special Issue: Data-Driven Analytics in
+  Logging and Petrophysics (issue-level reference).
+src2018_12/article11 -- Article 11: Data Preconditioning for Predictive and Interpretive
+  Algorithms: Importance in Data-Driven Analytics and Methods for Application. Frost, Quinn (2018).
+  DOI: 10.30632/PJV59N6Y2018a10. Petrophysics Vol. 59 No. 6 (Dec 2018) — Special Issue: Data-Driven
+  Analytics in Logging and Petrophysics.
+src2018_12/article4 -- Article 4: Borehole Resistivity Measurement Modeling Using Machine-Learning
+  Techniques. Xu, Sun, Xie, Zhong, Mirto, Feng, Hong (2018). DOI: 10.30632/PJV59N6Y2018a3.
+  Petrophysics Vol. 59 No. 6 (Dec 2018) — Special Issue: Data-Driven Analytics in Logging and
+  Petrophysics.
+src2019_08/article2 -- Article 2: Total Organic Carbon Characterization Using Neural-Network
+  Analysis of XRF Data. Lawal, Mahmoud, Alade, Abdulraheem (2019). DOI: 10.30632/PJV60N4-2019a2.
+  Petrophysics Vol. 60 No. 4 (Aug 2019).
+src2019_10/article9 -- Article 9: Application of Artificial Neural Network to Predict Formation
+  Bulk Density While Drilling. Gowida, Elkatatny, Abdulraheem (2019). DOI: 10.30632/PJV60N5-2019a9.
+  Petrophysics Vol. 60 No. 5 (Oct 2019).
+src2019_12/article7 -- Article 7: New Robust Model to Estimate Formation Tops in Real Time Using
+  Artificial Neural Networks (ANN). Elkatatny, Al-AbdulJabbar, Mahmoud (2019). DOI:
+  10.30632/PJV60N6-2019a7. Petrophysics Vol. 60 No. 6 (Dec 2019).
+src2019_12/article8 -- Article 8: A Comparative Study of Three Supervised Machine-Learning
+  Algorithms for Classifying Carbonate Vuggy Facies in the Kansas Arbuckle Formation. Deng, Xu,
+  Jobe, Xu (2019). DOI: 10.30632/PJV60N6-2019a8. Petrophysics Vol. 60 No. 6 (Dec 2019).
+src2020_06/article5 -- Article 5: Estimation of Reservoir Porosity From Drilling Parameters Using
+  Artificial Neural Networks. Al-AbdulJabbar, Al-Azani, Elkatatny (2020). DOI:
+  10.30632/PJV61N3-2020a5. Petrophysics Vol. 61 No. 3 (Jun 2020).
+src2020_08/article4 -- Article 4: Detecting Specific Facies in Well-Log Data Sets Using Knowledge-
+  Driven Hierarchical Clustering. Emelyanova, Peyaud, Dance, Pervukhina (2020). DOI:
+  10.30632/PJV61N4-2020a4. Petrophysics Vol. 61 No. 4 (Aug 2020).
+src2020_10/article3 -- Article 3: Automatic Detection of Anomalous Density Measurements due to
+  Wellbore Cave-in. Sen, Ong, Kainkaryam, Sharma (2020). DOI: 10.30632/PJV61N5-2020a3. Petrophysics
+  Vol. 61 No. 5 (Oct 2020).
+src2020_10/article7 -- Article 7: Integrated Multiphysics Workflow for Automatic Rock
+  Classification and Formation Evaluation Using Multiscale Image Analysis and Conventional Well
+  Logs. Gonzalez, Kanyan, Heidari, Lopez (2020). DOI: 10.30632/PJV61N5-2020a7. Petrophysics Vol. 61
+  No. 5 (Oct 2020).
+src2021_06 -- Petrophysics Vol. 62 No. 3 (Jun 2021) (issue-level reference).
+src2021_06/article3 -- Article 3: Real-Time Prediction of Acoustic Velocities While Drilling
+  Vertical Complex Lithology Using AI Technique. Alsaihati, Elkatatny (2021). DOI:
+  10.30632/PJV62N3-2021a2. Petrophysics Vol. 62 No. 3 (Jun 2021).
+src2021_06/article3_ai_acoustic_velocity -- Article 3: Real-Time Prediction of Acoustic Velocities
+  While Drilling Vertical Complex Lithology Using AI Technique. Alsaihati, Elkatatny (2021). DOI:
+  10.30632/PJV62N3-2021a2. Petrophysics Vol. 62 No. 3 (Jun 2021).
+src2021_08 -- Petrophysics Vol. 62 No. 4 (Aug 2021) (issue-level reference).
+src2021_08/article5 -- Article 5: Synthetic Sonic Log Generation With Machine Learning - A Contest
+  Summary From Five Methods. Yu, Xu, Misra, Li, Ashby, et al. (2021). DOI: 10.30632/PJV62N4-2021a4.
+  Petrophysics Vol. 62 No. 4 (Aug 2021).
+src2021_12/article01 -- Article 1: Data Quality Considerations for Petrophysical Machine-Learning
+  Models. McDonald (2021). DOI: 10.30632/PJV62N6-2021a1. Petrophysics Vol. 62 No. 6 (Dec 2021).
+src2021_12/article02 -- Article 2: Enhanced Mineral Quantification and Uncertainty Analysis From
+  Downhole Spectroscopy Logs Using Variational Autoencoders. Craddock, Srivastava, Datir, Rose,
+  Zhou, Mosse, Venkataramanan (2021). DOI: 10.30632/PJV62N6-2021a2. Petrophysics Vol. 62 No. 6 (Dec
+  2021).
+src2022_02/article4 -- Article 4: Ultrasonic Logging of Creeping Shale. Diez, Johansen, Larsen
+  (2022). DOI: 10.30632/PJV63N1-2022a4. Petrophysics Vol. 63 No. 1 (Feb 2022).
+src2022_10 -- Petrophysics Vol. 63 No. 5 (Oct 2022) (issue-level reference).
+src2022_10/article1 -- Article 1: A Guide to Nanoindentation. Sondergeld, Rai (2022). DOI:
+  10.30632/PJV63N5-2022a1. Petrophysics Vol. 63 No. 5 (Oct 2022).
+src2023_04/article02 -- Article 2: Data-Driven Algorithms for Image-Based Rock Classification and
+  Formation Evaluation in Formations With Rapid Spatial Variation in Rock Fabric. Gonzalez,
+  Heidari, and Lopez (2023). DOI: 10.30632/PJV64N2-2023a2. Petrophysics Vol. 64 No. 2 (Apr 2023) —
+  SPWLA AI/ML Special Issue.
+src2024_10 -- Petrophysics Vol. 65 No. 5 (Oct 2024) (issue-level reference).
+src2024_10/lithofacies_prediction -- High-Resolution Lithofacies Prediction Using Ensemble
+  Classifiers. Based on: Satti et al. (2024), "Enhancing Reservoir Characterization With High-
+  Resolution Lithofacies Prediction Using Advanced Feature Engineering and Ensemble Classifiers",
+  Petrophysics, Vol. 65, No. 5, pp. 813-834.
 """
 
 from __future__ import annotations
@@ -318,7 +430,10 @@ def ols(X: ArrayLike, y: ArrayLike, *, intercept: bool = True) -> tuple[_Float, 
 
 
 def predict_linear(X: ArrayLike, coef: ArrayLike, intercept: float = 0.0) -> _Float:
-    """Evaluate the linear model from :func:`ols`."""
+    """Evaluate the linear model from :func:`ols`.
+
+    Sources: src2021_06/article3_ai_acoustic_velocity.
+    """
     design = np.asarray(X, np.float64)
     if design.ndim == 1:
         design = design[:, None]

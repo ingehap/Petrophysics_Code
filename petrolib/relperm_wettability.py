@@ -31,6 +31,122 @@ section 9):
 Saturations and relative permeabilities are fractions; viscosities in Pa*s
 (any consistent unit cancels in ratios).  numpy-only at import; :func:`fit_corey`
 imports scipy lazily.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2014_02/article3 -- Article 3: An Evaluation of Spontaneous Imbibition of Water into Oil-Wet
+  Carbonate Reservoir Cores Using Nanofluid. Abbas Roustaei (2014). Petrophysics Vol. 55, No. 1
+  (February 2014), pp. 31-37. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2014_08 -- Petrophysics Vol. 55 No. 4 (Aug 2014) (issue-level reference).
+src2014_08/article1 -- Article 1: Drainage Three-Phase Flow Relative Permeability on Oil-Wet
+  Carbonate Reservoir Rock Types: Experiments, Interpretation and Comparison with Standard
+  Correlations. P. Egermann, K. Mejdoub, J.-M. Lombard, O. Vizika, Z. Kalam (2014). Petrophysics
+  Vol. 55, No. 4 (August 2014), pp. 287-293. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2014_08/article4 -- Article 4: Impact of Wettability on Residual Oil Saturation and Capillary
+  Desaturation Curves K. J. Humphry, B. M. J. M. Suijkerbuijk, H. A. van der Linde, S. G. J.
+  Pieterse, S. K. Masalmeh (2014). Petrophysics Vol. 55, No. 4 (August 2014), pp. 313-318. DOI:
+  none assigned (this issue predates SPWLA DOI assignment).
+src2014_12/article3 -- Article 3: Experimental Study of the Effects of Wettability and Fluid
+  Saturation on NMR and Dielectric Measurements in Limestone Lalitha Venkataramanan, Martin D.
+  Hurlimann, Jeffrey A. Tarvin, Kamilla Fellah, Diana Acero-Allard, Nikita V. Seleznev (2014).
+  Petrophysics Vol. 55, No. 6 (December 2014), pp. 572-586. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2016_02 -- Petrophysics Vol. 57 No. 1 (Feb 2016) (issue-level reference).
+src2016_02/article1 -- Article 1: The Impact of Reservoir Conditions and Rock Heterogeneity on
+  CO2-Brine Multiphase Flow in Permeable Sandstone. Krevor, Reynolds, Al-Menhali, Niu (2016).
+  Petrophysics Vol. 57, No. 1 (February 2016), pp. 12-18. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2016_02/article4 -- Article 4: Low-Salinity Waterflooding: Facts, Inconsistencies and the Way
+  Forward. Hamon (2016). Petrophysics Vol. 57, No. 1 (February 2016), pp. 41-50. DOI: none assigned
+  (this issue predates SPWLA DOI assignment).
+src2016_06/article3 -- Article 3: Permeability Interpretation from Wireline Formation Testing
+  Measurements with Consideration of Effective Thickness. Yang, Yang (2016). Petrophysics Vol. 57,
+  No. 3 (June 2016), pp. 251-269. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2016_10/article2 -- Article 2: How Pore-Scale Attributes May Be Used to Derive Robust Drainage
+  and Imbibition Water-Saturation Models in Complex Tight-Gas Reservoirs. Merletti, Gramin,
+  Salunke, Hamman, Spain, Shabro, Armitage, Torres-Verdin, Salter, Dacy (2016). Petrophysics Vol.
+  57, No. 5 (October 2016), pp. 447-464. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2017_02 -- Petrophysics Vol. 58 No. 1 (Feb 2017) (issue-level reference).
+src2017_02/article1 -- Article 1: Flow Regimes During Immiscible Displacement. Armstrong, McClure,
+  Berrill, Rucker, Schluter, Berg (2017). Petrophysics Vol. 58, No. 1 (February 2017), pp. 10-18.
+  DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2017_02/article5 -- Article 5: Comparison of Four Numerical Simulators for SCAL Experiments.
+  Lenormand, Lorentzen, Maas, Ruth (2017). Petrophysics Vol. 58, No. 1 (February 2017), pp. 48-56.
+  DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2018_02/article5 -- Article 5: Using Digital Rock Technology to Quality Control and Reduce
+  Uncertainty in Relative Permeability Measurements. Schembre-McCabe, Kamath (2018). DOI:
+  10.30632/petro_059_1_a4. Petrophysics Vol. 59 No. 1 (Feb 2018).
+src2018_02/article8 -- Article 8: Application of an Optimization Method for the Restoration of Core
+  Samples for SCAL Experiments. Sripal, James (2018). DOI: 10.30632/petro_059_1_a7. Petrophysics
+  Vol. 59 No. 1 (Feb 2018).
+src2018_04/article9 -- Article 9: Downhole Estimation of Relative Permeability With Integration of
+  Formation-Tester Measurements and Advanced Well Logs. Hadibeik, Azari, Kalawina, Ramakrishna,
+  Eyuboglu, Khan, Al-Rushaid, Al-Rashidi, Ahmad (2018). DOI: 10.30632/PJV59N2-2018a8 (inferred;
+  body beyond extraction). Petrophysics Vol. 59 No. 2 (Apr 2018).
+src2018_06/article3 -- Article 3: Water-Wet or Oil-Wet: is it Really That Simple in Shales?. Gupta,
+  Jernigen, Curtis, Rai, Sondergeld (2018). DOI: 10.30632/PJV59N3-2018a2. Petrophysics Vol. 59 No.
+  3 (Jun 2018).
+src2019_02/article1 -- Article 1 (Tutorial): Organic-Mudstone Petrophysics: Workflow to Estimate
+  Storage Capacity (Part 1). Newsham, Comisky, Chemali (2019). DOI: 10.30632/PJV60N1Y2019t1.
+src2019_04/article11 -- Article 11: Loading Effects on Gas Relative Permeability of a Low-
+  Permeability Sandstone. Agostini, Egermann, Jeannin, Portier, Skoczylas, Wang (2019). DOI:
+  10.30632/PJV60N2-2019a9. Petrophysics Vol. 60 No. 2 (Apr 2019).
+src2019_04/article3 -- Article 3: Pore-Scale Insights on Trapped Oil During Waterflooding of
+  Sandstone Rocks of Varying Wettability States. Berthet, Hebert, Barbouteau, Andriamananjaona,
+  Rivenq (2019). DOI: 10.30632/PJV60N2-2019a1. Petrophysics Vol. 60 No. 2 (Apr 2019).
+src2019_08/article4 -- Article 4: Practical Approach to Derive Wettability Index by NMR in Core
+  Analysis Experiments. Looyestijn (2019). DOI: 10.30632/PJV60N4-2019a4. Petrophysics Vol. 60 No. 4
+  (Aug 2019).
+src2019_08/article6 -- Article 6: Novel Coupling Smart Water-CO2 Flooding for Sandstone Reservoirs.
+  Al-Saedi, Flori (2019). DOI: 10.30632/PJV60N4-2019a6. Petrophysics Vol. 60 No. 4 (Aug 2019).
+src2020_04/article5 -- Article 5: Workflow for Upscaling Wettability From the Nanoscale to Core
+  Scale. Rucker, Bartels, Bultreys, Boone, Singh, Garfi, Scanziani, Spurin, Yesufu-Rufai, Krevor,
+  Blunt, Wilson, Mahani, Cnudde, Luckham, Georgiadis, Berg (2020). DOI: 10.30632/PJV61N2-2020a5.
+  Petrophysics Vol. 61 No. 2 (Apr 2020).
+src2020_04/article6 -- Article 6: Estimation of Gas-Condensate Relative Permeability Using a
+  Lattice Boltzmann Modeling Approach. Schembre-McCabe, Kamath, Fager, Crouse (2020). DOI:
+  10.30632/PJV61N2-2020a6. Petrophysics Vol. 61 No. 2 (Apr 2020).
+src2020_04/article7 -- Article 7: Effect of Injection Pressure on the Imbibition Relative
+  Permeability and Capillary Pressure Curves of Shale Gas Matrix. Al-Ameri, Mazeel (2020). DOI:
+  10.30632/PJV61N2-2020a7. Petrophysics Vol. 61 No. 2 (Apr 2020).
+src2020_06/article4 -- Article 4: Evaluation of Relative Permeability From Resistivity Data for
+  Fractal Porous Media. Shi, Meng, Liu, Zhang, Wang (2020). DOI: 10.30632/PJV61N3-2020a4.
+  Petrophysics Vol. 61 No. 3 (Jun 2020).
+src2021_10/article2 -- Article 2: Enhanced Learning of Fundamental Petrophysical Concepts Through
+  Image Processing and 3D Printing. Alyafei, Al Musleh, Bautista, Idris, Seers (2021). DOI:
+  10.30632/PJV62N5-2021a2. Petrophysics Vol. 62 No. 5 (Oct 2021).
+src2022_06/article9 -- Article 9: NMR-Based Wettability Index for Unconventional Rocks. Dick,
+  Veselinovic, Bonnie, Kelly (2022). DOI: 10.30632/PJV63N3-2022a9. Petrophysics Vol. 63 No. 3 (Jun
+  2022) — NMR SIG Special Issue.
+src2022_10/article4 -- Article 4: Mud-Filtrate Invasion in Laminated and Spatially Heterogeneous
+  Rocks: High-Resolution In-Situ Visualization and Analysis Using Time-Lapse X-Ray Microcomputed
+  Tomography (Micro-CT). Schroeder, Torres-Verdin (2022). DOI: 10.30632/PJV63N5-2022a4.
+  Petrophysics Vol. 63 No. 5 (Oct 2022).
+src2023_06/article4 -- Gao, Y., Sorop, T., Brussee, N., van der Linde, H., Coorn, A., Appel, M.,
+  Berg, S. "Advanced Digital-SCAL Measurements of Gas Trapped in Sandstone" Petrophysics, Vol. 64,
+  No. 3 (June 2023), pp. 368-383 DOI: 10.30632/PJV64N3-2023a4.
+src2024_04 -- Petrophysics Vol. 65 No. 2 (Apr 2024) (issue-level reference).
+src2024_10 -- Petrophysics Vol. 65 No. 5 (Oct 2024) (issue-level reference).
+src2025_02 -- Petrophysics Vol. 66 No. 1 (Feb 2025) (issue-level reference).
+src2025_02/co2_brine_relperm -- CO2/Brine Relative Permeability: Reconciling SS and USS Methods.
+  Mascle et al., 2025, Petrophysics 66(1), 26-43. DOI:10.30632/PJV66N1-2025a2.
+src2025_02/dopant_impact_scal -- Impact of Dopants (NaI) on SCAL Experiments. Pairoys et al., 2025,
+  Petrophysics 66(1), 123-133. DOI:10.30632/PJV66N1-2025a9.
+src2025_02/enhanced_gas_recovery -- Enhanced Gas Recovery (EGR) by CO2 Injection. Jones et al.,
+  2025, Petrophysics 66(1), 54-66. DOI:10.30632/PJV66N1-2025a4.
+src2025_02/scal_model_ccs -- SCAL Model for CCS: LET Correlations for Relative Permeability and
+  Capillary Pressure. Ebeltoft et al., 2025, Petrophysics 66(1), 10-25.
+  DOI:10.30632/PJV66N1-2025a1.
+src2025_12/analog_kr -- Analog Two-Phase Relative Permeability for CO₂/Brine Estimation.
+  Petrophysics, 66(6), 969–981. DOI: 10.30632/PJV66N6-2025a4.
+src2026_04/a02 -- Aljishi, M.K., Chitrala, Y., Dang, S.T., and Rai, C. (2026). Wettability-Based
+  Pore Partitioning and Its Effects on Oil Recovery and Formation Damage in Unconventional
+  Reservoirs. Petrophysics, 67(2), 263–279. DOI: 10.30632/PJV67N2-2026a2.
 """
 
 from __future__ import annotations

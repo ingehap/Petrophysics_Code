@@ -7,6 +7,43 @@ population std (``ddof=0``); comparison against outlier bounds is strict
 src2018_12/article11 (gap imputation, IQR), src2024_08/magnetic_permeability
 (MAD despike), src2019_02/article4 (closure), src2023_08/article3
 (renormalize), src2016_02/article3 & src2017_10/article5 (discrepancy).
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2014_10/article2 -- Article 2: Application and Quality Control of Core Data for the Development
+  and Validation of Elemental Spectroscopy Log Interpretation Susan Herron, Michael Herron, Iain
+  Pirie, Pablo Saldungaray, Paul Craddock, Alyssa Charsky, Marina Polyakov, Frank Shray, Ting Li
+  (2014). Petrophysics Vol. 55, No. 5 (October 2014), pp. 392-414. DOI: none assigned (this issue
+  predates SPWLA DOI assignment).
+src2016_02/article3 -- Article 3: Low-Permeability Measurements: Insights. Profice, Hamon, Nicot
+  (2016). Petrophysics Vol. 57, No. 1 (February 2016), pp. 30-40. DOI: none assigned (this issue
+  predates SPWLA DOI assignment).
+src2017_10/article5 -- Article 5: Lessons Learned in Permian Core Analysis: Comparison Between
+  Retort, GRI, and Routine Methodologies. Blount, Croft, Driskill, Tepper (2017). Petrophysics Vol.
+  58, No. 5 (October 2017), pp. 517-527. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2018_12/article11 -- Article 11: Data Preconditioning for Predictive and Interpretive
+  Algorithms: Importance in Data-Driven Analytics and Methods for Application. Frost, Quinn (2018).
+  DOI: 10.30632/PJV59N6Y2018a10. Petrophysics Vol. 59 No. 6 (Dec 2018) — Special Issue: Data-Driven
+  Analytics in Logging and Petrophysics.
+src2019_02/article4 -- Article 4: Maintaining and Reconstructing In-Situ Saturations: A Comparison
+  Between Whole Core, Sidewall Core, and Pressurized Sidewall Core in the Permian Basin. Blount,
+  McMullen, Durand, Driskill (2019). DOI: 10.30632/PJV60N1Y2019a3. Petrophysics Vol. 60 No. 1 (Feb
+  2019).
+src2021_12/article01 -- Article 1: Data Quality Considerations for Petrophysical Machine-Learning
+  Models. McDonald (2021). DOI: 10.30632/PJV62N6-2021a1. Petrophysics Vol. 62 No. 6 (Dec 2021).
+src2023_08/article3 -- Jácomo, M.H., Hartmann, G.A., Rebelo, T.B., Mattos, N.H., Batezelli, A.,
+  Leite, E.P. (2023). "Mineralogical Modeling and Petrophysical Properties of the Barra Velha
+  Formation, Santos Basin, Brazil", Petrophysics, Vol. 64, No. 4, pp. 518-543. DOI:
+  10.30632/PJV64N4-2023a3.
+src2024_08/magnetic_permeability -- Applying Magnetic Susceptibility to Estimate Permeability From
+  Drill Cuttings. Based on: Banks, J.Y., Tugwell, A.G., and Potter, D.K. (2024), "Applying Magnetic
+  Susceptibility to Estimate Permeability From Drill Cuttings: A Case Study Constraining
+  Uncertainty in the Culzean Triassic Reservoir," Petrophysics, 65(4), pp. 604-623. DOI:
+  10.30632/PJV65N4-2024a13.
 """
 
 from __future__ import annotations

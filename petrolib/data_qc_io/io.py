@@ -5,6 +5,15 @@ hierarchical metadata plus named n-dimensional channel arrays with units and
 axis labels, covering simple 1-D logs through multi-dimensional measurements
 such as ultradeep azimuthal resistivity.  Source: src2023_12/
 bradley_wellbore_format.py (Petrophysics 64(6):823-836).
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2023_12/bradley_wellbore_format -- Bradley et al. (2023), Petrophysics 64(6): 823-836. A
+  proposed universal format for storing/distributing wellbore data, capable of representing simple
+  1D logs and complex multi-dimensional measurements (e.g. ultradeep azimuthal resistivity).
 """
 
 from __future__ import annotations
@@ -23,6 +32,8 @@ class WellboreData:
     ``channels`` maps name -> ``{"data", "units", "axes", "shape"}``.
     Round-trip via ``to_json``/``from_json`` (or ``to_dict``/``from_dict``);
     ``shape`` is recomputed on reload.
+
+    Sources: src2023_12/bradley_wellbore_format.
     """
 
     def __init__(self, well_name: str, uwi: str | None = None) -> None:

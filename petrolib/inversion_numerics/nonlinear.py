@@ -4,6 +4,16 @@ Deterministic nonlinear solvers: finite-difference Jacobian / gradient,
 Levenberg-Marquardt with box bounds and optional log-parameters, an Occam
 smoothest-model iteration, brute-force grid search, multistart, and
 feasible-set (equivalence) sampling for uncertainty bounds.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2016_10/article3_foep_error_propagation -- Article 3: On Error Calculation and Use of First-
+  Order Error Propagation as Integral Part of Petrophysical Calculation. Stalheim (2016).
+  Petrophysics Vol. 57, No. 5 (October 2016), pp. 465-478. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
 """
 
 from __future__ import annotations
@@ -62,7 +72,10 @@ def fd_jacobian(
 
 
 def fd_gradient(f: Callable[[_Float], float], x: ArrayLike, **kw: Any) -> _Float:
-    """Finite-difference gradient of a scalar objective ``f``."""
+    """Finite-difference gradient of a scalar objective ``f``.
+
+    Sources: src2016_10/article3_foep_error_propagation.
+    """
     return fd_jacobian(lambda z: np.array([f(z)]), x, **kw).ravel()
 
 

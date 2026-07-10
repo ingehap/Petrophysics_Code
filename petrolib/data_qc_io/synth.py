@@ -4,6 +4,40 @@ sphere packs, and disk images.
 Generators are deterministic by default (``rng=None`` seeds ``default_rng``
 with the source article's seed) so examples and tests reproduce; pass a seed
 or ``np.random.Generator`` to vary.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2022_02/article2 -- Article 2: Automated Well-Log Depth Matching - 1D Convolutional Neural
+  Networks vs. Classic Cross Correlation. Torres Caceres, Duffaut, Yazidi, Westad, Johansen (2022).
+  DOI: 10.30632/PJV63N1-2022a2. Petrophysics Vol. 63 No. 1 (Feb 2022).
+src2022_06/article1 -- Article 1: Integrated Reservoir Characterization Using Unsupervised Learning
+  on Nuclear Magnetic Resonance (NMR) T1-T2 Logs. Jiang, Bonnie, Correa, Krueger, Kelly, Wasson
+  (2022). DOI: 10.30632/PJV63N3-2022a1. Petrophysics Vol. 63 No. 3 (Jun 2022) — NMR SIG Special
+  Issue.
+src2022_06/article9 -- Article 9: NMR-Based Wettability Index for Unconventional Rocks. Dick,
+  Veselinovic, Bonnie, Kelly (2022). DOI: 10.30632/PJV63N3-2022a9. Petrophysics Vol. 63 No. 3 (Jun
+  2022) — NMR SIG Special Issue.
+src2022_08/article5 -- Article 5: Log Facies Analysis and Reservoir Properties of Basement Granitic
+  Rocks in the Pearl River Mouth Basin, South China Sea. Hua, Yang, Xu, Lei, Zhong (2022). DOI:
+  10.30632/PJV63N4-2022a5. Petrophysics Vol. 63 No. 4 (Aug 2022).
+src2022_12/article7 -- Article 7: Using Digital Rock Physics to Evaluate Novel Percussion Core
+  Quality. Lakshtanov, Zapata, Saucier, Cook, Eve, Lancaster, Lane, Gettemy, Sincock, Liu, Geetan,
+  Draper, Gill (2022). DOI: 10.30632/PJV63N6-2022a7. Petrophysics Vol. 63 No. 6 (Dec 2022) — Best
+  Papers of the 2022 SPWLA Annual Symposium special issue.
+src2024_04/chen_sem_pore_segmentation -- Chen et al., "Pore Identification and Quantitative
+  Characterization of Shale SEM Images using a Deep-Learning Semantic Segmentation Pore-Net Model",
+  Petrophysics, Vol. 65, No. 2 (April 2024), pp. 233-245.
+src2024_06/article2 -- Strobel, J. (2024). "Petrophysical Analyses for Supporting the Search for a
+  Claystone-Hosted Nuclear Repository." Petrophysics 65(3), 302-316. DOI: 10.30632/PJV65N3-2024a2.
+src2024_10/rddtw_depth_matching -- Core-Log Depth Adaptive Matching Using RDDTW. Based on: Fang et
+  al. (2024), "Core-Log Depth Adaptive Matching Using RDDTW", Petrophysics, Vol. 65, No. 5, pp.
+  835-851.
+src2026_06/a03 -- Manuaba, I. B. G. H., Najrani, H., Cavalleri, C., Moge, A., and Chapura, M.
+  (2026). Effect of Pore-Size Distribution on Fluid Movement in Complex Reservoirs. Petrophysics,
+  67(3), 509-524. DOI: 10.30632/PJV67N3-2026a3 (orig. SPE-227259-MS).
 """
 
 from __future__ import annotations

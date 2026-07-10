@@ -4,6 +4,45 @@ Small regression helpers that recur across the corpus: a transform-aware line fi
 returning slope/intercept/R^2, power-law-decay and exponential-relaxation fits,
 and the azimuthal cosine-harmonic fit.  scipy (``curve_fit``) is imported lazily
 only where a nonlinear fit is genuinely needed.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2014_02/article3_nanofluid_imbibition -- Article 3: An Evaluation of Spontaneous Imbibition of
+  Water into Oil-Wet Carbonate Reservoir Cores Using Nanofluid. Abbas Roustaei (2014). Petrophysics
+  Vol. 55, No. 1 (February 2014), pp. 31-37. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2014_02/article4_canister_gas_isotopes -- Article 4: Desorbed Canister Gas Sampling and Gas
+  Isotopic Analysis Procedures and Practices: A Case Study of Two Coalbed Methane Wells from the
+  Lower Saxony Basin, Germany. Russell W. Spears, Sascha Alles, Alexey Makhonin (2014).
+  Petrophysics Vol. 55, No. 1 (February 2014), pp. 38-50. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2014_08/article3_microct_haines_jumps -- Article 3: Multiphase Flow in Porous Rock Imaged Under
+  Dynamic Flow Conditions with Fast X-Ray Computed Microtomography S. Berg, R. Armstrong, H. Ott,
+  A. Georgiadis, S. A. Klapp, A. Schwing, R. Neiteler, N. Brussee, A. Makurat, L. Leu, F. Enzmann,
+  J.-O. Schwarz, M. Wolf, F. Khan, M. Kersten, S. Irvine, M. Stampanoni (2014). Petrophysics Vol.
+  55, No. 4 (August 2014), pp. 304-312. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2015_02/article1_oil_mobilization_clusters -- Article 1: Onset of Oil Mobilization and
+  Nonwetting-Phase Cluster-Size Distribution. Berg, Armstrong, Georgiadis, Ott, Schwing, Neiteler,
+  Brussee, Makurat, Rucker, Leu, Wolf, Khan, Enzmann, Kersten (2015). Petrophysics Vol. 56, No. 1
+  (February 2015), pp. 15-22. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_02/article2_co2_diffusive_mixing -- Article 2: CO2 EOR by Diffusive Mixing in Fractured
+  Reservoirs. Eide, Ersland, Brattekas, Haugen, Graue, Ferno (2015). Petrophysics Vol. 56, No. 1
+  (February 2015), pp. 23-31. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_04/article1_pressure_test_quality -- Article 1: Automatically Quantifying Wireline and LWD
+  Pressure-Test Quality. Proett, Musharfi, Gill, Ma, Meridji, Eyuboglu (2015). Petrophysics Vol.
+  56, No. 2 (April 2015), pp. 101-115. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2015_04/article4_microresistivity_extraction -- Article 4: Microresistivity Curve Extraction
+  from Borehole Microimager Data. Roslin (2015). Petrophysics Vol. 56, No. 2 (April 2015), pp.
+  140-146. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2015_06/article2_fluid_contamination_prediction -- Article 2: A Breakthrough in Accurate
+  Downhole Fluid Sample Contamination Prediction in Real Time. Zuo, Gisolf, Dumont, Dubost,
+  Pfeiffer, Wang, Mishra, Chen, Mullins, Biagi, Gemelli (2015). Petrophysics Vol. 56, No. 3 (June
+  2015), pp. 251-265. DOI: none assigned (this issue predates SPWLA DOI assignment).
 """
 
 from __future__ import annotations
@@ -56,6 +95,12 @@ def fit_line(
     ``xform`` / ``yform`` optionally transform the axes first (e.g. ``'log10'``
     for a log-log or semilog fit); slope/intercept/R^2 are reported in that
     transformed space.
+
+    Sources: src2014_02/article3_nanofluid_imbibition,
+    src2014_02/article4_canister_gas_isotopes, src2014_08/article3_microct_haines_jumps,
+    src2015_02/article1_oil_mobilization_clusters, src2015_02/article2_co2_diffusive_mixing,
+    src2015_04/article1_pressure_test_quality, src2015_04/article4_microresistivity_extraction,
+    src2015_06/article2_fluid_contamination_prediction, and 33 more articles.
     """
     xt = _transform(xform, _arr(x))
     yt = _transform(yform, _arr(y))

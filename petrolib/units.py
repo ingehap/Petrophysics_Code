@@ -13,6 +13,19 @@ Conventions (see CONVENTIONS.md):
 
 Sources: src2014_02/article2 (bar_to_psi/psi_to_bar), src2025_04/gip_porosity
 (psi_to_mpa), and inline constants in ~16 further modules.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2014_02/article2 -- Article 2: Capillary Pressure and Resistivity Index Measurements in a Mixed-
+  Wet Carbonate Reservoir Moustafa R. Dernaika, Mohamed S. Efnik, Safouh Koronfol, Svein M.
+  Skjaeveland, Maisoon M. Al Mansoori, Hafez Hafez, Mohammed Z. Kalam (2014). Petrophysics Vol. 55,
+  No. 1 (February 2014), pp. 24-30. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2025_04/gip_porosity -- Improved GIP Method for Shale Effective Porosity Through Pressure Decay.
+  Based on: Jiang et al., "An Improved GIP Method for Measurements of Shale Effective Porosity
+  Through Pressure Decay", Petrophysics, Vol. 66, No. 2, April 2025, pp. 237–249.
 """
 
 from __future__ import annotations

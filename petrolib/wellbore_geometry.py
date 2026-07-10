@@ -10,6 +10,15 @@ Inclination and azimuth are always taken in **degrees**; the dogleg is returned
 in **radians** (that is the form the ratio factor consumes).  The horizontal
 axes are North/East and TVD is positive downward, so a trajectory column order
 is ``(TVD, North, East)`` throughout.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2019_06/article9_wellbore_positioning_lwd -- Article 9: Wellbore Positioning While Drilling With
+  LWD Measurements. Poedjono, Nwosu, Martin (2019). DOI: 10.30632/PJV60N3-2019a8. Petrophysics Vol.
+  60 No. 3 (Jun 2019).
 """
 
 from __future__ import annotations
@@ -31,6 +40,8 @@ def dogleg_angle(inc1: float, azi1: float, inc2: float, azi2: float) -> float:
     inclinations ``i`` and azimuths ``a`` supplied in degrees.  This is the
     numerically well-behaved rearrangement of the spherical law of cosines and
     is clipped to ``[-1, 1]`` before the ``arccos``.
+
+    Sources: src2019_06/article9_wellbore_positioning_lwd.
     """
     i1, a1, i2, a2 = (np.radians(x) for x in (inc1, azi1, inc2, azi2))
     cos_dl = np.cos(i2 - i1) - np.sin(i1) * np.sin(i2) * (1.0 - np.cos(a2 - a1))
@@ -43,6 +54,8 @@ def ratio_factor(dogleg_rad: float) -> float:
     ``dogleg_rad`` is the dogleg angle in radians; for a near-straight step
     (``DL < 1e-9``) the factor is exactly ``1.0`` (the balanced-tangential
     limit).
+
+    Sources: src2019_06/article9_wellbore_positioning_lwd.
     """
     if dogleg_rad < 1e-9:
         return 1.0
@@ -64,6 +77,8 @@ def minimum_curvature_step(
     ``dE = half (sin i1 sin a1 + sin i2 sin a2)``,
     ``dTVD = half (cos i1 + cos i2)`` with ``RF`` the :func:`ratio_factor` of the
     :func:`dogleg_angle`.  Angles in degrees, lengths in the units of ``md``.
+
+    Sources: src2019_06/article9_wellbore_positioning_lwd.
     """
     dmd = md2 - md1
     dl = dogleg_angle(inc1, azi1, inc2, azi2)
@@ -82,6 +97,8 @@ def survey_to_path(md: ArrayLike, inc: ArrayLike, azi: ArrayLike) -> _Float:
     Integrates :func:`minimum_curvature_step` from the origin ``(0, 0, 0)`` over
     consecutive stations of a survey given as parallel ``md``/``inc``/``azi``
     arrays (degrees).  Column order is ``(TVD, North, East)``.
+
+    Sources: src2019_06/article9_wellbore_positioning_lwd.
     """
     md_a = _arr(md)
     inc_a = _arr(inc)

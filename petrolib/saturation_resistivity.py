@@ -33,6 +33,80 @@ Units: resistivities in ohm-m and conductivities in S/m (or any mutually
 consistent pair — the equations are ratio-based); ``phi`` and saturations
 as fractions; ``qv`` in meq/ml (= meq/cm3); ``cec`` in meq/g; densities in
 g/cm3.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2014_02/article1 -- Article 1: Solving Complex Dual-Water Equation using Dielectric-NMR-
+  Spectroscopy and Conventional Logs. Willy Tan, Ryan Lafferty, Thomas J. Neville (2014).
+  Petrophysics Vol. 55, No. 1 (February 2014), pp. 14-23. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2014_02/article2 -- Article 2: Capillary Pressure and Resistivity Index Measurements in a Mixed-
+  Wet Carbonate Reservoir Moustafa R. Dernaika, Mohamed S. Efnik, Safouh Koronfol, Svein M.
+  Skjaeveland, Maisoon M. Al Mansoori, Hafez Hafez, Mohammed Z. Kalam (2014). Petrophysics Vol. 55,
+  No. 1 (February 2014), pp. 24-30. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2014_12/article1 -- Article 1: Review of Existing Shaly-Sand Models and Introduction of a New
+  Method Based on Dry-Clay Parameters. Max Peeters and Antony Holmes (2014). Petrophysics Vol. 55,
+  No. 6 (December 2014), pp. 543-553. DOI: none assigned (this issue predates SPWLA DOI
+  assignment).
+src2015_06/article4 -- Article 4 (Technical Note): The Bateman-Konen Resistivity-Salinity
+  Transform. Kennedy (2015). Petrophysics Vol. 56, No. 3 (June 2015), pp. 282-283. DOI: none
+  assigned (this issue predates SPWLA DOI assignment).
+src2015_08 -- Petrophysics Vol. 56 No. 4 (Aug 2015) (issue-level reference).
+src2015_12/article4 -- Article 4: Petrophysical Challenges in Giant Carbonate Tengiz Field,
+  Republic of Kazakhstan. Skalinski, Se, Playton, Theologou, Narr, Sullivan, Mallan (2015).
+  Petrophysics Vol. 56, No. 6 (December 2015), pp. 615-647. DOI: none assigned (this issue predates
+  SPWLA DOI assignment).
+src2016_02/article5 -- Article 5: Graphical Solutions for Laminated and Dispersed Shaly Sands.
+  Bootle (2016). Petrophysics Vol. 57, No. 1 (February 2016), pp. 51-59. DOI: none assigned (this
+  issue predates SPWLA DOI assignment).
+src2016_08/article3 -- Article 3: Drainage Capillary Pressure and Resistivity Index from Short-Wait
+  Porous-Plate Experiments. Dernaika, Wilson, Skjaeveland, Ebeltoft (2016). Petrophysics Vol. 57,
+  No. 4 (August 2016), pp. 369-376. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2017_10/article1 -- Article 1: Improved Assessment of Hydrocarbon Saturation in Mixed-Wet Rocks
+  With Complex Pore Structure. Garcia, Heidari, Rostami (2017). Petrophysics Vol. 58, No. 5
+  (October 2017), pp. 454-469. DOI: none assigned (this issue predates SPWLA DOI assignment).
+src2018_06/article4 -- Article 4: A New Resistivity-Based Model for Improved Hydrocarbon Saturation
+  Assessment in Clay-Rich Formations Using Quantitative Geometry of the Clay Network. Garcia,
+  Jagadisan, Rostami, Heidari (2018). DOI: 10.30632/PJV59N3-2018a3. Petrophysics Vol. 59 No. 3 (Jun
+  2018).
+src2018_10/article2 -- Article 2: A Novel X-Ray Tool for True Sourceless Density Logging. Simon,
+  Tkabladze, Beekman, Atobatele, De Looz, Grover, Hamichi, Jundt, McFarland, Mlcak, Reijonen,
+  Revol, Stewart, Yeboah, Zhang (2018). DOI: 10.30632/PJV59N5-2018a1. Petrophysics Vol. 59 No. 5
+  (Oct 2018) - "Best of 2018 SPWLA Symposium" issue.
+src2019_02/article1 -- Article 1 (Tutorial): Organic-Mudstone Petrophysics: Workflow to Estimate
+  Storage Capacity (Part 1). Newsham, Comisky, Chemali (2019). DOI: 10.30632/PJV60N1Y2019t1.
+src2019_04/article2 -- Article 2 (Tutorial): Introduction to Resistivity Principles for Formation
+  Evaluation: A Tutorial Primer. Kennedy, Garcia (2019). DOI: 10.30632/PJV60N2-2019t2. Petrophysics
+  Vol. 60 No. 2 (Apr 2019).
+src2020_08 -- Petrophysics Vol. 61 No. 4 (Aug 2020) (issue-level reference).
+src2020_10 -- Petrophysics Vol. 61 No. 5 (Oct 2020) (issue-level reference).
+src2021_10 -- Petrophysics Vol. 62 No. 5 (Oct 2021) (issue-level reference).
+src2021_12 -- Petrophysics Vol. 62 No. 6 (Dec 2021) (issue-level reference).
+src2021_12/article10 -- Article 10: Enhanced Assessment of Fluid Saturation in the Wolfcamp
+  Formation of the Permian Basin. Dash, Heidari (2021). DOI: 10.30632/PJV62N6-2021a10. Petrophysics
+  Vol. 62 No. 6 (Dec 2021).
+src2022_02/article5 -- Article 5: Evaluating Petrophysical Properties and Volumetrics Uncertainties
+  of Sand Injectite Reservoirs - Norwegian North Sea. Kotwicki, Baig, Johansen, Leirdal, Aftret,
+  Sandstad, Anthonsen, Gianotten, Hansen, Firinu (2022). DOI: 10.30632/PJV63N1-2022a5. Petrophysics
+  Vol. 63 No. 1 (Feb 2022).
+src2022_04/article6 -- Article 6: Rock Physics Modeling of Gas Hydrate Reservoirs Through
+  Integrated Core and Well-Log Data in NGHP-02 Area, KG Offshore Basin, India. Kumar, Mishra,
+  Chatterjee, Tiwari, Avadhani (2022). DOI: 10.30632/PJV63N2-2022a6. Petrophysics Vol. 63 No. 2
+  (Apr 2022).
+src2024_10 -- Petrophysics Vol. 65 No. 5 (Oct 2024) (issue-level reference).
+src2024_10/water_saturation_equations -- Water Saturation Equations for Unconsolidated Reservoirs.
+  Based on: Acosta et al. (2024), "Unveiling the Optimal Water Saturation Equation for
+  Unconsolidated Reservoirs: A Case Study From the Tambaredjo Oil Field, Suriname", Petrophysics,
+  Vol. 65, No. 5, pp. 739-764.
+src2024_12 -- Petrophysics Vol. 65 No. 6 (Dec 2024) (issue-level reference).
+src2025_10/a6 -- Article 6: Enhanced Learning Experience for New Petrophysicists Using Open-Source
+  Carbonate Data and Python Programming Author: Imran M. Fadhil Ref: Petrophysics, Vol. 66, No. 5
+  (October 2025), pp. 807-838. DOI: 10.30632/PJV66N5-2025a6.
+src2025_12 -- Petrophysics Vol. 66 No. 6 (Dec 2025) — Best Papers of the 2024 SCA International
+  Symposium (issue-level reference).
 """
 
 from __future__ import annotations

@@ -2,6 +2,29 @@
 
 SNR is the power ratio ``10*log10(P_signal/P_noise)``; stacking of ``n``
 repeats improves amplitude SNR by ``sqrt(n)``.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2021_04/article5 -- Article 5: An Integrated Petrophysical Workflow for Fluid Characterization
+  and Contacts Identification Using NMR Continuous and Stationary Measurements in a High-Porosity
+  Sandstone Formation, Offshore Norway. Kozlowski, Chakraborty, Jambunathan, Lowrey, Balliet,
+  Engelman, Anensen, Kotwicki, Johansen (2021). DOI: 10.30632/PJV62N2-2021a5. Petrophysics Vol. 62
+  No. 2 (Apr 2021).
+src2021_12/article01 -- Article 1: Data Quality Considerations for Petrophysical Machine-Learning
+  Models. McDonald (2021). DOI: 10.30632/PJV62N6-2021a1. Petrophysics Vol. 62 No. 6 (Dec 2021).
+src2025_08/anomaly_detection_vmd -- Module 8: Automated Anomaly Detection via Signal Mode
+  Decomposition Implements ideas from: Wang et al., "Automated Anomaly Detection of Multimetallic
+  Tubulars in Well Integrity Logs Using Signal Mode Decomposition and Physics-Informed Decision
+  Making," Petrophysics, vol. 66, no. 4, pp. 647–661, August 2025.
+src2025_08/fiber_optics_sensing -- Module 2: Fiber-Optic Sensing for Well Integrity Diagnosis
+  Implements ideas from: Bazaid et al., "Pioneering Well Logging: The Role of Fiber Optics in
+  Modern Monitoring for Well Integrity Diagnosis," Petrophysics, vol. 66, no. 4, pp. 555–565,
+  August 2025.
+src2025_12/carbon13_mr -- ¹³C Magnetic Resonance Relaxation-Time Wettability Characterisation.
+  Petrophysics, 66(6), 1073–1089. DOI: 10.30632/PJV66N6-2025a11.
 """
 
 from __future__ import annotations

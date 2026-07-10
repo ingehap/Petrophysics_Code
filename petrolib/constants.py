@@ -13,6 +13,15 @@ that use them, never invisible global defaults (CONVENTIONS.md rule 5).
 
 Sources: repeated definitions across src2014_02 … src2026_06; see
 LIBRARY_MERGE_PLAN.md section 9 for the GAMMA_H hazard note.
+
+References
+----------
+Complete citations for the source tags used in this module (SPWLA journal
+*Petrophysics*):
+
+src2014_02 -- Petrophysics Vol. 55 No. 1 (Feb 2014) (issue-level reference).
+src2026_06 -- Petrophysics Vol. 67 No. 3 (June 2026) — "Best Petrophysics Papers From MEOS GEO
+  2025" (issue-level reference).
 """
 
 from __future__ import annotations
