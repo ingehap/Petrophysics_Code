@@ -105,11 +105,13 @@ class GaussianMode:
 def gaussian_t2_model(log_t2: np.ndarray,
                       modes: Sequence[GaussianMode]) -> np.ndarray:
     """Sum of Gaussian pore-body modes evaluated on a log10(T2) axis."""
-    log_t2 = np.asarray(log_t2, dtype=float)
-    out = np.zeros_like(log_t2)
-    for m in modes:
-        out += m.amplitude * np.exp(-0.5 * ((log_t2 - m.center) / m.width) ** 2)
-    return out
+    return petrolib.data_qc_io.synth.gaussian_mixture_spectrum(
+        log_t2,
+        [m.center for m in modes],
+        [m.amplitude for m in modes],
+        [m.width for m in modes],
+        log_axis=False,
+    )
 
 
 def partition_porosity(t2_ms: np.ndarray, amplitude: np.ndarray,

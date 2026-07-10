@@ -15,6 +15,13 @@ Implements:
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from dataclasses import dataclass
 from typing import Tuple, Optional
 from scipy.ndimage import gaussian_filter1d
@@ -62,14 +69,8 @@ def remove_ferromagnetic_contaminants(susceptibility: np.ndarray,
     very high susceptibilities that saturate in high fields, but
     residual signals may remain.
     """
-    median_val = np.median(susceptibility)
-    mad = np.median(np.abs(susceptibility - median_val))
-    upper_bound = median_val + threshold_factor * mad * 1.4826
-    cleaned = susceptibility.copy()
-    outliers = cleaned > upper_bound
-    if outliers.any():
-        cleaned[outliers] = median_val
-    return cleaned
+    return petrolib.data_qc_io.clean.despike(
+        susceptibility, threshold=threshold_factor, side="upper", replace="median")
 
 
 def estimate_clay_volume_illite(susceptibility_total: np.ndarray,

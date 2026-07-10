@@ -16,6 +16,13 @@ Key concepts:
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 from typing import List, Tuple, Optional
 from dataclasses import dataclass
 
@@ -124,21 +131,12 @@ def temporal_stack(das: np.ndarray, n_stack: int = 10) -> np.ndarray:
 
     The SNR improves approximately as sqrt(n_stack).
     """
-    n_depth, n_time = das.shape
-    n_out = n_time // n_stack
-    stacked = np.zeros((n_depth, n_out))
-    for i in range(n_out):
-        stacked[:, i] = das[:, i * n_stack:(i + 1) * n_stack].mean(axis=1)
-    return stacked
+    return petrolib.data_qc_io.signal.block_stack(das, n_stack, axis=-1)
 
 
 def compute_snr(signal: np.ndarray, noise_std: float) -> float:
     """Compute signal-to-noise ratio in dB."""
-    sig_power = np.mean(signal ** 2)
-    noise_power = noise_std ** 2
-    if noise_power == 0:
-        return float('inf')
-    return 10.0 * np.log10(sig_power / noise_power)
+    return petrolib.data_qc_io.signal.snr_db(signal, noise_std=noise_std)
 
 
 # ---------------------------------------------------------------------------

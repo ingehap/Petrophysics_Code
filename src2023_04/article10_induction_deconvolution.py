@@ -14,6 +14,13 @@ shape characteristic of a 2C40 induction tool).
 """
 
 import numpy as np
+
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
 import xgboost as xgb
 from scipy.ndimage import gaussian_filter1d
 
@@ -59,10 +66,7 @@ def linear_deconvolution(R_app, weights):
 
 def fit_linear_weights(R_app, R_model, window=21):
     """Fit linear regression weights minimising log-RMSE."""
-    pad = window // 2
-    log_app = np.log(R_app)
-    log_app_pad = np.pad(log_app, pad, mode="edge")
-    rows = np.lib.stride_tricks.sliding_window_view(log_app_pad, window)
+    rows = petrolib.data_qc_io.filt.window_features(np.log(R_app), window)
     coef, *_ = np.linalg.lstsq(rows, np.log(R_model), rcond=None)
     return coef
 
@@ -79,10 +83,8 @@ class MLDeconvolution:
                                       verbosity=0)
 
     def _features(self, R_app):
-        pad = self.window // 2
         log_app = np.log(np.maximum(R_app, 1e-9))
-        log_pad = np.pad(log_app, pad, mode="edge")
-        return np.lib.stride_tricks.sliding_window_view(log_pad, self.window).copy()
+        return petrolib.data_qc_io.filt.window_features(log_app, self.window)
 
     def fit(self, R_app, R_model):
         X = self._features(R_app)

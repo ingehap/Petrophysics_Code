@@ -42,6 +42,13 @@ from dataclasses import dataclass
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # ---------------------------------------------------------------------------
 # Synthetic core
@@ -99,10 +106,7 @@ def make_synthetic_core(length_m: float = 5.0,
 # ---------------------------------------------------------------------------
 def boxcar(x: np.ndarray, window: int) -> np.ndarray:
     """Centered moving average."""
-    if window <= 1:
-        return x.copy()
-    k = np.ones(window) / window
-    return np.convolve(x, k, mode="same")
+    return petrolib.data_qc_io.filt.smooth(x, window, "boxcar")
 
 
 def upscale_to(probe: CoreProbes, sample_dz_mm: float,
