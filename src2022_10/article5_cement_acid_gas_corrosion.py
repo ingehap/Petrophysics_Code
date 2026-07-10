@@ -32,6 +32,13 @@ This module implements:
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 
 # --------------------------------------------- gas Darcy (Eq. 1) ---------
 
@@ -45,7 +52,7 @@ def gas_darcy_permeability(Q_kg_s, P0_Pa, mu_Pa_s, L_m, A_m2, P1_Pa, P2_Pa):
 
 def corrosion_depth_mm(t_days, K_mm_per_sqrt_day=2.5):
     """Diffusion-limited reaction-front depth:  x_f = K sqrt(t)."""
-    return K_mm_per_sqrt_day * np.sqrt(np.maximum(t_days, 0.0))
+    return petrolib.integrity_drilling.corrosion_front_depth(t_days, K_mm_per_sqrt_day)
 
 
 def corrosion_fraction(t_days, plug_radius_mm=12.5, K=2.5):

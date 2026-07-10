@@ -78,20 +78,16 @@ def two_interface_energy_fraction(z_metal, z_fluid):
 
 def thickness_resonance(d_m, v=V_STEEL, n=1):
     """Plate thickness resonance  f_n = n * v / (2 d)  (R4).  Hz."""
-    return n * v / (2.0 * d_m)
+    return petrolib.integrity_drilling.casing_resonance_frequency(d_m, v=v, n=n)
 
 
 # ---------------------------------------------- classification ----------
 
 def classify_behind_casing(z_behind):
     """Map the impedance behind casing to gas / liquid / cement."""
-    if z_behind < Z_LIQUID_MAX * 0.1:
-        return "gas"
-    if z_behind < Z_LIQUID_MAX:
-        return "liquid"
-    if z_behind >= Z_CEMENT_MIN:
-        return "cement"
-    return "transition"
+    return petrolib.integrity_drilling.classify_annulus(
+        z_behind, gas_max=Z_LIQUID_MAX * 0.1, liquid_max=Z_LIQUID_MAX,
+        cement_min=Z_CEMENT_MIN)
 
 
 # ---------------------------------------------- qualification -----------

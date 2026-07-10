@@ -35,8 +35,9 @@ except ImportError:  # bare clone, not installed
 # ---------------------------------------------- Dewan-Chenevert growth -
 
 def mudcake_thickness_m(t_s, k_mc_m2, dP_Pa, mu_Pa_s, phi_mc):
-    return np.sqrt(2.0 * k_mc_m2 * dP_Pa * t_s
-                   / (mu_Pa_s * max(1.0 - phi_mc, 1e-6)))
+    return petrolib.integrity_drilling.mudcake_thickness(
+        t_s, k_mc_m2=k_mc_m2, dp_pa=dP_Pa, mu_pa_s=mu_Pa_s,
+        solids_ratio=max(1.0 - phi_mc, 1e-6), model="dewan")
 
 
 # ---------------------------------------------- porosity + permeability --
