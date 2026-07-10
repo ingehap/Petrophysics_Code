@@ -28,6 +28,13 @@ Paper anchors reproduced: fluid 1325 m/s, A0 phase velocity 2650 m/s -> the
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 V_FLUID = 1325.0         # m/s, kerosene in the borehole
 V_A0 = 2650.0            # m/s, A0 flexural phase velocity (lab)
 
@@ -60,12 +67,12 @@ def snell_angle(vf=V_FLUID, vphi=V_A0):
 
 def attenuation_db(a1, a2):
     """Attenuation between receivers  20*log10(A1/A2)  (dB)  (Eq. 4)."""
-    return 20.0 * np.log10(np.asarray(a1, float) / np.asarray(a2, float))
+    return petrolib.integrity_drilling.attenuation_db(a1, a2)
 
 
 def attenuation_coefficient(a1, a2, dx):
     """Spatial attenuation coefficient from A = A0*exp(-alpha*x)  (1/m)."""
-    return np.log(np.asarray(a1, float) / np.asarray(a2, float)) / dx
+    return petrolib.integrity_drilling.attenuation_coefficient(a1, a2, dx)
 
 
 # ---------------------------------------------- annulus / TIE -----------

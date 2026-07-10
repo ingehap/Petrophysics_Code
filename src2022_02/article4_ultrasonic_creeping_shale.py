@@ -66,7 +66,7 @@ def group_delay_parameter(S_P, S_N, freqs):
 
 def thickness_resonance_freq(v_p, d, correction=F_MIN_CORRECTION):
     """f_min = 0.95 * v_p / (2 d)  (Eq. 2).  v_p [m/s], d [m] -> Hz."""
-    return correction * v_p / (2.0 * d)
+    return petrolib.integrity_drilling.casing_resonance_frequency(d, v=v_p, correction=correction)
 
 
 def casing_velocity_from_fmin(f_min, d, correction=F_MIN_CORRECTION):

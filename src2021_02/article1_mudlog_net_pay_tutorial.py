@@ -29,6 +29,13 @@ describes.  Gas-ratio cutoffs follow the published Haworth/Pixler conventions.
 
 import numpy as np
 
+try:
+    import petrolib
+except ImportError:  # bare clone, not installed
+    import sys, pathlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+    import petrolib
+
 # Classic Haworth (1985) wetness-ratio productivity bands (per cent)
 WH_DRYGAS_MAX = 0.5
 WH_GAS_MAX = 17.5
@@ -45,9 +52,8 @@ def normalized_gas(total_gas, rop_m_hr, flow_lpm, bit_diam_in):
     total_gas in gas units (or %), ROP in m/hr, flow in L/min, bit in inches.
     Returns a normalized gas index (same units as total_gas, drilling removed).
     """
-    area = np.pi * (np.asarray(bit_diam_in, float) * 0.0254 / 2.0) ** 2   # m^2
-    rop = np.maximum(np.asarray(rop_m_hr, float), 1e-6)
-    return np.asarray(total_gas, float) * np.asarray(flow_lpm, float) / (rop * area)
+    return petrolib.integrity_drilling.normalize_gas(
+        total_gas, rop_m_hr, flow_lpm, bit_diam_in, units="metric")
 
 
 # ---------------------------------------------- Haworth ratios ----------
@@ -78,13 +84,7 @@ def haworth_interpretation(wh, bh):
       Wh >= 40            -> residual oil / very low productivity
     Bh < Wh signals increasing density / heavier product.
     """
-    if wh < WH_DRYGAS_MAX:
-        return "dry gas"
-    if wh < WH_GAS_MAX:
-        return "gas" if bh > wh else "gas-condensate"
-    if wh < WH_OIL_MAX:
-        return "oil"
-    return "residual oil"
+    return petrolib.integrity_drilling.classify_fluid_haworth(wh, bh, n_classes=4)
 
 
 def pixler_ratios(c1, c2, c3, c4, c5):
@@ -94,8 +94,8 @@ def pixler_ratios(c1, c2, c3, c4, c5):
     within the Pixler band (C1/C2 roughly 2-35); C1/C5 > ~200 with a flat
     profile indicates non-productive gas.
     """
-    c = [float(x) for x in (c2, c3, c4, c5)]
-    return [float(c1) / x if x > 0 else np.inf for x in c]
+    ratios = petrolib.integrity_drilling.pixler_ratios(c1, c2, c3, c4, c5)
+    return [ratios["C1/C2"], ratios["C1/C3"], ratios["C1/C4"], ratios["C1/C5"]]
 
 
 # ---------------------------------------------- net pay -----------------

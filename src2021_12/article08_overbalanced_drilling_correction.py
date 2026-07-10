@@ -45,7 +45,7 @@ DAMAGE_K = 100.0            # permeability damage threshold (md)
 
 def mud_hydrostatic_bar(rho_sg, tvd_m):
     """Mud hydrostatic pressure  P = 0.0980665 * rho_sg * TVD  (INF-2).  bar."""
-    return BAR_PER_SG_M * rho_sg * tvd_m
+    return petrolib.integrity_drilling.hydrostatic_pressure_bar(tvd_m, sg=rho_sg)
 
 
 def overbalance_pressure(p_mud_bar, p_pore_bar):
